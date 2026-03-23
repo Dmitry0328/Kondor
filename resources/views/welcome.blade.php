@@ -1058,22 +1058,22 @@
                 min-height: 162px;
                 padding: 10px 10px 12px;
                 border-radius: 16px;
-                border: 1px solid #e1e6ef;
+                border: 1px solid #dbe3ee;
                 background:
-                    linear-gradient(180deg, #191e2b 0%, #111520 62%, #0d1018 100%);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 18px rgba(24, 32, 42, 0.08);
+                    linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.94), 0 8px 18px rgba(24, 32, 42, 0.05);
                 overflow: hidden;
             }
 
             .build-card__fps-value {
-                color: #ffffff;
+                color: #1a212d;
                 font-family: 'Space Grotesk', sans-serif;
                 font-size: var(--fps-size);
                 font-weight: 700;
                 line-height: 1;
                 letter-spacing: -0.04em;
                 transform-origin: center bottom;
-                text-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+                text-shadow: none;
                 transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.32s ease, color 0.25s ease, text-shadow 0.25s ease;
             }
 
@@ -1092,8 +1092,7 @@
                 position: absolute;
                 inset: 0 5px;
                 border-radius: 999px;
-                background: #233040;
-                opacity: 0.7;
+                background: #e6ebf2;
             }
 
             .build-card__fps-fill {
@@ -1104,12 +1103,12 @@
                 height: calc(14px + (var(--fps-ratio) * 78px));
                 border-radius: 999px;
                 background: linear-gradient(180deg, #ff4f97 0%, #8a46ff 55%, #2f9cff 100%);
-                box-shadow: 0 0 18px rgba(131, 70, 255, 0.28);
+                box-shadow: 0 0 14px rgba(131, 70, 255, 0.16);
                 transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
             }
 
             .build-card__fps-label {
-                color: rgba(255, 255, 255, 0.94);
+                color: #334050;
                 font-size: 14px;
                 font-weight: 700;
                 letter-spacing: 0.06em;
@@ -1117,13 +1116,11 @@
             }
 
             .build-card.is-fps-low .build-card__fps-value {
-                color: #ffd0be;
-                text-shadow: 0 10px 22px rgba(255, 121, 70, 0.18);
+                color: #c66742;
             }
 
             .build-card.is-fps-high .build-card__fps-value {
-                color: #fbfdff;
-                text-shadow: 0 10px 24px rgba(133, 70, 255, 0.28);
+                color: #4b19a1;
             }
 
             .build-card.is-fps-animating .build-card__fps-value {
@@ -1131,7 +1128,7 @@
             }
 
             .build-card.is-fps-high .build-card__fps-fill {
-                box-shadow: 0 0 20px rgba(133, 70, 255, 0.36);
+                box-shadow: 0 0 16px rgba(133, 70, 255, 0.22);
             }
 
             .build-card__price {
