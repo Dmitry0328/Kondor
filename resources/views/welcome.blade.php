@@ -42,6 +42,10 @@
                 background: var(--bg);
             }
 
+            body.is-gallery-open {
+                overflow: hidden;
+            }
+
             a {
                 color: inherit;
                 text-decoration: none;
@@ -862,6 +866,340 @@
                 line-height: 1.68;
             }
 
+            .gallery {
+                position: relative;
+                padding: 84px 0 96px;
+                background:
+                    radial-gradient(circle at 50% 0, rgba(132, 36, 240, 0.16), transparent 28%),
+                    radial-gradient(circle at 15% 75%, rgba(43, 212, 255, 0.1), transparent 24%),
+                    linear-gradient(180deg, #07090d, #0b0f15 56%, #0a0d13 100%);
+                color: #ffffff;
+                overflow: hidden;
+            }
+
+            .gallery__header {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 24px;
+                margin-bottom: 30px;
+                flex-wrap: wrap;
+            }
+
+            .gallery__socials {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+
+            .gallery__social {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                min-height: 50px;
+                padding: 0 20px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.04);
+                color: #ffffff;
+                font-size: 18px;
+                font-weight: 700;
+                transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
+            }
+
+            .gallery__social:hover {
+                border-color: rgba(255, 255, 255, 0.16);
+                background: rgba(255, 255, 255, 0.08);
+                transform: translateY(-1px);
+            }
+
+            .gallery__social svg {
+                flex: none;
+            }
+
+            .gallery__title-wrap {
+                flex: 1 1 320px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 14px;
+                text-align: center;
+            }
+
+            .gallery__title {
+                margin: 0;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(32px, 3.2vw, 50px);
+                letter-spacing: -0.04em;
+            }
+
+            .gallery__line {
+                width: 152px;
+                height: 4px;
+                border-radius: 999px;
+                background: linear-gradient(90deg, #8424f0, #30d7ff);
+            }
+
+            .gallery__grid {
+                display: grid;
+                grid-template-columns: repeat(12, minmax(0, 1fr));
+                gap: 16px;
+                grid-auto-flow: dense;
+            }
+
+            .gallery-card {
+                position: relative;
+                display: block;
+                padding: 0;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 24px;
+                background: #121720;
+                overflow: hidden;
+                cursor: pointer;
+                box-shadow: 0 24px 50px rgba(0, 0, 0, 0.26);
+                transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            }
+
+            .gallery-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(132, 36, 240, 0.28);
+                box-shadow: 0 28px 56px rgba(0, 0, 0, 0.3);
+            }
+
+            .gallery-card--hero {
+                grid-column: span 5;
+                aspect-ratio: 16 / 10;
+            }
+
+            .gallery-card--wide {
+                grid-column: span 4;
+                aspect-ratio: 16 / 10;
+            }
+
+            .gallery-card--medium {
+                grid-column: span 4;
+                aspect-ratio: 4 / 3;
+            }
+
+            .gallery-card--square {
+                grid-column: span 3;
+                aspect-ratio: 1 / 1;
+            }
+
+            .gallery-card__art,
+            .gallery-card__art svg {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            .gallery-card__art {
+                background: #0f131b;
+            }
+
+            .gallery-card__badge {
+                position: absolute;
+                top: 16px;
+                left: 16px;
+                padding: 8px 12px;
+                border-radius: 999px;
+                background: rgba(7, 9, 13, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                color: rgba(255, 255, 255, 0.92);
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                backdrop-filter: blur(10px);
+            }
+
+            .gallery-card__zoom {
+                position: absolute;
+                right: 16px;
+                bottom: 16px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: rgba(7, 9, 13, 0.72);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                color: #ffffff;
+                backdrop-filter: blur(10px);
+            }
+
+            .gallery-modal {
+                position: fixed;
+                inset: 0;
+                z-index: 100;
+                display: grid;
+                place-items: center;
+                padding: 18px;
+                background: rgba(5, 7, 11, 0.88);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.2s ease, visibility 0.2s ease;
+            }
+
+            .gallery-modal.is-open {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .gallery-modal__dialog {
+                width: min(100%, 1600px);
+                height: min(100%, 940px);
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 132px;
+                gap: 18px;
+            }
+
+            .gallery-modal__stage {
+                position: relative;
+                min-width: 0;
+                min-height: 0;
+                border-radius: 28px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: linear-gradient(180deg, #090b10, #0d1118);
+                overflow: hidden;
+                box-shadow: 0 32px 80px rgba(0, 0, 0, 0.42);
+            }
+
+            .gallery-modal__viewer {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 32px;
+            }
+
+            .gallery-modal__viewer svg {
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .gallery-modal__close,
+            .gallery-modal__nav {
+                position: absolute;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 52px;
+                height: 52px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 50%;
+                background: rgba(10, 12, 17, 0.72);
+                color: #ffffff;
+                cursor: pointer;
+                backdrop-filter: blur(10px);
+                transition: background-color 0.2s ease, transform 0.18s ease;
+            }
+
+            .gallery-modal__close:hover,
+            .gallery-modal__nav:hover {
+                background: rgba(132, 36, 240, 0.18);
+                transform: translateY(-1px);
+            }
+
+            .gallery-modal__close {
+                top: 18px;
+                right: 18px;
+                z-index: 2;
+            }
+
+            .gallery-modal__nav {
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 2;
+            }
+
+            .gallery-modal__nav:hover {
+                transform: translateY(-50%) scale(1.02);
+            }
+
+            .gallery-modal__nav--prev {
+                left: 18px;
+            }
+
+            .gallery-modal__nav--next {
+                right: 18px;
+            }
+
+            .gallery-modal__meta {
+                position: absolute;
+                left: 24px;
+                right: 24px;
+                bottom: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 14px;
+                padding: 16px 18px;
+                border-radius: 18px;
+                background: rgba(7, 9, 13, 0.68);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                backdrop-filter: blur(12px);
+            }
+
+            .gallery-modal__caption {
+                color: #ffffff;
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            .gallery-modal__counter {
+                color: rgba(255, 255, 255, 0.72);
+                font-size: 14px;
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            .gallery-modal__aside {
+                min-height: 0;
+            }
+
+            .gallery-modal__thumbs {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                overflow: auto;
+                padding-right: 4px;
+            }
+
+            .gallery-modal__thumb {
+                position: relative;
+                flex: 0 0 auto;
+                padding: 0;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 18px;
+                background: #10141b;
+                overflow: hidden;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: opacity 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+            }
+
+            .gallery-modal__thumb:hover,
+            .gallery-modal__thumb.is-active {
+                opacity: 1;
+                border-color: rgba(132, 36, 240, 0.4);
+                transform: translateY(-1px);
+            }
+
+            .gallery-modal__thumb-art,
+            .gallery-modal__thumb-art svg {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+
             .menu-toggle {
                 display: none;
                 width: 42px;
@@ -923,6 +1261,10 @@
                 .builds__grid {
                     grid-template-columns: repeat(4, minmax(0, 1fr));
                 }
+
+                .gallery__grid {
+                    grid-template-columns: repeat(10, minmax(0, 1fr));
+                }
             }
 
             @media (max-width: 1080px) {
@@ -961,6 +1303,34 @@
 
                 .advantages__grid {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .gallery__grid {
+                    grid-template-columns: repeat(6, minmax(0, 1fr));
+                }
+
+                .gallery-card--hero,
+                .gallery-card--wide,
+                .gallery-card--medium,
+                .gallery-card--square {
+                    grid-column: span 3;
+                }
+
+                .gallery-modal__dialog {
+                    grid-template-columns: 1fr;
+                    grid-template-rows: minmax(0, 1fr) auto;
+                    height: min(100%, 920px);
+                }
+
+                .gallery-modal__thumbs {
+                    flex-direction: row;
+                    height: auto;
+                    padding-right: 0;
+                    padding-bottom: 4px;
+                }
+
+                .gallery-modal__thumb {
+                    width: 112px;
                 }
             }
 
@@ -1033,6 +1403,49 @@
                     grid-template-columns: 1fr;
                     gap: 28px;
                 }
+
+                .gallery {
+                    padding-block: 70px;
+                }
+
+                .gallery__header {
+                    align-items: flex-start;
+                }
+
+                .gallery__title-wrap {
+                    align-items: flex-start;
+                    text-align: left;
+                }
+
+                .gallery__grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .gallery-card--hero,
+                .gallery-card--wide,
+                .gallery-card--medium {
+                    grid-column: span 2;
+                }
+
+                .gallery-card--square {
+                    grid-column: span 1;
+                }
+
+                .gallery-modal {
+                    padding: 12px;
+                }
+
+                .gallery-modal__viewer {
+                    padding: 18px;
+                }
+
+                .gallery-modal__meta {
+                    left: 14px;
+                    right: 14px;
+                    bottom: 14px;
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
             }
 
             @media (max-width: 560px) {
@@ -1074,6 +1487,45 @@
 
                 .advantages__card p {
                     font-size: 16px;
+                }
+
+                .gallery__socials {
+                    width: 100%;
+                }
+
+                .gallery__social {
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                .gallery__grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .gallery-card--hero,
+                .gallery-card--wide,
+                .gallery-card--medium,
+                .gallery-card--square {
+                    grid-column: span 1;
+                    aspect-ratio: 4 / 3;
+                }
+
+                .gallery-modal__close,
+                .gallery-modal__nav {
+                    width: 44px;
+                    height: 44px;
+                }
+
+                .gallery-modal__nav--prev {
+                    left: 10px;
+                }
+
+                .gallery-modal__nav--next {
+                    right: 10px;
+                }
+
+                .gallery-modal__thumb {
+                    width: 90px;
                 }
             }
         </style>
@@ -1281,6 +1733,145 @@
                     ['tone' => 'peach', 'name' => 'Ігровий ПК "Pulse"', 'gpu' => 'AMD Radeon RX 7700 XT', 'cpu' => 'AMD Ryzen 5 7600', 'ram' => '32GB DDR5 5600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '58 990 ₴'],
                     ['tone' => 'emerald', 'name' => 'Ігровий ПК "Atlas"', 'gpu' => 'Nvidia RTX 4090', 'cpu' => 'AMD Ryzen 9 9950X', 'ram' => '64GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 4TB', 'price' => '189 990 ₴'],
                 ];
+
+                $galleryArt = function (string $variant, string $primary, string $secondary, string $accent): string {
+                    $seed = substr(md5($variant . $primary . $secondary . $accent), 0, 8);
+                    $bgId = "bg-{$seed}";
+                    $screenId = "screen-{$seed}";
+                    $lineId = "line-{$seed}";
+                    $blurId = "blur-{$seed}";
+
+                    $towerLarge = <<<SVG
+<g>
+    <ellipse cx="1140" cy="842" rx="260" ry="34" fill="#030507" opacity="0.48"/>
+    <rect x="928" y="152" width="408" height="614" rx="28" fill="#0c1016"/>
+    <rect x="960" y="186" width="286" height="536" rx="18" fill="rgba(255,255,255,0.02)" stroke="rgba(220,230,255,0.14)" stroke-width="6"/>
+    <rect x="1210" y="186" width="94" height="536" rx="16" fill="#090c12"/>
+    <circle cx="1258" cy="276" r="48" fill="rgba(255,255,255,0.04)" stroke="{$primary}" stroke-width="9"/>
+    <circle cx="1258" cy="454" r="48" fill="rgba(255,255,255,0.03)" stroke="{$secondary}" stroke-width="9"/>
+    <circle cx="1258" cy="632" r="48" fill="rgba(255,255,255,0.03)" stroke="{$accent}" stroke-width="9"/>
+    <circle cx="1064" cy="546" r="42" fill="rgba(255,255,255,0.03)" stroke="{$secondary}" stroke-width="8"/>
+    <circle cx="1142" cy="546" r="42" fill="rgba(255,255,255,0.03)" stroke="{$primary}" stroke-width="8"/>
+    <circle cx="1220" cy="546" r="42" fill="rgba(255,255,255,0.03)" stroke="{$accent}" stroke-width="8"/>
+    <path d="M1008 222H1190" stroke="url(#{$lineId})" stroke-width="6" stroke-linecap="round" opacity="0.72"/>
+    <path d="M1020 686H1210" stroke="url(#{$lineId})" stroke-width="10" stroke-linecap="round"/>
+    <rect x="1020" y="514" width="190" height="30" rx="12" fill="#131922"/>
+</g>
+SVG;
+
+                    $towerCompact = <<<SVG
+<g>
+    <ellipse cx="406" cy="842" rx="196" ry="30" fill="#030507" opacity="0.42"/>
+    <rect x="180" y="220" width="402" height="560" rx="26" fill="#0c1016"/>
+    <rect x="214" y="254" width="286" height="472" rx="18" fill="rgba(255,255,255,0.03)" stroke="rgba(220,230,255,0.14)" stroke-width="6"/>
+    <rect x="466" y="254" width="84" height="472" rx="16" fill="#090c12"/>
+    <circle cx="508" cy="330" r="42" fill="rgba(255,255,255,0.03)" stroke="{$primary}" stroke-width="8"/>
+    <circle cx="508" cy="500" r="42" fill="rgba(255,255,255,0.03)" stroke="{$secondary}" stroke-width="8"/>
+    <circle cx="508" cy="670" r="42" fill="rgba(255,255,255,0.03)" stroke="{$accent}" stroke-width="8"/>
+    <circle cx="328" cy="480" r="56" fill="rgba(255,255,255,0.02)" stroke="{$primary}" stroke-width="10"/>
+    <path d="M254 690H446" stroke="url(#{$lineId})" stroke-width="10" stroke-linecap="round"/>
+</g>
+SVG;
+
+                    $whiteRig = <<<SVG
+<g>
+    <ellipse cx="392" cy="834" rx="188" ry="28" fill="#030507" opacity="0.36"/>
+    <rect x="152" y="392" width="420" height="312" rx="22" fill="#f4f7ff"/>
+    <rect x="190" y="424" width="250" height="212" rx="16" fill="rgba(124,66,255,0.04)" stroke="rgba(130,140,160,0.55)" stroke-width="6"/>
+    <circle cx="304" cy="530" r="52" fill="rgba(255,255,255,0.46)" stroke="{$primary}" stroke-width="9"/>
+    <path d="M242 644H518" stroke="rgba(134,144,160,0.64)" stroke-width="10" stroke-linecap="round"/>
+    <path d="M472 430V632" stroke="rgba(134,144,160,0.34)" stroke-width="6"/>
+</g>
+SVG;
+
+                    $monitorDesk = <<<SVG
+<g>
+    <ellipse cx="390" cy="720" rx="208" ry="24" fill="#030507" opacity="0.46"/>
+    <rect x="90" y="204" width="624" height="352" rx="24" fill="#0b1017" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+    <rect x="120" y="232" width="564" height="296" rx="18" fill="url(#{$screenId})"/>
+    <path d="M158 472C256 340 372 540 506 390C572 318 618 340 668 294" stroke="{$accent}" stroke-width="18" stroke-linecap="round" opacity="0.72"/>
+    <path d="M162 434C266 312 374 510 522 356C582 292 622 312 664 274" stroke="{$primary}" stroke-width="10" stroke-linecap="round" opacity="0.82"/>
+    <rect x="362" y="558" width="80" height="28" rx="14" fill="#11161f"/>
+    <rect x="390" y="584" width="24" height="76" rx="12" fill="#151b25"/>
+    <rect x="286" y="652" width="232" height="18" rx="9" fill="#18202a"/>
+</g>
+SVG;
+
+                    switch ($variant) {
+                        case 'monitor':
+                            $scene = $monitorDesk . $towerLarge;
+                            break;
+
+                        case 'duo':
+                            $scene = $whiteRig . $towerLarge;
+                            break;
+
+                        case 'stack':
+                            $scene = $towerCompact . $towerLarge;
+                            break;
+
+                        default:
+                            $scene = <<<SVG
+<g>
+    <ellipse cx="814" cy="848" rx="354" ry="38" fill="#030507" opacity="0.46"/>
+    <rect x="438" y="144" width="676" height="648" rx="34" fill="#0c1016"/>
+    <rect x="478" y="184" width="430" height="554" rx="20" fill="rgba(255,255,255,0.03)" stroke="rgba(220,230,255,0.14)" stroke-width="6"/>
+    <rect x="894" y="184" width="178" height="554" rx="18" fill="#090c12"/>
+    <circle cx="982" cy="288" r="62" fill="rgba(255,255,255,0.03)" stroke="{$primary}" stroke-width="10"/>
+    <circle cx="982" cy="470" r="62" fill="rgba(255,255,255,0.03)" stroke="{$secondary}" stroke-width="10"/>
+    <circle cx="982" cy="652" r="62" fill="rgba(255,255,255,0.03)" stroke="{$accent}" stroke-width="10"/>
+    <circle cx="628" cy="560" r="58" fill="rgba(255,255,255,0.02)" stroke="{$secondary}" stroke-width="10"/>
+    <circle cx="744" cy="560" r="58" fill="rgba(255,255,255,0.02)" stroke="{$primary}" stroke-width="10"/>
+    <circle cx="860" cy="560" r="58" fill="rgba(255,255,255,0.02)" stroke="{$accent}" stroke-width="10"/>
+    <path d="M520 226H852" stroke="url(#{$lineId})" stroke-width="8" stroke-linecap="round" opacity="0.76"/>
+    <path d="M546 706H848" stroke="url(#{$lineId})" stroke-width="12" stroke-linecap="round"/>
+</g>
+SVG;
+                            break;
+                    }
+
+                    return <<<SVG
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" fill="none" preserveAspectRatio="xMidYMid slice">
+    <defs>
+        <linearGradient id="{$bgId}" x1="120" y1="80" x2="1500" y2="960" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#111722"/>
+            <stop offset="1" stop-color="#090d14"/>
+        </linearGradient>
+        <linearGradient id="{$screenId}" x1="160" y1="180" x2="1440" y2="900" gradientUnits="userSpaceOnUse">
+            <stop stop-color="{$primary}"/>
+            <stop offset="0.54" stop-color="{$secondary}"/>
+            <stop offset="1" stop-color="{$accent}"/>
+        </linearGradient>
+        <linearGradient id="{$lineId}" x1="320" y1="200" x2="1320" y2="760" gradientUnits="userSpaceOnUse">
+            <stop stop-color="{$primary}"/>
+            <stop offset="0.5" stop-color="{$secondary}"/>
+            <stop offset="1" stop-color="{$accent}"/>
+        </linearGradient>
+        <filter id="{$blurId}" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="40"/>
+        </filter>
+    </defs>
+    <rect width="1600" height="1000" fill="url(#{$bgId})"/>
+    <circle cx="260" cy="160" r="220" fill="{$primary}" opacity="0.16" filter="url(#{$blurId})"/>
+    <circle cx="1370" cy="860" r="240" fill="{$secondary}" opacity="0.14" filter="url(#{$blurId})"/>
+    <rect y="808" width="1600" height="192" fill="#0a0d13"/>
+    <rect y="792" width="1600" height="2" fill="rgba(255,255,255,0.12)"/>
+    {$scene}
+</svg>
+SVG;
+                };
+
+                $galleryItems = [
+                    ['title' => 'Blue Studio', 'layout' => 'hero', 'badge' => 'Kondor build', 'art' => $galleryArt('monitor', '#7b42ff', '#2fd5ff', '#eef7ff')],
+                    ['title' => 'Arctic White', 'layout' => 'square', 'badge' => 'Kondor build', 'art' => $galleryArt('duo', '#78d5ff', '#4fa2ff', '#f5fbff')],
+                    ['title' => 'Orange Core', 'layout' => 'medium', 'badge' => 'Kondor build', 'art' => $galleryArt('showcase', '#ff8a3d', '#ffbf66', '#ffe8cf')],
+                    ['title' => 'Neon Duo', 'layout' => 'wide', 'badge' => 'Kondor build', 'art' => $galleryArt('duo', '#8424f0', '#30d7ff', '#f2efff')],
+                    ['title' => 'Purple Frame', 'layout' => 'square', 'badge' => 'Kondor build', 'art' => $galleryArt('stack', '#8c4dff', '#42d6ff', '#f7f2ff')],
+                    ['title' => 'Crimson Glass', 'layout' => 'hero', 'badge' => 'Kondor build', 'art' => $galleryArt('showcase', '#ff4f8b', '#ff7a2d', '#ffe3d6')],
+                    ['title' => 'Violet Desk', 'layout' => 'medium', 'badge' => 'Kondor build', 'art' => $galleryArt('monitor', '#9b56ff', '#6f7cff', '#f1f2ff')],
+                    ['title' => 'Night Tower', 'layout' => 'square', 'badge' => 'Kondor build', 'art' => $galleryArt('stack', '#3964ff', '#6bd5ff', '#ffffff')],
+                    ['title' => 'Aqua Showroom', 'layout' => 'hero', 'badge' => 'Kondor build', 'art' => $galleryArt('showcase', '#45d9ff', '#5a77ff', '#f4fbff')],
+                ];
             @endphp
 
             <section class="builds" id="builds">
@@ -1381,6 +1972,106 @@
                     </div>
                 </div>
             </section>
+
+            <section class="gallery" id="gallery">
+                <div class="container">
+                    <div class="gallery__header">
+                        <div class="gallery__socials">
+                            <a class="gallery__social" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="12" fill="#7E2DF1"/>
+                                    <path d="M17.8 7.4L6.5 11.8L10.1 13.1L11.4 16.9L17.8 7.4Z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+                                    <path d="M10.1 13.1L13.8 9.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+                                </svg>
+                                <span>Наш Telegram</span>
+                            </a>
+
+                            <a class="gallery__social" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="url(#gallery-instagram-fill)" stroke="rgba(255,255,255,0.3)"/>
+                                    <circle cx="12" cy="12" r="4.2" stroke="#fff" stroke-width="1.8"/>
+                                    <circle cx="17.4" cy="6.7" r="1.1" fill="#fff"/>
+                                    <defs>
+                                        <linearGradient id="gallery-instagram-fill" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#8424f0"/>
+                                            <stop offset="0.55" stop-color="#ff4f92"/>
+                                            <stop offset="1" stop-color="#ffb347"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <span>Наш Instagram</span>
+                            </a>
+                        </div>
+
+                        <div class="gallery__title-wrap">
+                            <h2 class="gallery__title">Наші роботи</h2>
+                            <span class="gallery__line"></span>
+                        </div>
+                    </div>
+
+                    <div class="gallery__grid">
+                        @foreach ($galleryItems as $index => $item)
+                            <button
+                                class="gallery-card gallery-card--{{ $item['layout'] }}"
+                                type="button"
+                                data-gallery-item
+                                data-gallery-index="{{ $index }}"
+                                data-gallery-title="{{ $item['title'] }}"
+                                aria-label="Відкрити {{ $item['title'] }}"
+                            >
+                                <span class="gallery-card__art">{!! $item['art'] !!}</span>
+                                <span class="gallery-card__badge">{{ $item['badge'] }}</span>
+                                <span class="gallery-card__zoom" aria-hidden="true">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <path d="M10 4H4V10M14 4H20V10M20 14V20H14M10 20H4V14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+
+            <div class="gallery-modal" data-gallery-modal aria-hidden="true">
+                <div class="gallery-modal__dialog">
+                    <div class="gallery-modal__stage">
+                        <button class="gallery-modal__close" type="button" data-gallery-close aria-label="Закрити галерею">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+
+                        <button class="gallery-modal__nav gallery-modal__nav--prev" type="button" data-gallery-prev aria-label="Попереднє фото">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+
+                        <div class="gallery-modal__viewer" data-gallery-main></div>
+
+                        <button class="gallery-modal__nav gallery-modal__nav--next" type="button" data-gallery-next aria-label="Наступне фото">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+
+                        <div class="gallery-modal__meta">
+                            <span class="gallery-modal__caption" data-gallery-caption></span>
+                            <span class="gallery-modal__counter" data-gallery-counter></span>
+                        </div>
+                    </div>
+
+                    <aside class="gallery-modal__aside">
+                        <div class="gallery-modal__thumbs">
+                            @foreach ($galleryItems as $index => $item)
+                                <button class="gallery-modal__thumb" type="button" data-gallery-thumb="{{ $index }}" aria-label="Відкрити {{ $item['title'] }}">
+                                    <span class="gallery-modal__thumb-art">{!! $item['art'] !!}</span>
+                                </button>
+                            @endforeach
+                        </div>
+                    </aside>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -1390,7 +2081,17 @@
                 const panels = Array.from(document.querySelectorAll('[data-dropdown-panel]'));
                 const mobileToggle = document.querySelector('[data-mobile-toggle]');
                 const mobileMenu = document.querySelector('[data-mobile-menu]');
+                const galleryItems = Array.from(document.querySelectorAll('[data-gallery-item]'));
+                const galleryModal = document.querySelector('[data-gallery-modal]');
+                const galleryMain = document.querySelector('[data-gallery-main]');
+                const galleryCaption = document.querySelector('[data-gallery-caption]');
+                const galleryCounter = document.querySelector('[data-gallery-counter]');
+                const galleryClose = document.querySelector('[data-gallery-close]');
+                const galleryPrev = document.querySelector('[data-gallery-prev]');
+                const galleryNext = document.querySelector('[data-gallery-next]');
+                const galleryThumbs = Array.from(document.querySelectorAll('[data-gallery-thumb]'));
                 let closeTimer;
+                let activeGalleryIndex = 0;
 
                 const positionConsultationPanel = () => {
                     const trigger = document.querySelector('[data-dropdown-trigger="consultation"]');
@@ -1492,6 +2193,26 @@
                 });
 
                 document.addEventListener('keydown', (event) => {
+                    if (galleryModal?.classList.contains('is-open')) {
+                        if (event.key === 'Escape') {
+                            galleryModal.classList.remove('is-open');
+                            galleryModal.setAttribute('aria-hidden', 'true');
+                            document.body.classList.remove('is-gallery-open');
+                        }
+
+                        if (event.key === 'ArrowRight') {
+                            activeGalleryIndex = (activeGalleryIndex + 1) % galleryItems.length;
+                            updateGallery();
+                        }
+
+                        if (event.key === 'ArrowLeft') {
+                            activeGalleryIndex = (activeGalleryIndex - 1 + galleryItems.length) % galleryItems.length;
+                            updateGallery();
+                        }
+
+                        return;
+                    }
+
                     if (event.key === 'Escape') {
                         closeAllDropdowns();
                     }
@@ -1502,6 +2223,85 @@
                 mobileToggle?.addEventListener('click', () => {
                     const isOpen = mobileMenu.classList.toggle('is-open');
                     mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+
+                const updateGallery = () => {
+                    const currentItem = galleryItems[activeGalleryIndex];
+
+                    if (!currentItem || !galleryMain) {
+                        return;
+                    }
+
+                    const art = currentItem.querySelector('.gallery-card__art')?.innerHTML ?? '';
+                    const title = currentItem.dataset.galleryTitle ?? '';
+
+                    galleryMain.innerHTML = art;
+
+                    const modalSvg = galleryMain.querySelector('svg');
+
+                    if (modalSvg) {
+                        modalSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+                    }
+
+                    if (galleryCaption) {
+                        galleryCaption.textContent = title;
+                    }
+
+                    if (galleryCounter) {
+                        galleryCounter.textContent = `${activeGalleryIndex + 1} / ${galleryItems.length}`;
+                    }
+
+                    galleryThumbs.forEach((thumb, index) => {
+                        thumb.classList.toggle('is-active', index === activeGalleryIndex);
+
+                        if (index === activeGalleryIndex) {
+                            thumb.scrollIntoView({ block: 'nearest', inline: 'center' });
+                        }
+                    });
+                };
+
+                const closeGallery = () => {
+                    galleryModal?.classList.remove('is-open');
+                    galleryModal?.setAttribute('aria-hidden', 'true');
+                    document.body.classList.remove('is-gallery-open');
+                };
+
+                const openGallery = (index) => {
+                    activeGalleryIndex = index;
+                    updateGallery();
+                    galleryModal?.classList.add('is-open');
+                    galleryModal?.setAttribute('aria-hidden', 'false');
+                    document.body.classList.add('is-gallery-open');
+                };
+
+                const stepGallery = (direction) => {
+                    if (!galleryItems.length) {
+                        return;
+                    }
+
+                    activeGalleryIndex = (activeGalleryIndex + direction + galleryItems.length) % galleryItems.length;
+                    updateGallery();
+                };
+
+                galleryItems.forEach((item, index) => {
+                    item.addEventListener('click', () => openGallery(index));
+                });
+
+                galleryThumbs.forEach((thumb, index) => {
+                    thumb.addEventListener('click', () => {
+                        activeGalleryIndex = index;
+                        updateGallery();
+                    });
+                });
+
+                galleryClose?.addEventListener('click', closeGallery);
+                galleryPrev?.addEventListener('click', () => stepGallery(-1));
+                galleryNext?.addEventListener('click', () => stepGallery(1));
+
+                galleryModal?.addEventListener('click', (event) => {
+                    if (event.target === galleryModal) {
+                        closeGallery();
+                    }
                 });
             })();
         </script>
