@@ -170,16 +170,16 @@
                 align-items: center;
                 justify-content: center;
                 gap: 10px;
-                min-height: 42px;
-                padding: 0 20px;
+                min-height: 44px;
+                padding: 0 24px;
                 border: 1px solid var(--win-border);
-                border-radius: 14px;
-                background: linear-gradient(180deg, var(--win-surface-top), var(--win-surface-bottom));
+                border-radius: 12px;
+                background: #ffffff;
                 color: #1a212d;
                 font-size: 14px;
                 font-weight: 800;
                 cursor: pointer;
-                box-shadow: var(--win-shadow);
+                box-shadow: 0 6px 16px rgba(24, 32, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.92);
                 transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.18s ease;
             }
 
@@ -191,7 +191,7 @@
                 border-color: #4b19a1;
                 background: linear-gradient(180deg, #8424f0, #6816cb);
                 color: #fff;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(17, 24, 39, 0.12);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 18px rgba(105, 22, 203, 0.24);
             }
 
             .header-button--primary:hover,
@@ -204,8 +204,9 @@
 
             .header-button:not(.header-button--primary):hover,
             .header-button:not(.header-button--primary).is-open {
-                border-color: #bbc4d1;
-                background: linear-gradient(180deg, #ffffff, var(--win-surface-hover));
+                border-color: #bcc7d6;
+                background: #ffffff;
+                box-shadow: 0 8px 18px rgba(24, 32, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.92);
             }
 
             .header-button:active {
@@ -655,21 +656,21 @@
                 justify-content: center;
                 min-height: 44px;
                 padding: 0 30px;
-                border: 0;
-                border-radius: 2px;
-                background: linear-gradient(180deg, #ff2b22, #ff120f);
+                border: 1px solid #4b19a1;
+                border-radius: 12px;
+                background: linear-gradient(180deg, #8424f0, #6816cb);
                 color: #ffffff;
                 font-size: 14px;
                 font-weight: 800;
                 letter-spacing: 0.03em;
                 text-transform: uppercase;
-                box-shadow: 0 12px 24px rgba(255, 36, 28, 0.2);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 18px rgba(105, 22, 203, 0.24);
                 transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
             }
 
             .catalog-cta:hover {
-                background: linear-gradient(180deg, #ff3f37, #ff1815);
-                box-shadow: 0 14px 26px rgba(255, 36, 28, 0.26);
+                background: linear-gradient(180deg, #8f2fff, #7420d3);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 22px rgba(105, 22, 203, 0.28);
                 transform: translateY(-1px);
             }
 
