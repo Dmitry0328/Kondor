@@ -640,11 +640,11 @@
                 padding: 18px;
                 border-radius: 30px;
                 background:
-                    radial-gradient(circle at 12% 22%, rgba(132, 36, 240, 0.16), transparent 22%),
-                    radial-gradient(circle at 88% 38%, rgba(48, 215, 255, 0.18), transparent 24%),
-                    linear-gradient(135deg, #121927 0%, #182230 52%, #103646 100%);
-                border: 1px solid rgba(17, 33, 48, 0.1);
-                box-shadow: 0 20px 48px rgba(12, 18, 28, 0.16);
+                    radial-gradient(circle at 12% 22%, rgba(132, 36, 240, 0.08), transparent 24%),
+                    radial-gradient(circle at 88% 38%, rgba(48, 215, 255, 0.1), transparent 24%),
+                    linear-gradient(135deg, #ffffff 0%, #f4f7fb 55%, #eef3f8 100%);
+                border: 1px solid #e1e8f0;
+                box-shadow: 0 18px 42px rgba(24, 32, 42, 0.08);
                 overflow: hidden;
             }
 
@@ -653,8 +653,8 @@
                 position: absolute;
                 inset: 0;
                 background:
-                    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.04) 42% 43%, transparent 43% 100%),
-                    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 22%);
+                    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.55) 42% 43%, transparent 43% 100%),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.42), transparent 22%);
                 pointer-events: none;
             }
 
@@ -669,7 +669,7 @@
             .fps-lab__controls,
             .fps-lab__scene {
                 position: relative;
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                border: 1px solid #dde5ef;
                 border-radius: 24px;
                 overflow: hidden;
             }
@@ -678,11 +678,11 @@
                 display: grid;
                 gap: 18px;
                 padding: 22px 22px 18px;
-                background: linear-gradient(180deg, rgba(13, 18, 29, 0.88), rgba(11, 15, 23, 0.9));
+                background: linear-gradient(180deg, #ffffff, #f7f9fc);
             }
 
             .fps-lab__eyebrow {
-                color: rgba(255, 255, 255, 0.92);
+                color: #1a212d;
                 font-size: 15px;
                 font-weight: 800;
                 letter-spacing: 0.06em;
@@ -705,7 +705,7 @@
             }
 
             .fps-lab__field span {
-                color: rgba(232, 238, 247, 0.68);
+                color: #6b7584;
                 font-size: 12px;
                 font-weight: 700;
                 letter-spacing: 0.08em;
@@ -717,15 +717,15 @@
                 width: 100%;
                 min-height: 56px;
                 padding: 0 48px 0 16px;
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                border: 1px solid #d7dee8;
                 border-radius: 16px;
                 background:
-                    linear-gradient(180deg, rgba(18, 23, 33, 0.98), rgba(11, 15, 22, 0.98)),
-                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4 6.75L9 11.25L14 6.75' stroke='%23ffffff' stroke-opacity='0.72' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 16px center / 18px 18px;
-                color: #ffffff;
+                    linear-gradient(180deg, #ffffff, #f6f8fc),
+                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4 6.75L9 11.25L14 6.75' stroke='%231a212d' stroke-opacity='0.72' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 16px center / 18px 18px;
+                color: #1a212d;
                 font-size: 16px;
                 font-weight: 700;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 12px rgba(24, 32, 42, 0.04);
                 transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.18s ease;
                 cursor: pointer;
             }
@@ -737,7 +737,7 @@
             .fps-lab__field select:hover,
             .fps-lab__field select:focus {
                 border-color: rgba(132, 36, 240, 0.4);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 3px rgba(132, 36, 240, 0.12);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96), 0 0 0 3px rgba(132, 36, 240, 0.1);
                 outline: none;
             }
 
@@ -755,7 +755,7 @@
                 justify-content: center;
                 width: 24px;
                 height: 24px;
-                color: rgba(255, 255, 255, 0.92);
+                color: #5f6a79;
                 pointer-events: none;
                 z-index: 1;
             }
@@ -769,7 +769,7 @@
 
             .fps-lab__note {
                 margin: 0;
-                color: rgba(221, 227, 238, 0.56);
+                color: #7a8391;
                 font-size: 13px;
                 text-align: center;
             }
@@ -783,10 +783,9 @@
                 min-height: 182px;
                 padding: 24px 108px 20px 24px;
                 background:
-                    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.12), transparent 22%),
-                    linear-gradient(135deg, var(--scene-from), var(--scene-to));
-                color: #ffffff;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+                    linear-gradient(135deg, #ffffff 0%, #f5f7fb 100%);
+                color: #18202a;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
             }
 
             .fps-lab__scene::before,
@@ -802,16 +801,15 @@
                 height: 240px;
                 background: radial-gradient(circle, var(--scene-accent) 0%, transparent 68%);
                 filter: blur(10px);
-                opacity: 0.3;
+                opacity: 0.16;
             }
 
             .fps-lab__scene::after {
                 inset: 0;
                 background:
-                    linear-gradient(145deg, transparent 0 55%, rgba(255, 255, 255, 0.05) 55% 56%, transparent 56% 100%),
-                    repeating-linear-gradient(115deg, transparent 0 18px, rgba(255, 255, 255, 0.03) 18px 20px);
-                mix-blend-mode: screen;
-                opacity: 0.34;
+                    linear-gradient(145deg, transparent 0 55%, rgba(24, 32, 42, 0.04) 55% 56%, transparent 56% 100%),
+                    repeating-linear-gradient(115deg, transparent 0 18px, rgba(24, 32, 42, 0.03) 18px 20px);
+                opacity: 0.55;
             }
 
             .fps-lab__scene-badge,
@@ -831,8 +829,8 @@
                 justify-content: center;
                 width: 72px;
                 height: 72px;
-                color: rgba(255, 255, 255, 0.92);
-                filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.24));
+                color: #404a59;
+                filter: drop-shadow(0 10px 18px rgba(24, 32, 42, 0.08));
             }
 
             .fps-lab__scene-badge {
@@ -843,9 +841,9 @@
                 margin-bottom: 12px;
                 padding: 0 12px;
                 border-radius: 999px;
-                background: rgba(8, 11, 16, 0.34);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                color: rgba(255, 255, 255, 0.88);
+                background: rgba(255, 255, 255, 0.86);
+                border: 1px solid #dce4ee;
+                color: #526071;
                 font-size: 12px;
                 font-weight: 800;
                 letter-spacing: 0.08em;
@@ -861,13 +859,13 @@
                 font-size: clamp(30px, 3vw, 42px);
                 line-height: 0.96;
                 letter-spacing: -0.04em;
-                text-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+                color: #18202a;
             }
 
             .fps-lab__scene-meta {
                 display: block;
                 margin-top: 10px;
-                color: rgba(255, 255, 255, 0.82);
+                color: #5d6877;
                 font-size: 14px;
                 font-weight: 700;
                 letter-spacing: 0.02em;
