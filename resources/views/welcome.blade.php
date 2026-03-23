@@ -625,6 +625,161 @@
                 height: 4px;
             }
 
+            .builds {
+                padding: 10px 0 76px;
+            }
+
+            .builds__header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 18px;
+                margin-bottom: 26px;
+            }
+
+            .builds__header h2 {
+                margin: 0;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(32px, 3vw, 44px);
+                letter-spacing: -0.03em;
+            }
+
+            .builds__button {
+                min-width: 148px;
+                text-align: center;
+            }
+
+            .builds__grid {
+                display: grid;
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 24px;
+            }
+
+            .build-card {
+                --build-start: #595fff;
+                --build-end: #18c3ff;
+                --build-glow: rgba(110, 136, 255, 0.96);
+                overflow: hidden;
+                border: 1px solid #e7ebf1;
+                border-radius: 26px;
+                background: linear-gradient(180deg, #ffffff, #fbfbfd);
+                box-shadow: 0 18px 40px rgba(24, 32, 42, 0.08);
+            }
+
+            .build-card--violet {
+                --build-start: #5e67ff;
+                --build-end: #1fa7ff;
+                --build-glow: rgba(104, 119, 255, 0.96);
+            }
+
+            .build-card--magenta {
+                --build-start: #8f58ff;
+                --build-end: #ff56cc;
+                --build-glow: rgba(241, 94, 255, 0.96);
+            }
+
+            .build-card--amber {
+                --build-start: #6e4937;
+                --build-end: #d18a54;
+                --build-glow: rgba(255, 178, 84, 0.94);
+            }
+
+            .build-card--peach {
+                --build-start: #b07064;
+                --build-end: #ff9f69;
+                --build-glow: rgba(255, 152, 110, 0.94);
+            }
+
+            .build-card--emerald {
+                --build-start: #18564b;
+                --build-end: #2dcc98;
+                --build-glow: rgba(94, 255, 166, 0.92);
+            }
+
+            .build-card__media {
+                position: relative;
+                display: block;
+                min-height: 242px;
+                background:
+                    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.22), transparent 32%),
+                    linear-gradient(135deg, var(--build-start), var(--build-end));
+            }
+
+            .build-card__media::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 12%;
+                width: 58%;
+                height: 76%;
+                transform: translateX(-50%);
+                border: 3px solid #161a1d;
+                border-radius: 14px;
+                background:
+                    radial-gradient(circle at 72% 20%, var(--build-glow) 0 9%, rgba(255, 255, 255, 0.08) 10% 13%, transparent 14%),
+                    radial-gradient(circle at 72% 48%, var(--build-glow) 0 9%, rgba(255, 255, 255, 0.08) 10% 13%, transparent 14%),
+                    radial-gradient(circle at 72% 76%, var(--build-glow) 0 9%, rgba(255, 255, 255, 0.08) 10% 13%, transparent 14%),
+                    radial-gradient(circle at 30% 34%, var(--build-glow) 0 10%, rgba(255, 255, 255, 0.08) 11% 14%, transparent 15%),
+                    linear-gradient(180deg, rgba(12, 15, 18, 0.96), rgba(6, 9, 12, 0.96));
+                box-shadow: 0 20px 28px rgba(0, 0, 0, 0.24);
+            }
+
+            .build-card__media::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                bottom: 11%;
+                width: 28%;
+                height: 6px;
+                transform: translateX(-50%);
+                border-radius: 999px;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.88), transparent);
+            }
+
+            .build-card__body {
+                padding: 18px 20px 22px;
+            }
+
+            .build-card__title {
+                margin: 0 0 16px;
+                font-size: 22px;
+                line-height: 1.05;
+                letter-spacing: -0.03em;
+            }
+
+            .build-card__specs {
+                display: grid;
+                gap: 12px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .build-card__specs li {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                color: #27303c;
+                font-size: 14px;
+                line-height: 1.35;
+            }
+
+            .build-card__specs svg {
+                flex: none;
+                margin-top: 2px;
+                color: #5e6672;
+            }
+
+            .build-card__price {
+                display: inline-block;
+                margin-top: 18px;
+                color: #1d2430;
+                font-size: 22px;
+                font-weight: 800;
+                text-decoration: underline;
+                text-underline-offset: 3px;
+            }
+
             .menu-toggle {
                 display: none;
                 width: 42px;
@@ -682,6 +837,10 @@
                 .hero__layout {
                     min-height: 620px;
                 }
+
+                .builds__grid {
+                    grid-template-columns: repeat(4, minmax(0, 1fr));
+                }
             }
 
             @media (max-width: 1080px) {
@@ -712,6 +871,10 @@
 
                 .hero__copy-inner {
                     max-width: 620px;
+                }
+
+                .builds__grid {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
                 }
             }
 
@@ -762,6 +925,19 @@
                     gap: 28px;
                     padding: 24px 20px;
                 }
+
+                .builds {
+                    padding-bottom: 54px;
+                }
+
+                .builds__header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .builds__grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
             }
 
             @media (max-width: 560px) {
@@ -787,6 +963,14 @@
                 .rig__fan--top-2,
                 .rig__fan--top-3 {
                     width: 64px;
+                }
+
+                .builds__grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .build-card__body {
+                    padding-inline: 18px;
                 }
             }
         </style>
@@ -977,6 +1161,75 @@
                             <div class="rig__strip rig__strip--side"></div>
                             <div class="rig__strip rig__strip--bottom"></div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            @php
+                $featuredBuilds = [
+                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Phantom"', 'gpu' => 'Nvidia RTX 4070 Super', 'cpu' => 'AMD Ryzen 7 7700', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '69 990 ₴'],
+                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Nova"', 'gpu' => 'AMD Radeon RX 7800 XT', 'cpu' => 'AMD Ryzen 7 7800X3D', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '82 990 ₴'],
+                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Vector"', 'gpu' => 'Nvidia RTX 4060 Ti 16GB', 'cpu' => 'Intel Core i5-14600KF', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '61 990 ₴'],
+                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Crystal"', 'gpu' => 'Nvidia RTX 5070', 'cpu' => 'AMD Ryzen 7 9700X', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '94 990 ₴'],
+                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Storm"', 'gpu' => 'AMD Radeon RX 7900 GRE', 'cpu' => 'AMD Ryzen 5 9600X', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '74 990 ₴'],
+                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Orbit"', 'gpu' => 'Nvidia RTX 3060 12GB', 'cpu' => 'Intel Core i5-13400F', 'ram' => '16GB DDR4 3600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '42 990 ₴'],
+                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Titan"', 'gpu' => 'Nvidia RTX 5080', 'cpu' => 'Intel Core i7-14700KF', 'ram' => '32GB DDR5 7200 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '129 990 ₴'],
+                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Frost"', 'gpu' => 'Nvidia RTX 4070 Ti Super', 'cpu' => 'AMD Ryzen 7 8700F', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '78 990 ₴'],
+                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Pulse"', 'gpu' => 'AMD Radeon RX 7700 XT', 'cpu' => 'AMD Ryzen 5 7600', 'ram' => '32GB DDR5 5600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '58 990 ₴'],
+                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Atlas"', 'gpu' => 'Nvidia RTX 4090', 'cpu' => 'AMD Ryzen 9 9950X', 'ram' => '64GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 4TB', 'price' => '189 990 ₴'],
+                ];
+            @endphp
+
+            <section class="builds" id="builds">
+                <div class="container">
+                    <div class="builds__header">
+                        <h2>Обрані комп'ютерні збірки</h2>
+                        <a class="header-button header-button--primary builds__button" href="#builds">Всі збірки</a>
+                    </div>
+
+                    <div class="builds__grid">
+                        @foreach ($featuredBuilds as $build)
+                            <article class="build-card build-card--{{ $build['tone'] }}">
+                                <div class="build-card__media" aria-hidden="true"></div>
+
+                                <div class="build-card__body">
+                                    <h3 class="build-card__title">{{ $build['name'] }}</h3>
+
+                                    <ul class="build-card__specs">
+                                        <li>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                <path d="M9 3V6M15 3V6M9 18V21M15 18V21M3 9H6M18 9H21M3 15H6M18 15H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                            <span>{{ $build['gpu'] }}</span>
+                                        </li>
+                                        <li>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M12 3L19 8V16L12 21L5 16V8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                <path d="M12 9V15M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                            <span>{{ $build['cpu'] }}</span>
+                                        </li>
+                                        <li>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                <path d="M8 10H10M14 10H16M8 14H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                            <span>{{ $build['ram'] }}</span>
+                                        </li>
+                                        <li>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                <path d="M7 12H17M7 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                            <span>{{ $build['storage'] }}</span>
+                                        </li>
+                                    </ul>
+
+                                    <span class="build-card__price">{{ $build['price'] }}</span>
+                                </div>
+                            </article>
+                        @endforeach
                     </div>
                 </div>
             </section>
