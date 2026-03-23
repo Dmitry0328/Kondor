@@ -871,10 +871,7 @@
                 --gallery-row-height: clamp(220px, 19vw, 352px);
                 position: relative;
                 padding: 84px 0 96px;
-                background:
-                    radial-gradient(circle at 18% 18%, rgba(132, 36, 240, 0.06), transparent 24%),
-                    radial-gradient(circle at 86% 12%, rgba(48, 215, 255, 0.04), transparent 18%),
-                    linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
+                background: #ffffff;
                 color: #1a212d;
                 overflow: hidden;
             }
@@ -976,7 +973,8 @@
                 overscroll-behavior-x: contain;
                 scroll-snap-type: x proximity;
                 scrollbar-width: none;
-                padding-bottom: 8px;
+                padding-bottom: 0;
+                background: #ffffff;
             }
 
             .gallery__viewport::-webkit-scrollbar {
@@ -988,6 +986,7 @@
                 gap: 18px;
                 width: max-content;
                 padding-right: 18px;
+                background: #ffffff;
             }
 
             .gallery__group {
@@ -998,6 +997,7 @@
                 grid-template-rows: repeat(2, var(--gallery-row-height));
                 gap: 16px;
                 scroll-snap-align: start;
+                background: #ffffff;
             }
 
             .gallery-card {
@@ -1005,19 +1005,17 @@
                 display: block;
                 height: 100%;
                 padding: 0;
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                border: 0;
                 border-radius: 24px;
                 background: #151922;
                 overflow: hidden;
                 cursor: pointer;
-                box-shadow: 0 24px 50px rgba(0, 0, 0, 0.26);
-                transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+                box-shadow: none;
+                transition: transform 0.22s ease;
             }
 
             .gallery-card:hover {
                 transform: translateY(-4px);
-                border-color: rgba(132, 36, 240, 0.32);
-                box-shadow: 0 28px 58px rgba(0, 0, 0, 0.32);
             }
 
             .gallery-card--pattern-a {
