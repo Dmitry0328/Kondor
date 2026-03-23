@@ -79,7 +79,6 @@
             .brand,
             .hero__layout,
             .hero__actions,
-            .hero__stats,
             .dropdown__columns,
             .dropdown__group {
                 display: flex;
@@ -152,7 +151,7 @@
                 min-height: 42px;
                 padding: 0 18px;
                 border: 1px solid var(--win-border);
-                border-radius: 8px;
+                border-radius: 5px;
                 background: linear-gradient(180deg, var(--win-surface-top), var(--win-surface-bottom));
                 color: #1a212d;
                 font-size: 14px;
@@ -173,19 +172,18 @@
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(17, 24, 39, 0.12);
             }
 
-            .header-button--primary:hover {
-                background: linear-gradient(180deg, #8f2fff, #7420d3);
-            }
-
-            .header-button:hover,
-            .header-button.is-open {
-                border-color: #bbc4d1;
-                background: linear-gradient(180deg, #ffffff, var(--win-surface-hover));
-            }
-
+            .header-button--primary:hover,
+            .header-button--primary:focus-visible,
             .header-button--primary.is-open {
                 border-color: #4b19a1;
-                background: linear-gradient(180deg, #7a26ea, #6217bc);
+                background: linear-gradient(180deg, #8f2fff, #7420d3);
+                color: #ffffff;
+            }
+
+            .header-button:not(.header-button--primary):hover,
+            .header-button:not(.header-button--primary).is-open {
+                border-color: #bbc4d1;
+                background: linear-gradient(180deg, #ffffff, var(--win-surface-hover));
             }
 
             .header-button:active {
@@ -199,7 +197,7 @@
                 width: min(100%, 430px);
                 min-height: 42px;
                 border: 1px solid var(--win-border);
-                border-radius: 10px;
+                border-radius: 5px;
                 background: linear-gradient(180deg, #ffffff, #f4f7fb);
                 box-shadow: var(--win-shadow);
                 overflow: hidden;
@@ -316,26 +314,6 @@
                 gap: 14px;
                 margin-top: 24px;
                 flex-wrap: wrap;
-            }
-
-            .hero__stats {
-                gap: 12px;
-                margin-top: 22px;
-                flex-wrap: wrap;
-            }
-
-            .hero__stats span {
-                display: inline-flex;
-                align-items: center;
-                min-height: 38px;
-                padding: 0 14px;
-                border: 1px solid var(--line);
-                background: var(--bg-muted);
-                color: #26303b;
-                font-size: 13px;
-                font-weight: 800;
-                letter-spacing: 0.02em;
-                text-transform: uppercase;
             }
 
             .hero__visual {
@@ -575,7 +553,7 @@
                 width: 42px;
                 height: 40px;
                 border: 1px solid var(--win-border);
-                border-radius: 8px;
+                border-radius: 5px;
                 background: linear-gradient(180deg, var(--win-surface-top), var(--win-surface-bottom));
                 box-shadow: var(--win-shadow);
                 cursor: pointer;
@@ -709,8 +687,7 @@
             }
 
             @media (max-width: 560px) {
-                .hero__actions,
-                .hero__stats {
+                .hero__actions {
                     flex-direction: column;
                     align-items: stretch;
                 }
@@ -858,11 +835,6 @@
                                 <a class="header-button" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Написати в Telegram</a>
                             </div>
 
-                            <div class="hero__stats">
-                                <span>Тільки збірки ПК</span>
-                                <span>Підбір під бюджет</span>
-                                <span>Чорний стиль корпусів</span>
-                            </div>
                         </div>
                     </div>
 
