@@ -1284,7 +1284,7 @@
             .footer__grid {
                 display: grid;
                 grid-template-columns: minmax(260px, 320px) minmax(170px, 220px) minmax(220px, 1fr);
-                gap: 44px 64px;
+                gap: 44px 52px;
                 align-items: flex-start;
                 padding-bottom: 52px;
             }
@@ -1361,10 +1361,11 @@
             .footer__column {
                 display: grid;
                 gap: 20px;
+                padding-top: 10px;
             }
 
             .footer__column--about {
-                justify-self: end;
+                justify-self: start;
             }
 
             .footer__title {
@@ -1670,6 +1671,10 @@
                     grid-template-columns: 1fr;
                     gap: 34px;
                     padding-bottom: 40px;
+                }
+
+                .footer__column {
+                    padding-top: 0;
                 }
 
                 .footer__title {
