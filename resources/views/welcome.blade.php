@@ -649,6 +649,30 @@
                 text-align: center;
             }
 
+            .catalog-cta {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 44px;
+                padding: 0 30px;
+                border: 0;
+                border-radius: 2px;
+                background: linear-gradient(180deg, #ff2b22, #ff120f);
+                color: #ffffff;
+                font-size: 14px;
+                font-weight: 800;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+                box-shadow: 0 12px 24px rgba(255, 36, 28, 0.2);
+                transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+            }
+
+            .catalog-cta:hover {
+                background: linear-gradient(180deg, #ff3f37, #ff1815);
+                box-shadow: 0 14px 26px rgba(255, 36, 28, 0.26);
+                transform: translateY(-1px);
+            }
+
             .builds__grid {
                 display: grid;
                 grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -778,6 +802,11 @@
                 font-weight: 800;
                 text-decoration: underline;
                 text-underline-offset: 3px;
+            }
+
+            .build-card__action {
+                width: 100%;
+                margin-top: 18px;
             }
 
             .menu-toggle {
@@ -1184,7 +1213,7 @@
                 <div class="container">
                     <div class="builds__header">
                         <h2>Обрані комп'ютерні збірки</h2>
-                        <a class="header-button header-button--primary builds__button" href="#builds">Всі збірки</a>
+                        <a class="catalog-cta builds__button" href="#builds">Всі збірки</a>
                     </div>
 
                     <div class="builds__grid">
@@ -1227,6 +1256,7 @@
                                     </ul>
 
                                     <span class="build-card__price">{{ $build['price'] }}</span>
+                                    <a class="catalog-cta build-card__action" href="#builds">Детальніше</a>
                                 </div>
                             </article>
                         @endforeach
