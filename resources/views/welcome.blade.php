@@ -2347,14 +2347,6 @@ SVG;
                             </div>
                         </div>
 
-                        <div class="footer__column">
-                            <h2 class="footer__title">Основне</h2>
-                            <nav class="footer__nav" aria-label="Основна навігація">
-                                <a href="#about">Головна</a>
-                                <a href="#builds">Комп'ютери</a>
-                            </nav>
-                        </div>
-
                         <div class="footer__column footer__column--about">
                             <h2 class="footer__title">Про нас</h2>
                             <nav class="footer__nav" aria-label="Інформація про KondorPC">
@@ -2363,6 +2355,14 @@ SVG;
                                 <a href="#contacts">Доставка</a>
                                 <a href="#contacts">Оплата</a>
                                 <a href="#contacts">Повернення та обмін</a>
+                            </nav>
+                        </div>
+
+                        <div class="footer__column">
+                            <h2 class="footer__title">Основне</h2>
+                            <nav class="footer__nav" aria-label="Основна навігація">
+                                <a href="#about">Головна</a>
+                                <a href="#builds">Комп'ютери</a>
                             </nav>
                         </div>
                     </div>
