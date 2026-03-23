@@ -1273,8 +1273,8 @@
 
             .footer__grid {
                 display: grid;
-                grid-template-columns: minmax(260px, 1.25fr) minmax(170px, 0.8fr) minmax(220px, 1fr);
-                gap: 44px 78px;
+                grid-template-columns: minmax(260px, 320px) minmax(170px, 220px) minmax(220px, 1fr);
+                gap: 44px 64px;
                 align-items: flex-start;
                 padding-bottom: 52px;
             }
@@ -1351,6 +1351,10 @@
             .footer__column {
                 display: grid;
                 gap: 20px;
+            }
+
+            .footer__column--about {
+                justify-self: end;
             }
 
             .footer__title {
@@ -1506,8 +1510,8 @@
                 }
 
                 .footer__grid {
-                    grid-template-columns: minmax(220px, 1.15fr) repeat(2, minmax(180px, 1fr));
-                    gap: 38px 52px;
+                    grid-template-columns: minmax(220px, 280px) minmax(170px, 210px) minmax(200px, 1fr);
+                    gap: 38px 44px;
                 }
 
                 .footer__title {
@@ -2323,7 +2327,7 @@ SVG;
                             </nav>
                         </div>
 
-                        <div class="footer__column">
+                        <div class="footer__column footer__column--about">
                             <h2 class="footer__title">Про нас</h2>
                             <nav class="footer__nav" aria-label="Інформація про KondorPC">
                                 <a href="#about">Що таке KondorPC</a>
