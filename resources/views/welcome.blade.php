@@ -878,8 +878,8 @@
 
             .gallery__header {
                 display: grid;
-                grid-template-columns: auto 1fr auto;
-                align-items: center;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: start;
                 gap: 24px;
                 margin-bottom: 30px;
             }
@@ -887,8 +887,15 @@
             .gallery__socials {
                 display: flex;
                 align-items: center;
+                justify-content: flex-end;
                 gap: 14px;
                 flex-wrap: wrap;
+            }
+
+            .gallery__footer {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 28px;
             }
 
             .gallery__social {
@@ -923,6 +930,8 @@
                 align-items: center;
                 gap: 14px;
                 text-align: center;
+                grid-column: 2;
+                justify-self: center;
             }
 
             .gallery__title {
@@ -943,6 +952,7 @@
             .gallery__controls {
                 display: flex;
                 align-items: center;
+                grid-column: 3;
                 justify-self: end;
                 gap: 12px;
             }
@@ -1597,16 +1607,26 @@
 
                 .gallery__header {
                     grid-template-columns: 1fr;
-                    align-items: flex-start;
+                    justify-items: center;
                 }
 
                 .gallery__title-wrap {
-                    align-items: flex-start;
-                    text-align: left;
+                    grid-column: auto;
+                    align-items: center;
+                    text-align: center;
                 }
 
                 .gallery__controls {
-                    justify-self: start;
+                    grid-column: auto;
+                    justify-self: center;
+                }
+
+                .gallery__footer {
+                    justify-content: center;
+                }
+
+                .gallery__socials {
+                    justify-content: center;
                 }
 
                 .gallery-modal {
@@ -1700,6 +1720,7 @@
 
                 .gallery__socials {
                     width: 100%;
+                    justify-content: center;
                 }
 
                 .gallery__social {
@@ -2204,33 +2225,6 @@ SVG;
             <section class="gallery" id="gallery">
                 <div class="container">
                     <div class="gallery__header">
-                        <div class="gallery__socials">
-                            <a class="gallery__social" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <circle cx="12" cy="12" r="12" fill="#7E2DF1"/>
-                                    <path d="M17.8 7.4L6.5 11.8L10.1 13.1L11.4 16.9L17.8 7.4Z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
-                                    <path d="M10.1 13.1L13.8 9.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
-                                </svg>
-                                <span>Наш Telegram</span>
-                            </a>
-
-                            <a class="gallery__social" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="url(#gallery-instagram-fill)" stroke="rgba(255,255,255,0.3)"/>
-                                    <circle cx="12" cy="12" r="4.2" stroke="#fff" stroke-width="1.8"/>
-                                    <circle cx="17.4" cy="6.7" r="1.1" fill="#fff"/>
-                                    <defs>
-                                        <linearGradient id="gallery-instagram-fill" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#8424f0"/>
-                                            <stop offset="0.55" stop-color="#ff4f92"/>
-                                            <stop offset="1" stop-color="#ffb347"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                                <span>Наш Instagram</span>
-                            </a>
-                        </div>
-
                         <div class="gallery__title-wrap">
                             <h2 class="gallery__title">Наші роботи</h2>
                             <span class="gallery__line"></span>
@@ -2278,6 +2272,35 @@ SVG;
                                     @endforeach
                                 </div>
                             @endforeach
+                        </div>
+                    </div>
+
+                    <div class="gallery__footer">
+                        <div class="gallery__socials">
+                            <a class="gallery__social" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="12" fill="#7E2DF1"/>
+                                    <path d="M17.8 7.4L6.5 11.8L10.1 13.1L11.4 16.9L17.8 7.4Z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+                                    <path d="M10.1 13.1L13.8 9.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+                                </svg>
+                                <span>Наш Telegram</span>
+                            </a>
+
+                            <a class="gallery__social" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="url(#gallery-instagram-fill)" stroke="rgba(255,255,255,0.3)"/>
+                                    <circle cx="12" cy="12" r="4.2" stroke="#fff" stroke-width="1.8"/>
+                                    <circle cx="17.4" cy="6.7" r="1.1" fill="#fff"/>
+                                    <defs>
+                                        <linearGradient id="gallery-instagram-fill" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#8424f0"/>
+                                            <stop offset="0.55" stop-color="#ff4f92"/>
+                                            <stop offset="1" stop-color="#ffb347"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <span>Наш Instagram</span>
+                            </a>
                         </div>
                     </div>
                 </div>
