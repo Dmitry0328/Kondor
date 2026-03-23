@@ -1261,6 +1261,135 @@
                 height: auto;
             }
 
+            .footer {
+                position: relative;
+                padding: 84px 0 0;
+                background:
+                    radial-gradient(circle at 12% 22%, rgba(132, 36, 240, 0.08), transparent 22%),
+                    radial-gradient(circle at 86% 78%, rgba(48, 215, 255, 0.06), transparent 24%),
+                    #ffffff;
+                border-top: 1px solid #e7ebf2;
+            }
+
+            .footer__grid {
+                display: grid;
+                grid-template-columns: minmax(260px, 1.25fr) minmax(170px, 0.8fr) minmax(220px, 1fr);
+                gap: 44px 78px;
+                align-items: flex-start;
+                padding-bottom: 52px;
+            }
+
+            .footer__brand {
+                display: grid;
+                gap: 20px;
+            }
+
+            .footer__logo {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .footer__brand-name {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(34px, 4vw, 48px);
+                font-weight: 700;
+                letter-spacing: -0.05em;
+                color: #161c25;
+            }
+
+            .footer__brand-sub {
+                color: #6c7583;
+                font-size: 15px;
+                font-weight: 700;
+            }
+
+            .footer__contacts {
+                display: grid;
+                gap: 12px;
+            }
+
+            .footer__contacts a {
+                color: #1a212d;
+                font-size: 17px;
+                font-weight: 600;
+                transition: color 0.18s ease;
+            }
+
+            .footer__contacts a:hover,
+            .footer__nav a:hover {
+                color: #6f10c9;
+            }
+
+            .footer__socials {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .footer__social {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 46px;
+                height: 46px;
+                border: 1px solid #dbe2ec;
+                border-radius: 50%;
+                background: #ffffff;
+                color: #1a212d;
+                box-shadow: 0 10px 20px rgba(24, 32, 42, 0.06);
+                transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+            }
+
+            .footer__social:hover {
+                transform: translateY(-2px);
+                border-color: #c6d1df;
+                color: #6f10c9;
+            }
+
+            .footer__column {
+                display: grid;
+                gap: 20px;
+            }
+
+            .footer__title {
+                margin: 0;
+                color: #151c25;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 34px;
+                font-weight: 700;
+                letter-spacing: -0.04em;
+            }
+
+            .footer__nav {
+                display: grid;
+                gap: 14px;
+            }
+
+            .footer__nav a {
+                color: #1a212d;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.35;
+                transition: color 0.18s ease;
+            }
+
+            .footer__bottom {
+                background: #2b272b;
+                color: rgba(255, 255, 255, 0.96);
+            }
+
+            .footer__bottom-inner {
+                min-height: 54px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                font-size: 15px;
+                font-weight: 700;
+            }
+
             .menu-toggle {
                 display: none;
                 width: 42px;
@@ -1374,6 +1503,15 @@
 
                 .gallery-modal__dialog {
                     grid-template-columns: minmax(0, 1fr) 120px;
+                }
+
+                .footer__grid {
+                    grid-template-columns: minmax(220px, 1.15fr) repeat(2, minmax(180px, 1fr));
+                    gap: 38px 52px;
+                }
+
+                .footer__title {
+                    font-size: 30px;
                 }
             }
 
@@ -1499,6 +1637,20 @@
                     flex-direction: column;
                     align-items: flex-start;
                 }
+
+                .footer {
+                    padding-top: 64px;
+                }
+
+                .footer__grid {
+                    grid-template-columns: 1fr;
+                    gap: 34px;
+                    padding-bottom: 40px;
+                }
+
+                .footer__title {
+                    font-size: 28px;
+                }
             }
 
             @media (max-width: 560px) {
@@ -1577,6 +1729,21 @@
 
                 .gallery-modal__thumb {
                     width: 90px;
+                }
+
+                .footer__brand-name {
+                    font-size: 36px;
+                }
+
+                .footer__nav a,
+                .footer__contacts a {
+                    font-size: 17px;
+                }
+
+                .footer__bottom-inner {
+                    min-height: 64px;
+                    padding: 10px 0;
+                    font-size: 14px;
                 }
             }
         </style>
@@ -2111,6 +2278,70 @@ SVG;
                     </div>
                 </div>
             </section>
+
+            <footer class="footer" id="contacts">
+                <div class="container">
+                    <div class="footer__grid">
+                        <div class="footer__brand">
+                            <div class="footer__logo">
+                                <span class="footer__brand-name">KondorPC</span>
+                                <span class="footer__brand-sub">Твоя база геймінгу</span>
+                            </div>
+
+                            <div class="footer__contacts">
+                                <a href="tel:+380633631066">+380 63 363 10 66</a>
+                                <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">@kondor_channeI</a>
+                            </div>
+
+                            <div class="footer__socials">
+                                <a class="footer__social" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer" aria-label="Instagram">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <rect x="3" y="3" width="18" height="18" rx="5.5" stroke="currentColor" stroke-width="1.8"/>
+                                        <circle cx="12" cy="12" r="4.1" stroke="currentColor" stroke-width="1.8"/>
+                                        <circle cx="17.3" cy="6.8" r="1.1" fill="currentColor"/>
+                                    </svg>
+                                </a>
+                                <a class="footer__social" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer" aria-label="Telegram">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M20.2 4.8L3.9 11.1L8.8 12.9L10.6 18L20.2 4.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                        <path d="M8.8 12.9L13.9 8.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                    </svg>
+                                </a>
+                                <a class="footer__social" href="tel:+380633631066" aria-label="Подзвонити">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M8.2 5.8L10.9 8.5C11.3 8.9 11.4 9.5 11.1 10L10.1 11.8C10.9 13.5 12.3 14.9 14 15.8L15.8 14.8C16.3 14.5 16.9 14.6 17.3 15L20 17.7C20.5 18.2 20.5 19 20 19.5L18.8 20.7C18.1 21.4 17.1 21.7 16.1 21.5C9.8 20.1 4.9 15.2 3.5 8.9C3.3 7.9 3.6 6.9 4.3 6.2L5.5 5C6 4.5 6.8 4.5 7.3 5L8.2 5.8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="footer__column">
+                            <h2 class="footer__title">Основне</h2>
+                            <nav class="footer__nav" aria-label="Основна навігація">
+                                <a href="#about">Головна</a>
+                                <a href="#builds">Комп'ютери</a>
+                            </nav>
+                        </div>
+
+                        <div class="footer__column">
+                            <h2 class="footer__title">Про нас</h2>
+                            <nav class="footer__nav" aria-label="Інформація про KondorPC">
+                                <a href="#about">Що таке KondorPC</a>
+                                <a href="#contacts">Контакти</a>
+                                <a href="#contacts">Доставка</a>
+                                <a href="#contacts">Оплата</a>
+                                <a href="#contacts">Повернення та обмін</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer__bottom">
+                    <div class="container footer__bottom-inner">
+                        {{ date('Y') }} KondorPC | Всі права захищені
+                    </div>
+                </div>
+            </footer>
 
             <div class="gallery-modal" data-gallery-modal aria-hidden="true">
                 <div class="gallery-modal__dialog">
