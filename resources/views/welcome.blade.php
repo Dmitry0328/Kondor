@@ -121,6 +121,14 @@
                 line-height: 1;
             }
 
+            .site-header {
+                position: sticky;
+                top: 0;
+                z-index: 80;
+                background: var(--surface);
+                box-shadow: 0 14px 28px rgba(24, 32, 42, 0.08);
+            }
+
             .topbar__social-link {
                 justify-content: center;
                 width: 18px;
@@ -2125,6 +2133,7 @@
     </head>
     <body>
         <div class="page-shell">
+            <div class="site-header">
             <div class="topbar">
                 <div class="container topbar__inner">
                     <div class="topbar__links">
@@ -2267,6 +2276,7 @@
                     </div>
                 </div>
             </header>
+            </div>
 
             <section class="hero" id="about">
                 <div class="container hero__layout">
