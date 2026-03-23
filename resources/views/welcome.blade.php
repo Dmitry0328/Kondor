@@ -319,6 +319,37 @@
                 color: var(--primary);
             }
 
+            .dropdown--consultation {
+                width: 230px;
+                left: 0;
+                transform: none;
+            }
+
+            .dropdown--consultation .dropdown__columns {
+                display: block;
+                padding: 12px 0;
+            }
+
+            .dropdown--consultation .dropdown__group {
+                min-width: 0;
+                gap: 0;
+            }
+
+            .dropdown--consultation .dropdown__group a {
+                display: block;
+                width: 100%;
+                padding: 18px 34px;
+                color: #1d2430;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 1.35;
+            }
+
+            .dropdown--consultation .dropdown__group a:hover {
+                background: #faf7ff;
+                color: var(--primary);
+            }
+
             .hero {
                 padding: 12px 0 42px;
             }
@@ -812,20 +843,20 @@
                             Наші збірки
                         </a>
 
-                        <button class="header-button" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="builds-dropdown">
+                        <button class="header-button" type="button" data-dropdown-trigger="builds" aria-expanded="false" aria-controls="builds-dropdown" aria-haspopup="true">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                             </svg>
                             Каталог збірок
                         </button>
 
-                        <a class="header-button" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">
+                        <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z" stroke="currentColor" stroke-width="2"/>
                                 <path d="M12 10V12L13.5 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             Консультація
-                        </a>
+                        </button>
 
                         <div class="search-box" role="search">
                             <input type="search" placeholder="Пошук збірок">
@@ -854,7 +885,7 @@
                     </div>
                 </div>
 
-                <div class="dropdown" id="builds-dropdown" data-dropdown>
+                <div class="dropdown" id="builds-dropdown" data-dropdown-panel="builds">
                     <div class="dropdown__columns">
                         <div class="dropdown__group">
                             <h3>Готові збірки</h3>
@@ -882,11 +913,23 @@
                     </div>
                 </div>
 
+                <div class="dropdown dropdown--consultation" id="consultation-dropdown" data-dropdown-panel="consultation">
+                    <div class="dropdown__columns">
+                        <div class="dropdown__group">
+                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Telegram</a>
+                            <a href="#contacts">Контактна форма</a>
+                            <a href="tel:+380633631066">+380 63 363 10 66</a>
+                            <a href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">Instagram</a>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
                     <div class="container mobile-menu__inner">
                         <a href="#about">Про нас</a>
                         <a href="#builds">Наші збірки</a>
                         <button type="button" data-mobile-dropdown-toggle>Каталог збірок</button>
+                        <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
                         <a href="#contacts">Контакти</a>
                         <a href="#faq">FAQ</a>
                     </div>
@@ -941,36 +984,119 @@
 
         <script>
             (() => {
-                const toggle = document.querySelector('[data-dropdown-toggle]');
-                const dropdown = document.querySelector('[data-dropdown]');
+                const header = document.querySelector('.header');
+                const triggers = Array.from(document.querySelectorAll('[data-dropdown-trigger]'));
+                const panels = Array.from(document.querySelectorAll('[data-dropdown-panel]'));
                 const mobileToggle = document.querySelector('[data-mobile-toggle]');
                 const mobileMenu = document.querySelector('[data-mobile-menu]');
+                let closeTimer;
 
-                const closeDropdown = () => {
-                    if (!toggle || !dropdown) {
+                const positionConsultationPanel = () => {
+                    const trigger = document.querySelector('[data-dropdown-trigger="consultation"]');
+                    const panel = document.querySelector('[data-dropdown-panel="consultation"]');
+
+                    if (!header || !trigger || !panel) {
                         return;
                     }
 
-                    toggle.classList.remove('is-open');
-                    toggle.setAttribute('aria-expanded', 'false');
-                    dropdown.classList.remove('is-open');
+                    const headerRect = header.getBoundingClientRect();
+                    const triggerRect = trigger.getBoundingClientRect();
+                    const panelWidth = panel.offsetWidth || 230;
+                    const idealLeft = triggerRect.left - headerRect.left + ((triggerRect.width - panelWidth) / 2);
+                    const maxLeft = headerRect.width - panelWidth - 12;
+                    const nextLeft = Math.max(12, Math.min(idealLeft, maxLeft));
+
+                    panel.style.left = `${nextLeft}px`;
                 };
 
-                toggle?.addEventListener('click', () => {
-                    const isOpen = dropdown.classList.toggle('is-open');
-                    toggle.classList.toggle('is-open', isOpen);
-                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                const closeAllDropdowns = () => {
+                    triggers.forEach((trigger) => {
+                        trigger.classList.remove('is-open');
+                        trigger.setAttribute('aria-expanded', 'false');
+                    });
+
+                    panels.forEach((panel) => {
+                        panel.classList.remove('is-open');
+                    });
+                };
+
+                const openDropdown = (name) => {
+                    const nextPanel = document.querySelector(`[data-dropdown-panel="${name}"]`);
+                    const nextTrigger = document.querySelector(`[data-dropdown-trigger="${name}"]`);
+
+                    if (!nextPanel || !nextTrigger) {
+                        return;
+                    }
+
+                    closeAllDropdowns();
+
+                    nextTrigger.classList.add('is-open');
+                    nextTrigger.setAttribute('aria-expanded', 'true');
+                    nextPanel.classList.add('is-open');
+
+                    if (name === 'consultation') {
+                        positionConsultationPanel();
+                    }
+                };
+
+                const clearCloseTimer = () => {
+                    if (closeTimer) {
+                        window.clearTimeout(closeTimer);
+                        closeTimer = undefined;
+                    }
+                };
+
+                const scheduleClose = () => {
+                    clearCloseTimer();
+                    closeTimer = window.setTimeout(() => {
+                        closeAllDropdowns();
+                    }, 120);
+                };
+
+                triggers.forEach((trigger) => {
+                    const name = trigger.dataset.dropdownTrigger;
+                    const panel = document.querySelector(`[data-dropdown-panel="${name}"]`);
+
+                    if (!name || !panel) {
+                        return;
+                    }
+
+                    trigger.addEventListener('mouseenter', () => {
+                        clearCloseTimer();
+                        openDropdown(name);
+                    });
+
+                    trigger.addEventListener('mouseleave', scheduleClose);
+                    trigger.addEventListener('focus', () => openDropdown(name));
+
+                    trigger.addEventListener('click', () => {
+                        const isOpen = panel.classList.contains('is-open');
+
+                        if (isOpen) {
+                            closeAllDropdowns();
+                            return;
+                        }
+
+                        openDropdown(name);
+                    });
+
+                    panel.addEventListener('mouseenter', clearCloseTimer);
+                    panel.addEventListener('mouseleave', scheduleClose);
                 });
 
                 document.addEventListener('click', (event) => {
-                    if (!dropdown || !toggle) {
-                        return;
-                    }
-
-                    if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
-                        closeDropdown();
+                    if (!event.target.closest('[data-dropdown-trigger]') && !event.target.closest('[data-dropdown-panel]')) {
+                        closeAllDropdowns();
                     }
                 });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape') {
+                        closeAllDropdowns();
+                    }
+                });
+
+                window.addEventListener('resize', positionConsultationPanel);
 
                 mobileToggle?.addEventListener('click', () => {
                     const isOpen = mobileMenu.classList.toggle('is-open');
