@@ -634,6 +634,196 @@
                 padding: 10px 0 76px;
             }
 
+            .fps-lab {
+                position: relative;
+                margin-bottom: 34px;
+                padding: 18px;
+                border-radius: 30px;
+                background:
+                    radial-gradient(circle at 12% 22%, rgba(132, 36, 240, 0.18), transparent 24%),
+                    radial-gradient(circle at 88% 38%, rgba(48, 215, 255, 0.16), transparent 22%),
+                    linear-gradient(135deg, #0f1218 0%, #141924 55%, #0d1016 100%);
+                box-shadow: 0 24px 60px rgba(8, 11, 16, 0.22);
+                overflow: hidden;
+            }
+
+            .fps-lab::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background:
+                    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.04) 42% 43%, transparent 43% 100%),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 22%);
+                pointer-events: none;
+            }
+
+            .fps-lab__inner {
+                position: relative;
+                display: grid;
+                grid-template-columns: minmax(0, 1.5fr) minmax(250px, 336px);
+                gap: 18px;
+                align-items: stretch;
+            }
+
+            .fps-lab__controls,
+            .fps-lab__scene {
+                position: relative;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 24px;
+                overflow: hidden;
+            }
+
+            .fps-lab__controls {
+                display: grid;
+                gap: 18px;
+                padding: 22px 22px 18px;
+                background: linear-gradient(180deg, rgba(12, 15, 22, 0.94), rgba(8, 10, 16, 0.96));
+            }
+
+            .fps-lab__eyebrow {
+                color: rgba(255, 255, 255, 0.92);
+                font-size: 15px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+
+            .fps-lab__fields {
+                display: grid;
+                grid-template-columns: minmax(220px, 1.2fr) repeat(2, minmax(180px, 1fr));
+                gap: 14px;
+            }
+
+            .fps-lab__field {
+                display: grid;
+                gap: 8px;
+            }
+
+            .fps-lab__field span {
+                color: rgba(232, 238, 247, 0.68);
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+
+            .fps-lab__field select {
+                appearance: none;
+                width: 100%;
+                min-height: 56px;
+                padding: 0 48px 0 16px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 16px;
+                background:
+                    linear-gradient(180deg, rgba(18, 23, 33, 0.98), rgba(11, 15, 22, 0.98)),
+                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4 6.75L9 11.25L14 6.75' stroke='%23ffffff' stroke-opacity='0.72' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 16px center / 18px 18px;
+                color: #ffffff;
+                font-size: 16px;
+                font-weight: 700;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+                transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.18s ease;
+                cursor: pointer;
+            }
+
+            .fps-lab__field select:hover,
+            .fps-lab__field select:focus {
+                border-color: rgba(132, 36, 240, 0.4);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 3px rgba(132, 36, 240, 0.12);
+                outline: none;
+            }
+
+            .fps-lab__note {
+                margin: 0;
+                color: rgba(221, 227, 238, 0.56);
+                font-size: 13px;
+                text-align: center;
+            }
+
+            .fps-lab__scene {
+                --scene-from: #0f182f;
+                --scene-to: #2b1211;
+                --scene-accent: #f4dc39;
+                display: grid;
+                align-content: end;
+                min-height: 182px;
+                padding: 24px 24px 20px;
+                background:
+                    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.12), transparent 22%),
+                    linear-gradient(135deg, var(--scene-from), var(--scene-to));
+                color: #ffffff;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            }
+
+            .fps-lab__scene::before,
+            .fps-lab__scene::after {
+                content: '';
+                position: absolute;
+                pointer-events: none;
+            }
+
+            .fps-lab__scene::before {
+                inset: auto -10% -32% auto;
+                width: 240px;
+                height: 240px;
+                background: radial-gradient(circle, var(--scene-accent) 0%, transparent 68%);
+                filter: blur(10px);
+                opacity: 0.3;
+            }
+
+            .fps-lab__scene::after {
+                inset: 0;
+                background:
+                    linear-gradient(145deg, transparent 0 55%, rgba(255, 255, 255, 0.05) 55% 56%, transparent 56% 100%),
+                    repeating-linear-gradient(115deg, transparent 0 18px, rgba(255, 255, 255, 0.03) 18px 20px);
+                mix-blend-mode: screen;
+                opacity: 0.34;
+            }
+
+            .fps-lab__scene-badge,
+            .fps-lab__scene-meta,
+            .fps-lab__scene-title {
+                position: relative;
+                z-index: 1;
+            }
+
+            .fps-lab__scene-badge {
+                display: inline-flex;
+                align-items: center;
+                width: fit-content;
+                min-height: 32px;
+                margin-bottom: 12px;
+                padding: 0 12px;
+                border-radius: 999px;
+                background: rgba(8, 11, 16, 0.34);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                color: rgba(255, 255, 255, 0.88);
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                backdrop-filter: blur(10px);
+            }
+
+            .fps-lab__scene-title {
+                display: block;
+                margin: 0;
+                max-width: 11ch;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(30px, 3vw, 42px);
+                line-height: 0.96;
+                letter-spacing: -0.04em;
+                text-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+            }
+
+            .fps-lab__scene-meta {
+                display: block;
+                margin-top: 10px;
+                color: rgba(255, 255, 255, 0.82);
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 0.02em;
+            }
+
             .builds__header {
                 display: flex;
                 align-items: center;
@@ -688,7 +878,11 @@
                 --build-start: #595fff;
                 --build-end: #18c3ff;
                 --build-glow: rgba(110, 136, 255, 0.96);
+                --fps-ratio: 0.55;
+                --fps-size: 34px;
                 overflow: hidden;
+                display: flex;
+                flex-direction: column;
                 border: 1px solid #e7ebf1;
                 border-radius: 26px;
                 background: linear-gradient(180deg, #ffffff, #fbfbfd);
@@ -766,14 +960,24 @@
             }
 
             .build-card__body {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
                 padding: 18px 20px 22px;
             }
 
             .build-card__title {
-                margin: 0 0 16px;
-                font-size: 22px;
+                margin: 0 0 14px;
+                font-size: 20px;
                 line-height: 1.05;
                 letter-spacing: -0.03em;
+            }
+
+            .build-card__content {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 74px;
+                gap: 14px;
+                align-items: start;
             }
 
             .build-card__specs {
@@ -799,9 +1003,91 @@
                 color: #5e6672;
             }
 
+            .build-card__fps {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-end;
+                min-height: 162px;
+                padding: 10px 10px 12px;
+                border-radius: 16px;
+                background: linear-gradient(180deg, #0d1016, #10151d 70%, #0a0d13);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                overflow: hidden;
+            }
+
+            .build-card__fps-value {
+                color: #ffffff;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: var(--fps-size);
+                font-weight: 700;
+                line-height: 1;
+                letter-spacing: -0.04em;
+                transform-origin: center bottom;
+                text-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+                transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.32s ease, color 0.25s ease, text-shadow 0.25s ease;
+            }
+
+            .build-card__fps-scale {
+                position: relative;
+                display: flex;
+                align-items: flex-end;
+                justify-content: center;
+                width: 16px;
+                height: 92px;
+                margin: 10px 0 8px;
+            }
+
+            .build-card__fps-scale::before {
+                content: '';
+                position: absolute;
+                inset: 0 5px;
+                border-radius: 999px;
+                background: #233040;
+                opacity: 0.7;
+            }
+
+            .build-card__fps-fill {
+                position: absolute;
+                left: 5px;
+                right: 5px;
+                bottom: 0;
+                height: calc(14px + (var(--fps-ratio) * 78px));
+                border-radius: 999px;
+                background: linear-gradient(180deg, #ff4f97 0%, #8a46ff 55%, #2f9cff 100%);
+                box-shadow: 0 0 18px rgba(131, 70, 255, 0.28);
+                transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+            }
+
+            .build-card__fps-label {
+                color: rgba(255, 255, 255, 0.94);
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+
+            .build-card.is-fps-low .build-card__fps-value {
+                color: #ffd0be;
+                text-shadow: 0 10px 22px rgba(255, 121, 70, 0.18);
+            }
+
+            .build-card.is-fps-high .build-card__fps-value {
+                color: #fbfdff;
+                text-shadow: 0 10px 24px rgba(133, 70, 255, 0.28);
+            }
+
+            .build-card.is-fps-animating .build-card__fps-value {
+                transform: scale(1.09);
+            }
+
+            .build-card.is-fps-high .build-card__fps-fill {
+                box-shadow: 0 0 20px rgba(133, 70, 255, 0.36);
+            }
+
             .build-card__price {
                 display: inline-block;
-                margin-top: 18px;
+                margin-top: 20px;
                 color: #1d2430;
                 font-size: 22px;
                 font-weight: 800;
@@ -1463,6 +1749,14 @@
                     min-height: 620px;
                 }
 
+                .fps-lab__inner {
+                    grid-template-columns: minmax(0, 1fr) 290px;
+                }
+
+                .fps-lab__fields {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                }
+
                 .builds__grid {
                     grid-template-columns: repeat(4, minmax(0, 1fr));
                 }
@@ -1501,6 +1795,18 @@
 
                 .hero__copy-inner {
                     max-width: 620px;
+                }
+
+                .fps-lab__inner {
+                    grid-template-columns: 1fr;
+                }
+
+                .fps-lab__fields {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .fps-lab__scene {
+                    min-height: 170px;
                 }
 
                 .builds__grid {
@@ -1572,6 +1878,19 @@
                     width: calc(100% - 20px);
                 }
 
+                .fps-lab {
+                    padding: 14px;
+                    margin-bottom: 28px;
+                }
+
+                .fps-lab__controls {
+                    padding: 18px;
+                }
+
+                .fps-lab__fields {
+                    grid-template-columns: 1fr;
+                }
+
                 .dropdown__columns {
                     flex-direction: column;
                     gap: 28px;
@@ -1589,6 +1908,15 @@
 
                 .builds__grid {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .build-card__content {
+                    grid-template-columns: minmax(0, 1fr) 68px;
+                    gap: 12px;
+                }
+
+                .build-card__fps {
+                    min-height: 154px;
                 }
 
                 .advantages {
@@ -1713,6 +2041,14 @@
 
                 .build-card__body {
                     padding-inline: 18px;
+                }
+
+                .build-card__content {
+                    grid-template-columns: minmax(0, 1fr) 74px;
+                }
+
+                .build-card__title {
+                    font-size: 22px;
                 }
 
                 .advantages__card {
@@ -1969,17 +2305,100 @@
             </section>
 
             @php
+                $fpsGames = [
+                    ['id' => 'cyberpunk-2077', 'name' => 'Cyberpunk 2077', 'difficulty' => 0.72, 'accent' => '#f4dc39', 'from' => '#0f182f', 'to' => '#2b1211', 'badge' => 'Night City benchmark'],
+                    ['id' => 'gta-5', 'name' => 'GTA 5', 'difficulty' => 1.12, 'accent' => '#8cff7c', 'from' => '#10151d', 'to' => '#183625', 'badge' => 'Los Santos test'],
+                    ['id' => 'counter-strike-2', 'name' => 'Counter-Strike 2', 'difficulty' => 1.65, 'accent' => '#ffb35c', 'from' => '#10151d', 'to' => '#31200f', 'badge' => 'Premier smoke test'],
+                    ['id' => 'fortnite', 'name' => 'Fortnite', 'difficulty' => 1.38, 'accent' => '#57d8ff', 'from' => '#10162a', 'to' => '#15384a', 'badge' => 'Island benchmark'],
+                    ['id' => 'valorant', 'name' => 'Valorant', 'difficulty' => 1.92, 'accent' => '#ff637b', 'from' => '#14131d', 'to' => '#321019', 'badge' => 'Ranked preset'],
+                    ['id' => 'stalker-2', 'name' => 'S.T.A.L.K.E.R. 2', 'difficulty' => 0.68, 'accent' => '#a3ff63', 'from' => '#131816', 'to' => '#2b2210', 'badge' => 'Zone benchmark'],
+                    ['id' => 'red-dead-redemption-2', 'name' => 'Red Dead Redemption 2', 'difficulty' => 0.84, 'accent' => '#ff8f5a', 'from' => '#161117', 'to' => '#3a1b13', 'badge' => 'Frontier cinematic'],
+                    ['id' => 'rust', 'name' => 'Rust', 'difficulty' => 0.96, 'accent' => '#ff9759', 'from' => '#12161d', 'to' => '#362117', 'badge' => 'Survival session'],
+                ];
+
+                $fpsDisplays = [
+                    ['id' => '1080p', 'name' => '1920 x 1080 (Full HD)', 'multiplier' => 1.22],
+                    ['id' => '1440p', 'name' => '2560 x 1440 (2K)', 'multiplier' => 1.0],
+                    ['id' => '4k', 'name' => '3840 x 2160 (4K)', 'multiplier' => 0.7],
+                ];
+
+                $fpsPresets = [
+                    ['id' => 'medium', 'name' => 'Середні', 'multiplier' => 1.18],
+                    ['id' => 'high', 'name' => 'Високі', 'multiplier' => 1.0],
+                    ['id' => 'ultra', 'name' => 'Ультра', 'multiplier' => 0.84],
+                ];
+
+                $defaultFpsGame = 'cyberpunk-2077';
+                $defaultFpsDisplay = '1440p';
+                $defaultFpsPreset = 'high';
+
+                $fpsIndexById = static function (array $items): array {
+                    $indexed = [];
+
+                    foreach ($items as $item) {
+                        $indexed[$item['id']] = $item;
+                    }
+
+                    return $indexed;
+                };
+
+                $fpsGameMap = $fpsIndexById($fpsGames);
+                $fpsDisplayMap = $fpsIndexById($fpsDisplays);
+                $fpsPresetMap = $fpsIndexById($fpsPresets);
+
+                $computeFps = static function (int $score, string $gameId, string $displayId, string $presetId) use ($fpsGameMap, $fpsDisplayMap, $fpsPresetMap): int {
+                    $rawFps = $score
+                        * ($fpsGameMap[$gameId]['difficulty'] ?? 1)
+                        * ($fpsDisplayMap[$displayId]['multiplier'] ?? 1)
+                        * ($fpsPresetMap[$presetId]['multiplier'] ?? 1);
+
+                    return (int) max(38, min(320, round($rawFps)));
+                };
+
+                $getFpsRatio = static fn (int $fps): float => max(0.18, min(1, $fps / 220));
+                $getFpsSize = static fn (int $fps): int => (int) round(28 + (max(0, min(1, ($fps - 40) / 170)) * 18));
+                $getFpsState = static function (int $fps): string {
+                    if ($fps < 70) {
+                        return 'low';
+                    }
+
+                    if ($fps < 120) {
+                        return 'mid';
+                    }
+
+                    return 'high';
+                };
+
                 $featuredBuilds = [
-                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Phantom"', 'gpu' => 'Nvidia RTX 4070 Super', 'cpu' => 'AMD Ryzen 7 7700', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '69 990 ₴'],
-                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Nova"', 'gpu' => 'AMD Radeon RX 7800 XT', 'cpu' => 'AMD Ryzen 7 7800X3D', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '82 990 ₴'],
-                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Vector"', 'gpu' => 'Nvidia RTX 4060 Ti 16GB', 'cpu' => 'Intel Core i5-14600KF', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '61 990 ₴'],
-                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Crystal"', 'gpu' => 'Nvidia RTX 5070', 'cpu' => 'AMD Ryzen 7 9700X', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '94 990 ₴'],
-                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Storm"', 'gpu' => 'AMD Radeon RX 7900 GRE', 'cpu' => 'AMD Ryzen 5 9600X', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '74 990 ₴'],
-                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Orbit"', 'gpu' => 'Nvidia RTX 3060 12GB', 'cpu' => 'Intel Core i5-13400F', 'ram' => '16GB DDR4 3600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '42 990 ₴'],
-                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Titan"', 'gpu' => 'Nvidia RTX 5080', 'cpu' => 'Intel Core i7-14700KF', 'ram' => '32GB DDR5 7200 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '129 990 ₴'],
-                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Frost"', 'gpu' => 'Nvidia RTX 4070 Ti Super', 'cpu' => 'AMD Ryzen 7 8700F', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '78 990 ₴'],
-                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Pulse"', 'gpu' => 'AMD Radeon RX 7700 XT', 'cpu' => 'AMD Ryzen 5 7600', 'ram' => '32GB DDR5 5600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '58 990 ₴'],
-                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Atlas"', 'gpu' => 'Nvidia RTX 4090', 'cpu' => 'AMD Ryzen 9 9950X', 'ram' => '64GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 4TB', 'price' => '189 990 ₴'],
+                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Phantom"', 'gpu' => 'Nvidia RTX 4070 Super', 'cpu' => 'AMD Ryzen 7 7700', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '69 990 ₴', 'fps_score' => 146],
+                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Nova"', 'gpu' => 'AMD Radeon RX 7800 XT', 'cpu' => 'AMD Ryzen 7 7800X3D', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '82 990 ₴', 'fps_score' => 156],
+                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Vector"', 'gpu' => 'Nvidia RTX 4060 Ti 16GB', 'cpu' => 'Intel Core i5-14600KF', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '61 990 ₴', 'fps_score' => 116],
+                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Crystal"', 'gpu' => 'Nvidia RTX 5070', 'cpu' => 'AMD Ryzen 7 9700X', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '94 990 ₴', 'fps_score' => 168],
+                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Storm"', 'gpu' => 'AMD Radeon RX 7900 GRE', 'cpu' => 'AMD Ryzen 5 9600X', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '74 990 ₴', 'fps_score' => 132],
+                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Orbit"', 'gpu' => 'Nvidia RTX 3060 12GB', 'cpu' => 'Intel Core i5-13400F', 'ram' => '16GB DDR4 3600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '42 990 ₴', 'fps_score' => 92],
+                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Titan"', 'gpu' => 'Nvidia RTX 5080', 'cpu' => 'Intel Core i7-14700KF', 'ram' => '32GB DDR5 7200 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '129 990 ₴', 'fps_score' => 186],
+                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Frost"', 'gpu' => 'Nvidia RTX 4070 Ti Super', 'cpu' => 'AMD Ryzen 7 8700F', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '78 990 ₴', 'fps_score' => 138],
+                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Pulse"', 'gpu' => 'AMD Radeon RX 7700 XT', 'cpu' => 'AMD Ryzen 5 7600', 'ram' => '32GB DDR5 5600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '58 990 ₴', 'fps_score' => 108],
+                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Atlas"', 'gpu' => 'Nvidia RTX 4090', 'cpu' => 'AMD Ryzen 9 9950X', 'ram' => '64GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 4TB', 'price' => '189 990 ₴', 'fps_score' => 238],
+                ];
+
+                foreach ($featuredBuilds as $index => $build) {
+                    $initialFps = $computeFps($build['fps_score'], $defaultFpsGame, $defaultFpsDisplay, $defaultFpsPreset);
+                    $featuredBuilds[$index]['fps_value'] = $initialFps;
+                    $featuredBuilds[$index]['fps_ratio'] = $getFpsRatio($initialFps);
+                    $featuredBuilds[$index]['fps_size'] = $getFpsSize($initialFps);
+                    $featuredBuilds[$index]['fps_state'] = $getFpsState($initialFps);
+                }
+
+                $fpsClientConfig = [
+                    'defaults' => [
+                        'game' => $defaultFpsGame,
+                        'display' => $defaultFpsDisplay,
+                        'preset' => $defaultFpsPreset,
+                    ],
+                    'games' => $fpsGames,
+                    'displays' => $fpsDisplays,
+                    'presets' => $fpsPresets,
                 ];
 
                 $galleryArt = function (string $variant, string $primary, string $secondary, string $accent): string {
@@ -2130,6 +2549,55 @@ SVG;
 
             <section class="builds" id="builds">
                 <div class="container">
+                    <div
+                        class="fps-lab"
+                        data-fps-lab
+                        style="--scene-from: {{ $fpsGameMap[$defaultFpsGame]['from'] }}; --scene-to: {{ $fpsGameMap[$defaultFpsGame]['to'] }}; --scene-accent: {{ $fpsGameMap[$defaultFpsGame]['accent'] }};"
+                    >
+                        <div class="fps-lab__inner">
+                            <div class="fps-lab__controls">
+                                <div class="fps-lab__eyebrow">Виберіть гру і налаштування</div>
+
+                                <div class="fps-lab__fields">
+                                    <label class="fps-lab__field">
+                                        <span>Гра</span>
+                                        <select data-fps-game>
+                                            @foreach ($fpsGames as $game)
+                                                <option value="{{ $game['id'] }}" @selected($game['id'] === $defaultFpsGame)>{{ $game['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+
+                                    <label class="fps-lab__field">
+                                        <span>Монітор / роздільна здатність</span>
+                                        <select data-fps-display>
+                                            @foreach ($fpsDisplays as $display)
+                                                <option value="{{ $display['id'] }}" @selected($display['id'] === $defaultFpsDisplay)>{{ $display['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+
+                                    <label class="fps-lab__field">
+                                        <span>Графіка</span>
+                                        <select data-fps-preset>
+                                            @foreach ($fpsPresets as $preset)
+                                                <option value="{{ $preset['id'] }}" @selected($preset['id'] === $defaultFpsPreset)>{{ $preset['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                </div>
+
+                                <p class="fps-lab__note">*Показники FPS є усередненими і служать для демонстрації відносної продуктивності систем.</p>
+                            </div>
+
+                            <div class="fps-lab__scene">
+                                <span class="fps-lab__scene-badge" data-fps-scene-badge>{{ $fpsGameMap[$defaultFpsGame]['badge'] }}</span>
+                                <strong class="fps-lab__scene-title" data-fps-scene-title>{{ $fpsGameMap[$defaultFpsGame]['name'] }}</strong>
+                                <span class="fps-lab__scene-meta" data-fps-scene-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['name'] }} · {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="builds__header">
                         <h2>Обрані комп'ютерні збірки</h2>
                         <a class="catalog-cta builds__button" href="#builds">Всі збірки</a>
@@ -2137,42 +2605,58 @@ SVG;
 
                     <div class="builds__grid">
                         @foreach ($featuredBuilds as $build)
-                            <article class="build-card build-card--{{ $build['tone'] }}">
+                            <article
+                                class="build-card build-card--{{ $build['tone'] }} is-fps-{{ $build['fps_state'] }}"
+                                data-fps-card
+                                data-fps-score="{{ $build['fps_score'] }}"
+                                data-current-fps="{{ $build['fps_value'] }}"
+                                style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
+                            >
                                 <div class="build-card__media" aria-hidden="true"></div>
 
                                 <div class="build-card__body">
                                     <h3 class="build-card__title">{{ $build['name'] }}</h3>
 
-                                    <ul class="build-card__specs">
-                                        <li>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                <path d="M9 3V6M15 3V6M9 18V21M15 18V21M3 9H6M18 9H21M3 15H6M18 15H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                            </svg>
-                                            <span>{{ $build['gpu'] }}</span>
-                                        </li>
-                                        <li>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                <path d="M12 3L19 8V16L12 21L5 16V8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                                <path d="M12 9V15M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                            </svg>
-                                            <span>{{ $build['cpu'] }}</span>
-                                        </li>
-                                        <li>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                <path d="M8 10H10M14 10H16M8 14H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                            </svg>
-                                            <span>{{ $build['ram'] }}</span>
-                                        </li>
-                                        <li>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                <path d="M7 12H17M7 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                            </svg>
-                                            <span>{{ $build['storage'] }}</span>
-                                        </li>
-                                    </ul>
+                                    <div class="build-card__content">
+                                        <ul class="build-card__specs">
+                                            <li>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                    <path d="M9 3V6M15 3V6M9 18V21M15 18V21M3 9H6M18 9H21M3 15H6M18 15H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                                <span>{{ $build['gpu'] }}</span>
+                                            </li>
+                                            <li>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M12 3L19 8V16L12 21L5 16V8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M12 9V15M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                                <span>{{ $build['cpu'] }}</span>
+                                            </li>
+                                            <li>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                    <path d="M8 10H10M14 10H16M8 14H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                                <span>{{ $build['ram'] }}</span>
+                                            </li>
+                                            <li>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                    <path d="M7 12H17M7 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                                <span>{{ $build['storage'] }}</span>
+                                            </li>
+                                        </ul>
+
+                                        <div class="build-card__fps" aria-label="Поточний FPS">
+                                            <span class="build-card__fps-value" data-fps-value>{{ $build['fps_value'] }}</span>
+                                            <span class="build-card__fps-scale" aria-hidden="true">
+                                                <span class="build-card__fps-fill"></span>
+                                            </span>
+                                            <span class="build-card__fps-label">FPS</span>
+                                        </div>
+                                    </div>
 
                                     <span class="build-card__price">{{ $build['price'] }}</span>
                                     <a class="catalog-cta build-card__action" href="#builds">Детальніше</a>
@@ -2436,8 +2920,154 @@ SVG;
                 const galleryViewport = document.querySelector('[data-gallery-viewport]');
                 const galleryScrollPrev = document.querySelector('[data-gallery-scroll-prev]');
                 const galleryScrollNext = document.querySelector('[data-gallery-scroll-next]');
+                const fpsLab = document.querySelector('[data-fps-lab]');
+                const fpsGameSelect = document.querySelector('[data-fps-game]');
+                const fpsDisplaySelect = document.querySelector('[data-fps-display]');
+                const fpsPresetSelect = document.querySelector('[data-fps-preset]');
+                const fpsSceneBadge = document.querySelector('[data-fps-scene-badge]');
+                const fpsSceneTitle = document.querySelector('[data-fps-scene-title]');
+                const fpsSceneMeta = document.querySelector('[data-fps-scene-meta]');
+                const fpsCards = Array.from(document.querySelectorAll('[data-fps-card]'));
+                const fpsConfig = @json($fpsClientConfig);
+                const fpsGames = Object.fromEntries((fpsConfig.games ?? []).map((game) => [game.id, game]));
+                const fpsDisplays = Object.fromEntries((fpsConfig.displays ?? []).map((display) => [display.id, display]));
+                const fpsPresets = Object.fromEntries((fpsConfig.presets ?? []).map((preset) => [preset.id, preset]));
+                const fpsAnimationFrames = new WeakMap();
                 let closeTimer;
                 let activeGalleryIndex = 0;
+
+                const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+                const resolveFpsState = (fps) => {
+                    if (fps < 70) {
+                        return 'low';
+                    }
+
+                    if (fps < 120) {
+                        return 'mid';
+                    }
+
+                    return 'high';
+                };
+
+                const resolveFpsRatio = (fps) => clamp(fps / 220, 0.18, 1);
+                const resolveFpsSize = (fps) => Math.round(28 + (clamp((fps - 40) / 170, 0, 1) * 18));
+
+                const computeFps = (score, state) => {
+                    const game = fpsGames[state.game];
+                    const display = fpsDisplays[state.display];
+                    const preset = fpsPresets[state.preset];
+
+                    if (!game || !display || !preset) {
+                        return Math.round(score);
+                    }
+
+                    return Math.round(clamp(score * game.difficulty * display.multiplier * preset.multiplier, 38, 320));
+                };
+
+                const renderFpsCard = (card, fps) => {
+                    const valueElement = card.querySelector('[data-fps-value]');
+                    const fpsState = resolveFpsState(fps);
+                    const roundedFps = Math.round(fps);
+
+                    card.style.setProperty('--fps-ratio', resolveFpsRatio(fps).toFixed(4));
+                    card.style.setProperty('--fps-size', `${resolveFpsSize(fps)}px`);
+                    card.classList.remove('is-fps-low', 'is-fps-mid', 'is-fps-high');
+                    card.classList.add(`is-fps-${fpsState}`);
+                    card.dataset.currentFps = `${roundedFps}`;
+
+                    if (valueElement) {
+                        valueElement.textContent = `${roundedFps}`;
+                    }
+                };
+
+                const animateFpsCard = (card, targetFps, immediate = false) => {
+                    const valueElement = card.querySelector('[data-fps-value]');
+                    const currentFps = Number(card.dataset.currentFps ?? valueElement?.textContent ?? targetFps);
+                    const activeFrame = fpsAnimationFrames.get(card);
+
+                    if (activeFrame) {
+                        window.cancelAnimationFrame(activeFrame);
+                    }
+
+                    if (immediate || currentFps === targetFps) {
+                        card.dataset.currentFps = `${targetFps}`;
+                        card.classList.remove('is-fps-animating');
+                        renderFpsCard(card, targetFps);
+                        fpsAnimationFrames.delete(card);
+                        return;
+                    }
+
+                    const startedAt = performance.now();
+                    const duration = 520;
+                    card.classList.add('is-fps-animating');
+
+                    const tick = (now) => {
+                        const progress = clamp((now - startedAt) / duration, 0, 1);
+                        const eased = 1 - Math.pow(1 - progress, 3);
+                        const nextValue = currentFps + ((targetFps - currentFps) * eased);
+
+                        renderFpsCard(card, nextValue);
+
+                        if (progress < 1) {
+                            fpsAnimationFrames.set(card, window.requestAnimationFrame(tick));
+                            return;
+                        }
+
+                        card.dataset.currentFps = `${targetFps}`;
+                        card.classList.remove('is-fps-animating');
+                        renderFpsCard(card, targetFps);
+                        fpsAnimationFrames.delete(card);
+                    };
+
+                    fpsAnimationFrames.set(card, window.requestAnimationFrame(tick));
+                };
+
+                const updateFpsScene = (state) => {
+                    const game = fpsGames[state.game];
+                    const display = fpsDisplays[state.display];
+                    const preset = fpsPresets[state.preset];
+
+                    if (!fpsLab || !game || !display || !preset) {
+                        return;
+                    }
+
+                    fpsLab.style.setProperty('--scene-from', game.from);
+                    fpsLab.style.setProperty('--scene-to', game.to);
+                    fpsLab.style.setProperty('--scene-accent', game.accent);
+
+                    if (fpsSceneBadge) {
+                        fpsSceneBadge.textContent = game.badge;
+                    }
+
+                    if (fpsSceneTitle) {
+                        fpsSceneTitle.textContent = game.name;
+                    }
+
+                    if (fpsSceneMeta) {
+                        fpsSceneMeta.textContent = `${display.name} · ${preset.name}`;
+                    }
+                };
+
+                const syncFpsCards = (immediate = false) => {
+                    const state = {
+                        game: fpsGameSelect?.value ?? fpsConfig.defaults?.game,
+                        display: fpsDisplaySelect?.value ?? fpsConfig.defaults?.display,
+                        preset: fpsPresetSelect?.value ?? fpsConfig.defaults?.preset,
+                    };
+
+                    updateFpsScene(state);
+
+                    fpsCards.forEach((card) => {
+                        const score = Number(card.dataset.fpsScore ?? 0);
+
+                        if (!score) {
+                            return;
+                        }
+
+                        animateFpsCard(card, computeFps(score, state), immediate);
+                    });
+                };
 
                 const positionConsultationPanel = () => {
                     const trigger = document.querySelector('[data-dropdown-trigger="consultation"]');
@@ -2570,6 +3200,12 @@ SVG;
                     const isOpen = mobileMenu.classList.toggle('is-open');
                     mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 });
+
+                [fpsGameSelect, fpsDisplaySelect, fpsPresetSelect].forEach((select) => {
+                    select?.addEventListener('change', () => syncFpsCards());
+                });
+
+                syncFpsCards(true);
 
                 const updateGallery = () => {
                     const currentItem = galleryItems[activeGalleryIndex];
