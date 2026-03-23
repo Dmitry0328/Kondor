@@ -2,18 +2,32 @@
     @include('partials.rig-visual', [
         'product' => $product,
         'variant' => 'card',
-        'caption' => $product['gpu'],
+        'caption' => $product['tagline'],
     ])
 
     <div class="product-card__body">
+        <div class="product-card__meta">
+            <span class="eyebrow">{{ $product['badge'] }}</span>
+            <span class="availability">{{ $product['availability'] }}</span>
+        </div>
+
         <h3>{{ $product['name'] }}</h3>
         <p>{{ $product['tagline'] }}</p>
 
-        <div class="product-card__specs">
-            <span>{{ $product['cpu'] }}</span>
-            <span>{{ $product['memory'] }}</span>
-            <span>{{ $product['storage'] }}</span>
-        </div>
+        <ul class="product-card__specs">
+            <li>
+                <span>CPU</span>
+                <strong>{{ $product['cpu'] }}</strong>
+            </li>
+            <li>
+                <span>GPU</span>
+                <strong>{{ $product['gpu'] }}</strong>
+            </li>
+            <li>
+                <span>RAM / SSD</span>
+                <strong>{{ $product['memory'] }} / {{ $product['storage'] }}</strong>
+            </li>
+        </ul>
 
         <div class="product-card__footer">
             <div class="price-block">
@@ -21,8 +35,8 @@
                 <span>{{ number_format($product['old_price'], 0, ',', ' ') }} ₴</span>
             </div>
 
-            <a class="button button--primary button--small" href="{{ route('store.product', $product['slug']) }}">
-                Детальніше
+            <a class="button button--primary" href="{{ route('store.product', $product['slug']) }}">
+                Дивитися збірку
             </a>
         </div>
     </div>

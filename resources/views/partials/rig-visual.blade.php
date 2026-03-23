@@ -4,25 +4,27 @@
 @endphp
 
 <div
-    class="build-visual build-visual--{{ $variant }}"
+    class="rig-visual rig-visual--{{ $variant }} {{ $class ?? '' }}"
     style="--tone-1: {{ $product['palette'][0] }}; --tone-2: {{ $product['palette'][1] }}; --tone-3: {{ $product['palette'][2] }};"
 >
-    <div class="build-visual__stage">
-        <div class="build-visual__shadow"></div>
-        <div class="build-visual__case">
-            <div class="build-visual__glass">
-                <span class="build-visual__fan"></span>
-                <span class="build-visual__fan"></span>
-                <span class="build-visual__fan"></span>
+    <div class="rig-visual__beam"></div>
+    <div class="rig-visual__stage">
+        <div class="rig-visual__case">
+            <div class="rig-visual__glass">
+                <div class="rig-visual__fan"></div>
+                <div class="rig-visual__fan"></div>
+                <div class="rig-visual__fan"></div>
             </div>
-            <div class="build-visual__panel"></div>
+            <div class="rig-visual__side-panel"></div>
+            <div class="rig-visual__edge"></div>
         </div>
     </div>
 
-    <div class="build-visual__meta">
+    <div class="rig-visual__labels">
+        <span class="rig-visual__series">{{ $product['series'] }}</span>
         <strong>{{ $product['name'] }}</strong>
         @if ($caption)
-            <span>{{ $caption }}</span>
+            <small>{{ $caption }}</small>
         @endif
     </div>
 </div>
