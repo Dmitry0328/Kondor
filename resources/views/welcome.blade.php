@@ -73,9 +73,12 @@
 
             .topbar__inner,
             .topbar__links,
+            .topbar__meta,
             .topbar__contacts,
+            .topbar__socials,
             .header__inner,
             .header__actions,
+            .header-cart,
             .brand,
             .hero__layout,
             .hero__actions,
@@ -91,14 +94,32 @@
                 gap: 18px;
             }
 
-            .topbar__links,
-            .topbar__contacts {
+            .topbar__links {
                 gap: 22px;
+            }
+
+            .topbar__meta {
+                margin-left: auto;
+                gap: 28px;
+            }
+
+            .topbar__contacts {
+                gap: 18px;
+            }
+
+            .topbar__socials {
+                gap: 14px;
             }
 
             .topbar a {
                 font-weight: 700;
                 opacity: 0.96;
+            }
+
+            .topbar__social-link {
+                justify-content: center;
+                width: 16px;
+                height: 16px;
             }
 
             .header {
@@ -149,9 +170,9 @@
                 justify-content: center;
                 gap: 10px;
                 min-height: 42px;
-                padding: 0 18px;
+                padding: 0 20px;
                 border: 1px solid var(--win-border);
-                border-radius: 5px;
+                border-radius: 14px;
                 background: linear-gradient(180deg, var(--win-surface-top), var(--win-surface-bottom));
                 color: #1a212d;
                 font-size: 14px;
@@ -197,7 +218,7 @@
                 width: min(100%, 430px);
                 min-height: 42px;
                 border: 1px solid var(--win-border);
-                border-radius: 5px;
+                border-radius: 999px;
                 background: linear-gradient(180deg, #ffffff, #f4f7fb);
                 box-shadow: var(--win-shadow);
                 overflow: hidden;
@@ -222,6 +243,30 @@
                 color: #fff;
                 cursor: pointer;
                 box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.14);
+            }
+
+            .header-cart {
+                justify-content: center;
+                gap: 9px;
+                min-height: 42px;
+                padding: 0 16px;
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                background: #ffffff;
+                color: #1a212d;
+                font-size: 14px;
+                font-weight: 800;
+                box-shadow: 0 10px 24px rgba(24, 32, 42, 0.08);
+                white-space: nowrap;
+            }
+
+            .header-cart:hover {
+                border-color: #ccd3dd;
+                background: #fbfcfe;
+            }
+
+            .header-cart svg {
+                color: #9298a5;
             }
 
             .dropdown {
@@ -553,7 +598,7 @@
                 width: 42px;
                 height: 40px;
                 border: 1px solid var(--win-border);
-                border-radius: 5px;
+                border-radius: 14px;
                 background: linear-gradient(180deg, var(--win-surface-top), var(--win-surface-bottom));
                 box-shadow: var(--win-shadow);
                 cursor: pointer;
@@ -590,7 +635,7 @@
                 min-height: 44px;
                 padding: 0 14px;
                 border: 1px solid var(--win-border);
-                border-radius: 8px;
+                border-radius: 14px;
                 background: linear-gradient(180deg, var(--win-surface-top), var(--win-surface-bottom));
                 color: #1a212d;
                 font-weight: 700;
@@ -645,6 +690,7 @@
 
                 .topbar__inner,
                 .topbar__links,
+                .topbar__meta,
                 .topbar__contacts {
                     flex-direction: column;
                     align-items: flex-start;
@@ -723,10 +769,27 @@
                         <a href="#faq">FAQ</a>
                     </div>
 
-                    <div class="topbar__contacts">
-                        <a href="tel:+380633631066">+380633631066</a>
-                        <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Telegram</a>
-                        <a href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">Instagram</a>
+                    <div class="topbar__meta">
+                        <div class="topbar__contacts">
+                            <a href="tel:+380633631066">+380633631066</a>
+                        </div>
+
+                        <div class="topbar__socials" aria-label="Соціальні мережі">
+                            <a class="topbar__social-link" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer" aria-label="Instagram">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/>
+                                </svg>
+                            </a>
+
+                            <a class="topbar__social-link" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer" aria-label="Telegram">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M21 4L3 11.2L10.2 13.8L12.8 21L21 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                    <path d="M10.2 13.8L14.2 9.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -772,6 +835,15 @@
                                 </svg>
                             </button>
                         </div>
+
+                        <a class="header-cart" href="#cart" aria-label="Кошик">
+                            <span>0 ₴</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <circle cx="9" cy="19" r="1.6" fill="currentColor"/>
+                                <circle cx="17" cy="19" r="1.6" fill="currentColor"/>
+                                <path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
 
                         <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu">
                             <span></span>
