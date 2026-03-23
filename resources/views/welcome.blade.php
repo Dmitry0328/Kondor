@@ -68,7 +68,7 @@
             .topbar {
                 background: #2b272b;
                 color: #ffffff;
-                font-size: 13px;
+                font-size: 14px;
             }
 
             .topbar__inner,
@@ -90,36 +90,37 @@
 
             .topbar__inner {
                 justify-content: space-between;
-                min-height: 30px;
-                gap: 18px;
+                min-height: 38px;
+                gap: 22px;
             }
 
             .topbar__links {
-                gap: 22px;
+                gap: 26px;
             }
 
             .topbar__meta {
                 margin-left: auto;
-                gap: 28px;
+                gap: 30px;
             }
 
             .topbar__contacts {
-                gap: 18px;
+                gap: 20px;
             }
 
             .topbar__socials {
-                gap: 14px;
+                gap: 16px;
             }
 
             .topbar a {
                 font-weight: 700;
                 opacity: 0.96;
+                line-height: 1;
             }
 
             .topbar__social-link {
                 justify-content: center;
-                width: 16px;
-                height: 16px;
+                width: 18px;
+                height: 18px;
             }
 
             .header {
