@@ -872,10 +872,10 @@
                 position: relative;
                 padding: 84px 0 96px;
                 background:
-                    radial-gradient(circle at 18% 18%, rgba(132, 36, 240, 0.14), transparent 24%),
-                    radial-gradient(circle at 86% 12%, rgba(48, 215, 255, 0.08), transparent 18%),
-                    linear-gradient(180deg, #332d35 0%, #241f28 52%, #18151b 100%);
-                color: #ffffff;
+                    radial-gradient(circle at 18% 18%, rgba(132, 36, 240, 0.06), transparent 24%),
+                    radial-gradient(circle at 86% 12%, rgba(48, 215, 255, 0.04), transparent 18%),
+                    linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
+                color: #1a212d;
                 overflow: hidden;
             }
 
@@ -900,18 +900,19 @@
                 gap: 10px;
                 min-height: 50px;
                 padding: 0 20px;
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                border: 1px solid #d9e0ea;
                 border-radius: 999px;
-                background: rgba(255, 255, 255, 0.04);
-                color: #ffffff;
+                background: #ffffff;
+                color: #1a212d;
                 font-size: 18px;
                 font-weight: 700;
+                box-shadow: 0 10px 22px rgba(24, 32, 42, 0.06);
                 transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
             }
 
             .gallery__social:hover {
-                border-color: rgba(255, 255, 255, 0.16);
-                background: rgba(255, 255, 255, 0.08);
+                border-color: #c8d2df;
+                background: #fdfdff;
                 transform: translateY(-1px);
             }
 
@@ -932,6 +933,7 @@
                 font-family: 'Space Grotesk', sans-serif;
                 font-size: clamp(32px, 3.2vw, 50px);
                 letter-spacing: -0.04em;
+                color: #1a212d;
             }
 
             .gallery__line {
@@ -954,17 +956,18 @@
                 justify-content: center;
                 width: 56px;
                 height: 56px;
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                border: 1px solid #d9e0ea;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.04);
-                color: #ffffff;
+                background: #ffffff;
+                color: #1a212d;
                 cursor: pointer;
+                box-shadow: 0 10px 22px rgba(24, 32, 42, 0.06);
                 transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
             }
 
             .gallery__control:hover {
-                border-color: rgba(255, 255, 255, 0.16);
-                background: rgba(255, 255, 255, 0.08);
+                border-color: #c8d2df;
+                background: #fdfdff;
                 transform: translateY(-1px);
             }
 
