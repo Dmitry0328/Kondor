@@ -810,6 +810,58 @@
                 margin-top: 18px;
             }
 
+            .advantages {
+                padding: 34px 0 96px;
+            }
+
+            .advantages__inner {
+                max-width: 1120px;
+                margin: 0 auto;
+            }
+
+            .advantages__title {
+                margin: 0 0 34px;
+                text-align: center;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(30px, 3vw, 42px);
+                letter-spacing: -0.03em;
+            }
+
+            .advantages__grid {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 34px;
+            }
+
+            .advantages__card {
+                text-align: center;
+                padding: 10px 20px 0;
+            }
+
+            .advantages__icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 58px;
+                height: 58px;
+                margin-bottom: 18px;
+                color: #20252d;
+            }
+
+            .advantages__card h3 {
+                margin: 0 0 14px;
+                font-size: clamp(28px, 2vw, 36px);
+                line-height: 1.08;
+                letter-spacing: -0.04em;
+            }
+
+            .advantages__card p {
+                margin: 0;
+                color: #5f6875;
+                font-size: 17px;
+                line-height: 1.68;
+            }
+
             .menu-toggle {
                 display: none;
                 width: 42px;
@@ -906,6 +958,10 @@
                 .builds__grid {
                     grid-template-columns: repeat(3, minmax(0, 1fr));
                 }
+
+                .advantages__grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
             }
 
             @media (max-width: 760px) {
@@ -968,6 +1024,15 @@
                 .builds__grid {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
+
+                .advantages {
+                    padding-bottom: 68px;
+                }
+
+                .advantages__grid {
+                    grid-template-columns: 1fr;
+                    gap: 28px;
+                }
             }
 
             @media (max-width: 560px) {
@@ -1001,6 +1066,14 @@
 
                 .build-card__body {
                     padding-inline: 18px;
+                }
+
+                .advantages__card {
+                    padding-inline: 8px;
+                }
+
+                .advantages__card p {
+                    font-size: 16px;
                 }
             }
         </style>
@@ -1261,6 +1334,50 @@
                                 </div>
                             </article>
                         @endforeach
+                    </div>
+                </div>
+            </section>
+
+            <section class="advantages" id="advantages">
+                <div class="container">
+                    <div class="advantages__inner">
+                        <h2 class="advantages__title">Наші переваги</h2>
+
+                        <div class="advantages__grid">
+                            <article class="advantages__card">
+                                <div class="advantages__icon" aria-hidden="true">
+                                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 3L14.7 5.1L18 5.4L18.6 8.6L20.9 11L18.6 13.4L18 16.6L14.7 16.9L12 19L9.3 16.9L6 16.6L5.4 13.4L3.1 11L5.4 8.6L6 5.4L9.3 5.1L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                        <circle cx="12" cy="11" r="3.3" stroke="currentColor" stroke-width="1.8"/>
+                                    </svg>
+                                </div>
+                                <h3>Індивідуальний підхід</h3>
+                                <p>Ми розуміємо, що кожен гравець унікальний. Тому ми пропонуємо широкий вибір конфігурацій, щоб кожен міг знайти свій ідеальний ігровий ПК.</p>
+                            </article>
+
+                            <article class="advantages__card">
+                                <div class="advantages__icon" aria-hidden="true">
+                                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+                                        <path d="M5 15L14.5 5.5C15.6 4.4 17.4 4.4 18.5 5.5C19.6 6.6 19.6 8.4 18.5 9.5L9 19H5V15Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                        <path d="M13 7L17 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                        <path d="M5 19L3.5 20.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <h3>Якість і тестування</h3>
+                                <p>Кожен комп'ютер, що покидає нашу майстерню, проходить строге тестування та перевірку якості. Ми прагнемо до повної впевненості в тому, що кожен продукт відповідає нашим високим стандартам.</p>
+                            </article>
+
+                            <article class="advantages__card">
+                                <div class="advantages__icon" aria-hidden="true">
+                                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 3L18 5V10.2C18 14.7 15.4 18.9 12 20.7C8.6 18.9 6 14.7 6 10.2V5L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                        <path d="M9.5 11.8L11.3 13.6L14.8 10.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <h3>Гнучка система гарантій</h3>
+                                <p>Ми стоїмо за якістю наших виробів і надаємо гнучкі гарантійні умови. Ваша задоволеність - наш пріоритет.</p>
+                            </article>
+                        </div>
                     </div>
                 </div>
             </section>
