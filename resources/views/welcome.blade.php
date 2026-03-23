@@ -730,10 +730,6 @@
                 cursor: pointer;
             }
 
-            .fps-lab__field--game select {
-                padding-left: 54px;
-            }
-
             .fps-lab__field select:hover,
             .fps-lab__field select:focus {
                 border-color: rgba(132, 36, 240, 0.4);
@@ -744,27 +740,6 @@
             .fps-lab__field select option {
                 color: #151c25;
                 background: #ffffff;
-            }
-
-            .fps-lab__game-icon {
-                position: absolute;
-                left: 16px;
-                bottom: 16px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 24px;
-                height: 24px;
-                color: #5f6a79;
-                pointer-events: none;
-                z-index: 1;
-            }
-
-            .fps-lab__game-icon svg,
-            .fps-lab__scene-icon svg {
-                display: block;
-                width: 100%;
-                height: 100%;
             }
 
             .fps-lab__note {
@@ -781,7 +756,7 @@
                 display: grid;
                 align-content: end;
                 min-height: 182px;
-                padding: 24px 108px 20px 24px;
+                padding: 24px;
                 background:
                     linear-gradient(135deg, #ffffff 0%, #f5f7fb 100%);
                 color: #18202a;
@@ -813,24 +788,10 @@
             }
 
             .fps-lab__scene-badge,
-            .fps-lab__scene-icon,
             .fps-lab__scene-meta,
             .fps-lab__scene-title {
                 position: relative;
                 z-index: 1;
-            }
-
-            .fps-lab__scene-icon {
-                position: absolute;
-                top: 18px;
-                right: 18px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 72px;
-                height: 72px;
-                color: #404a59;
-                filter: drop-shadow(0 10px 18px rgba(24, 32, 42, 0.08));
             }
 
             .fps-lab__scene-badge {
@@ -1066,15 +1027,17 @@
             }
 
             .build-card__fps-value {
-                color: #1a212d;
+                min-height: 40px;
+                color: #111111;
                 font-family: 'Space Grotesk', sans-serif;
                 font-size: var(--fps-size);
                 font-weight: 700;
                 line-height: 1;
                 letter-spacing: -0.04em;
+                text-align: center;
                 transform-origin: center bottom;
                 text-shadow: none;
-                transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.32s ease, color 0.25s ease, text-shadow 0.25s ease;
+                transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.32s ease;
             }
 
             .build-card__fps-scale {
@@ -1113,14 +1076,6 @@
                 font-weight: 700;
                 letter-spacing: 0.06em;
                 text-transform: uppercase;
-            }
-
-            .build-card.is-fps-low .build-card__fps-value {
-                color: #c66742;
-            }
-
-            .build-card.is-fps-high .build-card__fps-value {
-                color: #4b19a1;
             }
 
             .build-card.is-fps-animating .build-card__fps-value {
@@ -2105,14 +2060,6 @@
                     padding: 20px 20px 18px;
                 }
 
-                .fps-lab__scene-icon {
-                    width: 58px;
-                    height: 58px;
-                    top: 14px;
-                    right: 14px;
-                    opacity: 0.78;
-                }
-
                 .advantages__card {
                     padding-inline: 8px;
                 }
@@ -2418,7 +2365,7 @@
                 };
 
                 $getFpsRatio = static fn (int $fps): float => max(0.18, min(1, $fps / 220));
-                $getFpsSize = static fn (int $fps): int => (int) round(28 + (max(0, min(1, ($fps - 40) / 170)) * 18));
+                $getFpsSize = static fn (int $fps): int => (int) round(22 + (max(0, min(1, ($fps - 40) / 170)) * 10));
                 $getFpsState = static function (int $fps): string {
                     if ($fps < 70) {
                         return 'low';
@@ -2623,7 +2570,6 @@ SVG;
                                 <div class="fps-lab__fields">
                                     <label class="fps-lab__field fps-lab__field--game">
                                         <span>Гра</span>
-                                        <span class="fps-lab__game-icon" data-fps-game-icon aria-hidden="true"></span>
                                         <select data-fps-game>
                                             @foreach ($fpsGames as $game)
                                                 <option value="{{ $game['id'] }}" @selected($game['id'] === $defaultFpsGame)>{{ $game['name'] }}</option>
@@ -2654,7 +2600,6 @@ SVG;
                             </div>
 
                             <div class="fps-lab__scene">
-                                <span class="fps-lab__scene-icon" data-fps-scene-icon aria-hidden="true"></span>
                                 <span class="fps-lab__scene-badge" data-fps-scene-badge>{{ $fpsGameMap[$defaultFpsGame]['badge'] }}</span>
                                 <strong class="fps-lab__scene-title" data-fps-scene-title>{{ $fpsGameMap[$defaultFpsGame]['name'] }}</strong>
                                 <span class="fps-lab__scene-meta" data-fps-scene-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['name'] }} · {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
@@ -2988,9 +2933,7 @@ SVG;
                 const fpsGameSelect = document.querySelector('[data-fps-game]');
                 const fpsDisplaySelect = document.querySelector('[data-fps-display]');
                 const fpsPresetSelect = document.querySelector('[data-fps-preset]');
-                const fpsGameIcon = document.querySelector('[data-fps-game-icon]');
                 const fpsSceneBadge = document.querySelector('[data-fps-scene-badge]');
-                const fpsSceneIcon = document.querySelector('[data-fps-scene-icon]');
                 const fpsSceneTitle = document.querySelector('[data-fps-scene-title]');
                 const fpsSceneMeta = document.querySelector('[data-fps-scene-meta]');
                 const fpsCards = Array.from(document.querySelectorAll('[data-fps-card]'));
@@ -2998,16 +2941,6 @@ SVG;
                 const fpsGames = Object.fromEntries((fpsConfig.games ?? []).map((game) => [game.id, game]));
                 const fpsDisplays = Object.fromEntries((fpsConfig.displays ?? []).map((display) => [display.id, display]));
                 const fpsPresets = Object.fromEntries((fpsConfig.presets ?? []).map((preset) => [preset.id, preset]));
-                const fpsGameIcons = {
-                    'cyberpunk-2077': `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.5 3L7 12.2H11.4L9.8 21L17 10.8H12.7L13.5 3Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M5 7H8.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>`,
-                    'gta-5': `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 14.5L7.5 9.5C7.9 8.5 8.9 7.8 10 7.8H14C15.1 7.8 16.1 8.5 16.5 9.5L18.5 14.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 14.5H19.5V17.2C19.5 17.6 19.1 18 18.7 18H17C16.6 18 16.2 17.6 16.2 17.2V16.6H7.8V17.2C7.8 17.6 7.4 18 7 18H5.3C4.9 18 4.5 17.6 4.5 17.2V14.5Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><circle cx="8" cy="14.7" r="1.1" fill="currentColor"/><circle cx="16" cy="14.7" r="1.1" fill="currentColor"/></svg>`,
-                    'counter-strike-2': `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="5.6" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5V6.2M12 17.8V20.5M20.5 12H17.8M6.2 12H3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>`,
-                    'fortnite': `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18L7.6 7.5L12 10.2L16.4 7.5L18 18H6Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M7.6 7.5L10.2 12H13.8L16.4 7.5" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>`,
-                    'valorant': `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 6L9.9 16.8H14.1L19.5 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.7 9.8L12 14.2L14.3 9.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-                    'stalker-2': `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="2.1" fill="currentColor"/><path d="M12 4.2L14.8 9.2M19.8 9L14.1 9.8M17.2 17.9L13 13.8M6.8 17.9L11 13.8M4.2 9L9.9 9.8M12 4.2L9.2 9.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="7.8" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.7"/></svg>`,
-                    'red-dead-redemption-2': `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L13.9 8.4L18.5 8.8L15 11.9L16.1 16.4L12 14L7.9 16.4L9 11.9L5.5 8.8L10.1 8.4L12 4.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 19.2H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-                    'rust': `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8C14.9 6 17 8.5 17 12C17 15.2 14.8 18.4 12 20.2C9.2 18.4 7 15.2 7 12C7 8.8 9 6.2 12 3.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 8.2C13.3 9.4 14.2 10.6 14.2 12.2C14.2 13.8 13 15.4 12 16.1C11 15.4 9.8 13.8 9.8 12.2C9.8 10.7 10.7 9.4 12 8.2Z" fill="currentColor"/></svg>`,
-                };
                 const fpsAnimationFrames = new WeakMap();
                 let closeTimer;
                 let activeGalleryIndex = 0;
@@ -3027,7 +2960,7 @@ SVG;
                 };
 
                 const resolveFpsRatio = (fps) => clamp(fps / 220, 0.18, 1);
-                const resolveFpsSize = (fps) => Math.round(28 + (clamp((fps - 40) / 170, 0, 1) * 18));
+                const resolveFpsSize = (fps) => Math.round(22 + (clamp((fps - 40) / 170, 0, 1) * 10));
 
                 const computeFps = (score, state) => {
                     const game = fpsGames[state.game];
@@ -3111,14 +3044,6 @@ SVG;
                     fpsLab.style.setProperty('--scene-from', game.from);
                     fpsLab.style.setProperty('--scene-to', game.to);
                     fpsLab.style.setProperty('--scene-accent', game.accent);
-
-                    if (fpsGameIcon) {
-                        fpsGameIcon.innerHTML = fpsGameIcons[state.game] ?? '';
-                    }
-
-                    if (fpsSceneIcon) {
-                        fpsSceneIcon.innerHTML = fpsGameIcons[state.game] ?? '';
-                    }
 
                     if (fpsSceneBadge) {
                         fpsSceneBadge.textContent = game.badge;
