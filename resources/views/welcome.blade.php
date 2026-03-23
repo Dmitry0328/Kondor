@@ -637,7 +637,7 @@
             .fps-lab {
                 position: relative;
                 margin-bottom: 34px;
-                padding: 18px;
+                padding: 14px;
                 border-radius: 30px;
                 background:
                     radial-gradient(circle at 12% 22%, rgba(132, 36, 240, 0.08), transparent 24%),
@@ -662,7 +662,7 @@
                 position: relative;
                 display: grid;
                 grid-template-columns: minmax(0, 1.5fr) minmax(250px, 336px);
-                gap: 18px;
+                gap: 14px;
                 align-items: stretch;
             }
 
@@ -676,8 +676,8 @@
 
             .fps-lab__controls {
                 display: grid;
-                gap: 18px;
-                padding: 22px 22px 18px;
+                gap: 14px;
+                padding: 18px 18px 14px;
                 background: linear-gradient(180deg, #ffffff, #f7f9fc);
             }
 
@@ -692,12 +692,12 @@
             .fps-lab__fields {
                 display: grid;
                 grid-template-columns: minmax(220px, 1.2fr) repeat(2, minmax(180px, 1fr));
-                gap: 14px;
+                gap: 12px;
             }
 
             .fps-lab__field {
                 display: grid;
-                gap: 8px;
+                gap: 6px;
             }
 
             .fps-lab__field--game {
@@ -715,7 +715,7 @@
             .fps-lab__field select {
                 appearance: none;
                 width: 100%;
-                min-height: 56px;
+                min-height: 50px;
                 padding: 0 48px 0 16px;
                 border: 1px solid #d7dee8;
                 border-radius: 16px;
@@ -723,7 +723,7 @@
                     linear-gradient(180deg, #ffffff, #f6f8fc),
                     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4 6.75L9 11.25L14 6.75' stroke='%231a212d' stroke-opacity='0.72' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 16px center / 18px 18px;
                 color: #1a212d;
-                font-size: 16px;
+                font-size: 15px;
                 font-weight: 700;
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 12px rgba(24, 32, 42, 0.04);
                 transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.18s ease;
@@ -745,7 +745,7 @@
             .fps-lab__note {
                 margin: 0;
                 color: #7a8391;
-                font-size: 13px;
+                font-size: 12px;
                 text-align: center;
             }
 
@@ -755,8 +755,8 @@
                 --scene-accent: #f4dc39;
                 display: grid;
                 align-content: end;
-                min-height: 182px;
-                padding: 24px;
+                min-height: 154px;
+                padding: 18px;
                 background:
                     linear-gradient(135deg, #ffffff 0%, #f5f7fb 100%);
                 color: #18202a;
@@ -798,8 +798,8 @@
                 display: inline-flex;
                 align-items: center;
                 width: fit-content;
-                min-height: 32px;
-                margin-bottom: 12px;
+                min-height: 28px;
+                margin-bottom: 10px;
                 padding: 0 12px;
                 border-radius: 999px;
                 background: rgba(255, 255, 255, 0.86);
@@ -817,7 +817,7 @@
                 margin: 0;
                 max-width: 11ch;
                 font-family: 'Space Grotesk', sans-serif;
-                font-size: clamp(30px, 3vw, 42px);
+                font-size: clamp(24px, 2.5vw, 34px);
                 line-height: 0.96;
                 letter-spacing: -0.04em;
                 color: #18202a;
@@ -825,9 +825,9 @@
 
             .fps-lab__scene-meta {
                 display: block;
-                margin-top: 10px;
+                margin-top: 8px;
                 color: #5d6877;
-                font-size: 14px;
+                font-size: 13px;
                 font-weight: 700;
                 letter-spacing: 0.02em;
             }
