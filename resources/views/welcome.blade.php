@@ -867,23 +867,24 @@
             }
 
             .gallery {
+                --gallery-group-width: min(1460px, calc(100vw - 88px));
+                --gallery-row-height: clamp(220px, 19vw, 352px);
                 position: relative;
                 padding: 84px 0 96px;
                 background:
-                    radial-gradient(circle at 50% 0, rgba(132, 36, 240, 0.16), transparent 28%),
-                    radial-gradient(circle at 15% 75%, rgba(43, 212, 255, 0.1), transparent 24%),
-                    linear-gradient(180deg, #07090d, #0b0f15 56%, #0a0d13 100%);
+                    radial-gradient(circle at 18% 18%, rgba(132, 36, 240, 0.14), transparent 24%),
+                    radial-gradient(circle at 86% 12%, rgba(48, 215, 255, 0.08), transparent 18%),
+                    linear-gradient(180deg, #332d35 0%, #241f28 52%, #18151b 100%);
                 color: #ffffff;
                 overflow: hidden;
             }
 
             .gallery__header {
-                display: flex;
-                align-items: flex-end;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                align-items: center;
                 gap: 24px;
                 margin-bottom: 30px;
-                flex-wrap: wrap;
             }
 
             .gallery__socials {
@@ -899,7 +900,7 @@
                 gap: 10px;
                 min-height: 50px;
                 padding: 0 20px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 999px;
                 background: rgba(255, 255, 255, 0.04);
                 color: #ffffff;
@@ -919,11 +920,9 @@
             }
 
             .gallery__title-wrap {
-                flex: 1 1 320px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
                 gap: 14px;
                 text-align: center;
             }
@@ -942,20 +941,70 @@
                 background: linear-gradient(90deg, #8424f0, #30d7ff);
             }
 
-            .gallery__grid {
+            .gallery__controls {
+                display: flex;
+                align-items: center;
+                justify-self: end;
+                gap: 12px;
+            }
+
+            .gallery__control {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 56px;
+                height: 56px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.04);
+                color: #ffffff;
+                cursor: pointer;
+                transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
+            }
+
+            .gallery__control:hover {
+                border-color: rgba(255, 255, 255, 0.16);
+                background: rgba(255, 255, 255, 0.08);
+                transform: translateY(-1px);
+            }
+
+            .gallery__viewport {
+                overflow-x: auto;
+                overscroll-behavior-x: contain;
+                scroll-snap-type: x proximity;
+                scrollbar-width: none;
+                padding-bottom: 8px;
+            }
+
+            .gallery__viewport::-webkit-scrollbar {
+                display: none;
+            }
+
+            .gallery__track {
+                display: flex;
+                gap: 18px;
+                width: max-content;
+                padding-right: 18px;
+            }
+
+            .gallery__group {
+                flex: 0 0 var(--gallery-group-width);
+                min-width: var(--gallery-group-width);
                 display: grid;
-                grid-template-columns: repeat(12, minmax(0, 1fr));
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-template-rows: repeat(2, var(--gallery-row-height));
                 gap: 16px;
-                grid-auto-flow: dense;
+                scroll-snap-align: start;
             }
 
             .gallery-card {
                 position: relative;
                 display: block;
+                height: 100%;
                 padding: 0;
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 24px;
-                background: #121720;
+                background: #151922;
                 overflow: hidden;
                 cursor: pointer;
                 box-shadow: 0 24px 50px rgba(0, 0, 0, 0.26);
@@ -964,28 +1013,38 @@
 
             .gallery-card:hover {
                 transform: translateY(-4px);
-                border-color: rgba(132, 36, 240, 0.28);
-                box-shadow: 0 28px 56px rgba(0, 0, 0, 0.3);
+                border-color: rgba(132, 36, 240, 0.32);
+                box-shadow: 0 28px 58px rgba(0, 0, 0, 0.32);
             }
 
-            .gallery-card--hero {
-                grid-column: span 5;
-                aspect-ratio: 16 / 10;
+            .gallery-card--pattern-a {
+                grid-column: 1 / span 2;
+                grid-row: 1;
             }
 
-            .gallery-card--wide {
-                grid-column: span 4;
-                aspect-ratio: 16 / 10;
+            .gallery-card--pattern-b {
+                grid-column: 3;
+                grid-row: 1;
             }
 
-            .gallery-card--medium {
-                grid-column: span 4;
-                aspect-ratio: 4 / 3;
+            .gallery-card--pattern-c {
+                grid-column: 4;
+                grid-row: 1;
             }
 
-            .gallery-card--square {
-                grid-column: span 3;
-                aspect-ratio: 1 / 1;
+            .gallery-card--pattern-d {
+                grid-column: 1;
+                grid-row: 2;
+            }
+
+            .gallery-card--pattern-e {
+                grid-column: 2;
+                grid-row: 2;
+            }
+
+            .gallery-card--pattern-f {
+                grid-column: 3 / span 2;
+                grid-row: 2;
             }
 
             .gallery-card__art,
@@ -996,7 +1055,7 @@
             }
 
             .gallery-card__art {
-                background: #0f131b;
+                background: #10141b;
             }
 
             .gallery-card__badge {
@@ -1005,7 +1064,7 @@
                 left: 16px;
                 padding: 8px 12px;
                 border-radius: 999px;
-                background: rgba(7, 9, 13, 0.7);
+                background: rgba(9, 11, 15, 0.72);
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 color: rgba(255, 255, 255, 0.92);
                 font-size: 12px;
@@ -1025,7 +1084,7 @@
                 width: 44px;
                 height: 44px;
                 border-radius: 50%;
-                background: rgba(7, 9, 13, 0.72);
+                background: rgba(9, 11, 15, 0.72);
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 color: #ffffff;
                 backdrop-filter: blur(10px);
@@ -1038,7 +1097,7 @@
                 display: grid;
                 place-items: center;
                 padding: 18px;
-                background: rgba(5, 7, 11, 0.88);
+                background: rgba(7, 7, 10, 0.9);
                 opacity: 0;
                 visibility: hidden;
                 transition: opacity 0.2s ease, visibility 0.2s ease;
@@ -1050,10 +1109,10 @@
             }
 
             .gallery-modal__dialog {
-                width: min(100%, 1600px);
-                height: min(100%, 940px);
+                width: min(100%, 1640px);
+                height: min(100%, 944px);
                 display: grid;
-                grid-template-columns: minmax(0, 1fr) 132px;
+                grid-template-columns: minmax(0, 1fr) 148px;
                 gap: 18px;
             }
 
@@ -1063,7 +1122,7 @@
                 min-height: 0;
                 border-radius: 28px;
                 border: 1px solid rgba(255, 255, 255, 0.08);
-                background: linear-gradient(180deg, #090b10, #0d1118);
+                background: linear-gradient(180deg, #151118, #0f0d13);
                 overflow: hidden;
                 box-shadow: 0 32px 80px rgba(0, 0, 0, 0.42);
             }
@@ -1175,6 +1234,7 @@
 
             .gallery-modal__thumb {
                 position: relative;
+                width: 100%;
                 flex: 0 0 auto;
                 padding: 0;
                 border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1262,8 +1322,9 @@
                     grid-template-columns: repeat(4, minmax(0, 1fr));
                 }
 
-                .gallery__grid {
-                    grid-template-columns: repeat(10, minmax(0, 1fr));
+                .gallery {
+                    --gallery-group-width: min(1320px, calc(100vw - 48px));
+                    --gallery-row-height: clamp(210px, 20vw, 320px);
                 }
             }
 
@@ -1305,32 +1366,13 @@
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
 
-                .gallery__grid {
-                    grid-template-columns: repeat(6, minmax(0, 1fr));
-                }
-
-                .gallery-card--hero,
-                .gallery-card--wide,
-                .gallery-card--medium,
-                .gallery-card--square {
-                    grid-column: span 3;
+                .gallery {
+                    --gallery-group-width: min(1120px, calc(100vw - 32px));
+                    --gallery-row-height: 250px;
                 }
 
                 .gallery-modal__dialog {
-                    grid-template-columns: 1fr;
-                    grid-template-rows: minmax(0, 1fr) auto;
-                    height: min(100%, 920px);
-                }
-
-                .gallery-modal__thumbs {
-                    flex-direction: row;
-                    height: auto;
-                    padding-right: 0;
-                    padding-bottom: 4px;
-                }
-
-                .gallery-modal__thumb {
-                    width: 112px;
+                    grid-template-columns: minmax(0, 1fr) 120px;
                 }
             }
 
@@ -1405,10 +1447,13 @@
                 }
 
                 .gallery {
+                    --gallery-group-width: min(980px, calc(100vw - 20px));
+                    --gallery-row-height: 220px;
                     padding-block: 70px;
                 }
 
                 .gallery__header {
+                    grid-template-columns: 1fr;
                     align-items: flex-start;
                 }
 
@@ -1417,26 +1462,33 @@
                     text-align: left;
                 }
 
-                .gallery__grid {
-                    grid-template-columns: repeat(2, minmax(0, 1fr));
-                }
-
-                .gallery-card--hero,
-                .gallery-card--wide,
-                .gallery-card--medium {
-                    grid-column: span 2;
-                }
-
-                .gallery-card--square {
-                    grid-column: span 1;
+                .gallery__controls {
+                    justify-self: start;
                 }
 
                 .gallery-modal {
                     padding: 12px;
                 }
 
+                .gallery-modal__dialog {
+                    grid-template-columns: 1fr;
+                    grid-template-rows: minmax(0, 1fr) auto;
+                    height: min(100%, 920px);
+                }
+
                 .gallery-modal__viewer {
                     padding: 18px;
+                }
+
+                .gallery-modal__thumbs {
+                    flex-direction: row;
+                    height: auto;
+                    padding-right: 0;
+                    padding-bottom: 4px;
+                }
+
+                .gallery-modal__thumb {
+                    width: 112px;
                 }
 
                 .gallery-modal__meta {
@@ -1498,16 +1550,14 @@
                     justify-content: center;
                 }
 
-                .gallery__grid {
-                    grid-template-columns: 1fr;
+                .gallery {
+                    --gallery-group-width: 920px;
+                    --gallery-row-height: 190px;
                 }
 
-                .gallery-card--hero,
-                .gallery-card--wide,
-                .gallery-card--medium,
-                .gallery-card--square {
-                    grid-column: span 1;
-                    aspect-ratio: 4 / 3;
+                .gallery__control {
+                    width: 48px;
+                    height: 48px;
                 }
 
                 .gallery-modal__close,
@@ -1871,7 +1921,13 @@ SVG;
                     ['title' => 'Violet Desk', 'layout' => 'medium', 'badge' => 'Kondor build', 'art' => $galleryArt('monitor', '#9b56ff', '#6f7cff', '#f1f2ff')],
                     ['title' => 'Night Tower', 'layout' => 'square', 'badge' => 'Kondor build', 'art' => $galleryArt('stack', '#3964ff', '#6bd5ff', '#ffffff')],
                     ['title' => 'Aqua Showroom', 'layout' => 'hero', 'badge' => 'Kondor build', 'art' => $galleryArt('showcase', '#45d9ff', '#5a77ff', '#f4fbff')],
+                    ['title' => 'Monochrome Setup', 'layout' => 'wide', 'badge' => 'Kondor build', 'art' => $galleryArt('monitor', '#6f7cff', '#a86cff', '#eef2ff')],
+                    ['title' => 'Frost Chamber', 'layout' => 'square', 'badge' => 'Kondor build', 'art' => $galleryArt('duo', '#6dd9ff', '#7d8dff', '#ffffff')],
+                    ['title' => 'Cyber Purple', 'layout' => 'medium', 'badge' => 'Kondor build', 'art' => $galleryArt('stack', '#7b42ff', '#30d7ff', '#f3f7ff')],
                 ];
+
+                $galleryPattern = ['pattern-a', 'pattern-b', 'pattern-c', 'pattern-d', 'pattern-e', 'pattern-f'];
+                $galleryGroups = array_chunk($galleryItems, 6);
             @endphp
 
             <section class="builds" id="builds">
@@ -2007,27 +2063,50 @@ SVG;
                             <h2 class="gallery__title">Наші роботи</h2>
                             <span class="gallery__line"></span>
                         </div>
+
+                        <div class="gallery__controls">
+                            <button class="gallery__control" type="button" data-gallery-scroll-prev aria-label="Прокрутити галерею вліво">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+
+                            <button class="gallery__control" type="button" data-gallery-scroll-next aria-label="Прокрутити галерею вправо">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="gallery__grid">
-                        @foreach ($galleryItems as $index => $item)
-                            <button
-                                class="gallery-card gallery-card--{{ $item['layout'] }}"
-                                type="button"
-                                data-gallery-item
-                                data-gallery-index="{{ $index }}"
-                                data-gallery-title="{{ $item['title'] }}"
-                                aria-label="Відкрити {{ $item['title'] }}"
-                            >
-                                <span class="gallery-card__art">{!! $item['art'] !!}</span>
-                                <span class="gallery-card__badge">{{ $item['badge'] }}</span>
-                                <span class="gallery-card__zoom" aria-hidden="true">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                        <path d="M10 4H4V10M14 4H20V10M20 14V20H14M10 20H4V14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </span>
-                            </button>
-                        @endforeach
+                    <div class="gallery__viewport" data-gallery-viewport>
+                        <div class="gallery__track">
+                            @foreach ($galleryGroups as $groupIndex => $group)
+                                <div class="gallery__group">
+                                    @foreach ($group as $patternIndex => $item)
+                                        @php
+                                            $absoluteIndex = ($groupIndex * 6) + $patternIndex;
+                                        @endphp
+                                        <button
+                                            class="gallery-card gallery-card--{{ $galleryPattern[$patternIndex] }}"
+                                            type="button"
+                                            data-gallery-item
+                                            data-gallery-index="{{ $absoluteIndex }}"
+                                            data-gallery-title="{{ $item['title'] }}"
+                                            aria-label="Відкрити {{ $item['title'] }}"
+                                        >
+                                            <span class="gallery-card__art">{!! $item['art'] !!}</span>
+                                            <span class="gallery-card__badge">{{ $item['badge'] }}</span>
+                                            <span class="gallery-card__zoom" aria-hidden="true">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M10 4H4V10M14 4H20V10M20 14V20H14M10 20H4V14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </button>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </section>
@@ -2090,6 +2169,9 @@ SVG;
                 const galleryPrev = document.querySelector('[data-gallery-prev]');
                 const galleryNext = document.querySelector('[data-gallery-next]');
                 const galleryThumbs = Array.from(document.querySelectorAll('[data-gallery-thumb]'));
+                const galleryViewport = document.querySelector('[data-gallery-viewport]');
+                const galleryScrollPrev = document.querySelector('[data-gallery-scroll-prev]');
+                const galleryScrollNext = document.querySelector('[data-gallery-scroll-next]');
                 let closeTimer;
                 let activeGalleryIndex = 0;
 
@@ -2297,6 +2379,12 @@ SVG;
                 galleryClose?.addEventListener('click', closeGallery);
                 galleryPrev?.addEventListener('click', () => stepGallery(-1));
                 galleryNext?.addEventListener('click', () => stepGallery(1));
+                galleryScrollPrev?.addEventListener('click', () => {
+                    galleryViewport?.scrollBy({ left: -Math.max(galleryViewport.clientWidth * 0.92, 420), behavior: 'smooth' });
+                });
+                galleryScrollNext?.addEventListener('click', () => {
+                    galleryViewport?.scrollBy({ left: Math.max(galleryViewport.clientWidth * 0.92, 420), behavior: 'smooth' });
+                });
 
                 galleryModal?.addEventListener('click', (event) => {
                     if (event.target === galleryModal) {
