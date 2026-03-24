@@ -2449,7 +2449,7 @@
                 }
 
                 .gallery {
-                    --gallery-group-width: 660px;
+                    --gallery-group-width: 608px;
                     --gallery-row-height: 142px;
                 }
 
