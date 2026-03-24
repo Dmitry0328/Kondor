@@ -121,11 +121,6 @@
                 line-height: 1;
             }
 
-            .site-header {
-                position: relative;
-                z-index: 40;
-            }
-
             .topbar__social-link {
                 justify-content: center;
                 width: 18px;
@@ -2140,7 +2135,6 @@
     </head>
     <body>
         <div class="page-shell">
-            <div class="site-header">
             <div class="topbar">
                 <div class="container topbar__inner">
                     <div class="topbar__links">
@@ -2283,7 +2277,6 @@
                     </div>
                 </div>
             </header>
-            </div>
 
             <section class="hero" id="about">
                 <div class="container hero__layout">
