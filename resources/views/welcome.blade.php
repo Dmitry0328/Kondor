@@ -994,6 +994,10 @@
                 gap: 24px;
             }
 
+            .builds__mobile-more {
+                display: none;
+            }
+
             .build-card {
                 --build-start: #595fff;
                 --build-end: #18c3ff;
@@ -2248,6 +2252,12 @@
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
 
+                .builds__mobile-more {
+                    display: inline-flex;
+                    width: 100%;
+                    margin-top: 18px;
+                }
+
                 .build-card__content {
                     grid-template-columns: minmax(0, 1fr) 68px;
                     gap: 12px;
@@ -2387,6 +2397,10 @@
 
                 .builds__grid {
                     grid-template-columns: 1fr;
+                }
+
+                .builds__mobile-more {
+                    min-height: 42px;
                 }
 
                 .build-card__body {
@@ -3069,6 +3083,8 @@ SVG;
                             </article>
                         @endforeach
                     </div>
+
+                    <a class="catalog-cta builds__mobile-more" href="{{ url('/catalog') }}">Більше збірок</a>
                 </div>
             </section>
 
