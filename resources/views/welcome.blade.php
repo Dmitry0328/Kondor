@@ -1860,6 +1860,10 @@
                     width: min(100% - 20px, 100%);
                 }
 
+                .topbar {
+                    display: none;
+                }
+
                 .topbar__inner,
                 .topbar__links,
                 .topbar__meta,
