@@ -1167,19 +1167,52 @@
                 display: none;
                 align-items: center;
                 justify-content: center;
-                min-height: 36px;
+                width: 46px;
+                height: 46px;
                 margin-top: 10px;
-                padding: 8px 12px;
-                border: 1px solid #d8e0ea;
-                border-radius: 12px;
-                background: linear-gradient(180deg, #ffffff, #f5f8fc);
-                color: #243041;
-                font-size: 12px;
-                font-weight: 800;
-                line-height: 1.2;
-                text-align: center;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.94), 0 6px 14px rgba(24, 32, 42, 0.06);
+                padding: 0;
+                border: 1px solid #2d333d;
+                border-radius: 50%;
+                background: linear-gradient(180deg, #5e6570, #3d434c);
+                color: #ffffff;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 8px 16px rgba(24, 32, 42, 0.16);
                 cursor: pointer;
+            }
+
+            .build-card__copy-toggle:hover {
+                transform: translateY(-1px);
+            }
+
+            .build-card__copy-toggle-icon {
+                display: grid;
+                gap: 4px;
+                width: 20px;
+            }
+
+            .build-card__copy-toggle-line {
+                display: block;
+                width: 100%;
+                height: 3px;
+                border-radius: 999px;
+                background: #ffffff;
+                box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+            }
+
+            .build-card__copy-toggle.is-expanded .build-card__copy-toggle-line:nth-child(2) {
+                width: 72%;
+                justify-self: center;
+            }
+
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
             }
 
             .build-card__price-label {
@@ -2472,8 +2505,8 @@
                 }
 
                 .build-card__copy-toggle {
-                    min-height: 34px;
-                    font-size: 11px;
+                    width: 44px;
+                    height: 44px;
                 }
 
                 .build-card__title {
@@ -3118,8 +3151,13 @@ SVG;
                                                 </ul>
                                             </div>
 
-                                            <button class="build-card__copy-toggle" type="button" data-build-copy-toggle aria-expanded="false" hidden>
-                                                Розгорнути
+                                            <button class="build-card__copy-toggle" type="button" data-build-copy-toggle aria-expanded="false" aria-label="Розгорнути характеристики" hidden>
+                                                <span class="build-card__copy-toggle-icon" aria-hidden="true">
+                                                    <span class="build-card__copy-toggle-line"></span>
+                                                    <span class="build-card__copy-toggle-line"></span>
+                                                    <span class="build-card__copy-toggle-line"></span>
+                                                </span>
+                                                <span class="sr-only">Розгорнути характеристики</span>
                                             </button>
                                         </div>
 
@@ -3585,8 +3623,9 @@ SVG;
 
                         if (!isMobile) {
                             wrapper.dataset.expanded = 'false';
-                            toggle.textContent = 'Розгорнути';
+                            toggle.classList.remove('is-expanded');
                             toggle.setAttribute('aria-expanded', 'false');
+                            toggle.setAttribute('aria-label', 'Розгорнути характеристики');
                             return;
                         }
 
@@ -3594,8 +3633,9 @@ SVG;
 
                         if (!needsToggle) {
                             wrapper.dataset.expanded = 'false';
-                            toggle.textContent = 'Розгорнути';
+                            toggle.classList.remove('is-expanded');
                             toggle.setAttribute('aria-expanded', 'false');
+                            toggle.setAttribute('aria-label', 'Розгорнути характеристики');
                             return;
                         }
 
@@ -3608,8 +3648,9 @@ SVG;
 
                         toggle.hidden = false;
                         toggle.classList.add('is-visible');
-                        toggle.textContent = expanded ? 'Згорнути' : 'Розгорнути';
+                        toggle.classList.toggle('is-expanded', expanded);
                         toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                        toggle.setAttribute('aria-label', expanded ? 'Згорнути характеристики' : 'Розгорнути характеристики');
                     });
                 };
 
