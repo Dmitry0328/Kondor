@@ -141,8 +141,6 @@
                 background: rgba(255, 255, 255, 0.84);
                 border-bottom-color: rgba(214, 222, 234, 0.88);
                 box-shadow: 0 14px 28px rgba(24, 32, 42, 0.1);
-                backdrop-filter: blur(16px);
-                -webkit-backdrop-filter: blur(16px);
             }
 
             .header__inner {
