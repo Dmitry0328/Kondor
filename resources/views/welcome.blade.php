@@ -1878,6 +1878,8 @@
 
                 .brand {
                     grid-column: 2;
+                    grid-row: 1;
+                    align-self: center;
                     justify-self: center;
                     min-width: 0;
                 }
@@ -1896,6 +1898,8 @@
 
                 .header-cart {
                     grid-column: 3;
+                    grid-row: 1;
+                    align-self: center;
                     justify-self: end;
                     width: 44px;
                     min-height: 44px;
@@ -1919,6 +1923,8 @@
 
                 .menu-toggle {
                     grid-column: 1;
+                    grid-row: 1;
+                    align-self: center;
                     justify-self: start;
                     display: inline-flex;
                     flex-direction: column;
