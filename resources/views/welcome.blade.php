@@ -2963,9 +2963,9 @@ SVG;
                                         </div>
                                     </div>
 
-                                    <span class="build-card__price-label">Р¦С–РЅР° Р·Р° Р·Р±С–СЂРєСѓ</span>
+                                    <span class="build-card__price-label">Ціна за збірку</span>
                                     <span class="build-card__price">{{ $build['price'] }}</span>
-                                    <a class="catalog-cta build-card__action" href="#builds">Р”РµС‚Р°Р»СЊРЅС–С€Рµ</a>
+                                    <a class="catalog-cta build-card__action" href="#builds">Детальніше</a>
                                 </div>
                             </article>
                         @endforeach
@@ -3138,21 +3138,21 @@ SVG;
                         </div>
 
                         <div class="footer__column footer__column--about">
-                            <h2 class="footer__title">РџСЂРѕ РЅР°СЃ</h2>
-                            <nav class="footer__nav" aria-label="Р†РЅС„РѕСЂРјР°С†С–СЏ РїСЂРѕ KondorPC">
-                                <a href="#about">Р©Рѕ С‚Р°РєРµ KondorPC</a>
-                                <a href="#contacts">РљРѕРЅС‚Р°РєС‚Рё</a>
-                                <a href="#contacts">Р”РѕСЃС‚Р°РІРєР°</a>
-                                <a href="#contacts">РћРїР»Р°С‚Р°</a>
-                                <a href="#contacts">РџРѕРІРµСЂРЅРµРЅРЅСЏ С‚Р° РѕР±РјС–РЅ</a>
+                            <h2 class="footer__title">Про нас</h2>
+                            <nav class="footer__nav" aria-label="Інформація про KondorPC">
+                                <a href="#about">Що таке KondorPC</a>
+                                <a href="#contacts">Контакти</a>
+                                <a href="#contacts">Доставка</a>
+                                <a href="#contacts">Оплата</a>
+                                <a href="#contacts">Повернення та обмін</a>
                             </nav>
                         </div>
 
                         <div class="footer__column">
-                            <h2 class="footer__title">РћСЃРЅРѕРІРЅРµ</h2>
-                            <nav class="footer__nav" aria-label="РћСЃРЅРѕРІРЅР° РЅР°РІС–РіР°С†С–СЏ">
-                                <a href="#about">Р“РѕР»РѕРІРЅР°</a>
-                                <a href="#builds">РљРѕРјРї'СЋС‚РµСЂРё</a>
+                            <h2 class="footer__title">Основне</h2>
+                            <nav class="footer__nav" aria-label="Основна навігація">
+                                <a href="#about">Головна</a>
+                                <a href="#builds">Комп'ютери</a>
                             </nav>
                         </div>
                     </div>
@@ -3160,7 +3160,7 @@ SVG;
 
                 <div class="footer__bottom">
                     <div class="container footer__bottom-inner">
-                        {{ date('Y') }} KondorPC | Р’СЃС– РїСЂР°РІР° Р·Р°С…РёС‰РµРЅС–
+                        {{ date('Y') }} KondorPC | Всі права захищені
                     </div>
                 </div>
             </footer>
