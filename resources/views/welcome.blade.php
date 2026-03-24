@@ -761,6 +761,89 @@
                 text-align: center;
             }
 
+            .fps-lab__scene {
+                --scene-from: #0f182f;
+                --scene-to: #2b1211;
+                --scene-accent: #f4dc39;
+                display: grid;
+                align-content: end;
+                min-height: 154px;
+                padding: 18px;
+                background:
+                    linear-gradient(135deg, #ffffff 0%, #f5f7fb 100%);
+                color: #18202a;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+            }
+
+            .fps-lab__scene::before,
+            .fps-lab__scene::after {
+                content: '';
+                position: absolute;
+                pointer-events: none;
+            }
+
+            .fps-lab__scene::before {
+                inset: auto -10% -32% auto;
+                width: 240px;
+                height: 240px;
+                background: radial-gradient(circle, var(--scene-accent) 0%, transparent 68%);
+                filter: blur(10px);
+                opacity: 0.16;
+            }
+
+            .fps-lab__scene::after {
+                inset: 0;
+                background:
+                    linear-gradient(145deg, transparent 0 55%, rgba(24, 32, 42, 0.04) 55% 56%, transparent 56% 100%),
+                    repeating-linear-gradient(115deg, transparent 0 18px, rgba(24, 32, 42, 0.03) 18px 20px);
+                opacity: 0.55;
+            }
+
+            .fps-lab__scene-badge,
+            .fps-lab__scene-meta,
+            .fps-lab__scene-title {
+                position: relative;
+                z-index: 1;
+            }
+
+            .fps-lab__scene-badge {
+                display: inline-flex;
+                align-items: center;
+                width: fit-content;
+                min-height: 28px;
+                margin-bottom: 10px;
+                padding: 0 12px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.86);
+                border: 1px solid #dce4ee;
+                color: #526071;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                backdrop-filter: blur(10px);
+            }
+
+            .fps-lab__scene-title {
+                display: block;
+                margin: 0;
+                max-width: 11ch;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(24px, 2.5vw, 34px);
+                line-height: 0.96;
+                letter-spacing: -0.04em;
+                color: #18202a;
+            }
+
+            .fps-lab__scene-meta {
+                display: block;
+                margin-top: 8px;
+                color: #5d6877;
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.02em;
+            }
+
             .fps-lab__mobile-summary,
             .fps-lab__mobile-overlay,
             .fps-lab__mobile-sheet-head {
@@ -859,89 +942,6 @@
                 color: #1a212d;
                 cursor: pointer;
                 box-shadow: 0 8px 18px rgba(24, 32, 42, 0.08);
-            }
-
-            .fps-lab__scene {
-                --scene-from: #0f182f;
-                --scene-to: #2b1211;
-                --scene-accent: #f4dc39;
-                display: grid;
-                align-content: end;
-                min-height: 154px;
-                padding: 18px;
-                background:
-                    linear-gradient(135deg, #ffffff 0%, #f5f7fb 100%);
-                color: #18202a;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
-            }
-
-            .fps-lab__scene::before,
-            .fps-lab__scene::after {
-                content: '';
-                position: absolute;
-                pointer-events: none;
-            }
-
-            .fps-lab__scene::before {
-                inset: auto -10% -32% auto;
-                width: 240px;
-                height: 240px;
-                background: radial-gradient(circle, var(--scene-accent) 0%, transparent 68%);
-                filter: blur(10px);
-                opacity: 0.16;
-            }
-
-            .fps-lab__scene::after {
-                inset: 0;
-                background:
-                    linear-gradient(145deg, transparent 0 55%, rgba(24, 32, 42, 0.04) 55% 56%, transparent 56% 100%),
-                    repeating-linear-gradient(115deg, transparent 0 18px, rgba(24, 32, 42, 0.03) 18px 20px);
-                opacity: 0.55;
-            }
-
-            .fps-lab__scene-badge,
-            .fps-lab__scene-meta,
-            .fps-lab__scene-title {
-                position: relative;
-                z-index: 1;
-            }
-
-            .fps-lab__scene-badge {
-                display: inline-flex;
-                align-items: center;
-                width: fit-content;
-                min-height: 28px;
-                margin-bottom: 10px;
-                padding: 0 12px;
-                border-radius: 999px;
-                background: rgba(255, 255, 255, 0.86);
-                border: 1px solid #dce4ee;
-                color: #526071;
-                font-size: 12px;
-                font-weight: 800;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                backdrop-filter: blur(10px);
-            }
-
-            .fps-lab__scene-title {
-                display: block;
-                margin: 0;
-                max-width: 11ch;
-                font-family: 'Space Grotesk', sans-serif;
-                font-size: clamp(24px, 2.5vw, 34px);
-                line-height: 0.96;
-                letter-spacing: -0.04em;
-                color: #18202a;
-            }
-
-            .fps-lab__scene-meta {
-                display: block;
-                margin-top: 8px;
-                color: #5d6877;
-                font-size: 13px;
-                font-weight: 700;
-                letter-spacing: 0.02em;
             }
 
             .builds__header {
@@ -2399,8 +2399,8 @@
             <div class="topbar">
                 <div class="container topbar__inner">
                     <div class="topbar__links">
-                        <a href="#about">РџСЂРѕ РЅР°СЃ</a>
-                        <a href="#contacts">РљРѕРЅС‚Р°РєС‚Рё</a>
+                        <a href="#about">Про нас</a>
+                        <a href="#contacts">Контакти</a>
                         <a href="#faq">FAQ</a>
                     </div>
 
@@ -2409,7 +2409,7 @@
                             <a href="tel:+380633631066">+380633631066</a>
                         </div>
 
-                        <div class="topbar__socials" aria-label="РЎРѕС†С–Р°Р»СЊРЅС– РјРµСЂРµР¶С–">
+                        <div class="topbar__socials" aria-label="Соціальні мережі">
                             <a class="topbar__social-link" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer" aria-label="Instagram">
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                     <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="2"/>
@@ -2434,7 +2434,7 @@
                     <a class="brand" href="/">
                         <div>
                             <div class="brand__name">KindorPC</div>
-                            <span class="brand__sub">РўРІРѕСЏ Р±Р°Р·Р° РіРµР№РјС–РЅРіСѓ</span>
+                            <span class="brand__sub">Твоя база геймінгу</span>
                         </div>
                     </a>
 
@@ -2443,14 +2443,14 @@
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            РќР°С€С– Р·Р±С–СЂРєРё
+                            Наші збірки
                         </a>
 
                         <button class="header-button" type="button" data-dropdown-trigger="builds" aria-expanded="false" aria-controls="builds-dropdown" aria-haspopup="true">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                             </svg>
-                            РљР°С‚Р°Р»РѕРі Р·Р±С–СЂРѕРє
+                            Каталог збірок
                         </button>
 
                         <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
@@ -2458,12 +2458,12 @@
                                 <path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z" stroke="currentColor" stroke-width="2"/>
                                 <path d="M12 10V12L13.5 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            РљРѕРЅСЃСѓР»СЊС‚Р°С†С–СЏ
+                            Консультація
                         </button>
 
                         <div class="search-box" role="search">
-                            <input type="search" placeholder="РџРѕС€СѓРє Р·Р±С–СЂРѕРє">
-                            <button type="button" aria-label="РџРѕС€СѓРє">
+                            <input type="search" placeholder="Пошук збірок">
+                            <button type="button" aria-label="Пошук">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                     <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/>
                                     <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -2471,8 +2471,8 @@
                             </button>
                         </div>
 
-                        <a class="header-cart" href="#cart" aria-label="РљРѕС€РёРє">
-                            <span>0 в‚ґ</span>
+                        <a class="header-cart" href="#cart" aria-label="Кошик">
+                            <span>0 ₴</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <circle cx="9" cy="19" r="1.6" fill="currentColor"/>
                                 <circle cx="17" cy="19" r="1.6" fill="currentColor"/>
@@ -2491,7 +2491,7 @@
                 <div class="dropdown" id="builds-dropdown" data-dropdown-panel="builds">
                     <div class="dropdown__columns">
                         <div class="dropdown__group">
-                            <h3>Р“РѕС‚РѕРІС– Р·Р±С–СЂРєРё</h3>
+                            <h3>Готові збірки</h3>
                             <a href="#builds">1080p Start</a>
                             <a href="#builds">1440p Core</a>
                             <a href="#builds">4K / Creator</a>
@@ -2499,7 +2499,7 @@
                         </div>
 
                         <div class="dropdown__group">
-                            <h3>РЎС‚РёР»СЊ Р·Р±С–СЂРєРё</h3>
+                            <h3>Стиль збірки</h3>
                             <a href="#builds">Black Edition</a>
                             <a href="#builds">White Edition</a>
                             <a href="#builds">RGB Showcase</a>
@@ -2507,11 +2507,11 @@
                         </div>
 
                         <div class="dropdown__group">
-                            <h3>РџС–Рґ Р·Р°РјРѕРІР»РµРЅРЅСЏ</h3>
-                            <a href="#contacts">РџС–РґР±С–СЂ РїС–Рґ Р±СЋРґР¶РµС‚</a>
-                            <a href="#contacts">РђРїРіСЂРµР№Рґ РєРѕРЅС„С–РіСѓСЂР°С†С–С—</a>
-                            <a href="#contacts">Р—Р±С–СЂРєР° РґР»СЏ СЃС‚СЂРёРјСѓ</a>
-                            <a href="#contacts">РљРѕРЅСЃСѓР»СЊС‚Р°С†С–СЏ</a>
+                            <h3>Під замовлення</h3>
+                            <a href="#contacts">Підбір під бюджет</a>
+                            <a href="#contacts">Апгрейд конфігурації</a>
+                            <a href="#contacts">Збірка для стриму</a>
+                            <a href="#contacts">Консультація</a>
                         </div>
                     </div>
                 </div>
@@ -2520,7 +2520,7 @@
                     <div class="dropdown__columns">
                         <div class="dropdown__group">
                             <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Telegram</a>
-                            <a href="#contacts">РљРѕРЅС‚Р°РєС‚РЅР° С„РѕСЂРјР°</a>
+                            <a href="#contacts">Контактна форма</a>
                             <a href="tel:+380633631066">+380 63 363 10 66</a>
                             <a href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">Instagram</a>
                         </div>
@@ -2529,11 +2529,11 @@
 
                 <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
                     <div class="container mobile-menu__inner">
-                        <a href="#about">РџСЂРѕ РЅР°СЃ</a>
-                        <a href="#builds">РќР°С€С– Р·Р±С–СЂРєРё</a>
-                        <button type="button" data-mobile-dropdown-toggle>РљР°С‚Р°Р»РѕРі Р·Р±С–СЂРѕРє</button>
-                        <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">РљРѕРЅСЃСѓР»СЊС‚Р°С†С–СЏ</a>
-                        <a href="#contacts">РљРѕРЅС‚Р°РєС‚Рё</a>
+                        <a href="#about">Про нас</a>
+                        <a href="#builds">Наші збірки</a>
+                        <button type="button" data-mobile-dropdown-toggle>Каталог збірок</button>
+                        <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
+                        <a href="#contacts">Контакти</a>
                         <a href="#faq">FAQ</a>
                     </div>
                 </div>
@@ -2543,15 +2543,15 @@
                 <div class="container hero__layout">
                     <div class="hero__copy">
                         <div class="hero__copy-inner">
-                            <h1>РўРІРѕСЏ Р±Р°Р·Р° РіРµР№РјС–РЅРіСѓ</h1>
+                            <h1>Твоя база геймінгу</h1>
                             <p>
-                                Р›Р°СЃРєР°РІРѕ РїСЂРѕСЃРёРјРѕ РґРѕ KindorPC. РўСѓС‚ Р±СѓРґСѓС‚СЊ С‚С–Р»СЊРєРё РіРѕС‚РѕРІС– Р·Р±С–СЂРєРё РџРљ С‚Р° РєРѕРЅС„С–РіСѓСЂР°С†С–С— РїС–Рґ Р·Р°РјРѕРІР»РµРЅРЅСЏ.
-                                РњРё СЂРѕР±РёРјРѕ Р°РєС†РµРЅС‚ РЅР° РїСЂРѕРґСѓРєС‚РёРІРЅС–СЃС‚СЊ, С‡РёСЃС‚Сѓ Р·Р±С–СЂРєСѓ Р№ РµС„РµРєС‚РЅРёР№ Р·РѕРІРЅС–С€РЅС–Р№ РІРёРіР»СЏРґ.
+                                Ласкаво просимо до KindorPC. Тут будуть тільки готові збірки ПК та конфігурації під замовлення.
+                                Ми робимо акцент на продуктивність, чисту збірку й ефектний зовнішній вигляд.
                             </p>
 
                             <div class="hero__actions">
-                                <a class="header-button header-button--primary" href="#builds">РќР°С€С– Р·Р±С–СЂРєРё</a>
-                                <a class="header-button" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">РќР°РїРёСЃР°С‚Рё РІ Telegram</a>
+                                <a class="header-button header-button--primary" href="#builds">Наші збірки</a>
+                                <a class="header-button" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Написати в Telegram</a>
                             </div>
 
                         </div>
@@ -2603,9 +2603,9 @@
                 ];
 
                 $fpsPresets = [
-                    ['id' => 'medium', 'name' => 'РЎРµСЂРµРґРЅС–', 'multiplier' => 1.18],
-                    ['id' => 'high', 'name' => 'Р’РёСЃРѕРєС–', 'multiplier' => 1.0],
-                    ['id' => 'ultra', 'name' => 'РЈР»СЊС‚СЂР°', 'multiplier' => 0.84],
+                    ['id' => 'medium', 'name' => 'Середні', 'multiplier' => 1.18],
+                    ['id' => 'high', 'name' => 'Високі', 'multiplier' => 1.0],
+                    ['id' => 'ultra', 'name' => 'Ультра', 'multiplier' => 0.84],
                 ];
 
                 $defaultFpsGame = 'cyberpunk-2077';
@@ -2650,16 +2650,16 @@
                 };
 
                 $featuredBuilds = [
-                    ['tone' => 'violet', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Phantom"', 'gpu' => 'Nvidia RTX 4070 Super', 'cpu' => 'AMD Ryzen 7 7700', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '69 990 в‚ґ', 'fps_score' => 146],
-                    ['tone' => 'magenta', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Nova"', 'gpu' => 'AMD Radeon RX 7800 XT', 'cpu' => 'AMD Ryzen 7 7800X3D', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '82 990 в‚ґ', 'fps_score' => 156],
-                    ['tone' => 'amber', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Vector"', 'gpu' => 'Nvidia RTX 4060 Ti 16GB', 'cpu' => 'Intel Core i5-14600KF', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '61 990 в‚ґ', 'fps_score' => 116],
-                    ['tone' => 'peach', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Crystal"', 'gpu' => 'Nvidia RTX 5070', 'cpu' => 'AMD Ryzen 7 9700X', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '94 990 в‚ґ', 'fps_score' => 168],
-                    ['tone' => 'emerald', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Storm"', 'gpu' => 'AMD Radeon RX 7900 GRE', 'cpu' => 'AMD Ryzen 5 9600X', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '74 990 в‚ґ', 'fps_score' => 132],
-                    ['tone' => 'violet', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Orbit"', 'gpu' => 'Nvidia RTX 3060 12GB', 'cpu' => 'Intel Core i5-13400F', 'ram' => '16GB DDR4 3600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '42 990 в‚ґ', 'fps_score' => 92],
-                    ['tone' => 'magenta', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Titan"', 'gpu' => 'Nvidia RTX 5080', 'cpu' => 'Intel Core i7-14700KF', 'ram' => '32GB DDR5 7200 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '129 990 в‚ґ', 'fps_score' => 186],
-                    ['tone' => 'amber', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Frost"', 'gpu' => 'Nvidia RTX 4070 Ti Super', 'cpu' => 'AMD Ryzen 7 8700F', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '78 990 в‚ґ', 'fps_score' => 138],
-                    ['tone' => 'peach', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Pulse"', 'gpu' => 'AMD Radeon RX 7700 XT', 'cpu' => 'AMD Ryzen 5 7600', 'ram' => '32GB DDR5 5600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '58 990 в‚ґ', 'fps_score' => 108],
-                    ['tone' => 'emerald', 'name' => 'Р†РіСЂРѕРІРёР№ РџРљ "Atlas"', 'gpu' => 'Nvidia RTX 4090', 'cpu' => 'AMD Ryzen 9 9950X', 'ram' => '64GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 4TB', 'price' => '189 990 в‚ґ', 'fps_score' => 238],
+                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Phantom"', 'gpu' => 'Nvidia RTX 4070 Super', 'cpu' => 'AMD Ryzen 7 7700', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '69 990 ₴', 'fps_score' => 146],
+                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Nova"', 'gpu' => 'AMD Radeon RX 7800 XT', 'cpu' => 'AMD Ryzen 7 7800X3D', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '82 990 ₴', 'fps_score' => 156],
+                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Vector"', 'gpu' => 'Nvidia RTX 4060 Ti 16GB', 'cpu' => 'Intel Core i5-14600KF', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '61 990 ₴', 'fps_score' => 116],
+                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Crystal"', 'gpu' => 'Nvidia RTX 5070', 'cpu' => 'AMD Ryzen 7 9700X', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '94 990 ₴', 'fps_score' => 168],
+                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Storm"', 'gpu' => 'AMD Radeon RX 7900 GRE', 'cpu' => 'AMD Ryzen 5 9600X', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '74 990 ₴', 'fps_score' => 132],
+                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Orbit"', 'gpu' => 'Nvidia RTX 3060 12GB', 'cpu' => 'Intel Core i5-13400F', 'ram' => '16GB DDR4 3600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '42 990 ₴', 'fps_score' => 92],
+                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Titan"', 'gpu' => 'Nvidia RTX 5080', 'cpu' => 'Intel Core i7-14700KF', 'ram' => '32GB DDR5 7200 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '129 990 ₴', 'fps_score' => 186],
+                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Frost"', 'gpu' => 'Nvidia RTX 4070 Ti Super', 'cpu' => 'AMD Ryzen 7 8700F', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '78 990 ₴', 'fps_score' => 138],
+                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Pulse"', 'gpu' => 'AMD Radeon RX 7700 XT', 'cpu' => 'AMD Ryzen 5 7600', 'ram' => '32GB DDR5 5600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '58 990 ₴', 'fps_score' => 108],
+                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Atlas"', 'gpu' => 'Nvidia RTX 4090', 'cpu' => 'AMD Ryzen 9 9950X', 'ram' => '64GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 4TB', 'price' => '189 990 ₴', 'fps_score' => 238],
                 ];
 
                 foreach ($featuredBuilds as $index => $build) {
@@ -2836,24 +2836,24 @@ SVG;
                     >
                         <div class="fps-lab__mobile-summary">
                             <div class="fps-lab__mobile-copy">
-                                <span class="fps-lab__mobile-kicker">FPS РґР»СЏ Р·Р±С–СЂРѕРє</span>
+                                <span class="fps-lab__mobile-kicker">FPS для збірок</span>
                                 <strong class="fps-lab__mobile-title" data-fps-mobile-title>{{ $fpsGameMap[$defaultFpsGame]['name'] }}</strong>
-                                <span class="fps-lab__mobile-meta" data-fps-mobile-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['name'] }} В· {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
+                                <span class="fps-lab__mobile-meta" data-fps-mobile-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['name'] }} · {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
                             </div>
 
-                            <button class="fps-lab__mobile-open" type="button" data-fps-mobile-open>Р—РјС–РЅРёС‚Рё</button>
+                            <button class="fps-lab__mobile-open" type="button" data-fps-mobile-open>Змінити</button>
                         </div>
 
-                        <button class="fps-lab__mobile-overlay" type="button" data-fps-mobile-close aria-label="Р—Р°РєСЂРёС‚Рё РЅР°Р»Р°С€С‚СѓРІР°РЅРЅСЏ FPS"></button>
+                        <button class="fps-lab__mobile-overlay" type="button" data-fps-mobile-close aria-label="Закрити налаштування FPS"></button>
 
                         <div class="fps-lab__inner">
                             <div class="fps-lab__mobile-sheet-head">
                                 <div class="fps-lab__mobile-sheet-copy">
-                                    <span class="fps-lab__mobile-sheet-label">РњРѕР±С–Р»СЊРЅРёР№ FPS-С‚РµСЃС‚</span>
-                                    <strong class="fps-lab__mobile-sheet-title">РћР±РµСЂС–С‚СЊ РіСЂСѓ С‚Р° РїР°СЂР°РјРµС‚СЂРё</strong>
+                                    <span class="fps-lab__mobile-sheet-label">Мобільний FPS-тест</span>
+                                    <strong class="fps-lab__mobile-sheet-title">Оберіть гру та параметри</strong>
                                 </div>
 
-                                <button class="fps-lab__mobile-close" type="button" data-fps-mobile-close aria-label="Р—Р°РєСЂРёС‚Рё РЅР°Р»Р°С€С‚СѓРІР°РЅРЅСЏ FPS">
+                                <button class="fps-lab__mobile-close" type="button" data-fps-mobile-close aria-label="Закрити налаштування FPS">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                         <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                     </svg>
@@ -2861,11 +2861,11 @@ SVG;
                             </div>
 
                             <div class="fps-lab__controls">
-                                <div class="fps-lab__eyebrow">Р’РёР±РµСЂС–С‚СЊ РіСЂСѓ С– РЅР°Р»Р°С€С‚СѓРІР°РЅРЅСЏ</div>
+                                <div class="fps-lab__eyebrow">Виберіть гру і налаштування</div>
 
                                 <div class="fps-lab__fields">
                                     <label class="fps-lab__field fps-lab__field--game">
-                                        <span>Р“СЂР°</span>
+                                        <span>Гра</span>
                                         <select data-fps-game>
                                             @foreach ($fpsGames as $game)
                                                 <option value="{{ $game['id'] }}" @selected($game['id'] === $defaultFpsGame)>{{ $game['name'] }}</option>
@@ -2874,7 +2874,7 @@ SVG;
                                     </label>
 
                                     <label class="fps-lab__field">
-                                        <span>РњРѕРЅС–С‚РѕСЂ / СЂРѕР·РґС–Р»СЊРЅР° Р·РґР°С‚РЅС–СЃС‚СЊ</span>
+                                        <span>Монітор / роздільна здатність</span>
                                         <select data-fps-display>
                                             @foreach ($fpsDisplays as $display)
                                                 <option value="{{ $display['id'] }}" @selected($display['id'] === $defaultFpsDisplay)>{{ $display['name'] }}</option>
@@ -2883,7 +2883,7 @@ SVG;
                                     </label>
 
                                     <label class="fps-lab__field">
-                                        <span>Р“СЂР°С„С–РєР°</span>
+                                        <span>Графіка</span>
                                         <select data-fps-preset>
                                             @foreach ($fpsPresets as $preset)
                                                 <option value="{{ $preset['id'] }}" @selected($preset['id'] === $defaultFpsPreset)>{{ $preset['name'] }}</option>
@@ -2892,20 +2892,20 @@ SVG;
                                     </label>
                                 </div>
 
-                                <p class="fps-lab__note">*РџРѕРєР°Р·РЅРёРєРё FPS С” СѓСЃРµСЂРµРґРЅРµРЅРёРјРё С– СЃР»СѓР¶Р°С‚СЊ РґР»СЏ РґРµРјРѕРЅСЃС‚СЂР°С†С–С— РІС–РґРЅРѕСЃРЅРѕС— РїСЂРѕРґСѓРєС‚РёРІРЅРѕСЃС‚С– СЃРёСЃС‚РµРј.</p>
+                                <p class="fps-lab__note">*Показники FPS є усередненими і служать для демонстрації відносної продуктивності систем.</p>
                             </div>
 
                             <div class="fps-lab__scene">
                                 <span class="fps-lab__scene-badge" data-fps-scene-badge>{{ $fpsGameMap[$defaultFpsGame]['badge'] }}</span>
                                 <strong class="fps-lab__scene-title" data-fps-scene-title>{{ $fpsGameMap[$defaultFpsGame]['name'] }}</strong>
-                                <span class="fps-lab__scene-meta" data-fps-scene-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['name'] }} В· {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
+                                <span class="fps-lab__scene-meta" data-fps-scene-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['name'] }} · {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="builds__header">
-                        <h2>РћР±СЂР°РЅС– РєРѕРјРї'СЋС‚РµСЂРЅС– Р·Р±С–СЂРєРё</h2>
-                        <a class="catalog-cta builds__button" href="#builds">Р’СЃС– Р·Р±С–СЂРєРё</a>
+                        <h2>Обрані комп'ютерні збірки</h2>
+                        <a class="catalog-cta builds__button" href="#builds">Всі збірки</a>
                     </div>
 
                     <div class="builds__grid">
@@ -2954,7 +2954,7 @@ SVG;
                                             </li>
                                         </ul>
 
-                                        <div class="build-card__fps" aria-label="РџРѕС‚РѕС‡РЅРёР№ FPS">
+                                        <div class="build-card__fps" aria-label="Поточний FPS">
                                             <span class="build-card__fps-value" data-fps-value>{{ $build['fps_value'] }}</span>
                                             <span class="build-card__fps-scale" aria-hidden="true">
                                                 <span class="build-card__fps-fill"></span>
@@ -2976,7 +2976,7 @@ SVG;
             <section class="advantages" id="advantages">
                 <div class="container">
                     <div class="advantages__inner">
-                        <h2 class="advantages__title">РќР°С€С– РїРµСЂРµРІР°РіРё</h2>
+                        <h2 class="advantages__title">Наші переваги</h2>
 
                         <div class="advantages__grid">
                             <article class="advantages__card">
@@ -2986,8 +2986,8 @@ SVG;
                                         <circle cx="12" cy="11" r="3.3" stroke="currentColor" stroke-width="1.8"/>
                                     </svg>
                                 </div>
-                                <h3>Р†РЅРґРёРІС–РґСѓР°Р»СЊРЅРёР№ РїС–РґС…С–Рґ</h3>
-                                <p>РњРё СЂРѕР·СѓРјС–С”РјРѕ, С‰Рѕ РєРѕР¶РµРЅ РіСЂР°РІРµС†СЊ СѓРЅС–РєР°Р»СЊРЅРёР№. РўРѕРјСѓ РјРё РїСЂРѕРїРѕРЅСѓС”РјРѕ С€РёСЂРѕРєРёР№ РІРёР±С–СЂ РєРѕРЅС„С–РіСѓСЂР°С†С–Р№, С‰РѕР± РєРѕР¶РµРЅ РјС–Рі Р·РЅР°Р№С‚Рё СЃРІС–Р№ С–РґРµР°Р»СЊРЅРёР№ С–РіСЂРѕРІРёР№ РџРљ.</p>
+                                <h3>Індивідуальний підхід</h3>
+                                <p>Ми розуміємо, що кожен гравець унікальний. Тому ми пропонуємо широкий вибір конфігурацій, щоб кожен міг знайти свій ідеальний ігровий ПК.</p>
                             </article>
 
                             <article class="advantages__card">
@@ -2998,8 +2998,8 @@ SVG;
                                         <path d="M5 19L3.5 20.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                                     </svg>
                                 </div>
-                                <h3>РЇРєС–СЃС‚СЊ С– С‚РµСЃС‚СѓРІР°РЅРЅСЏ</h3>
-                                <p>РљРѕР¶РµРЅ РєРѕРјРї'СЋС‚РµСЂ, С‰Рѕ РїРѕРєРёРґР°С” РЅР°С€Сѓ РјР°Р№СЃС‚РµСЂРЅСЋ, РїСЂРѕС…РѕРґРёС‚СЊ СЃС‚СЂРѕРіРµ С‚РµСЃС‚СѓРІР°РЅРЅСЏ С‚Р° РїРµСЂРµРІС–СЂРєСѓ СЏРєРѕСЃС‚С–. РњРё РїСЂР°РіРЅРµРјРѕ РґРѕ РїРѕРІРЅРѕС— РІРїРµРІРЅРµРЅРѕСЃС‚С– РІ С‚РѕРјСѓ, С‰Рѕ РєРѕР¶РµРЅ РїСЂРѕРґСѓРєС‚ РІС–РґРїРѕРІС–РґР°С” РЅР°С€РёРј РІРёСЃРѕРєРёРј СЃС‚Р°РЅРґР°СЂС‚Р°Рј.</p>
+                                <h3>Якість і тестування</h3>
+                                <p>Кожен комп'ютер, що покидає нашу майстерню, проходить строге тестування та перевірку якості. Ми прагнемо до повної впевненості в тому, що кожен продукт відповідає нашим високим стандартам.</p>
                             </article>
 
                             <article class="advantages__card">
@@ -3009,8 +3009,8 @@ SVG;
                                         <path d="M9.5 11.8L11.3 13.6L14.8 10.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </div>
-                                <h3>Р“РЅСѓС‡РєР° СЃРёСЃС‚РµРјР° РіР°СЂР°РЅС‚С–Р№</h3>
-                                <p>РњРё СЃС‚РѕС—РјРѕ Р·Р° СЏРєС–СЃС‚СЋ РЅР°С€РёС… РІРёСЂРѕР±С–РІ С– РЅР°РґР°С”РјРѕ РіРЅСѓС‡РєС– РіР°СЂР°РЅС‚С–Р№РЅС– СѓРјРѕРІРё. Р’Р°С€Р° Р·Р°РґРѕРІРѕР»РµРЅС–СЃС‚СЊ - РЅР°С€ РїСЂС–РѕСЂРёС‚РµС‚.</p>
+                                <h3>Гнучка система гарантій</h3>
+                                <p>Ми стоїмо за якістю наших виробів і надаємо гнучкі гарантійні умови. Ваша задоволеність - наш пріоритет.</p>
                             </article>
                         </div>
                     </div>
@@ -3021,18 +3021,18 @@ SVG;
                 <div class="container">
                     <div class="gallery__header">
                         <div class="gallery__title-wrap">
-                            <h2 class="gallery__title">РќР°С€С– СЂРѕР±РѕС‚Рё</h2>
+                            <h2 class="gallery__title">Наші роботи</h2>
                             <span class="gallery__line"></span>
                         </div>
 
                         <div class="gallery__controls">
-                            <button class="gallery__control" type="button" data-gallery-scroll-prev aria-label="РџСЂРѕРєСЂСѓС‚РёС‚Рё РіР°Р»РµСЂРµСЋ РІР»С–РІРѕ">
+                            <button class="gallery__control" type="button" data-gallery-scroll-prev aria-label="Прокрутити галерею вліво">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                     <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </button>
 
-                            <button class="gallery__control" type="button" data-gallery-scroll-next aria-label="РџСЂРѕРєСЂСѓС‚РёС‚Рё РіР°Р»РµСЂРµСЋ РІРїСЂР°РІРѕ">
+                            <button class="gallery__control" type="button" data-gallery-scroll-next aria-label="Прокрутити галерею вправо">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                     <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
@@ -3054,7 +3054,7 @@ SVG;
                                             data-gallery-item
                                             data-gallery-index="{{ $absoluteIndex }}"
                                             data-gallery-title="{{ $item['title'] }}"
-                                            aria-label="Р’С–РґРєСЂРёС‚Рё {{ $item['title'] }}"
+                                            aria-label="Відкрити {{ $item['title'] }}"
                                         >
                                             <span class="gallery-card__art">{!! $item['art'] !!}</span>
                                             <span class="gallery-card__badge">{{ $item['badge'] }}</span>
@@ -3078,7 +3078,7 @@ SVG;
                                     <path d="M17.8 7.4L6.5 11.8L10.1 13.1L11.4 16.9L17.8 7.4Z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
                                     <path d="M10.1 13.1L13.8 9.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
                                 </svg>
-                                <span>РќР°С€ Telegram</span>
+                                <span>Наш Telegram</span>
                             </a>
 
                             <a class="gallery__social" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">
@@ -3094,7 +3094,7 @@ SVG;
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <span>РќР°С€ Instagram</span>
+                                <span>Наш Instagram</span>
                             </a>
                         </div>
                     </div>
@@ -3107,7 +3107,7 @@ SVG;
                         <div class="footer__brand">
                             <div class="footer__logo">
                                 <span class="footer__brand-name">KondorPC</span>
-                                <span class="footer__brand-sub">РўРІРѕСЏ Р±Р°Р·Р° РіРµР№РјС–РЅРіСѓ</span>
+                                <span class="footer__brand-sub">Твоя база геймінгу</span>
                             </div>
 
                             <div class="footer__contacts">
@@ -3129,7 +3129,7 @@ SVG;
                                         <path d="M8.8 12.9L13.9 8.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                                     </svg>
                                 </a>
-                                <a class="footer__social" href="tel:+380633631066" aria-label="РџРѕРґР·РІРѕРЅРёС‚Рё">
+                                <a class="footer__social" href="tel:+380633631066" aria-label="Подзвонити">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                         <path d="M8.2 5.8L10.9 8.5C11.3 8.9 11.4 9.5 11.1 10L10.1 11.8C10.9 13.5 12.3 14.9 14 15.8L15.8 14.8C16.3 14.5 16.9 14.6 17.3 15L20 17.7C20.5 18.2 20.5 19 20 19.5L18.8 20.7C18.1 21.4 17.1 21.7 16.1 21.5C9.8 20.1 4.9 15.2 3.5 8.9C3.3 7.9 3.6 6.9 4.3 6.2L5.5 5C6 4.5 6.8 4.5 7.3 5L8.2 5.8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
                                     </svg>
@@ -3168,13 +3168,13 @@ SVG;
             <div class="gallery-modal" data-gallery-modal aria-hidden="true">
                 <div class="gallery-modal__dialog">
                     <div class="gallery-modal__stage">
-                        <button class="gallery-modal__close" type="button" data-gallery-close aria-label="Р—Р°РєСЂРёС‚Рё РіР°Р»РµСЂРµСЋ">
+                        <button class="gallery-modal__close" type="button" data-gallery-close aria-label="Закрити галерею">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                         </button>
 
-                        <button class="gallery-modal__nav gallery-modal__nav--prev" type="button" data-gallery-prev aria-label="РџРѕРїРµСЂРµРґРЅС” С„РѕС‚Рѕ">
+                        <button class="gallery-modal__nav gallery-modal__nav--prev" type="button" data-gallery-prev aria-label="Попереднє фото">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -3182,7 +3182,7 @@ SVG;
 
                         <div class="gallery-modal__viewer" data-gallery-main></div>
 
-                        <button class="gallery-modal__nav gallery-modal__nav--next" type="button" data-gallery-next aria-label="РќР°СЃС‚СѓРїРЅРµ С„РѕС‚Рѕ">
+                        <button class="gallery-modal__nav gallery-modal__nav--next" type="button" data-gallery-next aria-label="Наступне фото">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -3197,7 +3197,7 @@ SVG;
                     <aside class="gallery-modal__aside">
                         <div class="gallery-modal__thumbs">
                             @foreach ($galleryItems as $index => $item)
-                                <button class="gallery-modal__thumb" type="button" data-gallery-thumb="{{ $index }}" aria-label="Р’С–РґРєСЂРёС‚Рё {{ $item['title'] }}">
+                                <button class="gallery-modal__thumb" type="button" data-gallery-thumb="{{ $index }}" aria-label="Відкрити {{ $item['title'] }}">
                                     <span class="gallery-modal__thumb-art">{!! $item['art'] !!}</span>
                                 </button>
                             @endforeach
@@ -3355,7 +3355,7 @@ SVG;
                     }
 
                     if (fpsSceneMeta) {
-                        fpsSceneMeta.textContent = `${display.name} В· ${preset.name}`;
+                        fpsSceneMeta.textContent = `${display.name} · ${preset.name}`;
                     }
 
                     if (fpsMobileTitle) {
@@ -3363,7 +3363,7 @@ SVG;
                     }
 
                     if (fpsMobileMeta) {
-                        fpsMobileMeta.textContent = `${display.name} В· ${preset.name}`;
+                        fpsMobileMeta.textContent = `${display.name} · ${preset.name}`;
                     }
                 };
 
