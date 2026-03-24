@@ -984,8 +984,8 @@
 
             .build-card__title {
                 margin: 0 0 14px;
-                font-size: 20px;
-                line-height: 1.05;
+                font-size: 24px;
+                line-height: 1.08;
                 letter-spacing: -0.03em;
             }
 
@@ -1007,16 +1007,26 @@
             .build-card__specs li {
                 display: flex;
                 align-items: flex-start;
-                gap: 10px;
+                gap: 12px;
                 color: #27303c;
-                font-size: 14px;
-                line-height: 1.35;
+                font-size: 16px;
+                line-height: 1.42;
             }
 
             .build-card__specs svg {
                 flex: none;
-                margin-top: 2px;
-                color: #5e6672;
+                width: 17px;
+                height: 17px;
+                margin-top: 3px;
+                color: #46515f;
+            }
+
+            .build-card__price-label {
+                display: block;
+                margin-top: 20px;
+                color: #6a7380;
+                font-size: 15px;
+                font-weight: 700;
             }
 
             .build-card__fps {
@@ -1096,9 +1106,9 @@
 
             .build-card__price {
                 display: inline-block;
-                margin-top: 20px;
+                margin-top: 6px;
                 color: #1d2430;
-                font-size: 22px;
+                font-size: 24px;
                 font-weight: 800;
                 text-decoration: underline;
                 text-underline-offset: 3px;
@@ -2675,6 +2685,7 @@ SVG;
                                         </div>
                                     </div>
 
+                                    <span class="build-card__price-label">Ціна за збірку</span>
                                     <span class="build-card__price">{{ $build['price'] }}</span>
                                     <a class="catalog-cta build-card__action" href="#builds">Детальніше</a>
                                 </div>
