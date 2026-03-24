@@ -2289,8 +2289,8 @@
                 }
 
                 .gallery {
-                    --gallery-group-width: min(980px, calc(100vw - 20px));
-                    --gallery-row-height: 220px;
+                    --gallery-group-width: min(760px, calc(100vw - 20px));
+                    --gallery-row-height: 168px;
                     padding-block: 70px;
                 }
 
@@ -2449,8 +2449,8 @@
                 }
 
                 .gallery {
-                    --gallery-group-width: 920px;
-                    --gallery-row-height: 190px;
+                    --gallery-group-width: 660px;
+                    --gallery-row-height: 142px;
                 }
 
                 .gallery__control {
