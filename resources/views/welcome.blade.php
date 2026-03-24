@@ -1864,25 +1864,87 @@
                     display: none;
                 }
 
-                .topbar__inner,
-                .topbar__links,
-                .topbar__meta,
-                .topbar__contacts {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 8px;
-                }
-
-                .topbar__inner {
-                    padding: 10px 0;
-                }
-
                 .header__inner {
-                    min-height: 72px;
+                    display: grid;
+                    grid-template-columns: 48px minmax(0, 1fr) 48px;
+                    align-items: center;
+                    gap: 10px;
+                    min-height: 78px;
+                }
+
+                .header__actions {
+                    display: contents;
+                }
+
+                .brand {
+                    grid-column: 2;
+                    justify-self: center;
+                    min-width: 0;
+                }
+
+                .brand > div {
+                    text-align: center;
                 }
 
                 .brand__name {
-                    font-size: 26px;
+                    font-size: 22px;
+                }
+
+                .brand__sub {
+                    font-size: 11px;
+                }
+
+                .header-cart {
+                    grid-column: 3;
+                    justify-self: end;
+                    width: 44px;
+                    min-height: 44px;
+                    padding: 0;
+                    gap: 0;
+                    border: 0;
+                    border-radius: 0;
+                    background: transparent;
+                    box-shadow: none;
+                }
+
+                .header-cart span {
+                    display: none;
+                }
+
+                .header-cart svg {
+                    width: 32px;
+                    height: 32px;
+                    color: #7c8592;
+                }
+
+                .menu-toggle {
+                    grid-column: 1;
+                    justify-self: start;
+                    display: inline-flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+                    width: 44px;
+                    height: 44px;
+                    padding: 0;
+                    border: 0;
+                    border-radius: 0;
+                    background: transparent;
+                    box-shadow: none;
+                }
+
+                .menu-toggle span {
+                    width: 28px;
+                    height: 3px;
+                    margin: 0;
+                    border-radius: 999px;
+                    background: #596270;
+                }
+
+                .menu-toggle:hover,
+                .header-cart:hover {
+                    background: transparent;
                 }
 
                 .hero {
