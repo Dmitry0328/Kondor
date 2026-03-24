@@ -852,19 +852,18 @@
 
             .fps-lab__mobile-summary {
                 position: relative;
-                align-items: center;
-                justify-content: space-between;
-                gap: 14px;
-                padding: 16px 18px;
+                display: grid;
+                gap: 12px;
+                padding: 14px 16px;
                 border: 1px solid #dde5ef;
-                border-radius: 24px;
+                border-radius: 20px;
                 background: linear-gradient(180deg, #ffffff, #f7f9fc);
                 box-shadow: 0 14px 28px rgba(24, 32, 42, 0.08);
             }
 
             .fps-lab__mobile-copy {
                 display: grid;
-                gap: 4px;
+                gap: 5px;
                 min-width: 0;
             }
 
@@ -878,28 +877,29 @@
 
             .fps-lab__mobile-title {
                 color: #18202a;
-                font-size: 19px;
+                font-size: clamp(18px, 4.8vw, 22px);
                 font-weight: 800;
-                line-height: 1.2;
+                line-height: 1.08;
             }
 
             .fps-lab__mobile-meta {
                 color: #5f6875;
-                font-size: 13px;
+                font-size: 14px;
                 font-weight: 700;
-                line-height: 1.35;
+                line-height: 1.25;
             }
 
             .fps-lab__mobile-open {
-                flex: none;
-                min-height: 42px;
+                width: 100%;
+                min-height: 40px;
                 padding: 0 18px;
                 border: 1px solid #4b19a1;
-                border-radius: 12px;
+                border-radius: 14px;
                 background: linear-gradient(180deg, #8424f0, #6816cb);
                 color: #ffffff;
                 font-size: 14px;
                 font-weight: 800;
+                text-align: center;
                 cursor: pointer;
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 8px 18px rgba(105, 22, 203, 0.22);
             }
@@ -2079,7 +2079,7 @@
 
                 .fps-lab {
                     padding: 0;
-                    margin-bottom: 28px;
+                    margin-bottom: 20px;
                     border: 0;
                     border-radius: 0;
                     background: transparent;
@@ -2092,7 +2092,7 @@
                 }
 
                 .fps-lab__mobile-summary {
-                    display: flex;
+                    display: grid;
                 }
 
                 .fps-lab__mobile-overlay {
@@ -2278,15 +2278,6 @@
             }
 
             @media (max-width: 560px) {
-                .fps-lab__mobile-summary {
-                    align-items: stretch;
-                    flex-direction: column;
-                }
-
-                .fps-lab__mobile-open {
-                    width: 100%;
-                }
-
                 .hero__actions {
                     flex-direction: column;
                     align-items: stretch;
@@ -2597,9 +2588,9 @@
                 ];
 
                 $fpsDisplays = [
-                    ['id' => '1080p', 'name' => '1920 x 1080 (Full HD)', 'multiplier' => 1.22],
-                    ['id' => '1440p', 'name' => '2560 x 1440 (2K)', 'multiplier' => 1.0],
-                    ['id' => '4k', 'name' => '3840 x 2160 (4K)', 'multiplier' => 0.7],
+                    ['id' => '1080p', 'name' => '1920 x 1080 (Full HD)', 'mobile_name' => 'Full HD', 'multiplier' => 1.22],
+                    ['id' => '1440p', 'name' => '2560 x 1440 (2K)', 'mobile_name' => '2K', 'multiplier' => 1.0],
+                    ['id' => '4k', 'name' => '3840 x 2160 (4K)', 'mobile_name' => '4K', 'multiplier' => 0.7],
                 ];
 
                 $fpsPresets = [
@@ -2838,7 +2829,7 @@ SVG;
                             <div class="fps-lab__mobile-copy">
                                 <span class="fps-lab__mobile-kicker">FPS для збірок</span>
                                 <strong class="fps-lab__mobile-title" data-fps-mobile-title>{{ $fpsGameMap[$defaultFpsGame]['name'] }}</strong>
-                                <span class="fps-lab__mobile-meta" data-fps-mobile-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['name'] }} · {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
+                                <span class="fps-lab__mobile-meta" data-fps-mobile-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['mobile_name'] ?? $fpsDisplayMap[$defaultFpsDisplay]['name'] }} · {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
                             </div>
 
                             <button class="fps-lab__mobile-open" type="button" data-fps-mobile-open>Змінити</button>
@@ -3363,7 +3354,7 @@ SVG;
                     }
 
                     if (fpsMobileMeta) {
-                        fpsMobileMeta.textContent = `${display.name} · ${preset.name}`;
+                        fpsMobileMeta.textContent = `${display.mobile_name ?? display.name} · ${preset.name}`;
                     }
                 };
 
