@@ -2328,8 +2328,25 @@
                     height: min(100%, 920px);
                 }
 
+                .gallery-modal__stage {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 62px 14px 86px;
+                }
+
                 .gallery-modal__viewer {
-                    padding: 18px;
+                    width: 100%;
+                    height: auto;
+                    aspect-ratio: 16 / 10;
+                    padding: 0;
+                }
+
+                .gallery-modal__viewer svg {
+                    width: 100%;
+                    height: 100%;
+                    max-width: 100%;
+                    max-height: 100%;
                 }
 
                 .gallery-modal__thumbs {
@@ -2344,11 +2361,12 @@
                 }
 
                 .gallery-modal__meta {
-                    left: 14px;
-                    right: 14px;
-                    bottom: 14px;
+                    left: 12px;
+                    right: 12px;
+                    bottom: 12px;
                     flex-direction: column;
                     align-items: flex-start;
+                    padding: 12px 14px;
                 }
 
                 .footer {
@@ -2473,7 +2491,15 @@
                 }
 
                 .gallery-modal__thumb {
-                    width: 90px;
+                    width: 84px;
+                }
+
+                .gallery-modal__stage {
+                    padding: 56px 10px 80px;
+                }
+
+                .gallery-modal__caption {
+                    font-size: 15px;
                 }
 
                 .footer__brand-name {
