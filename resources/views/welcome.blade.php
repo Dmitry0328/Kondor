@@ -852,7 +852,6 @@
 
             .fps-lab__mobile-summary {
                 position: relative;
-                display: grid;
                 gap: 12px;
                 padding: 14px 16px;
                 border: 1px solid #dde5ef;
