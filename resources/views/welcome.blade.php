@@ -1100,6 +1100,33 @@
                 align-items: start;
             }
 
+            .build-card__info {
+                min-width: 0;
+            }
+
+            .build-card__copy-wrap {
+                position: relative;
+            }
+
+            .build-card__copy-wrap.is-collapsible {
+                overflow: hidden;
+            }
+
+            .build-card__copy-wrap.is-collapsible.is-collapsed {
+                max-height: var(--build-copy-max, 176px);
+            }
+
+            .build-card__copy-wrap.is-collapsible.is-collapsed::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 44px;
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0), #ffffff 88%);
+                pointer-events: none;
+            }
+
             .build-card__fps-side {
                 display: flex;
                 flex-direction: column;
@@ -1130,6 +1157,25 @@
                 height: 17px;
                 margin-top: 3px;
                 color: #46515f;
+            }
+
+            .build-card__copy-toggle {
+                display: none;
+                align-items: center;
+                justify-content: center;
+                min-height: 36px;
+                margin-top: 10px;
+                padding: 8px 12px;
+                border: 1px solid #d8e0ea;
+                border-radius: 12px;
+                background: linear-gradient(180deg, #ffffff, #f5f8fc);
+                color: #243041;
+                font-size: 12px;
+                font-weight: 800;
+                line-height: 1.2;
+                text-align: center;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.94), 0 6px 14px rgba(24, 32, 42, 0.06);
+                cursor: pointer;
             }
 
             .build-card__price-label {
@@ -2215,6 +2261,10 @@
                     gap: 8px;
                 }
 
+                .build-card__copy-toggle.is-visible {
+                    display: inline-flex;
+                }
+
                 .build-card__fps-more {
                     display: inline-flex;
                 }
@@ -2350,6 +2400,11 @@
                 .build-card__fps-more {
                     min-height: 34px;
                     padding-inline: 8px;
+                    font-size: 11px;
+                }
+
+                .build-card__copy-toggle {
+                    min-height: 34px;
                     font-size: 11px;
                 }
 
@@ -2953,36 +3008,44 @@ SVG;
                                     <h3 class="build-card__title">{{ $build['name'] }}</h3>
 
                                     <div class="build-card__content">
-                                        <ul class="build-card__specs">
-                                            <li>
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                    <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                    <path d="M9 3V6M15 3V6M9 18V21M15 18V21M3 9H6M18 9H21M3 15H6M18 15H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                </svg>
-                                                <span>{{ $build['gpu'] }}</span>
-                                            </li>
-                                            <li>
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                    <path d="M12 3L19 8V16L12 21L5 16V8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                                    <path d="M12 9V15M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                </svg>
-                                                <span>{{ $build['cpu'] }}</span>
-                                            </li>
-                                            <li>
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                    <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                    <path d="M8 10H10M14 10H16M8 14H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                </svg>
-                                                <span>{{ $build['ram'] }}</span>
-                                            </li>
-                                            <li>
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                    <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                    <path d="M7 12H17M7 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                </svg>
-                                                <span>{{ $build['storage'] }}</span>
-                                            </li>
-                                        </ul>
+                                        <div class="build-card__info">
+                                            <div class="build-card__copy-wrap" data-build-copy-wrap>
+                                                <ul class="build-card__specs" data-build-copy>
+                                                    <li>
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                            <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                            <path d="M9 3V6M15 3V6M9 18V21M15 18V21M3 9H6M18 9H21M3 15H6M18 15H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                        </svg>
+                                                        <span>{{ $build['gpu'] }}</span>
+                                                    </li>
+                                                    <li>
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                            <path d="M12 3L19 8V16L12 21L5 16V8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                            <path d="M12 9V15M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                        </svg>
+                                                        <span>{{ $build['cpu'] }}</span>
+                                                    </li>
+                                                    <li>
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                            <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                            <path d="M8 10H10M14 10H16M8 14H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                        </svg>
+                                                        <span>{{ $build['ram'] }}</span>
+                                                    </li>
+                                                    <li>
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                            <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                            <path d="M7 12H17M7 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                        </svg>
+                                                        <span>{{ $build['storage'] }}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <button class="build-card__copy-toggle" type="button" data-build-copy-toggle aria-expanded="false" hidden>
+                                                Розгорнути
+                                            </button>
+                                        </div>
 
                                         <div class="build-card__fps-side">
                                             <div class="build-card__fps" aria-label="Поточний FPS">
@@ -3274,6 +3337,7 @@ SVG;
                 const fpsSceneTitle = document.querySelector('[data-fps-scene-title]');
                 const fpsSceneMeta = document.querySelector('[data-fps-scene-meta]');
                 const fpsCards = Array.from(document.querySelectorAll('[data-fps-card]'));
+                const buildCopyWrappers = Array.from(document.querySelectorAll('[data-build-copy-wrap]'));
                 const fpsConfig = @json($fpsClientConfig);
                 const fpsGames = Object.fromEntries((fpsConfig.games ?? []).map((game) => [game.id, game]));
                 const fpsDisplays = Object.fromEntries((fpsConfig.displays ?? []).map((display) => [display.id, display]));
@@ -3283,6 +3347,7 @@ SVG;
                 let activeGalleryIndex = 0;
 
                 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+                const mobileBuildCopyLimit = 176;
 
                 const resolveFpsState = (fps) => {
                     if (fps < 70) {
@@ -3420,6 +3485,53 @@ SVG;
                         }
 
                         animateFpsCard(card, computeFps(score, state), immediate);
+                    });
+                };
+
+                const syncBuildCopyToggles = () => {
+                    const isMobile = window.innerWidth <= 760;
+
+                    buildCopyWrappers.forEach((wrapper) => {
+                        const content = wrapper.querySelector('[data-build-copy]');
+                        const toggle = wrapper.parentElement?.querySelector('[data-build-copy-toggle]');
+
+                        if (!content || !toggle) {
+                            return;
+                        }
+
+                        const expanded = wrapper.dataset.expanded === 'true';
+                        wrapper.classList.remove('is-collapsible', 'is-collapsed');
+                        wrapper.style.removeProperty('--build-copy-max');
+                        toggle.hidden = true;
+                        toggle.classList.remove('is-visible');
+
+                        if (!isMobile) {
+                            wrapper.dataset.expanded = 'false';
+                            toggle.textContent = 'Розгорнути';
+                            toggle.setAttribute('aria-expanded', 'false');
+                            return;
+                        }
+
+                        const needsToggle = content.scrollHeight > mobileBuildCopyLimit + 6;
+
+                        if (!needsToggle) {
+                            wrapper.dataset.expanded = 'false';
+                            toggle.textContent = 'Розгорнути';
+                            toggle.setAttribute('aria-expanded', 'false');
+                            return;
+                        }
+
+                        wrapper.classList.add('is-collapsible');
+                        wrapper.style.setProperty('--build-copy-max', `${mobileBuildCopyLimit}px`);
+
+                        if (!expanded) {
+                            wrapper.classList.add('is-collapsed');
+                        }
+
+                        toggle.hidden = false;
+                        toggle.classList.add('is-visible');
+                        toggle.textContent = expanded ? 'Згорнути' : 'Розгорнути';
+                        toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
                     });
                 };
 
@@ -3585,6 +3697,20 @@ SVG;
                     button.addEventListener('click', closeFpsMobileSheet);
                 });
 
+                document.querySelectorAll('[data-build-copy-toggle]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const wrapper = button.parentElement?.querySelector('[data-build-copy-wrap]');
+
+                        if (!wrapper) {
+                            return;
+                        }
+
+                        const nextExpanded = wrapper.dataset.expanded !== 'true';
+                        wrapper.dataset.expanded = nextExpanded ? 'true' : 'false';
+                        syncBuildCopyToggles();
+                    });
+                });
+
                 mobileToggle?.addEventListener('click', () => {
                     const isOpen = mobileMenu.classList.toggle('is-open');
                     mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
@@ -3596,12 +3722,17 @@ SVG;
 
                 syncHeaderState();
                 syncFpsCards(true);
+                syncBuildCopyToggles();
 
                 window.addEventListener('resize', () => {
                     if (window.innerWidth > 760) {
                         closeFpsMobileSheet();
                     }
+
+                    syncBuildCopyToggles();
                 });
+
+                window.addEventListener('load', syncBuildCopyToggles);
 
                 const updateGallery = () => {
                     const currentItem = galleryItems[activeGalleryIndex];
