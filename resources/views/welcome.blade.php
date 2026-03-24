@@ -1100,6 +1100,13 @@
                 align-items: start;
             }
 
+            .build-card__fps-side {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
             .build-card__specs {
                 display: grid;
                 gap: 12px;
@@ -1198,6 +1205,24 @@
                 font-weight: 700;
                 letter-spacing: 0.06em;
                 text-transform: uppercase;
+            }
+
+            .build-card__fps-more {
+                display: none;
+                align-items: center;
+                justify-content: center;
+                min-height: 36px;
+                padding: 8px 10px;
+                border: 1px solid #d8e0ea;
+                border-radius: 12px;
+                background: linear-gradient(180deg, #ffffff, #f5f8fc);
+                color: #243041;
+                font-size: 12px;
+                font-weight: 800;
+                line-height: 1.2;
+                text-align: center;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.94), 0 6px 14px rgba(24, 32, 42, 0.06);
+                cursor: pointer;
             }
 
             .build-card.is-fps-animating .build-card__fps-value {
@@ -2079,7 +2104,7 @@
 
                 .fps-lab {
                     padding: 0;
-                    margin-bottom: 20px;
+                    margin-bottom: 0;
                     border: 0;
                     border-radius: 0;
                     background: transparent;
@@ -2092,7 +2117,7 @@
                 }
 
                 .fps-lab__mobile-summary {
-                    display: grid;
+                    display: none;
                 }
 
                 .fps-lab__mobile-overlay {
@@ -2184,6 +2209,14 @@
 
                 .build-card__fps {
                     min-height: 154px;
+                }
+
+                .build-card__fps-side {
+                    gap: 8px;
+                }
+
+                .build-card__fps-more {
+                    display: inline-flex;
                 }
 
                 .advantages {
@@ -2312,6 +2345,12 @@
 
                 .build-card__content {
                     grid-template-columns: minmax(0, 1fr) 74px;
+                }
+
+                .build-card__fps-more {
+                    min-height: 34px;
+                    padding-inline: 8px;
+                    font-size: 11px;
                 }
 
                 .build-card__title {
@@ -2945,12 +2984,18 @@ SVG;
                                             </li>
                                         </ul>
 
-                                        <div class="build-card__fps" aria-label="Поточний FPS">
-                                            <span class="build-card__fps-value" data-fps-value>{{ $build['fps_value'] }}</span>
-                                            <span class="build-card__fps-scale" aria-hidden="true">
-                                                <span class="build-card__fps-fill"></span>
-                                            </span>
-                                            <span class="build-card__fps-label">FPS</span>
+                                        <div class="build-card__fps-side">
+                                            <div class="build-card__fps" aria-label="Поточний FPS">
+                                                <span class="build-card__fps-value" data-fps-value>{{ $build['fps_value'] }}</span>
+                                                <span class="build-card__fps-scale" aria-hidden="true">
+                                                    <span class="build-card__fps-fill"></span>
+                                                </span>
+                                                <span class="build-card__fps-label">FPS</span>
+                                            </div>
+
+                                            <button class="build-card__fps-more" type="button" data-fps-mobile-open aria-label="Переглянути більше FPS даних">
+                                                Більше FPS
+                                            </button>
                                         </div>
                                     </div>
 
@@ -3223,7 +3268,7 @@ SVG;
                 const fpsPresetSelect = document.querySelector('[data-fps-preset]');
                 const fpsMobileTitle = document.querySelector('[data-fps-mobile-title]');
                 const fpsMobileMeta = document.querySelector('[data-fps-mobile-meta]');
-                const fpsMobileOpen = document.querySelector('[data-fps-mobile-open]');
+                const fpsMobileOpenButtons = Array.from(document.querySelectorAll('[data-fps-mobile-open]'));
                 const fpsMobileCloseButtons = Array.from(document.querySelectorAll('[data-fps-mobile-close]'));
                 const fpsSceneBadge = document.querySelector('[data-fps-scene-badge]');
                 const fpsSceneTitle = document.querySelector('[data-fps-scene-title]');
@@ -3533,7 +3578,9 @@ SVG;
                 window.addEventListener('resize', positionConsultationPanel);
                 window.addEventListener('scroll', syncHeaderState, { passive: true });
 
-                fpsMobileOpen?.addEventListener('click', openFpsMobileSheet);
+                fpsMobileOpenButtons.forEach((button) => {
+                    button.addEventListener('click', openFpsMobileSheet);
+                });
                 fpsMobileCloseButtons.forEach((button) => {
                     button.addEventListener('click', closeFpsMobileSheet);
                 });
