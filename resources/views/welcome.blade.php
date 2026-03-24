@@ -2319,54 +2319,90 @@
                 }
 
                 .gallery-modal {
-                    padding: 12px;
+                    padding: 10px;
                 }
 
                 .gallery-modal__dialog {
+                    width: min(100%, 420px);
+                    height: min(100%, 760px);
                     grid-template-columns: 1fr;
-                    grid-template-rows: minmax(0, 1fr) auto;
-                    height: min(100%, 920px);
+                    grid-template-rows: 1fr;
+                    gap: 0;
                 }
 
                 .gallery-modal__stage {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 62px 14px 86px;
+                    display: block;
+                    padding: 56px 14px 136px;
+                    border-radius: 22px;
                 }
 
                 .gallery-modal__viewer {
                     width: 100%;
                     height: auto;
+                    max-height: calc(100vh - 260px);
                     aspect-ratio: 16 / 10;
                     padding: 0;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    background: #10141b;
                 }
 
                 .gallery-modal__viewer svg {
                     width: 100%;
-                    height: 100%;
+                    height: auto;
                     max-width: 100%;
                     max-height: 100%;
+                }
+
+                .gallery-modal__close {
+                    top: 10px;
+                    right: 10px;
+                    width: 42px;
+                    height: 42px;
+                    border: 0;
+                    background: transparent;
+                    color: #ff3b30;
+                    backdrop-filter: none;
+                    box-shadow: none;
+                }
+
+                .gallery-modal__nav {
+                    top: 42%;
+                    width: 42px;
+                    height: 42px;
+                }
+
+                .gallery-modal__nav--prev {
+                    left: 8px;
+                }
+
+                .gallery-modal__nav--next {
+                    right: 8px;
+                }
+
+                .gallery-modal__meta {
+                    display: none;
+                }
+
+                .gallery-modal__aside {
+                    position: absolute;
+                    left: 12px;
+                    right: 12px;
+                    bottom: 14px;
                 }
 
                 .gallery-modal__thumbs {
                     flex-direction: row;
                     height: auto;
-                    padding-right: 0;
-                    padding-bottom: 4px;
+                    justify-content: center;
+                    gap: 10px;
+                    padding: 0 52px 2px;
+                    overflow-x: auto;
                 }
 
                 .gallery-modal__thumb {
-                    width: 112px;
-                }
-
-                .gallery-modal__meta {
-                    left: 12px;
-                    right: 12px;
-                    bottom: 12px;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    padding: 12px 14px;
+                    width: 86px;
+                    border-radius: 8px;
                 }
 
                 .footer {
@@ -2495,7 +2531,7 @@
                 }
 
                 .gallery-modal__stage {
-                    padding: 56px 10px 80px;
+                    padding: 52px 10px 124px;
                 }
 
                 .gallery-modal__caption {
@@ -3792,6 +3828,10 @@ SVG;
 
                     if (modalSvg) {
                         modalSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+                        modalSvg.style.width = '100%';
+                        modalSvg.style.height = 'auto';
+                        modalSvg.style.maxWidth = '100%';
+                        modalSvg.style.maxHeight = '100%';
                     }
 
                     if (galleryCaption) {
