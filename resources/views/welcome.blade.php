@@ -1957,6 +1957,10 @@
                     padding-bottom: 24px;
                 }
 
+                .hero__layout {
+                    flex-direction: column-reverse;
+                }
+
                 .hero__visual {
                     min-height: 480px;
                 }
