@@ -122,11 +122,8 @@
             }
 
             .site-header {
-                position: sticky;
-                top: 0;
-                z-index: 80;
-                background: var(--surface);
-                box-shadow: 0 14px 28px rgba(24, 32, 42, 0.08);
+                position: relative;
+                z-index: 40;
             }
 
             .topbar__social-link {
@@ -136,11 +133,21 @@
             }
 
             .header {
-                position: relative;
+                position: sticky;
+                top: 0;
                 border-bottom: 1px solid var(--line);
                 background: var(--surface);
-                z-index: 20;
+                z-index: 80;
                 box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+                transition: background-color 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, backdrop-filter 0.22s ease;
+            }
+
+            .header.is-stuck {
+                background: rgba(255, 255, 255, 0.84);
+                border-bottom-color: rgba(214, 222, 234, 0.88);
+                box-shadow: 0 14px 28px rgba(24, 32, 42, 0.1);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
             }
 
             .header__inner {
@@ -3106,6 +3113,14 @@ SVG;
                     panel.style.left = `${nextLeft}px`;
                 };
 
+                const syncHeaderState = () => {
+                    if (!header) {
+                        return;
+                    }
+
+                    header.classList.toggle('is-stuck', window.scrollY > 10);
+                };
+
                 const closeAllDropdowns = () => {
                     triggers.forEach((trigger) => {
                         trigger.classList.remove('is-open');
@@ -3214,6 +3229,7 @@ SVG;
                 });
 
                 window.addEventListener('resize', positionConsultationPanel);
+                window.addEventListener('scroll', syncHeaderState, { passive: true });
 
                 mobileToggle?.addEventListener('click', () => {
                     const isOpen = mobileMenu.classList.toggle('is-open');
@@ -3224,6 +3240,7 @@ SVG;
                     select?.addEventListener('change', () => syncFpsCards());
                 });
 
+                syncHeaderState();
                 syncFpsCards(true);
 
                 const updateGallery = () => {
