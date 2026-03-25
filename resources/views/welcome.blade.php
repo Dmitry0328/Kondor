@@ -1012,6 +1012,15 @@
                 box-shadow: 0 18px 40px rgba(24, 32, 42, 0.08);
             }
 
+            .build-card[data-product-url] {
+                cursor: pointer;
+            }
+
+            .build-card[data-product-url]:focus-visible {
+                outline: 3px solid rgba(111, 16, 201, 0.3);
+                outline-offset: 3px;
+            }
+
             .build-card--violet {
                 --build-start: #5e67ff;
                 --build-end: #1fa7ff;
@@ -1137,6 +1146,17 @@
                 gap: 10px;
             }
 
+            @media (min-width: 761px) {
+                .build-card__content {
+                    flex: 1 1 auto;
+                    align-items: stretch;
+                }
+
+                .build-card__fps-side {
+                    justify-content: flex-end;
+                }
+            }
+
             .build-card__specs {
                 display: grid;
                 gap: 12px;
@@ -1166,40 +1186,48 @@
                 display: none;
                 align-items: center;
                 justify-content: center;
-                width: 46px;
-                height: 46px;
-                margin-top: 10px;
-                padding: 0;
-                border: 1px solid #2d333d;
-                border-radius: 50%;
-                background: linear-gradient(180deg, #5e6570, #3d434c);
-                color: #ffffff;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 8px 16px rgba(24, 32, 42, 0.16);
+                gap: 8px;
+                width: fit-content;
+                max-width: 100%;
+                min-height: 36px;
+                margin: 10px auto 0;
+                padding: 0 10px;
+                border: 0;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.28);
+                color: #5c6778;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: -0.01em;
+                text-align: center;
+                backdrop-filter: blur(6px);
+                -webkit-backdrop-filter: blur(6px);
+                box-shadow: none;
                 cursor: pointer;
+                transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
             }
 
             .build-card__copy-toggle:hover {
                 transform: translateY(-1px);
+                background: rgba(255, 255, 255, 0.38);
+                color: #4a5567;
             }
 
-            .build-card__copy-toggle-icon {
-                display: grid;
-                gap: 4px;
-                width: 20px;
-            }
-
-            .build-card__copy-toggle-line {
+            .build-card__copy-toggle-label {
                 display: block;
-                width: 100%;
-                height: 3px;
-                border-radius: 999px;
-                background: #ffffff;
-                box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+                line-height: 1.1;
             }
 
-            .build-card__copy-toggle.is-expanded .build-card__copy-toggle-line:nth-child(2) {
-                width: 72%;
-                justify-self: center;
+            .build-card__copy-toggle-chevron {
+                flex: none;
+                width: 12px;
+                height: 12px;
+                color: currentColor;
+                transition: transform 0.18s ease;
+            }
+
+            .build-card__copy-toggle.is-expanded .build-card__copy-toggle-chevron {
+                transform: rotate(180deg);
             }
 
             .sr-only {
@@ -2504,8 +2532,11 @@
                 }
 
                 .build-card__copy-toggle {
-                    width: 44px;
-                    height: 44px;
+                    min-height: 34px;
+                    margin-top: 8px;
+                    padding-inline: 12px;
+                    border-radius: 11px;
+                    font-size: 11px;
                 }
 
                 .build-card__title {
@@ -2842,18 +2873,7 @@
                     return 'high';
                 };
 
-                $featuredBuilds = [
-                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Phantom"', 'gpu' => 'Nvidia RTX 4070 Super', 'cpu' => 'AMD Ryzen 7 7700', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '69 990 ₴', 'fps_score' => 146],
-                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Nova"', 'gpu' => 'AMD Radeon RX 7800 XT', 'cpu' => 'AMD Ryzen 7 7800X3D', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '82 990 ₴', 'fps_score' => 156],
-                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Vector"', 'gpu' => 'Nvidia RTX 4060 Ti 16GB', 'cpu' => 'Intel Core i5-14600KF', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '61 990 ₴', 'fps_score' => 116],
-                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Crystal"', 'gpu' => 'Nvidia RTX 5070', 'cpu' => 'AMD Ryzen 7 9700X', 'ram' => '32GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '94 990 ₴', 'fps_score' => 168],
-                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Storm"', 'gpu' => 'AMD Radeon RX 7900 GRE', 'cpu' => 'AMD Ryzen 5 9600X', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '74 990 ₴', 'fps_score' => 132],
-                    ['tone' => 'violet', 'name' => 'Ігровий ПК "Orbit"', 'gpu' => 'Nvidia RTX 3060 12GB', 'cpu' => 'Intel Core i5-13400F', 'ram' => '16GB DDR4 3600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '42 990 ₴', 'fps_score' => 92],
-                    ['tone' => 'magenta', 'name' => 'Ігровий ПК "Titan"', 'gpu' => 'Nvidia RTX 5080', 'cpu' => 'Intel Core i7-14700KF', 'ram' => '32GB DDR5 7200 MHz', 'storage' => 'SSD M.2 NVMe 2TB', 'price' => '129 990 ₴', 'fps_score' => 186],
-                    ['tone' => 'amber', 'name' => 'Ігровий ПК "Frost"', 'gpu' => 'Nvidia RTX 4070 Ti Super', 'cpu' => 'AMD Ryzen 7 8700F', 'ram' => '32GB DDR5 6000 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '78 990 ₴', 'fps_score' => 138],
-                    ['tone' => 'peach', 'name' => 'Ігровий ПК "Pulse"', 'gpu' => 'AMD Radeon RX 7700 XT', 'cpu' => 'AMD Ryzen 5 7600', 'ram' => '32GB DDR5 5600 MHz', 'storage' => 'SSD M.2 NVMe 1TB', 'price' => '58 990 ₴', 'fps_score' => 108],
-                    ['tone' => 'emerald', 'name' => 'Ігровий ПК "Atlas"', 'gpu' => 'Nvidia RTX 4090', 'cpu' => 'AMD Ryzen 9 9950X', 'ram' => '64GB DDR5 6400 MHz', 'storage' => 'SSD M.2 NVMe 4TB', 'price' => '189 990 ₴', 'fps_score' => 238],
-                ];
+                $featuredBuilds = config('kondor_storefront.builds', []);
 
                 foreach ($featuredBuilds as $index => $build) {
                     $initialFps = $computeFps($build['fps_score'], $defaultFpsGame, $defaultFpsDisplay, $defaultFpsPreset);
@@ -3098,7 +3118,7 @@ SVG;
 
                     <div class="builds__header">
                         <h2>Обрані комп'ютерні збірки</h2>
-                        <a class="catalog-cta builds__button" href="#builds">Всі збірки</a>
+                        <a class="catalog-cta builds__button" href="{{ url('/catalog') }}">Всі збірки</a>
                     </div>
 
                     <div class="builds__grid">
@@ -3106,6 +3126,9 @@ SVG;
                             <article
                                 class="build-card build-card--{{ $build['tone'] }} is-fps-{{ $build['fps_state'] }}"
                                 data-fps-card
+                                data-product-url="{{ route('product.show', ['slug' => $build['slug']]) }}"
+                                role="link"
+                                tabindex="0"
                                 data-fps-score="{{ $build['fps_score'] }}"
                                 data-current-fps="{{ $build['fps_value'] }}"
                                 style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
@@ -3150,13 +3173,11 @@ SVG;
                                                 </ul>
                                             </div>
 
-                                            <button class="build-card__copy-toggle" type="button" data-build-copy-toggle aria-expanded="false" aria-label="Розгорнути характеристики" hidden>
-                                                <span class="build-card__copy-toggle-icon" aria-hidden="true">
-                                                    <span class="build-card__copy-toggle-line"></span>
-                                                    <span class="build-card__copy-toggle-line"></span>
-                                                    <span class="build-card__copy-toggle-line"></span>
-                                                </span>
-                                                <span class="sr-only">Розгорнути характеристики</span>
+                                            <button class="build-card__copy-toggle" type="button" data-build-copy-toggle aria-expanded="false" aria-label="Показати характеристики" hidden>
+                                                <span class="build-card__copy-toggle-label" data-build-copy-toggle-label>Показати характеристики</span>
+                                                <svg class="build-card__copy-toggle-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                                                    <path d="M2.25 4.5L6 8.25L9.75 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
                                             </button>
                                         </div>
 
@@ -3177,7 +3198,7 @@ SVG;
 
                                     <span class="build-card__price-label">Ціна за збірку</span>
                                     <span class="build-card__price">{{ $build['price'] }}</span>
-                                    <a class="catalog-cta build-card__action" href="#builds">Детальніше</a>
+                                    <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}">Детальніше</a>
                                 </div>
                             </article>
                         @endforeach
@@ -3603,12 +3624,16 @@ SVG;
                     });
                 };
 
+                const collapsedBuildCopyLabel = 'Показати характеристики';
+                const expandedBuildCopyLabel = 'Сховати характеристики';
+
                 const syncBuildCopyToggles = () => {
                     const isMobile = window.innerWidth <= 760;
 
                     buildCopyWrappers.forEach((wrapper) => {
                         const content = wrapper.querySelector('[data-build-copy]');
                         const toggle = wrapper.parentElement?.querySelector('[data-build-copy-toggle]');
+                        const toggleLabel = toggle?.querySelector('[data-build-copy-toggle-label]');
 
                         if (!content || !toggle) {
                             return;
@@ -3624,7 +3649,10 @@ SVG;
                             wrapper.dataset.expanded = 'false';
                             toggle.classList.remove('is-expanded');
                             toggle.setAttribute('aria-expanded', 'false');
-                            toggle.setAttribute('aria-label', 'Розгорнути характеристики');
+                            toggle.setAttribute('aria-label', collapsedBuildCopyLabel);
+                            if (toggleLabel) {
+                                toggleLabel.textContent = collapsedBuildCopyLabel;
+                            }
                             return;
                         }
 
@@ -3634,7 +3662,10 @@ SVG;
                             wrapper.dataset.expanded = 'false';
                             toggle.classList.remove('is-expanded');
                             toggle.setAttribute('aria-expanded', 'false');
-                            toggle.setAttribute('aria-label', 'Розгорнути характеристики');
+                            toggle.setAttribute('aria-label', collapsedBuildCopyLabel);
+                            if (toggleLabel) {
+                                toggleLabel.textContent = collapsedBuildCopyLabel;
+                            }
                             return;
                         }
 
@@ -3649,7 +3680,10 @@ SVG;
                         toggle.classList.add('is-visible');
                         toggle.classList.toggle('is-expanded', expanded);
                         toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-                        toggle.setAttribute('aria-label', expanded ? 'Згорнути характеристики' : 'Розгорнути характеристики');
+                        toggle.setAttribute('aria-label', expanded ? expandedBuildCopyLabel : collapsedBuildCopyLabel);
+                        if (toggleLabel) {
+                            toggleLabel.textContent = expanded ? expandedBuildCopyLabel : collapsedBuildCopyLabel;
+                        }
                     });
                 };
 
@@ -3826,6 +3860,35 @@ SVG;
                         const nextExpanded = wrapper.dataset.expanded !== 'true';
                         wrapper.dataset.expanded = nextExpanded ? 'true' : 'false';
                         syncBuildCopyToggles();
+                    });
+                });
+
+                fpsCards.forEach((card) => {
+                    const productUrl = card.dataset.productUrl;
+
+                    if (!productUrl) {
+                        return;
+                    }
+
+                    card.addEventListener('click', (event) => {
+                        if (event.target.closest('a, button, input, select, textarea, summary, label')) {
+                            return;
+                        }
+
+                        window.location.href = productUrl;
+                    });
+
+                    card.addEventListener('keydown', (event) => {
+                        if (event.target !== card) {
+                            return;
+                        }
+
+                        if (event.key !== 'Enter' && event.key !== ' ') {
+                            return;
+                        }
+
+                        event.preventDefault();
+                        window.location.href = productUrl;
                     });
                 });
 
