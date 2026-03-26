@@ -6,6 +6,7 @@
         <title>{{ $build['name'] }} | KondorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <style>
             :root { --bg:#fff; --surface:#fff; --text:#18202a; --muted:#646d79; --line:#dfe3eb; --primary:#6f10c9; --shadow:0 18px 45px rgba(24,32,42,.08); --container:min(calc(100% - 28px),1920px); --content:min(calc(100% - 28px),1440px); --win-border:#c9d0da; --win-surface-top:#fff; --win-surface-bottom:#eef2f6; --win-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(16,24,40,.08); }
             * { box-sizing:border-box; }
@@ -144,7 +145,7 @@
             .product-gallery__thumb-preview--detail::after { content:''; position:absolute; left:50%; right:12%; top:16%; bottom:16%; border-radius:14px; background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.04)); border:2px solid rgba(255,255,255,.38); }
             .product-fps { --product-fps-ratio:.44; display:grid; gap:14px; padding:18px 20px 20px; border:1px solid #dde4ee; background:#fff; box-shadow:0 16px 28px rgba(24,32,42,.06); }
             .product-fps__note { margin:0; color:#556171; font-size:14px; line-height:1.45; font-weight:700; }
-            .product-fps__row { display:grid; grid-template-columns:minmax(0,.92fr) minmax(0,1.12fr) minmax(0,.96fr); gap:14px; align-items:end; }
+            .product-fps__row { display:grid; grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr) minmax(0,.82fr) minmax(0,.94fr); gap:14px; align-items:end; }
             .product-fps__field { position:relative; display:grid; gap:7px; }
             .product-fps__field span, .product-fps__meter-kicker { color:#596574; font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
             .product-fps__field::after { content:''; position:absolute; right:18px; bottom:21px; width:10px; height:10px; border-right:2px solid #4c5766; border-bottom:2px solid #4c5766; transform:rotate(45deg); pointer-events:none; }
@@ -295,7 +296,8 @@
                 .brand > div { text-align:center; }
                 .brand__name { font-size:22px; }
                 .brand__sub { font-size:11px; }
-                .header-cart { grid-column:3; grid-row:1; align-self:center; justify-self:end; width:44px; min-height:44px; padding:0; gap:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+                .header-cart-shell { grid-column:3; grid-row:1; align-self:center; justify-self:end; }
+                .header-cart { width:44px; min-height:44px; padding:0; gap:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
                 .header-cart span { display:none; }
                 .header-cart svg { width:32px; height:32px; color:#7c8592; }
                 .menu-toggle { grid-column:1; grid-row:1; align-self:center; justify-self:start; display:inline-flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; width:44px; height:44px; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
@@ -492,10 +494,14 @@
                 ['id' => '1440p', 'name' => '2560 x 1440 (2K)', 'mobile_name' => '2K', 'multiplier' => 1.0],
                 ['id' => '4k', 'name' => '3840 x 2160 (4K)', 'mobile_name' => '4K', 'multiplier' => 0.7],
             ];
-            $productFpsPresetName = 'Високі';
-            $productFpsPresetMultiplier = 1.0;
+            $productFpsPresets = [
+                ['id' => 'ultra', 'name' => 'Ультра', 'multiplier' => 0.88],
+                ['id' => 'high', 'name' => 'Високі', 'multiplier' => 1.0],
+                ['id' => 'medium', 'name' => 'Середні', 'multiplier' => 1.14],
+            ];
             $defaultProductFpsGame = 'cyberpunk-2077';
             $defaultProductFpsDisplay = '1440p';
+            $defaultProductFpsPreset = 'high';
             $productFpsIndexById = static function (array $items): array {
                 $indexed = [];
 
@@ -507,25 +513,26 @@
             };
             $productFpsGameMap = $productFpsIndexById($productFpsGames);
             $productFpsDisplayMap = $productFpsIndexById($productFpsDisplays);
-            $computeProductFps = static function (int $score, string $gameId, string $displayId) use ($productFpsGameMap, $productFpsDisplayMap, $productFpsPresetMultiplier): int {
+            $productFpsPresetMap = $productFpsIndexById($productFpsPresets);
+            $computeProductFps = static function (int $score, string $gameId, string $displayId, string $presetId) use ($productFpsGameMap, $productFpsDisplayMap, $productFpsPresetMap): int {
                 $rawFps = $score
                     * ($productFpsGameMap[$gameId]['difficulty'] ?? 1)
                     * ($productFpsDisplayMap[$displayId]['multiplier'] ?? 1)
-                    * $productFpsPresetMultiplier;
+                    * ($productFpsPresetMap[$presetId]['multiplier'] ?? 1);
 
                 return (int) max(38, min(320, round($rawFps)));
             };
             $resolveProductFpsRatio = static fn (int $fps): float => max(0.18, min(1, $fps / 220));
-            $initialProductFps = $computeProductFps($build['fps_score'], $defaultProductFpsGame, $defaultProductFpsDisplay);
+            $initialProductFps = $computeProductFps($build['fps_score'], $defaultProductFpsGame, $defaultProductFpsDisplay, $defaultProductFpsPreset);
             $productFpsClientConfig = [
                 'defaults' => [
                     'game' => $defaultProductFpsGame,
                     'display' => $defaultProductFpsDisplay,
+                    'preset' => $defaultProductFpsPreset,
                 ],
-                'preset_name' => $productFpsPresetName,
-                'preset_multiplier' => $productFpsPresetMultiplier,
                 'games' => $productFpsGames,
                 'displays' => $productFpsDisplays,
+                'presets' => $productFpsPresets,
             ];
             $productOptions = [
                 [
@@ -694,6 +701,12 @@
                             Консультація
                         </button>
 
+                        @auth
+                            @if (auth()->user()?->is_admin)
+                                <a class="header-button" href="{{ url('/admin') }}">Адмінка</a>
+                            @endif
+                        @endauth
+
                         <div class="search-box" role="search">
                             <input type="search" placeholder="Пошук збірок">
                             <button type="button" aria-label="Пошук">
@@ -707,6 +720,7 @@
                         <a class="header-link" href="{{ url('/') }}">Головна</a>
                         <a class="header-link" href="{{ route('catalog') }}">Каталог збірок</a>
                         <a class="header-cart" href="#contacts" aria-label="Кошик"><span>0 ₴</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="19" r="1.6" fill="currentColor"/><circle cx="17" cy="19" r="1.6" fill="currentColor"/><path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                        @include('partials.header-cart')
                         <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
                     </div>
                 </div>
@@ -755,6 +769,11 @@
                         <a href="{{ url('/') }}#about">Про нас</a>
                         <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
                         <a href="#contacts">Контакти</a>
+                        @auth
+                            @if (auth()->user()?->is_admin)
+                                <a href="{{ url('/admin') }}">Адмінка</a>
+                            @endif
+                        @endauth
                         <a href="{{ url('/') }}#faq">FAQ</a>
                     </div>
                 </div>
@@ -896,9 +915,18 @@
 
                                     <label class="product-fps__field">
                                         <span>Монітор / Роздільна здатність</span>
-                                        <select data-product-fps-display aria-label="Оберіть роздільну здатність для FPS">
+                                        <select data-product-fps-display aria-label="Оберіть монітор для FPS">
                                             @foreach ($productFpsDisplays as $display)
                                                 <option value="{{ $display['id'] }}" @selected($display['id'] === $defaultProductFpsDisplay)>{{ $display['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+
+                                    <label class="product-fps__field">
+                                        <span>Графіка</span>
+                                        <select data-product-fps-preset aria-label="Оберіть налаштування графіки для FPS">
+                                            @foreach ($productFpsPresets as $preset)
+                                                <option value="{{ $preset['id'] }}" @selected($preset['id'] === $defaultProductFpsPreset)>{{ $preset['name'] }}</option>
                                             @endforeach
                                         </select>
                                     </label>
@@ -1297,6 +1325,7 @@
             </footer>
         </div>
 
+        <script src="{{ asset('js/storefront-cart.js') }}"></script>
         <script>
             (() => {
                 const header = document.querySelector('.header');
@@ -1313,6 +1342,7 @@
                 const productFpsRoot = document.querySelector('[data-product-fps]');
                 const productFpsGameSelect = document.querySelector('[data-product-fps-game]');
                 const productFpsDisplaySelect = document.querySelector('[data-product-fps-display]');
+                const productFpsPresetSelect = document.querySelector('[data-product-fps-preset]');
                 const productFpsValue = document.querySelector('[data-product-fps-value]');
                 const productFpsFill = document.querySelector('[data-product-fps-fill]');
                 const productOptions = Array.from(document.querySelectorAll('[data-product-option]'));
@@ -1325,9 +1355,16 @@
                 const addToCartButton = document.querySelector('[data-product-add]');
                 const productFeedback = document.querySelector('[data-product-feedback]');
                 const headerCartValue = document.querySelector('.header-cart span');
+                const productCartItem = {
+                    slug: @json($build['slug']),
+                    name: @json($build['name']),
+                    url: @json(route('product.show', ['slug' => $build['slug']])),
+                    tone: @json($build['tone'] ?? 'violet'),
+                };
                 const productFpsConfig = @json($productFpsClientConfig);
                 const productFpsGames = Object.fromEntries((productFpsConfig.games ?? []).map((game) => [game.id, game]));
                 const productFpsDisplays = Object.fromEntries((productFpsConfig.displays ?? []).map((display) => [display.id, display]));
+                const productFpsPresets = Object.fromEntries((productFpsConfig.presets ?? []).map((preset) => [preset.id, preset]));
                 let closeTimer;
                 let cartTotal = 0;
                 let activeSlideIndex = 0;
@@ -1460,12 +1497,13 @@
                     const score = Number(productFpsRoot.dataset.productFpsScore ?? 0);
                     const game = productFpsGames[productFpsGameSelect?.value ?? productFpsConfig.defaults?.game];
                     const display = productFpsDisplays[productFpsDisplaySelect?.value ?? productFpsConfig.defaults?.display];
+                    const preset = productFpsPresets[productFpsPresetSelect?.value ?? productFpsConfig.defaults?.preset];
 
-                    if (!score || !game || !display) {
+                    if (!score || !game || !display || !preset) {
                         return;
                     }
 
-                    const fps = Math.round(clamp(score * game.difficulty * display.multiplier * (productFpsConfig.preset_multiplier ?? 1), 38, 320));
+                    const fps = Math.round(clamp(score * game.difficulty * display.multiplier * preset.multiplier, 38, 320));
 
                     productFpsRoot.style.setProperty('--product-fps-ratio', resolveProductFpsRatio(fps).toFixed(4));
 
@@ -1575,7 +1613,7 @@
                     galleryInfoButton.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
                 });
 
-                [productFpsGameSelect, productFpsDisplaySelect].forEach((select) => {
+                [productFpsGameSelect, productFpsDisplaySelect, productFpsPresetSelect].forEach((select) => {
                     select?.addEventListener('change', () => {
                         syncProductFps();
                     });
@@ -1625,10 +1663,17 @@
                     const quantity = normalizeQuantity();
                     const lineTotal = total * quantity;
 
-                    cartTotal += lineTotal;
+                    if (window.KondorCart) {
+                        window.KondorCart.addItem({
+                            ...productCartItem,
+                            price: total,
+                        }, quantity);
+                    } else {
+                        cartTotal += lineTotal;
 
-                    if (headerCartValue) {
-                        headerCartValue.textContent = formatPrice(cartTotal);
+                        if (headerCartValue) {
+                            headerCartValue.textContent = formatPrice(cartTotal);
+                        }
                     }
 
                     if (productFeedback) {
@@ -1684,7 +1729,11 @@
                 normalizeQuantity();
                 setActiveSlide(0);
                 syncProductFps();
+                if (window.KondorCart) {
+                    window.KondorCart.renderPreviews();
+                }
             })();
         </script>
+        @include('partials.admin-site-notifications')
     </body>
 </html>

@@ -6,6 +6,7 @@
         <title>Каталог збірок | KondorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <style>
             :root {
                 --bg: #ffffff;
@@ -393,6 +394,7 @@
                 font-size: clamp(34px, 4vw, 56px);
                 line-height: 0.96;
                 letter-spacing: -0.05em;
+                overflow-wrap: anywhere;
             }
 
             .catalog-hero p {
@@ -1107,7 +1109,7 @@
                 justify-content: center;
                 width: 100%;
                 min-height: 44px;
-                margin-top: 18px;
+                margin-top: 0;
                 padding: 0 22px;
                 border: 1px solid #4b19a1;
                 border-radius: 14px;
@@ -1116,6 +1118,32 @@
                 font-size: 14px;
                 font-weight: 800;
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 18px rgba(105, 22, 203, 0.24);
+            }
+
+            .build-card__actions {
+                display: grid;
+                gap: 10px;
+                margin-top: 18px;
+            }
+
+            .build-card__action--cart {
+                border-color: #d6deea;
+                background: linear-gradient(180deg, #ffffff, #f7faff);
+                color: #1d2430;
+                box-shadow: 0 8px 18px rgba(24, 32, 42, 0.08);
+            }
+
+            .build-card__action--cart:hover {
+                border-color: #c6d3e4;
+                background: linear-gradient(180deg, #ffffff, #f1f6ff);
+                box-shadow: 0 10px 22px rgba(24, 32, 42, 0.1);
+            }
+
+            .build-card__action--cart.is-added {
+                border-color: #178f57;
+                background: linear-gradient(180deg, #2fbe75, #169659);
+                color: #ffffff;
+                box-shadow: 0 10px 22px rgba(22, 150, 89, 0.2);
             }
 
             .footer {
@@ -1404,11 +1432,14 @@
                     font-size: 11px;
                 }
 
-                .header-cart {
+                .header-cart-shell {
                     grid-column: 3;
                     grid-row: 1;
                     align-self: center;
                     justify-self: end;
+                }
+
+                .header-cart {
                     width: 44px;
                     min-height: 44px;
                     padding: 0;
@@ -1614,6 +1645,12 @@
                 .catalog-hero {
                     border-radius: 22px;
                     padding: 18px;
+                }
+
+                .catalog-hero h1 {
+                    font-size: 22px;
+                    line-height: 1.02;
+                    letter-spacing: -0.04em;
                 }
 
                 .catalog-hero p {
@@ -1837,6 +1874,12 @@
                             Консультація
                         </button>
 
+                        @auth
+                            @if (auth()->user()?->is_admin)
+                                <a class="header-button" href="{{ url('/admin') }}">Адмінка</a>
+                            @endif
+                        @endauth
+
                         <div class="search-box" role="search">
                             <input type="search" placeholder="Пошук збірок">
                             <button type="button" aria-label="Пошук">
@@ -1855,6 +1898,8 @@
                                 <path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </a>
+
+                        @include('partials.header-cart')
 
                         <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu">
                             <span></span>
@@ -1910,6 +1955,11 @@
                         <a href="#builds">Каталог збірок</a>
                         <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
                         <a href="#contacts">Контакти</a>
+                        @auth
+                            @if (auth()->user()?->is_admin)
+                                <a href="{{ url('/admin') }}">Адмінка</a>
+                            @endif
+                        @endauth
                         <a href="{{ url('/') }}#faq">FAQ</a>
                     </div>
                 </div>
@@ -2018,6 +2068,10 @@
                                     data-fps-score="{{ $build['fps_score'] }}"
                                     data-sort-index="{{ $build['sort_index'] }}"
                                     data-sort-price="{{ $build['price_value'] }}"
+                                    data-build-slug="{{ $build['slug'] }}"
+                                    data-build-name="{{ $build['name'] }}"
+                                    data-build-price="{{ $build['price_value'] }}"
+                                    data-build-tone="{{ $build['tone'] }}"
                                     data-current-fps="{{ $build['fps_value'] }}"
                                     style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
                                 >
@@ -2086,7 +2140,12 @@
 
                                         <span class="build-card__price-label">Ціна за збірку</span>
                                         <span class="build-card__price">{{ $build['price'] }}</span>
-                                        <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}">Детальніше</a>
+                                        <div class="build-card__actions">
+                                            <button class="catalog-cta build-card__action build-card__action--cart" type="button" data-build-add>
+                                                Додати в кошик
+                                            </button>
+                                            <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}">Детальніше</a>
+                                        </div>
                                     </div>
                                 </article>
                             @endforeach
@@ -2160,6 +2219,7 @@
             </footer>
         </div>
 
+        <script src="{{ asset('js/storefront-cart.js') }}"></script>
         <script>
             (() => {
                 const header = document.querySelector('.header');
@@ -2180,6 +2240,7 @@
                 const buildsGrid = document.querySelector('[data-build-grid]');
                 const buildSortSelect = document.querySelector('[data-build-sort]');
                 const buildCopyWrappers = Array.from(document.querySelectorAll('[data-build-copy-wrap]'));
+                const addToCartButtons = Array.from(document.querySelectorAll('[data-build-add]'));
                 const fpsConfig = @json($fpsClientConfig);
                 const fpsGames = Object.fromEntries((fpsConfig.games ?? []).map((game) => [game.id, game]));
                 const fpsDisplays = Object.fromEntries((fpsConfig.displays ?? []).map((display) => [display.id, display]));
@@ -2564,6 +2625,46 @@
                     });
                 });
 
+                addToCartButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const card = button.closest('[data-fps-card]');
+
+                        if (!card || !window.KondorCart) {
+                            return;
+                        }
+
+                        const slug = card.dataset.buildSlug;
+                        const name = card.dataset.buildName;
+                        const productUrl = card.dataset.productUrl;
+                        const price = Number(card.dataset.buildPrice ?? 0);
+
+                        if (!slug || !name || !productUrl || !price) {
+                            return;
+                        }
+
+                        window.KondorCart.addItem({
+                            slug,
+                            name,
+                            price,
+                            quantity: 1,
+                            url: productUrl,
+                            tone: card.dataset.buildTone ?? 'violet',
+                        });
+
+                        if (button.dataset.defaultLabel === undefined) {
+                            button.dataset.defaultLabel = button.textContent?.trim() ?? 'Додати в кошик';
+                        }
+
+                        button.classList.add('is-added');
+                        button.textContent = 'Додано';
+
+                        window.setTimeout(() => {
+                            button.classList.remove('is-added');
+                            button.textContent = button.dataset.defaultLabel ?? 'Додати в кошик';
+                        }, 1400);
+                    });
+                });
+
                 fpsCards.forEach((card) => {
                     const productUrl = card.dataset.productUrl;
 
@@ -2652,9 +2753,13 @@
                 syncFpsCards(true);
                 applyBuildSort(buildSortSelect?.value ?? 'popular');
                 syncBuildCopyToggles();
+                if (window.KondorCart) {
+                    window.KondorCart.renderPreviews();
+                }
 
                 window.addEventListener('load', syncBuildCopyToggles);
             })();
         </script>
+        @include('partials.admin-site-notifications')
     </body>
 </html>

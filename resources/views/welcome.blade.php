@@ -6,6 +6,7 @@
         <title>KindorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <style>
             :root {
                 --bg: #ffffff;
@@ -1355,7 +1356,33 @@
 
             .build-card__action {
                 width: 100%;
+                margin-top: 0;
+            }
+
+            .build-card__actions {
+                display: grid;
+                gap: 10px;
                 margin-top: 18px;
+            }
+
+            .build-card__action--cart {
+                border-color: #d6deea;
+                background: linear-gradient(180deg, #ffffff, #f7faff);
+                color: #1d2430;
+                box-shadow: 0 8px 18px rgba(24, 32, 42, 0.08);
+            }
+
+            .build-card__action--cart:hover {
+                border-color: #c6d3e4;
+                background: linear-gradient(180deg, #ffffff, #f1f6ff);
+                box-shadow: 0 10px 22px rgba(24, 32, 42, 0.1);
+            }
+
+            .build-card__action--cart.is-added {
+                border-color: #178f57;
+                background: linear-gradient(180deg, #2fbe75, #169659);
+                color: #ffffff;
+                box-shadow: 0 10px 22px rgba(22, 150, 89, 0.2);
             }
 
             .advantages {
@@ -2135,11 +2162,14 @@
                     font-size: 11px;
                 }
 
-                .header-cart {
+                .header-cart-shell {
                     grid-column: 3;
                     grid-row: 1;
                     align-self: center;
                     justify-self: end;
+                }
+
+                .header-cart {
                     width: 44px;
                     min-height: 44px;
                     padding: 0;
@@ -2685,6 +2715,12 @@
                             Консультація
                         </button>
 
+                        @auth
+                            @if (auth()->user()?->is_admin)
+                                <a class="header-button" href="{{ url('/admin') }}">Адмінка</a>
+                            @endif
+                        @endauth
+
                         <div class="search-box" role="search">
                             <input type="search" placeholder="Пошук збірок">
                             <button type="button" aria-label="Пошук">
@@ -2703,6 +2739,8 @@
                                 <path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </a>
+
+                        @include('partials.header-cart')
 
                         <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu">
                             <span></span>
@@ -2758,6 +2796,11 @@
                         <button type="button" data-mobile-dropdown-toggle>Каталог збірок</button>
                         <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
                         <a href="#contacts">Контакти</a>
+                        @auth
+                            @if (auth()->user()?->is_admin)
+                                <a href="{{ url('/admin') }}">Адмінка</a>
+                            @endif
+                        @endauth
                         <a href="#faq">FAQ</a>
                     </div>
                 </div>
@@ -2877,6 +2920,7 @@
 
                 foreach ($featuredBuilds as $index => $build) {
                     $initialFps = $computeFps($build['fps_score'], $defaultFpsGame, $defaultFpsDisplay, $defaultFpsPreset);
+                    $featuredBuilds[$index]['price_value'] = (int) preg_replace('/\D+/', '', $build['price']);
                     $featuredBuilds[$index]['fps_value'] = $initialFps;
                     $featuredBuilds[$index]['fps_ratio'] = $getFpsRatio($initialFps);
                     $featuredBuilds[$index]['fps_size'] = $getFpsSize($initialFps);
@@ -3130,6 +3174,10 @@ SVG;
                                 role="link"
                                 tabindex="0"
                                 data-fps-score="{{ $build['fps_score'] }}"
+                                data-build-slug="{{ $build['slug'] }}"
+                                data-build-name="{{ $build['name'] }}"
+                                data-build-price="{{ $build['price_value'] }}"
+                                data-build-tone="{{ $build['tone'] }}"
                                 data-current-fps="{{ $build['fps_value'] }}"
                                 style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
                             >
@@ -3198,7 +3246,12 @@ SVG;
 
                                     <span class="build-card__price-label">Ціна за збірку</span>
                                     <span class="build-card__price">{{ $build['price'] }}</span>
-                                    <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}">Детальніше</a>
+                                    <div class="build-card__actions">
+                                        <button class="catalog-cta build-card__action build-card__action--cart" type="button" data-build-add>
+                                            Додати в кошик
+                                        </button>
+                                        <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}">Детальніше</a>
+                                    </div>
                                 </div>
                             </article>
                         @endforeach
@@ -3442,6 +3495,7 @@ SVG;
             </div>
         </div>
 
+        <script src="{{ asset('js/storefront-cart.js') }}"></script>
         <script>
             (() => {
                 const header = document.querySelector('.header');
@@ -3474,16 +3528,59 @@ SVG;
                 const fpsSceneMeta = document.querySelector('[data-fps-scene-meta]');
                 const fpsCards = Array.from(document.querySelectorAll('[data-fps-card]'));
                 const buildCopyWrappers = Array.from(document.querySelectorAll('[data-build-copy-wrap]'));
+                const addToCartButtons = Array.from(document.querySelectorAll('[data-build-add]'));
+                const headerCartValue = document.querySelector('.header-cart span');
                 const fpsConfig = @json($fpsClientConfig);
                 const fpsGames = Object.fromEntries((fpsConfig.games ?? []).map((game) => [game.id, game]));
                 const fpsDisplays = Object.fromEntries((fpsConfig.displays ?? []).map((display) => [display.id, display]));
                 const fpsPresets = Object.fromEntries((fpsConfig.presets ?? []).map((preset) => [preset.id, preset]));
                 const fpsAnimationFrames = new WeakMap();
+                const cartStorageKey = 'kondor-cart-v1';
                 let closeTimer;
                 let activeGalleryIndex = 0;
 
                 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
                 const mobileBuildCopyLimit = 176;
+                const formatPrice = (value) => `${new Intl.NumberFormat('uk-UA').format(Math.round(value)).replace(/\u00a0/g, ' ')} ₴`;
+
+                const loadCart = () => {
+                    try {
+                        const raw = window.localStorage.getItem(cartStorageKey);
+
+                        if (!raw) {
+                            return [];
+                        }
+
+                        const parsed = JSON.parse(raw);
+
+                        return Array.isArray(parsed) ? parsed : [];
+                    } catch (error) {
+                        return [];
+                    }
+                };
+
+                const saveCart = (items) => {
+                    try {
+                        window.localStorage.setItem(cartStorageKey, JSON.stringify(items));
+                    } catch (error) {
+                        // Ignore storage failures and keep the cart usable for this session.
+                    }
+                };
+
+                const getCartTotal = (items) => items.reduce((sum, item) => {
+                    const price = Number(item.price ?? 0);
+                    const quantity = Number(item.quantity ?? 0);
+
+                    return sum + (price * quantity);
+                }, 0);
+
+                const syncHeaderCart = (items = loadCart()) => {
+                    if (!headerCartValue) {
+                        return;
+                    }
+
+                    headerCartValue.textContent = formatPrice(getCartTotal(items));
+                };
 
                 const resolveFpsState = (fps) => {
                     if (fps < 70) {
@@ -3863,6 +3960,60 @@ SVG;
                     });
                 });
 
+                addToCartButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const card = button.closest('[data-fps-card]');
+
+                        if (!card) {
+                            return;
+                        }
+
+                        const slug = card.dataset.buildSlug;
+                        const name = card.dataset.buildName;
+                        const productUrl = card.dataset.productUrl;
+                        const price = Number(card.dataset.buildPrice ?? 0);
+
+                        if (!slug || !name || !productUrl || !price) {
+                            return;
+                        }
+
+                        const cartItems = loadCart();
+                        const existingItem = cartItems.find((item) => item.slug === slug);
+
+                        if (existingItem) {
+                            existingItem.quantity = Number(existingItem.quantity ?? 0) + 1;
+                        } else {
+                            cartItems.push({
+                                slug,
+                                name,
+                                price,
+                                quantity: 1,
+                                url: productUrl,
+                                tone: card.dataset.buildTone ?? 'violet',
+                            });
+                        }
+
+                        if (window.KondorCart) {
+                            window.KondorCart.setCart(cartItems);
+                        } else {
+                            saveCart(cartItems);
+                            syncHeaderCart(cartItems);
+                        }
+
+                        if (button.dataset.defaultLabel === undefined) {
+                            button.dataset.defaultLabel = button.textContent?.trim() ?? 'Додати в кошик';
+                        }
+
+                        button.classList.add('is-added');
+                        button.textContent = 'Додано';
+
+                        window.setTimeout(() => {
+                            button.classList.remove('is-added');
+                            button.textContent = button.dataset.defaultLabel ?? 'Додати в кошик';
+                        }, 1400);
+                    });
+                });
+
                 fpsCards.forEach((card) => {
                     const productUrl = card.dataset.productUrl;
 
@@ -3904,6 +4055,11 @@ SVG;
                 syncHeaderState();
                 syncFpsCards(true);
                 syncBuildCopyToggles();
+                if (window.KondorCart) {
+                    window.KondorCart.renderPreviews(loadCart());
+                } else {
+                    syncHeaderCart();
+                }
 
                 window.addEventListener('resize', () => {
                     if (window.innerWidth > 760) {
@@ -4005,5 +4161,6 @@ SVG;
                 });
             })();
         </script>
+        @include('partials.admin-site-notifications')
     </body>
 </html>
