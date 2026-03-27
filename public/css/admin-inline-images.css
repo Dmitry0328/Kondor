@@ -195,6 +195,8 @@ body.has-admin-edit-mode-toggle {
     .build-card__media.has-site-image {
         background-position: center bottom;
         background-size: contain;
+        min-height: 292px !important;
+        aspect-ratio: 4 / 5;
     }
 
     .site-image-edit-badge {
