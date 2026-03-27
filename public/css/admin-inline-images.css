@@ -76,9 +76,12 @@
 }
 
 .site-image-edit-badge svg {
-    width: 14px;
-    height: 14px;
-    flex: none;
+    width: 14px !important;
+    height: 14px !important;
+    max-width: 14px !important;
+    max-height: 14px !important;
+    flex: 0 0 14px;
+    display: block !important;
 }
 
 .site-image-target.is-site-image-uploading .site-image-edit-badge {
