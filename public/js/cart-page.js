@@ -31,6 +31,20 @@
         }
     };
 
+    const parseMap = (value) => {
+        if (!value) {
+            return {};
+        }
+
+        try {
+            const parsed = JSON.parse(value);
+
+            return parsed && typeof parsed === 'object' ? parsed : {};
+        } catch (error) {
+            return {};
+        }
+    };
+
     const normalizeItems = (items) => items
         .map((item) => ({
             slug: `${item.slug ?? ''}`,
@@ -41,6 +55,8 @@
             tone: `${item.tone ?? 'violet'}`,
         }))
         .filter((item) => item.slug && item.name);
+
+    const buildCoverImages = parseMap(page.dataset.buildCoverImages);
 
     let stateItems = mode === 'shared'
         ? normalizeItems(parseItems(page.dataset.sharedCart))
@@ -216,7 +232,12 @@
 
         itemsContainer.innerHTML = stateItems.map((item) => `
             <article class="cart-item" data-cart-item="${item.slug}">
-                <div class="cart-item__thumb cart-item__thumb--${item.tone}" aria-hidden="true"></div>
+                <div
+                    class="cart-item__thumb cart-item__thumb--${item.tone} site-image-target${buildCoverImages[item.slug] ? ' has-site-image' : ''}"
+                    data-site-image-key="build.${item.slug}.cover"
+                    ${buildCoverImages[item.slug] ? `style="--site-image-url: url('${buildCoverImages[item.slug]}')"` : ''}
+                    aria-hidden="true"
+                ></div>
 
                 <div class="cart-item__copy">
                     <strong class="cart-item__title">${item.name}</strong>

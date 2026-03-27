@@ -7,6 +7,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
         <style>
             :root {
                 --bg: #ffffff;
@@ -2180,7 +2181,7 @@
                     box-shadow: none;
                 }
 
-                .header-cart span {
+                .header-cart [data-cart-amount] {
                     display: none;
                 }
 
@@ -2824,7 +2825,17 @@
                         </div>
                     </div>
 
-                    <div class="hero__visual" aria-hidden="true">
+                    @php
+                        $heroVisualImageUrl = \App\Support\SiteImages::url('home.hero.visual');
+                    @endphp
+                    <div
+                        class="hero__visual site-image-target{{ $heroVisualImageUrl ? ' has-site-image' : '' }}"
+                        data-site-image-key="home.hero.visual"
+                        @if ($heroVisualImageUrl)
+                            style="--site-image-url: url('{{ $heroVisualImageUrl }}');"
+                        @endif
+                        aria-hidden="true"
+                    >
                         <div class="rig">
                             <div class="rig__shadow"></div>
                             <div class="rig__case"></div>
@@ -2916,7 +2927,7 @@
                     return 'high';
                 };
 
-                $featuredBuilds = config('kondor_storefront.builds', []);
+                $featuredBuilds = \App\Support\StorefrontBuilds::all();
 
                 foreach ($featuredBuilds as $index => $build) {
                     $initialFps = $computeFps($build['fps_score'], $defaultFpsGame, $defaultFpsDisplay, $defaultFpsPreset);
@@ -3181,7 +3192,17 @@ SVG;
                                 data-current-fps="{{ $build['fps_value'] }}"
                                 style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
                             >
-                                <div class="build-card__media" aria-hidden="true"></div>
+                                @php
+                                    $buildCoverImageUrl = \App\Support\SiteImages::url('build.' . $build['slug'] . '.cover');
+                                @endphp
+                                <div
+                                    class="build-card__media site-image-target{{ $buildCoverImageUrl ? ' has-site-image' : '' }}"
+                                    data-site-image-key="build.{{ $build['slug'] }}.cover"
+                                    @if ($buildCoverImageUrl)
+                                        style="--site-image-url: url('{{ $buildCoverImageUrl }}');"
+                                    @endif
+                                    aria-hidden="true"
+                                ></div>
 
                                 <div class="build-card__body">
                                     <h3 class="build-card__title">{{ $build['name'] }}</h3>
@@ -3344,7 +3365,17 @@ SVG;
                                             data-gallery-title="{{ $item['title'] }}"
                                             aria-label="Відкрити {{ $item['title'] }}"
                                         >
-                                            <span class="gallery-card__art">{!! $item['art'] !!}</span>
+                                            @php
+                                                $galleryImageKey = 'home.gallery.' . $absoluteIndex;
+                                                $galleryImageUrl = \App\Support\SiteImages::url($galleryImageKey);
+                                            @endphp
+                                            <span
+                                                class="gallery-card__art site-image-target{{ $galleryImageUrl ? ' has-site-image' : '' }}"
+                                                data-site-image-key="{{ $galleryImageKey }}"
+                                                @if ($galleryImageUrl)
+                                                    style="--site-image-url: url('{{ $galleryImageUrl }}');"
+                                                @endif
+                                            >{!! $item['art'] !!}</span>
                                             <span class="gallery-card__badge">{{ $item['badge'] }}</span>
                                             <span class="gallery-card__zoom" aria-hidden="true">
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -4078,10 +4109,11 @@ SVG;
                         return;
                     }
 
-                    const art = currentItem.querySelector('.gallery-card__art')?.innerHTML ?? '';
+                    const artMarkup = currentItem.querySelector('.gallery-card__art')?.outerHTML ?? '';
                     const title = currentItem.dataset.galleryTitle ?? '';
 
-                    galleryMain.innerHTML = art;
+                    galleryMain.innerHTML = artMarkup;
+                    galleryMain.querySelectorAll('.site-image-edit-badge').forEach((badge) => badge.remove());
 
                     const modalSvg = galleryMain.querySelector('svg');
 
@@ -4162,5 +4194,6 @@ SVG;
             })();
         </script>
         @include('partials.admin-site-notifications')
+        @include('partials.admin-inline-images')
     </body>
 </html>

@@ -1,6 +1,7 @@
 <div class="header-cart-shell" data-cart-shell>
     <a class="header-cart" href="{{ route('cart') }}" aria-label="Кошик">
         <span data-cart-amount>0 ₴</span>
+        <span class="header-cart__badge" data-cart-count hidden>0</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="9" cy="19" r="1.6" fill="currentColor"/>
             <circle cx="17" cy="19" r="1.6" fill="currentColor"/>

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SiteAdminNotificationController;
+use App\Http\Controllers\SiteImageController;
+use App\Support\StorefrontBuilds;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,12 +17,13 @@ Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.c
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin-notifications/feed', [SiteAdminNotificationController::class, 'index'])->name('admin.notifications.feed');
+    Route::post('/admin/site-images', [SiteImageController::class, 'store'])->name('site-images.store');
 });
 
 Route::view('/catalog', 'catalog')->name('catalog');
 
 Route::get('/catalog/{slug}', function (string $slug) {
-    $build = collect(config('kondor_storefront.builds', []))->firstWhere('slug', $slug);
+    $build = StorefrontBuilds::findBySlug($slug);
 
     abort_unless($build, 404);
 
