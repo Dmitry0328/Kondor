@@ -7,6 +7,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
         <style>
             :root { --bg:#fff; --surface:#fff; --text:#18202a; --muted:#646d79; --line:#dfe3eb; --primary:#6f10c9; --shadow:0 18px 45px rgba(24,32,42,.08); --container:min(calc(100% - 28px),1920px); --content:min(calc(100% - 28px),1440px); --win-border:#c9d0da; --win-surface-top:#fff; --win-surface-bottom:#eef2f6; --win-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(16,24,40,.08); }
             * { box-sizing:border-box; }
@@ -298,7 +299,7 @@
                 .brand__sub { font-size:11px; }
                 .header-cart-shell { grid-column:3; grid-row:1; align-self:center; justify-self:end; }
                 .header-cart { width:44px; min-height:44px; padding:0; gap:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
-                .header-cart span { display:none; }
+                .header-cart [data-cart-amount] { display:none; }
                 .header-cart svg { width:32px; height:32px; color:#7c8592; }
                 .menu-toggle { grid-column:1; grid-row:1; align-self:center; justify-self:start; display:inline-flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; width:44px; height:44px; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
                 .menu-toggle span { width:28px; height:3px; margin:0; border-radius:999px; background:#596270; }
@@ -360,7 +361,8 @@
     </head>
     <body>
         @php
-            $headerBuilds = array_slice(config('kondor_storefront.builds', []), 0, 4);
+            $storefrontBuilds = \App\Support\StorefrontBuilds::all();
+            $headerBuilds = array_slice($storefrontBuilds, 0, 4);
             $priceFormatter = static fn (int $value): string => number_format($value, 0, '', ' ') . ' ₴';
             $basePrice = (int) preg_replace('/\D+/', '', $build['price']);
             $tonePalettes = [
@@ -461,7 +463,7 @@
                 ],
             ];
             $relatedBuilds = [];
-            foreach (config('kondor_storefront.builds', []) as $candidateBuild) {
+            foreach ($storefrontBuilds as $candidateBuild) {
                 if (($candidateBuild['slug'] ?? null) === ($build['slug'] ?? null)) {
                     continue;
                 }
@@ -802,10 +804,17 @@
                                 </div>
 
                                 @foreach ($productSlides as $slide)
+                                    @php
+                                        $slideImageKey = $slide['variant'] === 'hero'
+                                            ? 'build.' . $build['slug'] . '.cover'
+                                            : 'build.' . $build['slug'] . '.gallery.' . $slide['variant'];
+                                        $slideImageUrl = \App\Support\SiteImages::url($slideImageKey);
+                                    @endphp
                                     <div
-                                        class="product-gallery__slide product-gallery__slide--{{ $slide['variant'] }}{{ $loop->first ? ' is-active' : '' }}"
+                                        class="product-gallery__slide product-gallery__slide--{{ $slide['variant'] }}{{ $loop->first ? ' is-active' : '' }} site-image-target{{ $slideImageUrl ? ' has-site-image' : '' }}"
+                                        data-site-image-key="{{ $slideImageKey }}"
                                         data-product-slide="{{ $loop->index }}"
-                                        style="--slide-from: {{ $palette['from'] }}; --slide-to: {{ $palette['to'] }}; --slide-accent: {{ $palette['accent'] }};"
+                                        style="--slide-from: {{ $palette['from'] }}; --slide-to: {{ $palette['to'] }}; --slide-accent: {{ $palette['accent'] }};@if ($slideImageUrl) --site-image-url: url('{{ $slideImageUrl }}');@endif"
                                     >
                                         <div class="product-gallery__photo">
                                             @if ($slide['variant'] === 'performance')
@@ -883,6 +892,12 @@
 
                             <div class="product-gallery__thumbs">
                                 @foreach ($productSlides as $slide)
+                                    @php
+                                        $slideImageKey = $slide['variant'] === 'hero'
+                                            ? 'build.' . $build['slug'] . '.cover'
+                                            : 'build.' . $build['slug'] . '.gallery.' . $slide['variant'];
+                                        $slideImageUrl = \App\Support\SiteImages::url($slideImageKey);
+                                    @endphp
                                     <button
                                         class="product-gallery__thumb{{ $loop->first ? ' is-active' : '' }}"
                                         type="button"
@@ -890,7 +905,15 @@
                                         aria-label="Показати {{ $slide['thumb'] }}"
                                         style="--slide-from: {{ $palette['from'] }}; --slide-to: {{ $palette['to'] }};"
                                     >
-                                        <span class="product-gallery__thumb-preview product-gallery__thumb-preview--{{ $slide['variant'] }}" aria-hidden="true"></span>
+                                        <span
+                                            class="product-gallery__thumb-preview product-gallery__thumb-preview--{{ $slide['variant'] }} site-image-target{{ $slideImageUrl ? ' has-site-image' : '' }}"
+                                            data-site-image-key="{{ $slideImageKey }}"
+                                            data-site-image-passive="true"
+                                            @if ($slideImageUrl)
+                                                style="--site-image-url: url('{{ $slideImageUrl }}');"
+                                            @endif
+                                            aria-hidden="true"
+                                        ></span>
                                     </button>
                                 @endforeach
                             </div>
@@ -1222,12 +1245,22 @@
 
                         <div class="product-related__grid">
                             @foreach ($relatedBuilds as $relatedBuild)
+                                @php
+                                    $relatedImageUrl = \App\Support\SiteImages::url('build.' . $relatedBuild['slug'] . '.cover');
+                                @endphp
                                 <a
                                     class="product-related-card"
                                     href="{{ route('product.show', ['slug' => $relatedBuild['slug']]) }}"
                                     style="--related-from: {{ $relatedBuild['palette']['from'] }}; --related-to: {{ $relatedBuild['palette']['to'] }}; --related-accent: {{ $relatedBuild['palette']['accent'] }};"
                                 >
-                                    <div class="product-related-card__media" aria-hidden="true">
+                                    <div
+                                        class="product-related-card__media site-image-target{{ $relatedImageUrl ? ' has-site-image' : '' }}"
+                                        data-site-image-key="build.{{ $relatedBuild['slug'] }}.cover"
+                                        @if ($relatedImageUrl)
+                                            style="--site-image-url: url('{{ $relatedImageUrl }}');"
+                                        @endif
+                                        aria-hidden="true"
+                                    >
                                         <span class="product-related-card__glow"></span>
                                         <span class="product-related-card__tower"></span>
                                         <span class="product-related-card__fan-back"></span>
@@ -1735,5 +1768,6 @@
             })();
         </script>
         @include('partials.admin-site-notifications')
+        @include('partials.admin-inline-images')
     </body>
 </html>

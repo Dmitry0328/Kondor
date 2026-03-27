@@ -9,10 +9,15 @@
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <link rel="stylesheet" href="{{ asset('css/cart-page.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
     </head>
     <body>
         @php
-            $headerBuilds = array_slice(config('kondor_storefront.builds', []), 0, 4);
+            $storefrontBuilds = \App\Support\StorefrontBuilds::all();
+            $headerBuilds = array_slice($storefrontBuilds, 0, 4);
+            $cartBuildCoverImages = collect($storefrontBuilds)
+                ->mapWithKeys(fn (array $build): array => [$build['slug'] => \App\Support\SiteImages::url('build.' . $build['slug'] . '.cover')])
+                ->filter();
         @endphp
 
         <div class="cart-site-shell">
@@ -156,6 +161,7 @@
                     data-cart-url="{{ route('cart') }}"
                     data-share-endpoint="{{ route('cart.share') }}"
                     data-checkout-endpoint="{{ route('cart.checkout') }}"
+                    data-build-cover-images='@json($cartBuildCoverImages, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)'
                     data-shared-cart='@json($sharedCartItems, JSON_UNESCAPED_UNICODE)'
                 >
                 <section class="cart-hero">
@@ -336,6 +342,7 @@
         </div>
 
         @include('partials.admin-site-notifications')
+        @include('partials.admin-inline-images')
         <script src="{{ asset('js/storefront-cart.js') }}"></script>
         <script src="{{ asset('js/cart-page.js') }}"></script>
     </body>

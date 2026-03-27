@@ -56,8 +56,23 @@
     const getCount = (items = loadCart()) => items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
 
     const renderPreviews = (items = loadCart()) => {
+        const total = getTotal(items);
+        const count = getCount(items);
+
         document.querySelectorAll('[data-cart-amount]').forEach((element) => {
-            element.textContent = formatPrice(getTotal(items));
+            element.textContent = formatPrice(total);
+        });
+
+        document.querySelectorAll('[data-cart-count]').forEach((element) => {
+            element.textContent = `${count}`;
+            element.hidden = count < 1;
+        });
+
+        document.querySelectorAll('.header-cart').forEach((element) => {
+            element.setAttribute(
+                'aria-label',
+                count > 0 ? `Кошик, ${count} ${count === 1 ? 'товар' : count < 5 ? 'товари' : 'товарів'}` : 'Кошик',
+            );
         });
 
         document.querySelectorAll('[data-cart-preview]').forEach((preview) => {
@@ -80,7 +95,7 @@
 
             emptyState.hidden = true;
             contentState.hidden = false;
-            totalElement.textContent = formatPrice(getTotal(items));
+            totalElement.textContent = formatPrice(total);
             itemsContainer.innerHTML = items.map((item) => `
                 <div class="cart-preview__item">
                     <span class="cart-preview__thumb cart-preview__thumb--${escapeHtml(item.tone)}" aria-hidden="true"></span>
