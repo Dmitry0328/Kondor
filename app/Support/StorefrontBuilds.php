@@ -60,6 +60,28 @@ class StorefrontBuilds
 
     protected static function normalizeConfigBuild(array $build, int $index): array
     {
+        $catalog = FpsCatalog::all();
+
+        $rawScore = (int) ($build['fps_score'] ?? 0);
+        $fallbackScore = max(0, $rawScore);
+        $profiles = FpsProfiles::normalize((array) ($build['fps_profiles'] ?? []), $catalog);
+        $lookup = FpsProfiles::makeLookup($profiles);
+        $defaults = FpsProfiles::defaultState($catalog, $profiles);
+
+        $build['fps_score'] = $profiles !== []
+            ? FpsProfiles::resolve(
+                $lookup,
+                $profiles,
+                (string) ($defaults['game'] ?? ''),
+                (string) ($defaults['display'] ?? ''),
+                (string) ($defaults['preset'] ?? ''),
+                $fallbackScore,
+            )
+            : 0;
+        $build['fps_profiles'] = $profiles;
+        $build['fps_lookup'] = $lookup;
+        $build['fps_defaults'] = $defaults;
+
         if (isset($build['price']) && is_int($build['price'])) {
             $build['price'] = static::formatPrice($build['price']);
         }

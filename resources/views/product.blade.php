@@ -159,6 +159,9 @@
             .product-fps__meter-track { position:relative; display:block; height:8px; background:#11151a; box-shadow:inset 0 0 0 1px rgba(17,21,26,.06); overflow:hidden; }
             .product-fps__meter-fill { display:block; width:calc(var(--product-fps-ratio) * 100%); height:100%; background:linear-gradient(90deg,#2e7bff 0%, #7a52ff 42%, #ff1a55 100%); transform-origin:left center; transition:width .28s ease; }
             .product-fps__value { min-width:48px; color:#18202a; font-family:'Space Grotesk',sans-serif; font-size:34px; font-weight:700; line-height:1; letter-spacing:-.05em; text-align:right; }
+            .product-fps__value.is-empty { min-width:40px; color:#6a7789; font-size:30px; text-align:center; }
+            .product-fps__status { display:none; margin-top:2px; color:#6a7789; font-size:12px; font-weight:800; letter-spacing:.01em; text-transform:uppercase; }
+            .product-fps__status.is-visible { display:block; }
             .product-about { display:grid; gap:24px; padding:14px 2px 0; }
             .product-about--mobile { display:none; }
             .product-about__title { margin:0; font-family:'Space Grotesk',sans-serif; font-size:clamp(36px,4vw,54px); font-weight:700; letter-spacing:-.05em; color:#11151a; }
@@ -483,6 +486,7 @@
                 ['id' => 'inside', 'thumb' => 'Внутрішній монтаж', 'eyebrow' => 'Cable management', 'title' => 'Чисте складання всередині', 'meta' => $caseLabel . ' • ' . $build['storage'], 'variant' => 'inside'],
                 ['id' => 'detail', 'thumb' => 'Деталі', 'eyebrow' => 'Custom fit', 'title' => 'ARGB, airflow і запас під апгрейд', 'meta' => $boardBase . ' • ' . $powerUpgrade, 'variant' => 'detail'],
             ];
+            /*
             $productFpsGames = [
                 ['id' => 'cyberpunk-2077', 'name' => 'Cyberpunk 2077', 'label' => 'Cyberpunk', 'difficulty' => 0.72, 'accent' => '#f4dc39', 'from' => '#0f182f', 'to' => '#2b1211'],
                 ['id' => 'gta-5', 'name' => 'GTA 5', 'label' => 'GTA V', 'difficulty' => 1.12, 'accent' => '#8cff7c', 'from' => '#10151d', 'to' => '#183625'],
@@ -516,16 +520,63 @@
             $productFpsGameMap = $productFpsIndexById($productFpsGames);
             $productFpsDisplayMap = $productFpsIndexById($productFpsDisplays);
             $productFpsPresetMap = $productFpsIndexById($productFpsPresets);
-            $computeProductFps = static function (int $score, string $gameId, string $displayId, string $presetId) use ($productFpsGameMap, $productFpsDisplayMap, $productFpsPresetMap): int {
-                $rawFps = $score
-                    * ($productFpsGameMap[$gameId]['difficulty'] ?? 1)
-                    * ($productFpsDisplayMap[$displayId]['multiplier'] ?? 1)
-                    * ($productFpsPresetMap[$presetId]['multiplier'] ?? 1);
 
-                return (int) max(38, min(320, round($rawFps)));
+            */
+            $fpsCatalog = \App\Support\FpsCatalog::all();
+            $productFpsGames = $fpsCatalog['games'];
+            $productFpsDisplays = $fpsCatalog['displays'];
+            $productFpsPresets = $fpsCatalog['presets'];
+
+            $productFpsIndexById = static function (array $items): array {
+                $indexed = [];
+
+                foreach ($items as $item) {
+                    $indexed[$item['id']] = $item;
+                }
+
+                return $indexed;
             };
-            $resolveProductFpsRatio = static fn (int $fps): float => max(0.18, min(1, $fps / 220));
-            $initialProductFps = $computeProductFps($build['fps_score'], $defaultProductFpsGame, $defaultProductFpsDisplay, $defaultProductFpsPreset);
+
+            $defaultProductFpsState = \App\Support\FpsProfiles::defaultState(
+                $fpsCatalog,
+                (array) ($build['fps_profiles'] ?? []),
+            );
+            $defaultProductFpsGame = $defaultProductFpsState['game'] ?? ($productFpsGames[0]['id'] ?? '');
+            $defaultProductFpsDisplay = $defaultProductFpsState['display'] ?? ($productFpsDisplays[0]['id'] ?? '');
+            $defaultProductFpsPreset = $defaultProductFpsState['preset'] ?? ($productFpsPresets[0]['id'] ?? '');
+
+            $productFpsGameMap = $productFpsIndexById($productFpsGames);
+            $productFpsDisplayMap = $productFpsIndexById($productFpsDisplays);
+            $productFpsPresetMap = $productFpsIndexById($productFpsPresets);
+
+            if (! isset($productFpsGameMap[$defaultProductFpsGame])) {
+                $defaultProductFpsGame = array_key_first($productFpsGameMap);
+            }
+
+            if (! isset($productFpsDisplayMap[$defaultProductFpsDisplay])) {
+                $defaultProductFpsDisplay = array_key_first($productFpsDisplayMap);
+            }
+
+            if (! isset($productFpsPresetMap[$defaultProductFpsPreset])) {
+                $defaultProductFpsPreset = array_key_first($productFpsPresetMap);
+            }
+
+            $productFpsProfiles = \App\Support\FpsProfiles::normalize(
+                (array) ($build['fps_profiles'] ?? []),
+                $fpsCatalog,
+            );
+            $productFpsLookup = \App\Support\FpsProfiles::makeLookup($productFpsProfiles);
+            $resolveProductFpsRatio = static fn (int $fps): float => $fps > 0 ? max(0.18, min(1, $fps / 220)) : 0;
+            $initialProductFps = $productFpsProfiles !== []
+                ? \App\Support\FpsProfiles::resolve(
+                    $productFpsLookup,
+                    $productFpsProfiles,
+                    (string) ($defaultProductFpsGame ?? ''),
+                    (string) ($defaultProductFpsDisplay ?? ''),
+                    (string) ($defaultProductFpsPreset ?? ''),
+                    0,
+                )
+                : 0;
             $productFpsClientConfig = [
                 'defaults' => [
                     'game' => $defaultProductFpsGame,
@@ -535,6 +586,7 @@
                 'games' => $productFpsGames,
                 'displays' => $productFpsDisplays,
                 'presets' => $productFpsPresets,
+                'lookup' => $productFpsLookup,
             ];
             $productOptions = [
                 [
@@ -921,7 +973,8 @@
                             <section
                                 class="product-fps"
                                 data-product-fps
-                                data-product-fps-score="{{ $build['fps_score'] }}"
+                                data-product-fps-map='@json($productFpsLookup)'
+                                data-product-fps-fallback="0"
                                 style="--product-fps-ratio: {{ number_format($resolveProductFpsRatio($initialProductFps), 4, '.', '') }};"
                             >
                                 <p class="product-fps__note">*Показники FPS є усередненими і служать для демонстрації відносної продуктивності системи.</p>
@@ -961,8 +1014,9 @@
                                             <span class="product-fps__meter-track" aria-hidden="true">
                                                 <span class="product-fps__meter-fill" data-product-fps-fill></span>
                                             </span>
-                                            <strong class="product-fps__value" data-product-fps-value>{{ $initialProductFps }}</strong>
+                                            <strong class="product-fps__value{{ $initialProductFps > 0 ? '' : ' is-empty' }}" data-product-fps-value>{{ $initialProductFps > 0 ? $initialProductFps : '—' }}</strong>
                                         </div>
+                                        <span class="product-fps__status{{ $initialProductFps > 0 ? '' : ' is-visible' }}" data-product-fps-status>{{ $initialProductFps > 0 ? '' : 'FPS тест відсутній' }}</span>
                                     </div>
                                 </div>
                             </section>
@@ -1378,6 +1432,7 @@
                 const productFpsPresetSelect = document.querySelector('[data-product-fps-preset]');
                 const productFpsValue = document.querySelector('[data-product-fps-value]');
                 const productFpsFill = document.querySelector('[data-product-fps-fill]');
+                const productFpsStatus = document.querySelector('[data-product-fps-status]');
                 const productOptions = Array.from(document.querySelectorAll('[data-product-option]'));
                 const optionInputs = Array.from(document.querySelectorAll('[data-option-price]'));
                 const optionChoices = Array.from(document.querySelectorAll('.product-choice'));
@@ -1398,13 +1453,15 @@
                 const productFpsGames = Object.fromEntries((productFpsConfig.games ?? []).map((game) => [game.id, game]));
                 const productFpsDisplays = Object.fromEntries((productFpsConfig.displays ?? []).map((display) => [display.id, display]));
                 const productFpsPresets = Object.fromEntries((productFpsConfig.presets ?? []).map((preset) => [preset.id, preset]));
+                const productFpsLookup = productFpsConfig.lookup ?? {};
                 let closeTimer;
                 let cartTotal = 0;
                 let activeSlideIndex = 0;
 
                 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
                 const formatPrice = (value) => `${new Intl.NumberFormat('uk-UA').format(Math.round(value)).replace(/\u00a0/g, ' ')} ₴`;
-                const resolveProductFpsRatio = (fps) => clamp(fps / 220, 0.18, 1);
+                const resolveProductFpsRatio = (fps) => fps > 0 ? clamp(fps / 220, 0.18, 1) : 0;
+                const productStateKey = (state) => `${state.game ?? ''}|${state.display ?? ''}|${state.preset ?? ''}`;
 
                 const syncHeaderState = () => {
                     if (!header) {
@@ -1527,25 +1584,51 @@
                         return;
                     }
 
-                    const score = Number(productFpsRoot.dataset.productFpsScore ?? 0);
                     const game = productFpsGames[productFpsGameSelect?.value ?? productFpsConfig.defaults?.game];
                     const display = productFpsDisplays[productFpsDisplaySelect?.value ?? productFpsConfig.defaults?.display];
                     const preset = productFpsPresets[productFpsPresetSelect?.value ?? productFpsConfig.defaults?.preset];
 
-                    if (!score || !game || !display || !preset) {
+                    if (!game || !display || !preset) {
                         return;
                     }
 
-                    const fps = Math.round(clamp(score * game.difficulty * display.multiplier * preset.multiplier, 38, 320));
+                    const rawMap = productFpsRoot.dataset.productFpsMap ?? '{}';
+                    let map = productFpsRoot.__fpsMap;
+
+                    if (!map) {
+                        try {
+                            map = JSON.parse(rawMap);
+                        } catch (error) {
+                            map = {};
+                        }
+
+                        productFpsRoot.__fpsMap = map;
+                    }
+
+                    const selectedKey = productStateKey({
+                        game: game.id,
+                        display: display.id,
+                        preset: preset.id,
+                    });
+                    const selectedFps = Number(map[selectedKey] ?? productFpsLookup[selectedKey] ?? 0);
+                    const fallbackFps = Number(productFpsRoot.dataset.productFpsFallback ?? 0);
+                    const fps = Math.round(clamp(selectedFps > 0 ? selectedFps : fallbackFps, 0, 320));
+                    const hasFps = fps > 0;
 
                     productFpsRoot.style.setProperty('--product-fps-ratio', resolveProductFpsRatio(fps).toFixed(4));
 
                     if (productFpsValue) {
-                        productFpsValue.textContent = `${fps}`;
+                        productFpsValue.classList.toggle('is-empty', !hasFps);
+                        productFpsValue.textContent = hasFps ? `${fps}` : '—';
                     }
 
                     if (productFpsFill) {
                         productFpsFill.style.width = `${(resolveProductFpsRatio(fps) * 100).toFixed(2)}%`;
+                    }
+
+                    if (productFpsStatus) {
+                        productFpsStatus.classList.toggle('is-visible', !hasFps);
+                        productFpsStatus.textContent = hasFps ? '' : 'FPS тест відсутній';
                     }
                 };
 

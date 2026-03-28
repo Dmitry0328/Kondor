@@ -447,6 +447,10 @@
                 align-items: stretch;
             }
 
+            .fps-lab--single .fps-lab__inner {
+                grid-template-columns: minmax(0, 1fr) !important;
+            }
+
             .fps-lab__controls,
             .fps-lab__scene {
                 position: relative;
@@ -1022,6 +1026,18 @@
                 transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.32s ease;
             }
 
+            .build-card__fps-value.is-empty {
+                min-height: auto;
+                padding: 2px 0 0;
+                font-size: 11px;
+                line-height: 1.2;
+                letter-spacing: 0;
+                color: #667385;
+                font-family: 'Manrope', sans-serif;
+                font-weight: 800;
+                text-transform: uppercase;
+            }
+
             .build-card__fps-scale {
                 position: relative;
                 display: flex;
@@ -1060,6 +1076,12 @@
                 text-transform: uppercase;
             }
 
+            .build-card__fps-label.is-empty {
+                font-size: 10px;
+                letter-spacing: 0.02em;
+                color: #7a8798;
+            }
+
             .build-card__fps-more {
                 display: none;
                 align-items: center;
@@ -1084,6 +1106,11 @@
 
             .build-card.is-fps-high .build-card__fps-fill {
                 box-shadow: 0 0 16px rgba(133, 70, 255, 0.22);
+            }
+
+            .build-card.is-fps-none .build-card__fps-fill {
+                height: 0;
+                box-shadow: none;
             }
 
             .build-card__price-label {
@@ -1721,6 +1748,7 @@
     </head>
     <body>
         @php
+            /*
             $fpsGames = [
                 ['id' => 'cyberpunk-2077', 'name' => 'Cyberpunk 2077', 'difficulty' => 0.72, 'accent' => '#f4dc39', 'from' => '#0f182f', 'to' => '#2b1211', 'badge' => 'Night City benchmark'],
                 ['id' => 'gta-5', 'name' => 'GTA 5', 'difficulty' => 1.12, 'accent' => '#8cff7c', 'from' => '#10151d', 'to' => '#183625', 'badge' => 'Los Santos test'],
@@ -1762,18 +1790,50 @@
             $fpsDisplayMap = $fpsIndexById($fpsDisplays);
             $fpsPresetMap = $fpsIndexById($fpsPresets);
 
-            $computeFps = static function (int $score, string $gameId, string $displayId, string $presetId) use ($fpsGameMap, $fpsDisplayMap, $fpsPresetMap): int {
-                $rawFps = $score
-                    * ($fpsGameMap[$gameId]['difficulty'] ?? 1)
-                    * ($fpsDisplayMap[$displayId]['multiplier'] ?? 1)
-                    * ($fpsPresetMap[$presetId]['multiplier'] ?? 1);
+            */
+            $fpsCatalog = \App\Support\FpsCatalog::all();
+            $fpsGames = $fpsCatalog['games'];
+            $fpsDisplays = $fpsCatalog['displays'];
+            $fpsPresets = $fpsCatalog['presets'];
 
-                return (int) max(38, min(320, round($rawFps)));
+            $fpsIndexById = static function (array $items): array {
+                $indexed = [];
+
+                foreach ($items as $item) {
+                    $indexed[$item['id']] = $item;
+                }
+
+                return $indexed;
             };
 
-            $getFpsRatio = static fn (int $fps): float => max(0.18, min(1, $fps / 220));
+            $defaultFpsState = \App\Support\FpsProfiles::defaultState($fpsCatalog, []);
+            $defaultFpsGame = $defaultFpsState['game'] ?? ($fpsGames[0]['id'] ?? '');
+            $defaultFpsDisplay = $defaultFpsState['display'] ?? ($fpsDisplays[0]['id'] ?? '');
+            $defaultFpsPreset = $defaultFpsState['preset'] ?? ($fpsPresets[0]['id'] ?? '');
+
+            $fpsGameMap = $fpsIndexById($fpsGames);
+            $fpsDisplayMap = $fpsIndexById($fpsDisplays);
+            $fpsPresetMap = $fpsIndexById($fpsPresets);
+
+            if (! isset($fpsGameMap[$defaultFpsGame])) {
+                $defaultFpsGame = array_key_first($fpsGameMap);
+            }
+
+            if (! isset($fpsDisplayMap[$defaultFpsDisplay])) {
+                $defaultFpsDisplay = array_key_first($fpsDisplayMap);
+            }
+
+            if (! isset($fpsPresetMap[$defaultFpsPreset])) {
+                $defaultFpsPreset = array_key_first($fpsPresetMap);
+            }
+
+            $getFpsRatio = static fn (int $fps): float => $fps > 0 ? max(0.18, min(1, $fps / 220)) : 0;
             $getFpsSize = static fn (int $fps): int => (int) round(22 + (max(0, min(1, ($fps - 40) / 170)) * 10));
             $getFpsState = static function (int $fps): string {
+                if ($fps <= 0) {
+                    return 'none';
+                }
+
                 if ($fps < 70) {
                     return 'low';
                 }
@@ -1788,9 +1848,26 @@
             $builds = \App\Support\StorefrontBuilds::all();
 
             foreach ($builds as $index => $build) {
-                $initialFps = $computeFps($build['fps_score'], $defaultFpsGame, $defaultFpsDisplay, $defaultFpsPreset);
+                $fallbackFps = max(0, (int) ($build['fps_score'] ?? 0));
+                $fpsProfiles = \App\Support\FpsProfiles::normalize(
+                    (array) ($build['fps_profiles'] ?? []),
+                    $fpsCatalog,
+                );
+                $fpsLookup = \App\Support\FpsProfiles::makeLookup($fpsProfiles);
+                $initialFps = $fpsProfiles !== []
+                    ? \App\Support\FpsProfiles::resolve(
+                        $fpsLookup,
+                        $fpsProfiles,
+                        (string) ($defaultFpsGame ?? ''),
+                        (string) ($defaultFpsDisplay ?? ''),
+                        (string) ($defaultFpsPreset ?? ''),
+                        $fallbackFps,
+                    )
+                    : 0;
                 $builds[$index]['sort_index'] = $index;
                 $builds[$index]['price_value'] = (int) preg_replace('/\D+/', '', $build['price']);
+                $builds[$index]['fps_profiles'] = $fpsProfiles;
+                $builds[$index]['fps_lookup'] = $fpsLookup;
                 $builds[$index]['fps_value'] = $initialFps;
                 $builds[$index]['fps_ratio'] = $getFpsRatio($initialFps);
                 $builds[$index]['fps_size'] = $getFpsSize($initialFps);
@@ -1979,7 +2056,7 @@
 
                     <section class="builds" id="builds">
                         <div
-                            class="fps-lab"
+                            class="fps-lab fps-lab--single"
                             data-fps-lab
                             style="--scene-from: {{ $fpsGameMap[$defaultFpsGame]['from'] }}; --scene-to: {{ $fpsGameMap[$defaultFpsGame]['to'] }}; --scene-accent: {{ $fpsGameMap[$defaultFpsGame]['accent'] }};"
                         >
@@ -2034,11 +2111,6 @@
                                     <p class="fps-lab__note">*Показники FPS є усередненими і служать для демонстрації відносної продуктивності систем.</p>
                                 </div>
 
-                                <div class="fps-lab__scene">
-                                    <span class="fps-lab__scene-badge" data-fps-scene-badge>{{ $fpsGameMap[$defaultFpsGame]['badge'] }}</span>
-                                    <strong class="fps-lab__scene-title" data-fps-scene-title>{{ $fpsGameMap[$defaultFpsGame]['name'] }}</strong>
-                                    <span class="fps-lab__scene-meta" data-fps-scene-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['name'] }} · {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
-                                </div>
                             </div>
                         </div>
 
@@ -2066,7 +2138,8 @@
                                     data-product-url="{{ route('product.show', ['slug' => $build['slug']]) }}"
                                     role="link"
                                     tabindex="0"
-                                    data-fps-score="{{ $build['fps_score'] }}"
+                                    data-fps-map='@json($build['fps_lookup'] ?? [])'
+                                    data-fps-fallback="{{ $build['fps_score'] }}"
                                     data-sort-index="{{ $build['sort_index'] }}"
                                     data-sort-price="{{ $build['price_value'] }}"
                                     data-build-slug="{{ $build['slug'] }}"
@@ -2136,11 +2209,11 @@
 
                                             <div class="build-card__fps-side">
                                                 <div class="build-card__fps" aria-label="Поточний FPS">
-                                                    <span class="build-card__fps-value" data-fps-value>{{ $build['fps_value'] }}</span>
+                                                    <span class="build-card__fps-value{{ $build['fps_value'] > 0 ? '' : ' is-empty' }}" data-fps-value>{{ $build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній' }}</span>
                                                     <span class="build-card__fps-scale" aria-hidden="true">
                                                         <span class="build-card__fps-fill"></span>
                                                     </span>
-                                                    <span class="build-card__fps-label">FPS</span>
+                                                    <span class="build-card__fps-label" data-fps-label>FPS</span>
                                                 </div>
 
                                                 <button class="build-card__fps-more" type="button" data-fps-mobile-open aria-label="Переглянути більше FPS даних">
@@ -2263,6 +2336,10 @@
                 const mobileBuildCopyLimit = 176;
 
                 const resolveFpsState = (fps) => {
+                    if (fps <= 0) {
+                        return 'none';
+                    }
+
                     if (fps < 70) {
                         return 'low';
                     }
@@ -2274,47 +2351,69 @@
                     return 'high';
                 };
 
-                const resolveFpsRatio = (fps) => clamp(fps / 220, 0.18, 1);
-                const resolveFpsSize = (fps) => Math.round(22 + (clamp((fps - 40) / 170, 0, 1) * 10));
-
-                const computeFps = (score, state) => {
-                    const game = fpsGames[state.game];
-                    const display = fpsDisplays[state.display];
-                    const preset = fpsPresets[state.preset];
-
-                    if (!game || !display || !preset) {
-                        return Math.round(score);
+                const resolveFpsRatio = (fps) => fps > 0 ? clamp(fps / 220, 0.18, 1) : 0;
+                const resolveFpsSize = (fps) => fps > 0 ? Math.round(22 + (clamp((fps - 40) / 170, 0, 1) * 10)) : 22;
+                const toStateKey = (state) => `${state.game ?? ''}|${state.display ?? ''}|${state.preset ?? ''}`;
+                const parseCardFpsMap = (card) => {
+                    if (card.__fpsMap !== undefined) {
+                        return card.__fpsMap;
                     }
 
-                    return Math.round(clamp(score * game.difficulty * display.multiplier * preset.multiplier, 38, 320));
+                    try {
+                        card.__fpsMap = JSON.parse(card.dataset.fpsMap ?? '{}');
+                    } catch (error) {
+                        card.__fpsMap = {};
+                    }
+
+                    return card.__fpsMap;
+                };
+
+                const resolveCardFps = (card, state) => {
+                    const fpsMap = parseCardFpsMap(card);
+                    const exact = Number(fpsMap[toStateKey(state)] ?? 0);
+
+                    if (exact > 0) {
+                        return exact;
+                    }
+
+                    return 0;
                 };
 
                 const renderFpsCard = (card, fps) => {
                     const valueElement = card.querySelector('[data-fps-value]');
+                    const labelElement = card.querySelector('[data-fps-label]');
                     const fpsState = resolveFpsState(fps);
                     const roundedFps = Math.round(fps);
+                    const isMissing = fpsState === 'none';
 
                     card.style.setProperty('--fps-ratio', resolveFpsRatio(fps).toFixed(4));
                     card.style.setProperty('--fps-size', `${resolveFpsSize(fps)}px`);
-                    card.classList.remove('is-fps-low', 'is-fps-mid', 'is-fps-high');
+                    card.classList.remove('is-fps-none', 'is-fps-low', 'is-fps-mid', 'is-fps-high');
                     card.classList.add(`is-fps-${fpsState}`);
                     card.dataset.currentFps = `${roundedFps}`;
 
                     if (valueElement) {
-                        valueElement.textContent = `${roundedFps}`;
+                        valueElement.classList.toggle('is-empty', isMissing);
+                        valueElement.textContent = isMissing ? 'FPS тест відсутній' : `${roundedFps}`;
+                    }
+
+                    if (labelElement) {
+                        labelElement.classList.remove('is-empty');
+                        labelElement.textContent = 'FPS';
                     }
                 };
 
                 const animateFpsCard = (card, targetFps, immediate = false) => {
                     const valueElement = card.querySelector('[data-fps-value]');
-                    const currentFps = Number(card.dataset.currentFps ?? valueElement?.textContent ?? targetFps);
+                    const parsedCurrentFps = Number(card.dataset.currentFps ?? valueElement?.textContent ?? targetFps);
+                    const currentFps = Number.isFinite(parsedCurrentFps) ? parsedCurrentFps : 0;
                     const activeFrame = fpsAnimationFrames.get(card);
 
                     if (activeFrame) {
                         window.cancelAnimationFrame(activeFrame);
                     }
 
-                    if (immediate || currentFps === targetFps) {
+                    if (immediate || currentFps === targetFps || targetFps <= 0) {
                         card.dataset.currentFps = `${targetFps}`;
                         card.classList.remove('is-fps-animating');
                         renderFpsCard(card, targetFps);
@@ -2383,13 +2482,7 @@
                     updateFpsScene(state);
 
                     fpsCards.forEach((card) => {
-                        const score = Number(card.dataset.fpsScore ?? 0);
-
-                        if (!score) {
-                            return;
-                        }
-
-                        animateFpsCard(card, computeFps(score, state), immediate);
+                        animateFpsCard(card, resolveCardFps(card, state), immediate);
                     });
                 };
 

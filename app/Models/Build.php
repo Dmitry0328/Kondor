@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\FpsCatalog;
+use App\Support\FpsProfiles;
 use App\Support\SiteImages;
 use App\Support\StorefrontBuilds;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +21,7 @@ class Build extends Model
         'storage',
         'price',
         'fps_score',
+        'fps_profiles',
         'product_specs',
         'about',
         'sort_order',
@@ -30,6 +33,7 @@ class Build extends Model
         return [
             'price' => 'integer',
             'fps_score' => 'integer',
+            'fps_profiles' => 'array',
             'product_specs' => 'array',
             'about' => 'array',
             'sort_order' => 'integer',
@@ -55,6 +59,22 @@ class Build extends Model
 
     public function toStorefrontPayload(): array
     {
+        $catalog = FpsCatalog::all();
+        $fallbackFps = max(0, (int) ($this->fps_score ?? 0));
+        $fpsProfiles = FpsProfiles::normalize((array) ($this->fps_profiles ?? []), $catalog);
+        $fpsLookup = FpsProfiles::makeLookup($fpsProfiles);
+        $fpsDefaults = FpsProfiles::defaultState($catalog, $fpsProfiles);
+        $baseFps = $fpsProfiles !== []
+            ? FpsProfiles::resolve(
+                $fpsLookup,
+                $fpsProfiles,
+                (string) ($fpsDefaults['game'] ?? ''),
+                (string) ($fpsDefaults['display'] ?? ''),
+                (string) ($fpsDefaults['preset'] ?? ''),
+                $fallbackFps,
+            )
+            : 0;
+
         return [
             'slug' => $this->slug,
             'tone' => $this->tone,
@@ -64,7 +84,10 @@ class Build extends Model
             'ram' => $this->ram,
             'storage' => $this->storage,
             'price' => StorefrontBuilds::formatPrice($this->price),
-            'fps_score' => $this->fps_score,
+            'fps_score' => $baseFps,
+            'fps_profiles' => $fpsProfiles,
+            'fps_lookup' => $fpsLookup,
+            'fps_defaults' => $fpsDefaults,
             'product_specs' => $this->product_specs ?: null,
             'about' => $this->about ?: null,
             'sort_order' => $this->sort_order,

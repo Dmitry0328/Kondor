@@ -10,17 +10,33 @@ class EditBuild extends EditRecord
 {
     protected static string $resource = BuildResource::class;
 
+    protected mixed $pendingCoverUpload = null;
+
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        return [
+        $data = [
             ...$data,
+            'cover_upload' => BuildResource::coverImagePathForSlug($data['slug'] ?? null),
             ...BuildResource::expandAboutForForm($data['about'] ?? null),
         ];
+
+        return BuildResource::expandFpsProfilesForForm($data);
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        return BuildResource::collapseAboutFromForm($data);
+        $this->pendingCoverUpload = $data['cover_upload'] ?? null;
+
+        unset($data['cover_upload']);
+
+        $data = BuildResource::collapseAboutFromForm($data);
+
+        return BuildResource::normalizeFpsProfilesFromForm($data);
+    }
+
+    protected function afterSave(): void
+    {
+        BuildResource::syncCoverImage($this->getRecord(), $this->pendingCoverUpload);
     }
 
     protected function getHeaderActions(): array
