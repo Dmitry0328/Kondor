@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -134,8 +135,8 @@ return new class extends Migration
                 'email_verified_at' => $row['email_verified_at'] ?? null,
                 'password' => (string) ($row['password'] ?? ''),
                 'remember_token' => $row['remember_token'] ?? null,
-                'created_at' => $row['created_at'] ?? now(),
-                'updated_at' => $row['updated_at'] ?? now(),
+                'created_at' => $this->normalizeTimestamp($row['created_at'] ?? null),
+                'updated_at' => $this->normalizeTimestamp($row['updated_at'] ?? null),
             ])
             ->values()
             ->all();
@@ -169,8 +170,8 @@ return new class extends Migration
                 'sort_order' => (int) ($row['sort_order'] ?? 0),
                 'is_active' => (bool) ($row['is_active'] ?? true),
                 'is_default' => (bool) ($row['is_default'] ?? false),
-                'created_at' => $row['created_at'] ?? now(),
-                'updated_at' => $row['updated_at'] ?? now(),
+                'created_at' => $this->normalizeTimestamp($row['created_at'] ?? null),
+                'updated_at' => $this->normalizeTimestamp($row['updated_at'] ?? null),
             ])
             ->values()
             ->all();
@@ -201,8 +202,8 @@ return new class extends Migration
                 'sort_order' => (int) ($row['sort_order'] ?? 0),
                 'is_active' => (bool) ($row['is_active'] ?? true),
                 'is_default' => (bool) ($row['is_default'] ?? false),
-                'created_at' => $row['created_at'] ?? now(),
-                'updated_at' => $row['updated_at'] ?? now(),
+                'created_at' => $this->normalizeTimestamp($row['created_at'] ?? null),
+                'updated_at' => $this->normalizeTimestamp($row['updated_at'] ?? null),
             ])
             ->values()
             ->all();
@@ -232,8 +233,8 @@ return new class extends Migration
                 'sort_order' => (int) ($row['sort_order'] ?? 0),
                 'is_active' => (bool) ($row['is_active'] ?? true),
                 'is_default' => (bool) ($row['is_default'] ?? false),
-                'created_at' => $row['created_at'] ?? now(),
-                'updated_at' => $row['updated_at'] ?? now(),
+                'created_at' => $this->normalizeTimestamp($row['created_at'] ?? null),
+                'updated_at' => $this->normalizeTimestamp($row['updated_at'] ?? null),
             ])
             ->values()
             ->all();
@@ -272,8 +273,8 @@ return new class extends Migration
                 'about' => $this->normalizeJsonValue($row['about'] ?? null),
                 'sort_order' => (int) ($row['sort_order'] ?? 0),
                 'is_active' => (bool) ($row['is_active'] ?? true),
-                'created_at' => $row['created_at'] ?? now(),
-                'updated_at' => $row['updated_at'] ?? now(),
+                'created_at' => $this->normalizeTimestamp($row['created_at'] ?? null),
+                'updated_at' => $this->normalizeTimestamp($row['updated_at'] ?? null),
             ])
             ->values()
             ->all();
@@ -327,8 +328,8 @@ return new class extends Migration
                 'disk' => (string) ($row['disk'] ?? 'public'),
                 'path' => (string) ($row['path'] ?? ''),
                 'updated_by' => $updatedById,
-                'created_at' => $row['created_at'] ?? now(),
-                'updated_at' => $row['updated_at'] ?? now(),
+                'created_at' => $this->normalizeTimestamp($row['created_at'] ?? null),
+                'updated_at' => $this->normalizeTimestamp($row['updated_at'] ?? null),
             ])
             ->values()
             ->all();
@@ -357,5 +358,18 @@ return new class extends Migration
         }
 
         return null;
+    }
+
+    protected function normalizeTimestamp(mixed $value): string
+    {
+        if ($value === null || $value === '') {
+            return now()->toDateTimeString();
+        }
+
+        try {
+            return Carbon::parse((string) $value)->toDateTimeString();
+        } catch (\Throwable) {
+            return now()->toDateTimeString();
+        }
     }
 };

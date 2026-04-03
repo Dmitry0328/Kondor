@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -114,8 +115,8 @@ return new class extends Migration
                 'meta' => $this->normalizeJsonValue($row['meta'] ?? null),
                 'sort_order' => (int) ($row['sort_order'] ?? 0),
                 'is_active' => (bool) ($row['is_active'] ?? true),
-                'created_at' => $row['created_at'] ?? now(),
-                'updated_at' => $row['updated_at'] ?? now(),
+                'created_at' => $this->normalizeTimestamp($row['created_at'] ?? null),
+                'updated_at' => $this->normalizeTimestamp($row['updated_at'] ?? null),
             ])
             ->values()
             ->all();
@@ -177,7 +178,7 @@ return new class extends Migration
                 'slug' => (string) ($row['slug'] ?? ''),
                 'base_components' => $this->normalizeJsonValue($row['base_components'] ?? null),
                 'configurator_groups' => $this->normalizeJsonValue($row['configurator_groups'] ?? null),
-                'updated_at' => $row['updated_at'] ?? now(),
+                'updated_at' => $this->normalizeTimestamp($row['updated_at'] ?? null),
             ])
             ->values()
             ->all();
@@ -226,5 +227,18 @@ return new class extends Migration
         }
 
         return (int) $value;
+    }
+
+    protected function normalizeTimestamp(mixed $value): string
+    {
+        if ($value === null || $value === '') {
+            return now()->toDateTimeString();
+        }
+
+        try {
+            return Carbon::parse((string) $value)->toDateTimeString();
+        } catch (\Throwable) {
+            return now()->toDateTimeString();
+        }
     }
 };
