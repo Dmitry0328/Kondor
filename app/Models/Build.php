@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\BuildConfigurator;
+use App\Support\BuildImages;
 use App\Support\FpsCatalog;
 use App\Support\FpsProfiles;
 use App\Support\SiteImages;
@@ -15,6 +17,7 @@ class Build extends Model
         'slug',
         'tone',
         'name',
+        'product_code',
         'gpu',
         'cpu',
         'ram',
@@ -24,6 +27,8 @@ class Build extends Model
         'fps_profiles',
         'product_specs',
         'about',
+        'base_components',
+        'configurator_groups',
         'sort_order',
         'is_active',
     ];
@@ -36,6 +41,8 @@ class Build extends Model
             'fps_profiles' => 'array',
             'product_specs' => 'array',
             'about' => 'array',
+            'base_components' => 'array',
+            'configurator_groups' => 'array',
             'sort_order' => 'integer',
             'is_active' => 'boolean',
         ];
@@ -60,6 +67,21 @@ class Build extends Model
     public function toStorefrontPayload(): array
     {
         $catalog = FpsCatalog::all();
+        $baseComponentIds = BuildConfigurator::normalizeBaseComponents((array) ($this->base_components ?? [])) ?? [];
+        $baseComponentIds = [
+            ...(BuildConfigurator::inferBaseComponents([
+                'gpu' => $this->gpu,
+                'cpu' => $this->cpu,
+                'ram' => $this->ram,
+                'storage' => $this->storage,
+                'product_specs' => $this->product_specs,
+            ]) ?? []),
+            ...$baseComponentIds,
+        ];
+        $baseComponents = Component::query()
+            ->whereIn('id', array_values($baseComponentIds))
+            ->get()
+            ->keyBy('id');
         $fallbackFps = max(0, (int) ($this->fps_score ?? 0));
         $fpsProfiles = FpsProfiles::normalize((array) ($this->fps_profiles ?? []), $catalog);
         $fpsLookup = FpsProfiles::makeLookup($fpsProfiles);
@@ -75,14 +97,22 @@ class Build extends Model
             )
             : 0;
 
+        $gpu = $this->displayComponentValue('gpu', (string) $this->gpu, $baseComponentIds, $baseComponents);
+        $cpu = $this->displayComponentValue('cpu', (string) $this->cpu, $baseComponentIds, $baseComponents);
+        $ram = $this->displayComponentValue('ram', (string) $this->ram, $baseComponentIds, $baseComponents);
+        $storage = $this->displayComponentValue('storage', (string) $this->storage, $baseComponentIds, $baseComponents);
+
         return [
             'slug' => $this->slug,
             'tone' => $this->tone,
             'name' => $this->name,
-            'gpu' => $this->gpu,
-            'cpu' => $this->cpu,
-            'ram' => $this->ram,
-            'storage' => $this->storage,
+            'product_code' => $this->resolveProductCode(),
+            'image_url' => BuildImages::coverUrlForSlug((string) $this->slug),
+            'gallery_images' => BuildImages::urlsForSlug((string) $this->slug),
+            'gpu' => $gpu,
+            'cpu' => $cpu,
+            'ram' => $ram,
+            'storage' => $storage,
             'price' => StorefrontBuilds::formatPrice($this->price),
             'fps_score' => $baseFps,
             'fps_profiles' => $fpsProfiles,
@@ -90,8 +120,11 @@ class Build extends Model
             'fps_defaults' => $fpsDefaults,
             'product_specs' => $this->product_specs ?: null,
             'about' => $this->about ?: null,
+            'base_components' => $baseComponentIds ?: null,
+            'configurator_groups' => $this->configurator_groups ?: null,
             'sort_order' => $this->sort_order,
             'is_active' => $this->is_active,
+            'price_raw' => $this->price,
         ];
     }
 
@@ -136,5 +169,33 @@ class Build extends Model
             });
 
         SiteImages::flush();
+    }
+
+    protected function displayComponentValue(string $slot, string $legacyValue, array $baseComponentIds, $baseComponents): string
+    {
+        $legacyValue = trim($legacyValue);
+
+        if ($legacyValue !== '') {
+            return $legacyValue;
+        }
+
+        $baseComponentId = (int) ($baseComponentIds[$slot] ?? 0);
+        $baseComponent = $baseComponentId > 0 ? $baseComponents->get($baseComponentId) : null;
+
+        if ($baseComponent instanceof Component) {
+            return (string) $baseComponent->name;
+        }
+
+        return 'Відсутня інформація про комплектуючу';
+    }
+    protected function resolveProductCode(): string
+    {
+        $productCode = trim((string) ($this->product_code ?? ''));
+
+        if ($productCode !== '') {
+            return $productCode;
+        }
+
+        return (string) (570000 + (int) $this->getKey());
     }
 }

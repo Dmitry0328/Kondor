@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Build;
 use App\Models\Order;
 use App\Models\SharedCart;
 use App\Models\User;
 use App\Notifications\NewOrderPlacedNotification;
+use App\Support\BuildConfigurator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class CartController extends Controller
@@ -43,14 +46,18 @@ class CartController extends Controller
         $validated = Validator::make($request->all(), [
             'items' => ['required', 'array', 'min:1'],
             'items.*.slug' => ['required', 'string', 'max:255'],
+            'items.*.cartKey' => ['nullable', 'string', 'max:1024'],
             'items.*.name' => ['required', 'string', 'max:255'],
             'items.*.price' => ['required', 'integer', 'min:0'],
             'items.*.quantity' => ['required', 'integer', 'min:1', 'max:99'],
             'items.*.url' => ['nullable', 'string', 'max:2048'],
             'items.*.tone' => ['nullable', 'string', 'max:40'],
+            'items.*.configuration' => ['nullable', 'array'],
+            'items.*.configurationSummary' => ['nullable', 'array'],
+            'items.*.configurationSummary.*' => ['nullable', 'string', 'max:255'],
         ])->validate();
 
-        $items = $this->sanitizeCartItems($validated['items']);
+        $items = $this->sanitizeCartItems($validated['items'], strict: true);
 
         $sharedCart = SharedCart::create([
             'token' => Str::lower(Str::random(32)),
@@ -74,14 +81,18 @@ class CartController extends Controller
             'payment_method' => ['required', 'in:cash_on_delivery'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.slug' => ['required', 'string', 'max:255'],
+            'items.*.cartKey' => ['nullable', 'string', 'max:1024'],
             'items.*.name' => ['required', 'string', 'max:255'],
             'items.*.price' => ['required', 'integer', 'min:0'],
             'items.*.quantity' => ['required', 'integer', 'min:1', 'max:99'],
             'items.*.url' => ['nullable', 'string', 'max:2048'],
             'items.*.tone' => ['nullable', 'string', 'max:40'],
+            'items.*.configuration' => ['nullable', 'array'],
+            'items.*.configurationSummary' => ['nullable', 'array'],
+            'items.*.configurationSummary.*' => ['nullable', 'string', 'max:255'],
         ])->validate();
 
-        $items = $this->sanitizeCartItems($validated['items']);
+        $items = $this->sanitizeCartItems($validated['items'], strict: true);
         $totalAmount = collect($items)->sum(fn (array $item) => $item['line_total']);
 
         $order = DB::transaction(function () use ($validated, $items, $totalAmount) {
@@ -113,6 +124,11 @@ class CartController extends Controller
                     'unit_price' => $item['price'],
                     'quantity' => $item['quantity'],
                     'line_total' => $item['line_total'],
+                    'meta' => [
+                        'cart_key' => $item['cart_key'],
+                        'configuration' => $item['configuration'],
+                        'configuration_summary' => $item['configuration_summary'],
+                    ],
                 ]);
             }
 
@@ -134,24 +150,81 @@ class CartController extends Controller
      * @param  array<int, array<string, mixed>>  $items
      * @return array<int, array<string, mixed>>
      */
-    protected function sanitizeCartItems(array $items): array
+    protected function sanitizeCartItems(array $items, bool $strict = false): array
     {
-        return collect($items)
+        $normalizedItems = collect($items)
             ->map(function (array $item): array {
-                $price = max(0, (int) ($item['price'] ?? 0));
                 $quantity = max(1, min(99, (int) ($item['quantity'] ?? 1)));
 
                 return [
                     'slug' => (string) ($item['slug'] ?? ''),
+                    'cart_key' => (string) ($item['cartKey'] ?? $item['cart_key'] ?? ''),
                     'name' => (string) ($item['name'] ?? ''),
+                    'quantity' => $quantity,
+                    'url' => (string) ($item['url'] ?? ''),
+                    'tone' => (string) ($item['tone'] ?? 'violet'),
+                    'configuration' => is_array($item['configuration'] ?? null) ? $item['configuration'] : [],
+                ];
+            })
+            ->filter(fn (array $item): bool => $item['slug'] !== '')
+            ->values();
+
+        $builds = Build::query()
+            ->whereIn('slug', $normalizedItems->pluck('slug')->unique()->all())
+            ->where('is_active', true)
+            ->get()
+            ->keyBy('slug');
+
+        return $normalizedItems
+            ->map(function (array $item) use ($builds, $strict): ?array {
+                /** @var Build|null $build */
+                $build = $builds->get($item['slug']);
+
+                if (! $build) {
+                    if ($strict) {
+                        throw ValidationException::withMessages([
+                            'items' => ["Збірку {$item['slug']} не знайдено або вона недоступна."],
+                        ]);
+                    }
+
+                    return null;
+                }
+
+                $buildPayload = $build->toStorefrontPayload();
+                $resolved = BuildConfigurator::resolveSelection($buildPayload, $item['configuration']);
+
+                if ($strict && ! ($resolved['compatibility']['is_valid'] ?? true)) {
+                    throw ValidationException::withMessages([
+                        'items' => [
+                            'Одна з конфігурацій збірки несумісна. Перевір комплектуючі перед оформленням замовлення.',
+                        ],
+                    ]);
+                }
+
+                $selection = is_array($resolved['selection'] ?? null) ? $resolved['selection'] : [];
+                $summary = collect($resolved['summary'] ?? [])
+                    ->map(fn ($entry) => trim((string) $entry))
+                    ->filter()
+                    ->take(8)
+                    ->values()
+                    ->all();
+                $price = max(0, (int) ($resolved['total_price'] ?? ($buildPayload['price_raw'] ?? 0)));
+                $quantity = $item['quantity'];
+
+                return [
+                    'slug' => (string) $build->slug,
+                    'cart_key' => $item['cart_key'] !== '' ? $item['cart_key'] : BuildConfigurator::cartKey((string) $build->slug, $selection),
+                    'name' => (string) $build->name,
                     'price' => $price,
                     'quantity' => $quantity,
                     'line_total' => $price * $quantity,
-                    'url' => (string) ($item['url'] ?? ''),
-                    'tone' => (string) ($item['tone'] ?? 'violet'),
+                    'url' => route('product.show', ['slug' => $build->slug]),
+                    'tone' => (string) ($build->tone ?? 'violet'),
+                    'configuration' => $selection,
+                    'configuration_summary' => $summary,
                 ];
             })
-            ->filter(fn (array $item): bool => $item['slug'] !== '' && $item['name'] !== '')
+            ->filter()
             ->values()
             ->all();
     }

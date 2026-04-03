@@ -16,18 +16,39 @@
 
     const formatPrice = (value) => `${new Intl.NumberFormat('uk-UA').format(Math.round(Number(value) || 0)).replace(/\u00a0/g, ' ')} \u20b4`;
 
+    const normalizeConfiguration = (value) => {
+        if (!value || typeof value !== 'object' || Array.isArray(value)) {
+            return {};
+        }
+
+        return Object.fromEntries(
+            Object.entries(value)
+                .map(([key, entry]) => [`${key}`, `${entry ?? ''}`])
+                .filter(([key, entry]) => key && entry),
+        );
+    };
+
+    const normalizeConfigurationSummary = (value) => Array.isArray(value)
+        ? value.map((entry) => `${entry ?? ''}`.trim()).filter(Boolean).slice(0, 8)
+        : [];
+
     const normalizeItem = (item) => {
         if (!item || !item.slug) {
             return null;
         }
 
+        const cartKey = `${item.cartKey ?? item.cart_key ?? item.slug}`;
+
         return {
             slug: `${item.slug}`,
+            cartKey: cartKey || `${item.slug}`,
             name: `${item.name ?? item.slug}`,
             price: Math.max(0, Math.round(Number(item.price) || 0)),
             quantity: clampQuantity(item.quantity),
             url: `${item.url ?? ''}`,
             tone: `${item.tone ?? 'violet'}`,
+            configuration: normalizeConfiguration(item.configuration ?? item.meta?.configuration ?? {}),
+            configurationSummary: normalizeConfigurationSummary(item.configurationSummary ?? item.configuration_summary ?? item.meta?.configuration_summary ?? []),
         };
     };
 
@@ -101,6 +122,7 @@
                     <span class="cart-preview__thumb cart-preview__thumb--${escapeHtml(item.tone)}" aria-hidden="true"></span>
                     <div class="cart-preview__copy">
                         <a href="${escapeHtml(item.url || '/cart')}">${escapeHtml(item.name)}</a>
+                        ${item.configurationSummary.length ? `<small>${escapeHtml(item.configurationSummary[0])}</small>` : ''}
                         <span>${escapeHtml(formatPrice(item.price))} x ${escapeHtml(item.quantity)}</span>
                     </div>
                 </div>
@@ -134,7 +156,7 @@
         }
 
         const items = loadCart();
-        const existing = items.find((entry) => entry.slug === normalized.slug);
+        const existing = items.find((entry) => entry.cartKey === normalized.cartKey);
 
         if (existing) {
             existing.quantity = clampQuantity(existing.quantity + normalized.quantity);
@@ -144,6 +166,12 @@
             if ((!existing.tone || existing.tone === 'violet') && normalized.tone) {
                 existing.tone = normalized.tone;
             }
+            if (!existing.configurationSummary.length && normalized.configurationSummary.length) {
+                existing.configurationSummary = normalized.configurationSummary;
+            }
+            if (!Object.keys(existing.configuration).length && Object.keys(normalized.configuration).length) {
+                existing.configuration = normalized.configuration;
+            }
         } else {
             items.push(normalized);
         }
@@ -151,9 +179,9 @@
         return setCart(items);
     };
 
-    const updateQuantity = (slug, quantity) => {
+    const updateQuantity = (cartKey, quantity) => {
         const items = loadCart().map((item) => {
-            if (item.slug !== slug) {
+            if (item.cartKey !== cartKey) {
                 return item;
             }
 
@@ -166,7 +194,7 @@
         return setCart(items);
     };
 
-    const removeItem = (slug) => setCart(loadCart().filter((item) => item.slug !== slug));
+    const removeItem = (cartKey) => setCart(loadCart().filter((item) => item.cartKey !== cartKey));
 
     const clear = () => setCart([]);
 

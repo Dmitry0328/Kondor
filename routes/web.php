@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteAdminNotificationController;
 use App\Http\Controllers\SiteImageController;
-use App\Support\StorefrontBuilds;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,14 +18,13 @@ Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.c
 Route::middleware('auth')->group(function () {
     Route::get('/admin-notifications/feed', [SiteAdminNotificationController::class, 'index'])->name('admin.notifications.feed');
     Route::post('/admin/site-images', [SiteImageController::class, 'store'])->name('site-images.store');
+    Route::get('/catalog/preview/{token}', [ProductController::class, 'showPreview'])->name('product.preview');
+    Route::post('/catalog/preview/{token}/persist', [ProductController::class, 'persistPreview'])->name('product.preview.persist');
 });
 
 Route::view('/catalog', 'catalog')->name('catalog');
+Route::view('/trade-in', 'trade-in')->name('trade-in');
 
-Route::get('/catalog/{slug}', function (string $slug) {
-    $build = StorefrontBuilds::findBySlug($slug);
-
-    abort_unless($build, 404);
-
-    return view('product', ['build' => $build]);
-})->name('product.show');
+Route::get('/catalog/shared/{token}', [ProductController::class, 'showShared'])->name('product.shared');
+Route::post('/catalog/{slug}/share', [ProductController::class, 'share'])->name('product.share');
+Route::get('/catalog/{slug}', [ProductController::class, 'show'])->name('product.show');

@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withSchedule(function (Schedule $schedule): void {
         $schedule->command('shared-carts:prune-expired')->daily();
+        $schedule->command('shared-build-links:prune-expired')->daily();
     })
     ->withMiddleware(function (Middleware $middleware): void {
         //

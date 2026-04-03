@@ -48,13 +48,18 @@
     const normalizeItems = (items) => items
         .map((item) => ({
             slug: `${item.slug ?? ''}`,
+            cartKey: `${item.cartKey ?? item.cart_key ?? item.slug ?? ''}`,
             name: `${item.name ?? ''}`,
             price: Math.max(0, Math.round(Number(item.price) || 0)),
             quantity: Math.max(1, Math.min(Number.parseInt(`${item.quantity ?? 1}`, 10) || 1, 99)),
             url: `${item.url ?? ''}`,
             tone: `${item.tone ?? 'violet'}`,
+            configuration: item.configuration && typeof item.configuration === 'object' && !Array.isArray(item.configuration) ? item.configuration : {},
+            configurationSummary: Array.isArray(item.configurationSummary ?? item.configuration_summary)
+                ? (item.configurationSummary ?? item.configuration_summary).map((entry) => `${entry ?? ''}`.trim()).filter(Boolean).slice(0, 8)
+                : [],
         }))
-        .filter((item) => item.slug && item.name);
+        .filter((item) => item.slug && item.name && item.cartKey);
 
     const buildCoverImages = parseMap(page.dataset.buildCoverImages);
 
@@ -231,7 +236,7 @@
         }
 
         itemsContainer.innerHTML = stateItems.map((item) => `
-            <article class="cart-item" data-cart-item="${item.slug}">
+            <article class="cart-item" data-cart-item="${item.cartKey}">
                 <div
                     class="cart-item__thumb cart-item__thumb--${item.tone} site-image-target${buildCoverImages[item.slug] ? ' has-site-image' : ''}"
                     data-site-image-key="build.${item.slug}.cover"
@@ -241,19 +246,20 @@
 
                 <div class="cart-item__copy">
                     <strong class="cart-item__title">${item.name}</strong>
+                    ${item.configurationSummary.length ? `<ul class="cart-item__summary">${item.configurationSummary.map((entry) => `<li>${entry}</li>`).join('')}</ul>` : ''}
                     <span class="cart-item__meta">${window.KondorCart.formatPrice(item.price)} за одиницю</span>
                     ${item.url ? `<a class="cart-item__link" href="${item.url}">Детальніше про збірку</a>` : ''}
                 </div>
 
                 <div class="cart-item__controls">
                     <div class="cart-qty" aria-label="Кількість">
-                        <button type="button" data-cart-qty-minus="${item.slug}" aria-label="Зменшити">−</button>
+                        <button type="button" data-cart-qty-minus="${item.cartKey}" aria-label="Зменшити">−</button>
                         <strong>${item.quantity}</strong>
-                        <button type="button" data-cart-qty-plus="${item.slug}" aria-label="Збільшити">+</button>
+                        <button type="button" data-cart-qty-plus="${item.cartKey}" aria-label="Збільшити">+</button>
                     </div>
 
                     <strong class="cart-item__line-total">${window.KondorCart.formatPrice(item.price * item.quantity)}</strong>
-                    <button class="cart-remove" type="button" data-cart-remove="${item.slug}">Видалити</button>
+                    <button class="cart-remove" type="button" data-cart-remove="${item.cartKey}">Видалити</button>
                 </div>
             </article>
         `).join('');
@@ -323,14 +329,14 @@
         const removeSlug = target.getAttribute('data-cart-remove');
 
         if (removeSlug) {
-            setItems(stateItems.filter((item) => item.slug !== removeSlug));
+            setItems(stateItems.filter((item) => item.cartKey !== removeSlug));
             return;
         }
 
         const plusSlug = target.getAttribute('data-cart-qty-plus');
 
         if (plusSlug) {
-            setItems(stateItems.map((item) => item.slug === plusSlug ? { ...item, quantity: Math.min(item.quantity + 1, 99) } : item));
+            setItems(stateItems.map((item) => item.cartKey === plusSlug ? { ...item, quantity: Math.min(item.quantity + 1, 99) } : item));
             return;
         }
 
@@ -341,7 +347,7 @@
         }
 
         setItems(stateItems.flatMap((item) => {
-            if (item.slug !== minusSlug) {
+            if (item.cartKey !== minusSlug) {
                 return [item];
             }
 

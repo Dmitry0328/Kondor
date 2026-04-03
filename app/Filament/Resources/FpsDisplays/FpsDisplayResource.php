@@ -6,7 +6,9 @@ use App\Filament\Clusters\FpsCluster;
 use App\Filament\Resources\FpsDisplays\Pages\ManageFpsDisplays;
 use App\Models\FpsDisplay;
 use BackedEnum;
+use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -107,6 +109,11 @@ class FpsDisplayResource extends Resource
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 

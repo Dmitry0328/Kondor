@@ -176,6 +176,7 @@
             .product-about__steps { margin:0; padding-left:24px; display:grid; gap:4px; color:#18202a; font-size:17px; line-height:1.5; font-weight:700; }
             .product-aside { display:grid; gap:22px; align-content:start; }
             .product-aside__title { margin:0; font-family:'Space Grotesk',sans-serif; font-size:clamp(38px,4vw,58px); line-height:.98; letter-spacing:-.05em; color:#11151a; }
+            .product-aside__code { display:inline-flex; align-items:center; gap:8px; width:fit-content; padding:8px 12px; border:1px solid #dbe3ee; border-radius:999px; background:#f8fbff; color:#516072; font-size:13px; font-weight:800; letter-spacing:.02em; text-transform:uppercase; }
             .product-section-title { margin:4px 0 0; font-family:'Space Grotesk',sans-serif; font-size:clamp(30px,3vw,42px); font-weight:700; letter-spacing:-.04em; color:#11151a; }
             .product-specs { display:grid; gap:18px; }
             .product-spec { display:grid; grid-template-columns:32px minmax(0,1fr); gap:14px; align-items:start; }
@@ -192,15 +193,43 @@
             .product-option summary::after { content:''; width:11px; height:11px; margin-right:4px; border-right:2px solid #273140; border-bottom:2px solid #273140; transform:rotate(45deg); transition:transform .2s ease; }
             .product-option[open] summary::after { transform:rotate(-135deg); margin-top:6px; }
             .product-option__panel { display:grid; gap:12px; padding:0 18px 18px; }
-            .product-choice { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:14px; align-items:flex-start; padding:14px 16px; border:1px solid #e3e8f0; border-radius:16px; background:#fbfcfe; transition:border-color .18s ease, background-color .18s ease, box-shadow .18s ease; }
+            .product-option__group-note { margin:2px 2px 0; color:#667282; font-size:13px; font-weight:700; line-height:1.5; }
+            .product-choice { display:grid; grid-template-columns:auto 94px minmax(0,1fr) auto; gap:14px; align-items:flex-start; padding:14px 16px; border:1px solid #e3e8f0; border-radius:16px; background:#fbfcfe; transition:border-color .18s ease, background-color .18s ease, box-shadow .18s ease; }
             .product-choice:hover { border-color:#d0d9e6; }
             .product-choice.is-selected { border-color:rgba(111,16,201,.28); background:#faf5ff; box-shadow:0 10px 18px rgba(105,22,203,.08); }
             .product-choice input { margin-top:4px; accent-color:var(--primary); }
+            .product-choice__media { display:block; }
+            .product-choice__preview { display:block; width:94px; aspect-ratio:1/1; padding:0; border:1px solid #d7e0ec; border-radius:18px; background:linear-gradient(180deg,#f9fbfe,#edf3f9); box-shadow:0 10px 18px rgba(24,32,42,.05); overflow:hidden; cursor:zoom-in; transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
+            .product-choice__preview:hover { transform:translateY(-1px); border-color:#c8d4e3; box-shadow:0 14px 24px rgba(24,32,42,.09); }
+            .product-choice__preview img { display:block; width:100%; height:100%; object-fit:contain; background:#fff; }
             .product-choice__body { display:grid; gap:4px; }
             .product-choice__label { font-size:15px; font-weight:800; color:#18202a; }
             .product-choice__meta { color:#6d7787; font-size:13px; line-height:1.5; }
             .product-choice__price { align-self:center; font-size:14px; font-weight:800; color:#1d2531; white-space:nowrap; }
             .product-choice.is-selected .product-choice__price { color:var(--primary); }
+            .product-option-lightbox { position:fixed; inset:0; z-index:140; display:none; align-items:center; justify-content:center; padding:28px; background:rgba(11,18,32,.78); backdrop-filter:blur(10px); }
+            .product-option-lightbox.is-open { display:flex; }
+            .product-option-lightbox__dialog { position:relative; display:grid; gap:16px; width:min(92vw,1080px); max-height:92vh; padding:22px; border:1px solid rgba(255,255,255,.18); border-radius:28px; background:rgba(12,18,28,.96); box-shadow:0 28px 70px rgba(3,7,18,.42); }
+            .product-option-lightbox__close { position:absolute; top:16px; right:16px; display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; padding:0; border:1px solid rgba(255,255,255,.18); border-radius:999px; background:rgba(255,255,255,.08); color:#fff; font-size:28px; line-height:1; cursor:pointer; transition:background-color .18s ease, transform .18s ease; }
+            .product-option-lightbox__close:hover { background:rgba(255,255,255,.14); transform:translateY(-1px); }
+            .product-option-lightbox__nav { position:absolute; top:50%; z-index:2; display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; margin-top:-24px; padding:0; border:1px solid rgba(255,255,255,.2); border-radius:999px; background:rgba(11,18,32,.38); color:#fff; font-size:30px; line-height:1; cursor:pointer; transition:background-color .18s ease, transform .18s ease, opacity .18s ease; }
+            .product-option-lightbox__nav:hover { background:rgba(11,18,32,.58); transform:translateY(-1px); }
+            .product-option-lightbox__nav[hidden] { display:none; }
+            .product-option-lightbox__nav--prev { left:16px; }
+            .product-option-lightbox__nav--next { right:16px; }
+            .product-option-lightbox__image { display:block; width:100%; max-height:calc(92vh - 170px); object-fit:contain; border-radius:20px; background:linear-gradient(180deg,#111827,#0f172a); }
+            .product-option-lightbox__thumbs { display:grid; grid-template-columns:repeat(auto-fit, minmax(72px, 90px)); gap:10px; justify-content:center; }
+            .product-option-lightbox__thumb { display:block; padding:0; border:1px solid rgba(255,255,255,.14); border-radius:16px; background:rgba(255,255,255,.04); cursor:pointer; overflow:hidden; transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
+            .product-option-lightbox__thumb:hover { transform:translateY(-1px); border-color:rgba(255,255,255,.3); }
+            .product-option-lightbox__thumb.is-active { border-color:rgba(255,255,255,.5); box-shadow:0 0 0 2px rgba(255,255,255,.08); }
+            .product-option-lightbox__thumb img { display:block; width:100%; aspect-ratio:1/1; object-fit:cover; background:linear-gradient(180deg,#111827,#0f172a); }
+            .product-option-lightbox__meta { display:grid; gap:6px; justify-items:center; }
+            .product-option-lightbox__caption { margin:0; color:#eef2ff; font-size:14px; font-weight:700; line-height:1.45; text-align:center; }
+            .product-option-lightbox__counter { margin:0; color:rgba(226,232,240,.74); font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; text-align:center; }
+            .product-compatibility { display:grid; gap:10px; margin-top:2px; padding:16px 18px; border:1px solid rgba(224,84,84,.18); border-radius:18px; background:linear-gradient(180deg,#fff8f8,#fff2f2); box-shadow:0 10px 22px rgba(181,53,53,.06); }
+            .product-compatibility[hidden] { display:none; }
+            .product-compatibility__title { color:#a12626; font-size:14px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
+            .product-compatibility__list { margin:0; padding-left:18px; display:grid; gap:6px; color:#5c2222; font-size:14px; font-weight:700; line-height:1.45; }
             .product-pricing { display:grid; gap:0; border:1px solid #dde4ef; border-radius:26px; background:linear-gradient(180deg,#fff,#f7f9fd); box-shadow:0 14px 28px rgba(24,32,42,.06); overflow:hidden; }
             .product-pricing__row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:16px; align-items:end; padding:22px; }
             .product-pricing__row + .product-pricing__row { border-top:1px solid #e8edf4; }
@@ -215,6 +244,7 @@
             .product-actions__qty { width:100%; min-height:58px; padding:0 14px; border:1px solid #cfd7e2; border-radius:16px; background:#fff; color:#18202a; font-size:20px; font-weight:800; text-align:center; box-shadow:0 10px 18px rgba(24,32,42,.05); }
             .product-actions__button { display:inline-flex; align-items:center; justify-content:center; min-height:58px; padding:0 24px; border:0; border-radius:16px; background:linear-gradient(180deg,#8424f0,#6816cb); color:#fff; font-size:18px; font-weight:800; cursor:pointer; box-shadow:0 16px 28px rgba(105,22,203,.22); transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease; }
             .product-actions__button:hover { transform:translateY(-1px); box-shadow:0 18px 30px rgba(105,22,203,.26); }
+            .product-actions__button:disabled { opacity:.55; cursor:not-allowed; transform:none; box-shadow:0 10px 18px rgba(105,22,203,.12); }
             .product-actions__button--secondary { background:linear-gradient(180deg,#9872df,#7b59cb); box-shadow:0 14px 24px rgba(123,89,203,.14); }
             .product-actions__button.is-added { background:linear-gradient(180deg,#2fbf75,#159658); box-shadow:0 16px 28px rgba(21,150,88,.22); }
             .product-actions__feedback { min-height:20px; color:#687385; font-size:14px; }
@@ -222,6 +252,44 @@
             .product-actions__share-button { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-width:260px; min-height:52px; padding:0 20px; border:1px solid #d8e0eb; border-radius:16px; background:#fff; color:#18202a; font-size:15px; font-weight:800; box-shadow:0 10px 18px rgba(24,32,42,.05); cursor:pointer; transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease, background-color .18s ease; }
             .product-actions__share-button svg { color:#5f6b79; }
             .product-actions__share-button:hover { transform:translateY(-1px); border-color:#c8d2df; background:#fbfcfe; box-shadow:0 14px 24px rgba(24,32,42,.08); }
+            .product-shared-pill { display:inline-flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:12px; padding:12px 16px; border:1px solid #dbe5f1; border-radius:16px; background:linear-gradient(180deg,#fff,#f8fbff); color:#415065; box-shadow:0 10px 22px rgba(24,32,42,.05); }
+            .product-shared-pill strong { color:#18202a; font-size:14px; font-weight:800; }
+            .product-shared-pill span { color:#687385; font-size:13px; font-weight:700; }
+            .product-shared-pill__status { display:inline-flex; align-items:center; min-height:30px; padding:0 12px; border-radius:999px; background:#eef4ff; color:#25426d; font-size:12px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; }
+            .product-shared-pill__feedback { display:block; width:100%; color:#3d4d61; font-size:13px; font-weight:700; }
+            .product-shared-pill__feedback--success { color:#0f7a43; }
+            .product-shared-pill__feedback--error { color:#b42318; }
+            .preview-dock { position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom, 0px) + 18px); z-index:2100; display:flex; align-items:center; justify-content:space-between; gap:18px; width:min(calc(100vw - 28px), 1160px); padding:14px 16px; border:1px solid rgba(203,214,229,.92); border-radius:20px; background:rgba(255,255,255,.94); box-shadow:0 22px 44px rgba(15,23,42,.16); backdrop-filter:blur(18px); transform:translateX(-50%); }
+            .preview-dock__meta { display:grid; gap:4px; min-width:0; }
+            .preview-dock__eyebrow { display:inline-flex; align-items:center; gap:8px; color:#687385; font-size:11px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+            .preview-dock__eyebrow::before { content:''; width:8px; height:8px; border-radius:999px; background:#6f10c9; box-shadow:0 0 0 6px rgba(111,16,201,.12); }
+            .preview-dock__title { color:#17202b; font-size:16px; font-weight:900; line-height:1.2; }
+            .preview-dock__text { color:#5f6d80; font-size:13px; font-weight:700; line-height:1.45; }
+            .preview-dock__feedback { color:#0f7a43; font-size:13px; font-weight:800; }
+            .preview-dock__feedback--error { color:#b42318; }
+            .preview-dock__actions { display:flex; align-items:center; justify-content:flex-end; gap:10px; flex-wrap:wrap; }
+            .preview-dock__form { margin:0; }
+            .preview-dock__button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 18px; border:1px solid #d7e1ee; border-radius:999px; background:#fff; color:#1a2330; font-size:14px; font-weight:800; box-shadow:0 10px 18px rgba(24,32,42,.06); cursor:pointer; }
+            .preview-dock__button:hover { background:#fbfcfe; border-color:#cbd7e6; }
+            .preview-dock__button--primary { border-color:#6f10c9; background:linear-gradient(180deg,#8424f0,#6816cb); color:#fff; box-shadow:0 14px 28px rgba(104,22,203,.24); }
+            .preview-dock__button--primary:hover { background:linear-gradient(180deg,#8f2fff,#7420d3); border-color:#6517c9; }
+            body.has-preview-dock { padding-bottom:120px; }
+            body.has-preview-dock.has-admin-edit-mode-toggle { padding-bottom:168px; }
+            body.has-preview-dock .admin-edit-mode-toggle { bottom:calc(env(safe-area-inset-bottom, 0px) + 94px); }
+            .product-share-modal[hidden] { display:none; }
+            .product-share-modal { position:fixed; inset:0; z-index:150; }
+            .product-share-modal__backdrop { position:absolute; inset:0; background:rgba(15,22,34,.52); backdrop-filter:blur(6px); }
+            .product-share-modal__dialog { position:relative; z-index:1; width:min(520px, calc(100% - 28px)); margin:10vh auto 0; display:grid; gap:16px; padding:26px; border:1px solid #dce4ef; border-radius:24px; background:#fff; box-shadow:0 28px 60px rgba(17,24,39,.18); }
+            .product-share-modal__close { position:absolute; top:16px; right:16px; display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; padding:0; border:1px solid #d8e0eb; border-radius:14px; background:#fff; color:#5f6b79; font-size:22px; line-height:1; cursor:pointer; transition:border-color .18s ease, transform .18s ease, background-color .18s ease; }
+            .product-share-modal__close:hover { transform:translateY(-1px); border-color:#c8d2df; background:#fbfcfe; }
+            .product-share-modal__title { margin:0; color:#18202a; font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700; letter-spacing:-.04em; }
+            .product-share-modal__text { margin:0; color:#687385; font-size:15px; font-weight:700; line-height:1.55; }
+            .product-share-modal__field { display:grid; gap:8px; }
+            .product-share-modal__field span { color:#5f6b79; font-size:13px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+            .product-share-modal__field input { width:100%; min-height:54px; padding:0 18px; border:1px solid #d8e0eb; border-radius:16px; background:#fff; color:#18202a; font-size:16px; font-weight:700; box-shadow:inset 0 1px 0 rgba(255,255,255,.94); }
+            .product-share-modal__meta { margin:0; color:#687385; font-size:14px; font-weight:700; }
+            .product-share-modal__copy { display:inline-flex; align-items:center; justify-content:center; min-height:54px; padding:0 24px; border:0; border-radius:16px; background:linear-gradient(180deg,#8424f0,#6816cb); color:#fff; font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 16px 28px rgba(105,22,203,.22); transition:transform .18s ease, box-shadow .18s ease; }
+            .product-share-modal__copy:hover { transform:translateY(-1px); box-shadow:0 18px 30px rgba(105,22,203,.26); }
             .product-gear { display:grid; gap:16px; padding:18px; border:1px solid #dde4ee; border-radius:22px; background:linear-gradient(180deg,#fff,#f8fbff); box-shadow:0 12px 24px rgba(24,32,42,.05); }
             .product-gear__copy { display:grid; gap:6px; }
             .product-gear__eyebrow { color:#6f10c9; font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
@@ -236,6 +304,12 @@
             .product-gear__meta { color:#667282; font-size:12px; font-weight:700; line-height:1.4; }
             .product-gear__button { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:0 20px; border-radius:16px; background:linear-gradient(180deg,#8424f0,#6816cb); color:#fff; font-size:16px; font-weight:800; box-shadow:0 14px 24px rgba(105,22,203,.18); transition:transform .18s ease, box-shadow .18s ease; }
             .product-gear__button:hover { transform:translateY(-1px); box-shadow:0 16px 26px rgba(105,22,203,.22); }
+            .product-tradein { display:grid; gap:16px; margin-top:28px; padding:28px; border:1px solid #dce5f0; border-radius:28px; background:linear-gradient(180deg,#fff,#f7fbff); box-shadow:0 16px 34px rgba(24,32,42,.06); }
+            .product-tradein__eyebrow { color:#7a28dc; font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+            .product-tradein__title { margin:0; color:#18202a; font-family:'Space Grotesk',sans-serif; font-size:clamp(28px,3vw,40px); font-weight:700; letter-spacing:-.04em; line-height:1.08; }
+            .product-tradein__text { margin:0; color:#5c6675; font-size:17px; font-weight:700; line-height:1.55; }
+            .product-tradein__button { display:inline-flex; align-items:center; justify-content:center; width:max-content; min-width:260px; min-height:54px; padding:0 24px; border-radius:16px; background:linear-gradient(180deg,#8424f0,#6816cb); color:#fff; font-size:17px; font-weight:800; box-shadow:0 14px 24px rgba(105,22,203,.2); transition:transform .18s ease, box-shadow .18s ease; }
+            .product-tradein__button:hover { transform:translateY(-1px); box-shadow:0 16px 28px rgba(105,22,203,.24); }
             .product-custom-cta { display:grid; justify-items:center; gap:16px; padding:72px 0 18px; text-align:center; }
             .product-custom-cta__title { margin:0; color:#18202a; font-family:'Space Grotesk',sans-serif; font-size:clamp(32px,3.6vw,52px); font-weight:700; letter-spacing:-.04em; }
             .product-custom-cta__text { margin:0; color:#5c6675; font-size:18px; font-weight:700; line-height:1.45; }
@@ -290,7 +364,7 @@
             .footer__bottom-inner { display:flex; align-items:center; justify-content:center; min-height:54px; text-align:center; font-size:15px; font-weight:700; }
             @media (max-width:1320px) { .search-box { width:300px; } }
             @media (max-width:1180px) { .product-showcase { grid-template-columns:1fr; gap:28px; } .product-actions__controls { grid-template-columns:92px minmax(0,1fr) minmax(0,1fr); } .product-related__grid { grid-template-columns:repeat(2, minmax(0,1fr)); } }
-            @media (max-width:1080px) { .header__actions > .header-button, .search-box { display:none; } .menu-toggle { display:inline-block; } .footer__grid { grid-template-columns:minmax(220px,280px) minmax(170px,210px) minmax(200px,1fr); gap:38px 44px; } .footer__title { font-size:30px; } }
+            @media (max-width:1080px) { .header__actions > .header-button, .search-box { display:none; } .menu-toggle { display:inline-block; } .footer__grid { grid-template-columns:minmax(220px,280px) minmax(170px,210px) minmax(200px,1fr); gap:38px 44px; } .footer__title { font-size:30px; } .preview-dock { width:min(calc(100vw - 20px), 720px); padding:14px; gap:14px; } .preview-dock__title { font-size:15px; } .preview-dock__actions { justify-content:flex-start; } }
             @media (max-width:760px) {
                 .container, .product-wrap { width:calc(100% - 20px); }
                 .topbar { display:none; }
@@ -331,8 +405,21 @@
                 .product-about__lead, .product-about__note, .product-about__section-title, .product-about__list, .product-about__steps { font-size:16px; }
                 .product-option summary { padding:17px 18px; font-size:17px; }
                 .product-option__panel { padding:0 14px 14px; }
-                .product-choice { grid-template-columns:auto minmax(0,1fr); }
-                .product-choice__price { grid-column:2; justify-self:start; }
+                .product-choice { grid-template-columns:auto 76px minmax(0,1fr); }
+                .product-choice__preview { width:76px; border-radius:16px; }
+                .product-choice__price { grid-column:3; justify-self:start; }
+                .product-option-lightbox { padding:16px; }
+                .product-option-lightbox__dialog { width:100%; padding:18px 18px 16px; border-radius:24px; }
+                .product-option-lightbox__nav { width:42px; height:42px; margin-top:-21px; font-size:26px; }
+                .product-option-lightbox__nav--prev { left:10px; }
+                .product-option-lightbox__nav--next { right:10px; }
+                .product-option-lightbox__image { max-height:calc(88vh - 206px); border-radius:18px; }
+                .product-option-lightbox__thumbs { grid-template-columns:repeat(4, minmax(0, 1fr)); gap:8px; }
+                .product-option-lightbox__thumb { border-radius:14px; }
+                .product-share-modal__dialog { width:min(100%, calc(100% - 20px)); margin-top:12vh; padding:22px 18px 18px; border-radius:20px; }
+                .product-share-modal__title { font-size:26px; }
+                .product-share-modal__field input { min-height:50px; font-size:15px; }
+                .product-share-modal__copy { width:100%; min-height:52px; font-size:15px; }
                 .product-pricing { padding:18px; }
                 .product-actions__controls { grid-template-columns:1fr; }
                 .product-actions__share { justify-content:stretch; }
@@ -347,6 +434,13 @@
                 .footer__grid { grid-template-columns:1fr; gap:34px; padding-bottom:40px; }
                 .footer__column { padding-top:0; }
                 .footer__title { font-size:28px; }
+                .preview-dock { left:12px; right:12px; bottom:calc(env(safe-area-inset-bottom, 0px) + 12px); width:auto; transform:none; display:grid; gap:12px; }
+                .preview-dock__actions { display:grid; gap:8px; }
+                .preview-dock__form { width:100%; }
+                .preview-dock__button { width:100%; }
+                body.has-preview-dock { padding-bottom:232px; }
+                body.has-preview-dock.has-admin-edit-mode-toggle { padding-bottom:284px; }
+                body.has-preview-dock .admin-edit-mode-toggle { bottom:calc(env(safe-area-inset-bottom, 0px) + 196px); }
             }
             @media (max-width:560px) {
                 .product-fps { gap:12px; padding:14px; }
@@ -359,11 +453,24 @@
                 .product-fps__meter-label { font-size:24px; }
                 .product-fps__value { min-width:42px; font-size:30px; }
             }
-            @media (max-width:560px) { .page { padding-top:16px; } .product-breadcrumbs { gap:8px; font-size:12px; } .product-gallery__stage { padding:0; border-radius:0; } .product-gallery__slide { inset:0; border-radius:0; } .product-gallery__info { top:12px; left:12px; gap:8px; } .product-gallery__info-button { width:30px; height:30px; } .product-gallery__info-button span { font-size:17px; } .product-gallery__info-tooltip { max-width:min(280px, calc(100vw - 72px)); padding:8px 12px; font-size:12px; } .product-gallery__nav { width:36px; height:36px; margin-top:-18px; } .product-gallery__nav--prev { left:12px; } .product-gallery__nav--next { right:12px; } .product-rig { width:min(78%,360px); } .product-benchmark__panel { inset:14% 12% 14%; } .product-benchmark__rows { left:15%; right:15%; top:23%; bottom:14%; gap:14px; } .product-gallery__thumbs { display:flex; overflow-x:auto; padding-bottom:2px; } .product-gallery__thumb { flex:0 0 96px; } .product-about { gap:18px; padding-top:8px; } .product-about__title { font-size:30px; } .product-about__lead, .product-about__note, .product-about__section-title, .product-about__list, .product-about__steps { font-size:15px; } .product-aside__title { font-size:34px; } .product-section-title { font-size:28px; } .product-spec { grid-template-columns:28px minmax(0,1fr); gap:12px; } .product-spec__icon { width:28px; height:28px; } .product-spec__icon svg { width:24px; height:24px; } .product-options__intro { font-size:15px; } .product-pricing__label { font-size:15px; } .product-pricing__value { font-size:28px; } .product-actions__button { font-size:16px; } .product-actions__share-button { min-height:50px; padding:0 18px; font-size:15px; } .product-gear { gap:14px; padding:16px; } .product-gear__title { font-size:24px; } .product-gear__grid { grid-template-columns:1fr; } .product-gear__item { padding:12px; } .product-gear__button { width:100%; min-height:50px; font-size:15px; } .product-custom-cta { gap:14px; padding:44px 0 6px; } .product-custom-cta__title { font-size:28px; } .product-custom-cta__text { font-size:15px; } .product-custom-cta__button { width:100%; min-width:0; min-height:54px; padding:0 20px; font-size:16px; } .product-related { gap:18px; padding-top:34px; } .product-related__title { font-size:28px; } .product-related__grid { grid-template-columns:1fr; } .product-related-card__body { gap:14px; padding:16px 16px 18px; } .product-related-card__specs li { font-size:13px; } .product-related__button { width:100%; min-width:0; min-height:54px; font-size:16px; } .product-placeholder__copy { font-size:16px; } .footer__brand-name { font-size:36px; } .footer__nav a, .footer__contacts a { font-size:17px; } .footer__bottom-inner { min-height:64px; padding:10px 0; font-size:14px; } }
+            @media (max-width:560px) { .page { padding-top:16px; } .product-breadcrumbs { gap:8px; font-size:12px; } .product-gallery__stage { padding:0; border-radius:0; } .product-gallery__slide { inset:0; border-radius:0; } .product-gallery__info { top:12px; left:12px; gap:8px; } .product-gallery__info-button { width:30px; height:30px; } .product-gallery__info-button span { font-size:17px; } .product-gallery__info-tooltip { max-width:min(280px, calc(100vw - 72px)); padding:8px 12px; font-size:12px; } .product-gallery__nav { width:36px; height:36px; margin-top:-18px; } .product-gallery__nav--prev { left:12px; } .product-gallery__nav--next { right:12px; } .product-rig { width:min(78%,360px); } .product-benchmark__panel { inset:14% 12% 14%; } .product-benchmark__rows { left:15%; right:15%; top:23%; bottom:14%; gap:14px; } .product-gallery__thumbs { display:flex; overflow-x:auto; padding-bottom:2px; } .product-gallery__thumb { flex:0 0 96px; } .product-about { gap:18px; padding-top:8px; } .product-about__title { font-size:30px; } .product-about__lead, .product-about__note, .product-about__section-title, .product-about__list, .product-about__steps { font-size:15px; } .product-aside__title { font-size:34px; } .product-aside__code { font-size:12px; } .product-section-title { font-size:28px; } .product-spec { grid-template-columns:28px minmax(0,1fr); gap:12px; } .product-spec__icon { width:28px; height:28px; } .product-spec__icon svg { width:24px; height:24px; } .product-options__intro { font-size:15px; } .product-pricing__label { font-size:15px; } .product-pricing__value { font-size:28px; } .product-actions__button { font-size:16px; } .product-actions__share-button { min-height:50px; padding:0 18px; font-size:15px; } .product-gear { gap:14px; padding:16px; } .product-gear__title { font-size:24px; } .product-gear__grid { grid-template-columns:1fr; } .product-gear__item { padding:12px; } .product-gear__button { width:100%; min-height:50px; font-size:15px; } .product-tradein { gap:14px; margin-top:22px; padding:18px; border-radius:22px; } .product-tradein__title { font-size:26px; } .product-tradein__text { font-size:15px; } .product-tradein__button { width:100%; min-width:0; min-height:52px; font-size:15px; } .product-custom-cta { gap:14px; padding:44px 0 6px; } .product-custom-cta__title { font-size:28px; } .product-custom-cta__text { font-size:15px; } .product-custom-cta__button { width:100%; min-width:0; min-height:54px; padding:0 20px; font-size:16px; } .product-related { gap:18px; padding-top:34px; } .product-related__title { font-size:28px; } .product-related__grid { grid-template-columns:1fr; } .product-related-card__body { gap:14px; padding:16px 16px 18px; } .product-related-card__specs li { font-size:13px; } .product-related__button { width:100%; min-width:0; min-height:54px; font-size:16px; } .product-placeholder__copy { font-size:16px; } .footer__brand-name { font-size:36px; } .footer__nav a, .footer__contacts a { font-size:17px; } .footer__bottom-inner { min-height:64px; padding:10px 0; font-size:14px; } }
         </style>
     </head>
-    <body>
+    <body @class(['has-preview-dock' => $isPreview ?? false])>
         @php
+            $isPreview = (bool) ($isPreview ?? false);
+            $previewGalleryImages = collect((array) ($build['preview_gallery_images'] ?? []))
+                ->map(static fn ($value): string => trim((string) $value))
+                ->filter()
+                ->values()
+                ->all();
+            $storedGalleryImages = collect((array) ($build['gallery_images'] ?? []))
+                ->map(static fn ($value): string => trim((string) $value))
+                ->filter()
+                ->values()
+                ->all();
+            $buildGalleryImages = $previewGalleryImages !== [] ? $previewGalleryImages : $storedGalleryImages;
+            $hasUploadedBuildGallery = $buildGalleryImages !== [];
             $storefrontBuilds = \App\Support\StorefrontBuilds::all();
             $headerBuilds = array_slice($storefrontBuilds, 0, 4);
             $priceFormatter = static fn (int $value): string => number_format($value, 0, '', ' ') . ' ₴';
@@ -385,12 +492,6 @@
                 default => 'KondorPC custom case',
             };
             $boardBase = str_contains($build['cpu'], 'AMD') ? 'B650 Wi-Fi' : 'Z790 Wi-Fi';
-            $cpuUpgrade = str_contains($build['cpu'], 'Ryzen 5')
-                ? 'AMD Ryzen 7 9700X'
-                : (str_contains($build['cpu'], 'Intel Core i5') ? 'Intel Core i7-14700KF' : 'AMD Ryzen 7 7800X3D');
-            $gpuUpgrade = str_contains($build['gpu'], '4090')
-                ? 'Nvidia RTX 4090 OC White'
-                : (str_contains($build['gpu'], '5080') ? 'Nvidia RTX 5080 OC' : (str_contains($build['gpu'], 'AMD') ? 'AMD Radeon RX 7900 XT' : 'Nvidia RTX 5070'));
             $powerBase = $basePrice >= 100000 ? '850W 80+ Gold' : '650W 80+ Bronze';
             $powerUpgrade = $basePrice >= 100000 ? '1000W 80+ Gold' : '850W 80+ Gold';
             $appearanceHint = 'Зовнішній вигляд комп\'ютера залежить від обраних комплектуючих.';
@@ -427,10 +528,7 @@
                 ['icon' => 'gpu', 'label' => 'Відеокарта', 'value' => $build['gpu']],
                 ['icon' => 'cpu', 'label' => 'Процесор', 'value' => $build['cpu']],
                 ['icon' => 'ram', 'label' => 'Оперативна пам\'ять', 'value' => $build['ram']],
-                ['icon' => 'motherboard', 'label' => 'Материнська плата', 'value' => $boardBase],
                 ['icon' => 'storage', 'label' => 'Накопичувач', 'value' => $build['storage']],
-                ['icon' => 'case', 'label' => 'Корпус', 'value' => $caseLabel],
-                ['icon' => 'psu', 'label' => 'Блок живлення', 'value' => $powerBase],
             ];
             $productAbout = $build['about'] ?? [
                 'intro' => [
@@ -486,6 +584,25 @@
                 ['id' => 'inside', 'thumb' => 'Внутрішній монтаж', 'eyebrow' => 'Cable management', 'title' => 'Чисте складання всередині', 'meta' => $caseLabel . ' • ' . $build['storage'], 'variant' => 'inside'],
                 ['id' => 'detail', 'thumb' => 'Деталі', 'eyebrow' => 'Custom fit', 'title' => 'ARGB, airflow і запас під апгрейд', 'meta' => $boardBase . ' • ' . $powerUpgrade, 'variant' => 'detail'],
             ];
+            if ($hasUploadedBuildGallery) {
+                $productSlides = collect($buildGalleryImages)
+                    ->values()
+                    ->map(static function (string $imageUrl, int $index) use ($build): array {
+                        $photoNumber = $index + 1;
+
+                        return [
+                            'id' => 'photo-' . $photoNumber,
+                            'thumb' => $index === 0 ? 'Р“РѕР»РѕРІРЅРµ С„РѕС‚Рѕ' : 'Р¤РѕС‚Рѕ ' . $photoNumber,
+                            'eyebrow' => $index === 0 ? 'РћСЃРЅРѕРІРЅРёР№ СЂР°РєСѓСЂСЃ' : 'Р Р°РєСѓСЂСЃ ' . $photoNumber,
+                            'title' => (string) ($build['name'] ?? ''),
+                            'meta' => 'Р РµР°Р»СЊРЅРµ С„РѕС‚Рѕ Р·Р±С–СЂРєРё',
+                            'variant' => 'uploaded',
+                            'image_url' => $imageUrl,
+                        ];
+                    })
+                    ->all();
+            }
+
             /*
             $productFpsGames = [
                 ['id' => 'cyberpunk-2077', 'name' => 'Cyberpunk 2077', 'label' => 'Cyberpunk', 'difficulty' => 0.72, 'accent' => '#f4dc39', 'from' => '#0f182f', 'to' => '#2b1211'],
@@ -588,107 +705,78 @@
                 'presets' => $productFpsPresets,
                 'lookup' => $productFpsLookup,
             ];
-            $productOptions = [
-                [
-                    'id' => 'modding',
-                    'title' => 'Моддинг',
-                    'options' => [
-                        ['label' => 'Стандартне виконання', 'description' => 'Базовий cable management та заводський профіль ARGB.', 'price' => 0],
-                        ['label' => 'Showcase RGB + cable kit', 'description' => 'Покращена укладка кабелів, акцентні combs та сценічне підсвічування.', 'price' => 1800, 'selected' => true],
-                        ['label' => 'Premium mod package', 'description' => 'Декоративні вставки, додаткові light-bars та custom routing.', 'price' => 3600],
-                    ],
-                ],
-                [
-                    'id' => 'gpu',
-                    'title' => 'Заміна відеокарти',
-                    'options' => [
-                        ['label' => $build['gpu'], 'description' => 'Поточна конфігурація збірки.', 'price' => 0, 'selected' => true],
-                        ['label' => $gpuUpgrade, 'description' => 'Апгрейд на клас вище для запасу по 2K / 4K.', 'price' => 5600],
-                        ['label' => 'White / OC edition під замовлення', 'description' => 'Підбір версії під стиль корпусу та охолодження.', 'price' => 7900],
-                    ],
-                ],
-                [
-                    'id' => 'cpu',
-                    'title' => 'Заміна процесора',
-                    'options' => [
-                        ['label' => $build['cpu'], 'description' => 'Поточна продуктивність збірки.', 'price' => 0, 'selected' => true],
-                        ['label' => $cpuUpgrade, 'description' => 'Більше запасу для high-refresh gaming та фонового стріму.', 'price' => 4200],
-                        ['label' => 'Флагманська версія під задачі creator', 'description' => 'Максимум продуктивності для монтажу й рендеру.', 'price' => 7900],
-                    ],
-                ],
-                [
-                    'id' => 'ram',
-                    'title' => 'Зміна ОЗП',
-                    'options' => [
-                        ['label' => $build['ram'], 'description' => 'Стандартна комплектація.', 'price' => 0, 'selected' => true],
-                        ['label' => '48GB DDR5 high-speed kit', 'description' => 'Більше простору для багатозадачності й ігор.', 'price' => 2200],
-                        ['label' => '64GB DDR5 creator kit', 'description' => 'Варіант для важких ігор, стрімів і робочих задач.', 'price' => 4400],
-                    ],
-                ],
-                [
-                    'id' => 'cooling',
-                    'title' => 'Встановлення охолодження CPU',
-                    'options' => [
-                        ['label' => 'Tower air cooler', 'description' => 'Надійне базове охолодження для щоденного геймінгу.', 'price' => 0],
-                        ['label' => '240mm AIO RGB', 'description' => 'Тихіша робота та кращий thermal headroom.', 'price' => 2600, 'selected' => true],
-                        ['label' => '360mm AIO premium', 'description' => 'Максимальний запас під boost і custom curve.', 'price' => 4800],
-                    ],
-                ],
-                [
-                    'id' => 'board',
-                    'title' => 'Заміна плати',
-                    'options' => [
-                        ['label' => $boardBase, 'description' => 'Поточний клас плати під обрану платформу.', 'price' => 0, 'selected' => true],
-                        ['label' => $boardBase . ' White edition', 'description' => 'Візуальний апгрейд під світлу збірку.', 'price' => 1900],
-                        ['label' => 'Creator / OC motherboard', 'description' => 'Покращене VRM, більше портів і запасу для апгрейду.', 'price' => 3800],
-                    ],
-                ],
-                [
-                    'id' => 'adapters',
-                    'title' => 'Додавання адаптерів',
-                    'options' => [
-                        ['label' => 'Без додаткових адаптерів', 'description' => 'Тільки базові інтерфейси конфігурації.', 'price' => 0],
-                        ['label' => 'Wi-Fi 6E + Bluetooth 5.3', 'description' => 'Бездротові підключення для периферії й мережі.', 'price' => 1600, 'selected' => true],
-                        ['label' => 'Capture / expansion kit', 'description' => 'Для стріму, другого монітора та розширення портів.', 'price' => 2800],
-                    ],
-                ],
-                [
-                    'id' => 'memory',
-                    'title' => 'Більше пам\'яті',
-                    'options' => [
-                        ['label' => $build['storage'], 'description' => 'Базовий накопичувач збірки.', 'price' => 0, 'selected' => true],
-                        ['label' => '+1TB Gen4 NVMe', 'description' => 'Окремий швидкий диск під ігри та бібліотеку.', 'price' => 3000],
-                        ['label' => '+2TB Gen4 NVMe', 'description' => 'Великий запас під AAA-проєкти та записи стрімів.', 'price' => 5200],
-                    ],
-                ],
-                [
-                    'id' => 'psu',
-                    'title' => 'Покращення БЖ',
-                    'options' => [
-                        ['label' => $powerUpgrade, 'description' => 'Стандарт під поточну конфігурацію.', 'price' => 0, 'selected' => true],
-                        ['label' => '1000W Gold full-modular', 'description' => 'Запас під потужні апгрейди GPU.', 'price' => 2400],
-                        ['label' => '1000W Platinum silent', 'description' => 'Преміум БЖ з покращеною акустикою.', 'price' => 4200],
-                    ],
-                ],
-                [
-                    'id' => 'case',
-                    'title' => 'Корпус',
-                    'options' => [
-                        ['label' => $caseLabel, 'description' => 'Базовий стиль під tone цієї збірки.', 'price' => 0, 'selected' => true],
-                        ['label' => 'Panoramic white edition', 'description' => 'Більше скла, світлий екстер\'єр і акцентний look.', 'price' => 2900],
-                        ['label' => 'Airflow performance chassis', 'description' => 'Покращений забір повітря під довгі сесії.', 'price' => 3400],
-                    ],
-                ],
-            ];
+            $sharedBuildLink = $sharedBuildLink ?? null;
+            $sharedBuildSelection = is_array($sharedBuildSelection ?? null) ? $sharedBuildSelection : [];
+            $productConfigurator = \App\Support\BuildConfigurator::storefrontPayload($build);
+            $productConfiguratorEnabled = (bool) ($productConfigurator['enabled'] ?? false);
+            $productConfiguratorClient = $productConfigurator['client'] ?? ['enabled' => false];
+            $productCompatibility = $productConfigurator['compatibility'] ?? ['is_valid' => true, 'messages' => []];
+            $productOptions = [];
             $defaultAdditionalPrice = 0;
-            foreach ($productOptions as $optionGroup) {
-                foreach ($optionGroup['options'] as $option) {
-                    if (!empty($option['selected'])) {
-                        $defaultAdditionalPrice += $option['price'];
-                    }
-                }
-            }
+            $previewToken = is_string($previewToken ?? null) ? trim((string) $previewToken) : '';
+            $previewBackUrl = is_string($build['preview_back_url'] ?? null) ? trim((string) ($build['preview_back_url'] ?? '')) : '';
+            $previewPersistUrl = $isPreview && $previewToken !== '' ? route('product.preview.persist', ['token' => $previewToken]) : '';
+            $previewPersistState = is_array(session('previewPersistState')) ? session('previewPersistState') : [];
+            $previewPersistError = trim((string) session('previewPersistError', ''));
+            $previewStatusLabel = (bool) ($build['is_active'] ?? false) ? 'Опубліковано' : 'Чернетка';
+
             $initialTotalPrice = $basePrice + $defaultAdditionalPrice;
+
+            if ($productConfiguratorEnabled) {
+                $resolvedConfiguratorSelection = $productConfigurator['defaults'] ?? [];
+
+                if ($sharedBuildSelection !== []) {
+                    $sharedResolvedConfigurator = \App\Support\BuildConfigurator::resolvePayloadSelection($productConfigurator, $sharedBuildSelection);
+                    $resolvedConfiguratorSelection = $sharedResolvedConfigurator['selection'] ?? $resolvedConfiguratorSelection;
+                    $productCompatibility = $sharedResolvedConfigurator['compatibility'] ?? $productCompatibility;
+                    $defaultAdditionalPrice = (int) ($sharedResolvedConfigurator['additional_price'] ?? 0);
+                    $initialTotalPrice = (int) ($sharedResolvedConfigurator['total_price'] ?? ($basePrice + $defaultAdditionalPrice));
+                } else {
+                    $defaultAdditionalPrice = (int) ($productConfigurator['additionalPrice'] ?? 0);
+                    $initialTotalPrice = (int) ($productConfigurator['totalPrice'] ?? ($basePrice + $defaultAdditionalPrice));
+                }
+
+                $productConfigurator['defaults'] = $resolvedConfiguratorSelection;
+                $productConfigurator['client']['defaults'] = $resolvedConfiguratorSelection;
+                $productOptions = collect($productConfigurator['groups'] ?? [])
+                    ->map(static function (array $group) use ($resolvedConfiguratorSelection): array {
+                        $groupKey = (string) ($group['key'] ?? '');
+
+                        return [
+                            'id' => $groupKey,
+                            'title' => (string) ($group['title'] ?? ''),
+                            'description' => $group['description'] ?? null,
+                            'options' => collect($group['options'] ?? [])
+                                ->map(static function (array $option) use ($resolvedConfiguratorSelection, $groupKey): array {
+                                    $imageUrl = (string) (
+                                        $option['component']['image_url']
+                                        ?? \App\Support\ComponentImages::placeholderUrl(
+                                            (string) ($option['component']['type'] ?? 'other'),
+                                            (string) ($option['label'] ?? ''),
+                                        )
+                                    );
+
+                                    return [
+                                        'key' => (string) ($option['key'] ?? ''),
+                                        'label' => (string) ($option['label'] ?? ''),
+                                        'description' => (string) ($option['description'] ?? ($option['component']['summary'] ?? '')),
+                                        'image_url' => $imageUrl,
+                                        'image_urls' => array_values(array_filter(array_map(
+                                            static fn ($value): string => trim((string) $value),
+                                            is_array($option['component']['image_urls'] ?? null) ? $option['component']['image_urls'] : [$imageUrl],
+                                        ))),
+                                        'price' => (int) ($option['price'] ?? $option['price_delta'] ?? 0),
+                                        'selected' => (($resolvedConfiguratorSelection[$groupKey] ?? ($option['is_default'] ?? false ? (string) ($option['key'] ?? '') : null)) === (string) ($option['key'] ?? '')),
+                                        'component_id' => $option['component_id'] ?? null,
+                                    ];
+                                })
+                                ->values()
+                                ->all(),
+                        ];
+                    })
+                    ->values()
+                    ->all();
+            }
         @endphp
 
         <div class="page-shell">
@@ -843,6 +931,24 @@
                             <span>/</span>
                             <span>{{ $build['name'] }}</span>
                         </div>
+
+                        @if ($sharedBuildLink)
+                            <div class="product-shared-pill">
+                                <strong>Поділена конфігурація</strong>
+                                <span>Активна до {{ $sharedBuildLink->expires_at?->format('d.m.Y') }}</span>
+                            </div>
+                        @elseif ($isPreview)
+                            <div class="product-shared-pill">
+                                <strong>Перегляд чернетки</strong>
+                                <span>Ти дивишся поточний стан форми до збереження змін.</span>
+                                <span class="product-shared-pill__status">{{ $previewStatusLabel }}</span>
+                                @if (($previewPersistState['message'] ?? '') !== '')
+                                    <span class="product-shared-pill__feedback product-shared-pill__feedback--success">{{ $previewPersistState['message'] }}</span>
+                                @elseif ($previewPersistError !== '')
+                                    <span class="product-shared-pill__feedback product-shared-pill__feedback--error">{{ $previewPersistError }}</span>
+                                @endif
+                            </div>
+                        @endif
                     </section>
 
                     <section class="product-showcase">
@@ -857,14 +963,21 @@
 
                                 @foreach ($productSlides as $slide)
                                     @php
-                                        $slideImageKey = $slide['variant'] === 'hero'
-                                            ? 'build.' . $build['slug'] . '.cover'
-                                            : 'build.' . $build['slug'] . '.gallery.' . $slide['variant'];
-                                        $slideImageUrl = \App\Support\SiteImages::url($slideImageKey);
+                                        $slideImageUrl = trim((string) ($slide['image_url'] ?? ''));
+                                        $slideImageKey = null;
+
+                                        if ($slideImageUrl === '') {
+                                            $slideImageKey = $slide['variant'] === 'hero'
+                                                ? 'build.' . $build['slug'] . '.cover'
+                                                : 'build.' . $build['slug'] . '.gallery.' . $slide['variant'];
+                                            $slideImageUrl = (string) (\App\Support\SiteImages::url($slideImageKey) ?? '');
+                                        }
                                     @endphp
                                     <div
                                         class="product-gallery__slide product-gallery__slide--{{ $slide['variant'] }}{{ $loop->first ? ' is-active' : '' }} site-image-target{{ $slideImageUrl ? ' has-site-image' : '' }}"
-                                        data-site-image-key="{{ $slideImageKey }}"
+                                        @if ($slideImageKey)
+                                            data-site-image-key="{{ $slideImageKey }}"
+                                        @endif
                                         data-product-slide="{{ $loop->index }}"
                                         style="--slide-from: {{ $palette['from'] }}; --slide-to: {{ $palette['to'] }}; --slide-accent: {{ $palette['accent'] }};@if ($slideImageUrl) --site-image-url: url('{{ $slideImageUrl }}');@endif"
                                     >
@@ -945,10 +1058,15 @@
                             <div class="product-gallery__thumbs">
                                 @foreach ($productSlides as $slide)
                                     @php
-                                        $slideImageKey = $slide['variant'] === 'hero'
-                                            ? 'build.' . $build['slug'] . '.cover'
-                                            : 'build.' . $build['slug'] . '.gallery.' . $slide['variant'];
-                                        $slideImageUrl = \App\Support\SiteImages::url($slideImageKey);
+                                        $slideImageUrl = trim((string) ($slide['image_url'] ?? ''));
+                                        $slideImageKey = null;
+
+                                        if ($slideImageUrl === '') {
+                                            $slideImageKey = $slide['variant'] === 'hero'
+                                                ? 'build.' . $build['slug'] . '.cover'
+                                                : 'build.' . $build['slug'] . '.gallery.' . $slide['variant'];
+                                            $slideImageUrl = (string) (\App\Support\SiteImages::url($slideImageKey) ?? '');
+                                        }
                                     @endphp
                                     <button
                                         class="product-gallery__thumb{{ $loop->first ? ' is-active' : '' }}"
@@ -959,7 +1077,9 @@
                                     >
                                         <span
                                             class="product-gallery__thumb-preview product-gallery__thumb-preview--{{ $slide['variant'] }} site-image-target{{ $slideImageUrl ? ' has-site-image' : '' }}"
-                                            data-site-image-key="{{ $slideImageKey }}"
+                                            @if ($slideImageKey)
+                                                data-site-image-key="{{ $slideImageKey }}"
+                                            @endif
                                             data-site-image-passive="true"
                                             @if ($slideImageUrl)
                                                 style="--site-image-url: url('{{ $slideImageUrl }}');"
@@ -1064,10 +1184,18 @@
                                     </ul>
                                 </div>
                             </section>
+
+                            <section class="product-tradein" aria-labelledby="product-tradein-title">
+                                <span class="product-tradein__eyebrow">Trade-in</span>
+                                <h2 class="product-tradein__title" id="product-tradein-title">Бажаєте замінити свій старий ПК з доплатою на {{ $build['name'] }}?</h2>
+                                <p class="product-tradein__text">Запропонуйте свій поточний комп'ютер, а ми попередньо оцінимо його та підготуємо пропозицію по трейд-іну саме під цю збірку.</p>
+                                <a class="product-tradein__button" href="{{ route('trade-in', ['build' => $build['slug']]) }}">Запропонувати свій ПК</a>
+                            </section>
                         </div>
 
                         <aside class="product-aside">
                             <h1 class="product-aside__title">{{ $build['name'] }}</h1>
+                            <div class="product-aside__code">Код товару: {{ $build['product_code'] ?? '—' }}</div>
 
                             <h2 class="product-section-title">Характеристики</h2>
 
@@ -1176,36 +1304,66 @@
                                 </div>
                             </section>
 
-                            <p class="product-options__intro">Тут можна змінити комплектуючі:</p>
+                            @if (! empty($productOptions))
+                                <p class="product-options__intro">Тут можна змінити комплектуючі:</p>
 
-                            <div class="product-options">
-                                @foreach ($productOptions as $optionGroup)
-                                    <details class="product-option" data-product-option>
-                                        <summary>{{ $optionGroup['title'] }}</summary>
+                                <div class="product-options" data-product-configurator="{{ $productConfiguratorEnabled ? 'true' : 'false' }}">
+                                    @foreach ($productOptions as $optionGroup)
+                                        <details class="product-option" data-product-option>
+                                            <summary>{{ $optionGroup['title'] }}</summary>
 
-                                        <div class="product-option__panel">
-                                            @foreach ($optionGroup['options'] as $option)
-                                                <label class="product-choice">
-                                                    <input
-                                                        type="radio"
-                                                        name="product_option_{{ $optionGroup['id'] }}"
-                                                        value="{{ $loop->index }}"
-                                                        data-option-price="{{ $option['price'] }}"
-                                                        @checked(!empty($option['selected']))
-                                                    >
-                                                    <span class="product-choice__body">
-                                                        <span class="product-choice__label">{{ $option['label'] }}</span>
-                                                        <span class="product-choice__meta">{{ $option['description'] }}</span>
-                                                    </span>
-                                                    <span class="product-choice__price">{{ $option['price'] > 0 ? '+' . $priceFormatter($option['price']) : 'Входить' }}</span>
-                                                </label>
-                                            @endforeach
-                                        </div>
-                                    </details>
-                                @endforeach
+                                            <div class="product-option__panel">
+                                                @if (!empty($optionGroup['description']))
+                                                    <p class="product-option__group-note">{{ $optionGroup['description'] }}</p>
+                                                @endif
+
+                                                @foreach ($optionGroup['options'] as $option)
+                                                    <label class="product-choice{{ !empty($option['selected']) ? ' is-selected' : '' }}">
+                                                        <input
+                                                            type="radio"
+                                                            name="product_option_{{ $optionGroup['id'] }}"
+                                                            value="{{ $loop->index }}"
+                                                            data-option-price="{{ $option['price'] }}"
+                                                            data-option-group="{{ $optionGroup['id'] }}"
+                                                            data-option-key="{{ $option['key'] ?? $loop->index }}"
+                                                            @checked(!empty($option['selected']))
+                                                        >
+                                                        <span class="product-choice__media">
+                                                            <button
+                                                                type="button"
+                                                                class="product-choice__preview"
+                                                                data-option-image-trigger
+                                                                data-option-image-src="{{ $option['image_url'] ?? '' }}"
+                                                                data-option-image-gallery='@json($option['image_urls'] ?? [])'
+                                                                data-option-image-alt="{{ $option['label'] }}"
+                                                                aria-label="Відкрити фото {{ $option['label'] }}"
+                                                            >
+                                                                <img src="{{ $option['image_url'] ?? '' }}" alt="{{ $option['label'] }}" loading="lazy">
+                                                            </button>
+                                                        </span>
+                                                        <span class="product-choice__body">
+                                                            <span class="product-choice__label">{{ $option['label'] }}</span>
+                                                            <span class="product-choice__meta">{{ $option['description'] }}</span>
+                                                        </span>
+                                                        <span class="product-choice__price">{{ $option['price'] > 0 ? '+' . $priceFormatter($option['price']) : 'Входить' }}</span>
+                                                    </label>
+                                                @endforeach
+                                            </div>
+                                        </details>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            <div class="product-compatibility{{ empty($productCompatibility['is_valid']) ? ' is-visible' : '' }}" data-product-compatibility @if (!empty($productCompatibility['is_valid'])) hidden @endif>
+                                <strong class="product-compatibility__title">Перевірка сумісності</strong>
+                                <ul class="product-compatibility__list" data-product-compatibility-list>
+                                    @foreach (($productCompatibility['messages'] ?? []) as $message)
+                                        <li>{{ $message }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
 
-                            <div class="product-pricing" data-product-pricing data-base-price="{{ $basePrice }}" data-total-price="{{ $initialTotalPrice }}">
+                            <div class="product-pricing" data-product-pricing data-base-price="{{ $basePrice }}" data-total-price="{{ $initialTotalPrice }}" data-configurator-enabled="{{ $productConfiguratorEnabled ? 'true' : 'false' }}">
                                 <div class="product-pricing__row product-pricing__row--addons">
                                     <span class="product-pricing__label">Вартість додаткових опцій</span>
                                     <strong class="product-pricing__value" data-product-addons-price>{{ $priceFormatter($defaultAdditionalPrice) }}</strong>
@@ -1222,28 +1380,30 @@
                             <div class="product-actions">
                                 <div class="product-actions__controls">
                                     <input class="product-actions__qty" type="number" value="1" min="1" max="9" inputmode="numeric" data-product-qty aria-label="Кількість">
-                                    <button class="product-actions__button" type="button" data-product-add>Додати в кошик</button>
+                                    <button class="product-actions__button" type="button" data-product-add @disabled($isPreview)>{{ $isPreview ? 'Збережи збірку для замовлення' : 'Додати в кошик' }}</button>
                                     <a class="product-actions__button product-actions__button--secondary" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Розстрочка online</a>
                                 </div>
 
-                                <div class="product-actions__feedback" data-product-feedback>Можемо зібрати, протестувати і відправити після узгодження обраних опцій.</div>
+                                <div class="product-actions__feedback" data-product-feedback>{{ $isPreview ? 'Це лише попередній перегляд. Щоб товар працював на сайті як повноцінна збірка, збережи зміни в адмінці.' : 'Можемо зібрати, протестувати і відправити після узгодження обраних опцій.' }}</div>
 
-                                <div class="product-actions__share">
-                                    <button
-                                        class="product-actions__share-button"
-                                        type="button"
-                                        data-copy-build-link
-                                        data-copy-url="{{ url()->current() }}"
-                                        aria-label="Скопіювати посилання на збірку"
-                                    >
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                            <path d="M10 14L14 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                            <path d="M8.5 17H7A4 4 0 1 1 7 9H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M15 15H17A4 4 0 0 0 17 7H15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <span>Скопіювати посилання</span>
-                                    </button>
-                                </div>
+                                @unless ($isPreview)
+                                    <div class="product-actions__share">
+                                        <button
+                                            class="product-actions__share-button"
+                                            type="button"
+                                            data-build-share
+                                            data-share-endpoint="{{ route('product.share', ['slug' => $build['slug']]) }}"
+                                            aria-label="Скопіювати посилання на збірку"
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M10 14L14 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                <path d="M8.5 17H7A4 4 0 1 1 7 9H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M15 15H17A4 4 0 0 0 17 7H15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            <span>Скопіювати посилання</span>
+                                        </button>
+                                    </div>
+                                @endunless
                             </div>
 
                             <section class="product-gear" aria-labelledby="product-gear-title">
@@ -1369,6 +1529,36 @@
                 </div>
             </main>
 
+            @if ($isPreview && $previewPersistUrl !== '')
+                <div class="preview-dock" role="complementary" aria-label="Дії з чернеткою">
+                    <div class="preview-dock__meta">
+                        <span class="preview-dock__eyebrow">Режим превʼю</span>
+                        <div class="preview-dock__title">Чернетка збірки готова до перевірки</div>
+                        <div class="preview-dock__text">Статус зараз: <strong>{{ $previewStatusLabel }}</strong>. Після збереження можна одразу повернутися в адмінку й продовжити редагування.</div>
+                        @if (($previewPersistState['message'] ?? '') !== '')
+                            <div class="preview-dock__feedback">{{ $previewPersistState['message'] }}</div>
+                        @elseif ($previewPersistError !== '')
+                            <div class="preview-dock__feedback preview-dock__feedback--error">{{ $previewPersistError }}</div>
+                        @endif
+                    </div>
+                    <div class="preview-dock__actions">
+                        @if ($previewBackUrl !== '')
+                            <a class="preview-dock__button" href="{{ $previewBackUrl }}">Повернутися до редагування</a>
+                        @endif
+                        <form class="preview-dock__form" method="POST" action="{{ $previewPersistUrl }}">
+                            @csrf
+                            <input type="hidden" name="mode" value="draft">
+                            <button class="preview-dock__button" type="submit">Зберегти в чернетку</button>
+                        </form>
+                        <form class="preview-dock__form" method="POST" action="{{ $previewPersistUrl }}">
+                            @csrf
+                            <input type="hidden" name="mode" value="publish">
+                            <button class="preview-dock__button preview-dock__button--primary" type="submit">Опублікувати</button>
+                        </form>
+                    </div>
+                </div>
+            @endif
+
             <footer class="footer" id="contacts">
                 <div class="container">
                     <div class="footer__grid">
@@ -1412,6 +1602,39 @@
             </footer>
         </div>
 
+        <div class="product-option-lightbox" data-option-image-modal hidden>
+            <div class="product-option-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Фото комплектуючої">
+                <button type="button" class="product-option-lightbox__close" data-option-image-close aria-label="Закрити">&times;</button>
+                <button type="button" class="product-option-lightbox__nav product-option-lightbox__nav--prev" data-option-image-prev aria-label="Попереднє фото">
+                    <span aria-hidden="true">‹</span>
+                </button>
+                <button type="button" class="product-option-lightbox__nav product-option-lightbox__nav--next" data-option-image-next aria-label="Наступне фото">
+                    <span aria-hidden="true">›</span>
+                </button>
+                <img src="" alt="" class="product-option-lightbox__image" data-option-image-modal-image>
+                <div class="product-option-lightbox__thumbs" data-option-image-thumbs></div>
+                <div class="product-option-lightbox__meta">
+                    <p class="product-option-lightbox__caption" data-option-image-modal-caption></p>
+                    <p class="product-option-lightbox__counter" data-option-image-modal-counter></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-share-modal" data-build-share-modal hidden>
+            <div class="product-share-modal__backdrop" data-build-share-close></div>
+            <div class="product-share-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="build-share-title">
+                <button type="button" class="product-share-modal__close" data-build-share-close aria-label="Закрити">&times;</button>
+                <h2 class="product-share-modal__title" id="build-share-title">Поділитися збіркою</h2>
+                <p class="product-share-modal__text">Скопіюй це посилання і надішли його клієнту або собі на інший пристрій. За лінком відкриється саме ця конфігурація збірки.</p>
+                <label class="product-share-modal__field">
+                    <span>Посилання на збірку</span>
+                    <input type="text" value="" readonly data-build-share-link>
+                </label>
+                <p class="product-share-modal__meta" data-build-share-meta></p>
+                <button type="button" class="product-share-modal__copy" data-build-share-copy>Копіювати посилання</button>
+            </div>
+        </div>
+
         <script src="{{ asset('js/storefront-cart.js') }}"></script>
         <script>
             (() => {
@@ -1436,12 +1659,30 @@
                 const productOptions = Array.from(document.querySelectorAll('[data-product-option]'));
                 const optionInputs = Array.from(document.querySelectorAll('[data-option-price]'));
                 const optionChoices = Array.from(document.querySelectorAll('.product-choice'));
+                const optionImageTriggers = Array.from(document.querySelectorAll('[data-option-image-trigger]'));
+                const optionImageModal = document.querySelector('[data-option-image-modal]');
+                const optionImageModalImage = document.querySelector('[data-option-image-modal-image]');
+                const optionImageModalCaption = document.querySelector('[data-option-image-modal-caption]');
+                const optionImageModalCounter = document.querySelector('[data-option-image-modal-counter]');
+                const optionImageModalClose = document.querySelector('[data-option-image-close]');
+                const optionImageModalPrev = document.querySelector('[data-option-image-prev]');
+                const optionImageModalNext = document.querySelector('[data-option-image-next]');
+                const optionImageModalThumbs = document.querySelector('[data-option-image-thumbs]');
+                const buildShareButton = document.querySelector('[data-build-share]');
+                const buildShareButtonLabel = buildShareButton?.querySelector('span');
+                const buildShareModal = document.querySelector('[data-build-share-modal]');
+                const buildShareLinkInput = document.querySelector('[data-build-share-link]');
+                const buildShareMeta = document.querySelector('[data-build-share-meta]');
+                const buildShareCopyButton = document.querySelector('[data-build-share-copy]');
+                const buildShareCloseButtons = Array.from(document.querySelectorAll('[data-build-share-close]'));
                 const pricingRoot = document.querySelector('[data-product-pricing]');
                 const addonsPriceElement = document.querySelector('[data-product-addons-price]');
                 const totalPriceElement = document.querySelector('[data-product-total-price]');
                 const quantityInput = document.querySelector('[data-product-qty]');
                 const addToCartButton = document.querySelector('[data-product-add]');
                 const productFeedback = document.querySelector('[data-product-feedback]');
+                const compatibilityRoot = document.querySelector('[data-product-compatibility]');
+                const compatibilityList = document.querySelector('[data-product-compatibility-list]');
                 const headerCartValue = document.querySelector('.header-cart span');
                 const productCartItem = {
                     slug: @json($build['slug']),
@@ -1450,18 +1691,39 @@
                     tone: @json($build['tone'] ?? 'violet'),
                 };
                 const productFpsConfig = @json($productFpsClientConfig);
+                const productConfigurator = @json($productConfiguratorClient);
                 const productFpsGames = Object.fromEntries((productFpsConfig.games ?? []).map((game) => [game.id, game]));
                 const productFpsDisplays = Object.fromEntries((productFpsConfig.displays ?? []).map((display) => [display.id, display]));
                 const productFpsPresets = Object.fromEntries((productFpsConfig.presets ?? []).map((preset) => [preset.id, preset]));
                 const productFpsLookup = productFpsConfig.lookup ?? {};
+                const csrfToken = @json(csrf_token());
                 let closeTimer;
                 let cartTotal = 0;
                 let activeSlideIndex = 0;
+                let optionImageGallery = [];
+                let optionImageGalleryIndex = 0;
 
                 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
                 const formatPrice = (value) => `${new Intl.NumberFormat('uk-UA').format(Math.round(value)).replace(/\u00a0/g, ' ')} ₴`;
                 const resolveProductFpsRatio = (fps) => fps > 0 ? clamp(fps / 220, 0.18, 1) : 0;
                 const productStateKey = (state) => `${state.game ?? ''}|${state.display ?? ''}|${state.preset ?? ''}`;
+                const makeCartKey = (slug, selection = {}) => {
+                    const normalizedSelection = Object.keys(selection ?? {})
+                        .sort()
+                        .reduce((carry, key) => {
+                            if (selection[key]) {
+                                carry[key] = selection[key];
+                            }
+
+                            return carry;
+                        }, {});
+
+                    try {
+                        return `${slug}:${window.btoa(unescape(encodeURIComponent(JSON.stringify(normalizedSelection))))}`;
+                    } catch (error) {
+                        return `${slug}:default`;
+                    }
+                };
 
                 const syncHeaderState = () => {
                     if (!header) {
@@ -1572,11 +1834,314 @@
                     galleryInfoButton.setAttribute('aria-expanded', 'false');
                 };
 
+                const syncBodyLock = () => {
+                    const optionImageOpen = optionImageModal && !optionImageModal.hidden && optionImageModal.classList.contains('is-open');
+                    const buildShareOpen = buildShareModal && !buildShareModal.hidden;
+
+                    document.body.style.overflow = optionImageOpen || buildShareOpen ? 'hidden' : '';
+                };
+
+                const normalizeOptionImageGallery = (rawGallery, fallbackSrc = '') => {
+                    const gallery = Array.isArray(rawGallery) ? rawGallery : [];
+                    const normalized = gallery
+                        .map((value) => `${value ?? ''}`.trim())
+                        .filter(Boolean);
+
+                    if (normalized.length) {
+                        return normalized;
+                    }
+
+                    return fallbackSrc ? [fallbackSrc] : [];
+                };
+
+                const renderOptionImageModal = (alt = '') => {
+                    if (!optionImageModalImage || !optionImageGallery.length) {
+                        return;
+                    }
+
+                    const safeIndex = clamp(optionImageGalleryIndex, 0, optionImageGallery.length - 1);
+                    const currentImage = optionImageGallery[safeIndex] ?? '';
+
+                    optionImageGalleryIndex = safeIndex;
+                    optionImageModalImage.setAttribute('src', currentImage);
+                    optionImageModalImage.setAttribute('alt', alt ?? '');
+
+                    if (optionImageModalCaption) {
+                        optionImageModalCaption.textContent = alt ?? '';
+                    }
+
+                    if (optionImageModalCounter) {
+                        optionImageModalCounter.textContent = `${safeIndex + 1} / ${optionImageGallery.length}`;
+                    }
+
+                    if (optionImageModalPrev) {
+                        optionImageModalPrev.hidden = optionImageGallery.length < 2;
+                    }
+
+                    if (optionImageModalNext) {
+                        optionImageModalNext.hidden = optionImageGallery.length < 2;
+                    }
+
+                    if (optionImageModalThumbs) {
+                        optionImageModalThumbs.innerHTML = '';
+
+                        optionImageGallery.forEach((image, index) => {
+                            const thumbButton = document.createElement('button');
+                            const thumbImage = document.createElement('img');
+
+                            thumbButton.type = 'button';
+                            thumbButton.className = `product-option-lightbox__thumb${index === safeIndex ? ' is-active' : ''}`;
+                            thumbButton.dataset.optionImageThumb = `${index}`;
+                            thumbButton.setAttribute('aria-label', `Відкрити фото ${index + 1}`);
+
+                            thumbImage.src = image;
+                            thumbImage.alt = alt ?? '';
+
+                            thumbButton.appendChild(thumbImage);
+                            optionImageModalThumbs.appendChild(thumbButton);
+                        });
+                    }
+                };
+
+                const closeOptionImageModal = () => {
+                    if (!optionImageModal || !optionImageModalImage) {
+                        return;
+                    }
+
+                    optionImageModal.hidden = true;
+                    optionImageModal.classList.remove('is-open');
+                    optionImageModalImage.setAttribute('src', '');
+                    optionImageModalImage.setAttribute('alt', '');
+
+                    if (optionImageModalCaption) {
+                        optionImageModalCaption.textContent = '';
+                    }
+
+                    if (optionImageModalCounter) {
+                        optionImageModalCounter.textContent = '';
+                    }
+
+                    if (optionImageModalThumbs) {
+                        optionImageModalThumbs.innerHTML = '';
+                    }
+
+                    optionImageGallery = [];
+                    optionImageGalleryIndex = 0;
+
+                    syncBodyLock();
+                };
+
+                const openOptionImageModal = (gallery, alt, startIndex = 0) => {
+                    const normalizedGallery = normalizeOptionImageGallery(gallery);
+
+                    if (!optionImageModal || !optionImageModalImage || !normalizedGallery.length) {
+                        return;
+                    }
+
+                    optionImageGallery = normalizedGallery;
+                    optionImageGalleryIndex = clamp(startIndex, 0, normalizedGallery.length - 1);
+                    optionImageModal.hidden = false;
+                    optionImageModal.classList.add('is-open');
+                    renderOptionImageModal(alt ?? '');
+                    syncBodyLock();
+                };
+
+                const openBuildShareModal = (url, expiresAt = '') => {
+                    if (!buildShareModal || !buildShareLinkInput || !buildShareMeta) {
+                        return;
+                    }
+
+                    buildShareLinkInput.value = url;
+                    buildShareMeta.textContent = expiresAt
+                        ? `Посилання активне до ${new Date(expiresAt).toLocaleDateString('uk-UA')}.`
+                        : 'Посилання активне 30 днів.';
+                    buildShareModal.hidden = false;
+                    syncBodyLock();
+                    buildShareCopyButton?.focus();
+                };
+
+                const closeBuildShareModal = () => {
+                    if (!buildShareModal) {
+                        return;
+                    }
+
+                    buildShareModal.hidden = true;
+                    syncBodyLock();
+                };
+
                 const syncOptionSelections = () => {
                     optionChoices.forEach((choice) => {
                         const input = choice.querySelector('input');
                         choice.classList.toggle('is-selected', !!input?.checked);
                     });
+                };
+
+                const renderCompatibility = (messages = []) => {
+                    if (!compatibilityRoot || !compatibilityList) {
+                        return;
+                    }
+
+                    compatibilityList.innerHTML = '';
+
+                    messages.forEach((message) => {
+                        const item = document.createElement('li');
+                        item.textContent = message;
+                        compatibilityList.appendChild(item);
+                    });
+
+                    const visible = messages.length > 0;
+                    compatibilityRoot.hidden = !visible;
+                    compatibilityRoot.classList.toggle('is-visible', visible);
+                };
+
+                const getSelectedConfiguratorState = () => {
+                    const selected = {};
+
+                    optionInputs.forEach((input) => {
+                        if (input.checked) {
+                            selected[input.dataset.optionGroup ?? ''] = input.dataset.optionKey ?? input.value;
+                        }
+                    });
+
+                    return selected;
+                };
+
+                const getConfiguratorEvaluation = () => {
+                    if (!productConfigurator?.enabled) {
+                        const selection = getSelectedConfiguratorState();
+                        const summary = [];
+
+                        const addons = optionInputs.reduce((sum, input) => {
+                            if (!input.checked) {
+                                return sum;
+                            }
+
+                            const price = Number(input.dataset.optionPrice ?? 0);
+                            const groupTitle = input.closest('[data-product-option]')?.querySelector('summary')?.textContent?.trim() ?? 'Опція';
+                            const optionLabel = input.closest('.product-choice')?.querySelector('.product-choice__label')?.textContent?.trim() ?? 'Вибрано';
+
+                            if (price > 0) {
+                                summary.push(`${groupTitle}: ${optionLabel}`);
+                            }
+
+                            return sum + price;
+                        }, 0);
+
+                        return {
+                            isValid: true,
+                            messages: [],
+                            addons,
+                            selection,
+                            summary,
+                        };
+                    }
+
+                    const selection = getSelectedConfiguratorState();
+                    const slotLabels = productConfigurator.slotLabels ?? {};
+                    const baseComponents = { ...(productConfigurator.baseComponents ?? {}) };
+                    const groups = Array.isArray(productConfigurator.groups) ? productConfigurator.groups : [];
+                    const components = productConfigurator.components ?? {};
+                    const componentIds = { ...baseComponents };
+                    const summary = [];
+                    let addons = 0;
+
+                    groups.forEach((group) => {
+                        const options = Array.isArray(group.options) ? group.options : [];
+                        const selectedKey = selection[group.key] ?? productConfigurator.defaults?.[group.key];
+                        const option = options.find((entry) => entry.key === selectedKey)
+                            ?? options.find((entry) => entry.is_default)
+                            ?? options[0];
+
+                        if (!option) {
+                            return;
+                        }
+
+                        const price = Number(option.price ?? option.price_delta ?? 0);
+                        const slot = `${group.slot ?? ''}`;
+                        const componentId = Number(option.component_id ?? 0);
+
+                        addons += price;
+
+                        if (slot && componentId > 0 && ['cpu', 'gpu', 'motherboard', 'ram', 'storage', 'psu', 'case', 'cooler'].includes(slot)) {
+                            componentIds[slot] = componentId;
+                        }
+
+                        if (price > 0 || !['modding', 'adapters', 'other'].includes(slot)) {
+                            summary.push(`${slotLabels[slot] ?? 'Опція'}: ${option.label ?? 'Вибрано'}`);
+                        }
+                    });
+
+                    const componentFromSlot = (slot) => {
+                        const componentId = Number(componentIds?.[slot] ?? 0);
+                        return componentId > 0 ? (components[componentId] ?? null) : null;
+                    };
+
+                    const cpu = componentFromSlot('cpu');
+                    const gpu = componentFromSlot('gpu');
+                    const motherboard = componentFromSlot('motherboard');
+                    const ram = componentFromSlot('ram');
+                    const psu = componentFromSlot('psu');
+                    const itemCase = componentFromSlot('case');
+                    const cooler = componentFromSlot('cooler');
+                    const messages = [];
+
+                    if (cpu && motherboard && cpu.socket && motherboard.socket && cpu.socket !== motherboard.socket) {
+                        messages.push('Процесор не сумісний із сокетом материнської плати.');
+                    }
+
+                    if (ram && motherboard && ram.ram_type && motherboard.ram_type && ram.ram_type !== motherboard.ram_type) {
+                        messages.push("Оперативна пам'ять не підходить до материнської плати.");
+                    }
+
+                    if (motherboard && itemCase && motherboard.form_factor && Array.isArray(itemCase.supported_mb_form_factors) && itemCase.supported_mb_form_factors.length > 0 && !itemCase.supported_mb_form_factors.includes(motherboard.form_factor)) {
+                        messages.push('Обрана материнська плата не поміщається в цей корпус.');
+                    }
+
+                    if (gpu && itemCase && Number(gpu.gpu_length_mm) > 0 && Number(itemCase.max_gpu_length_mm) > 0 && Number(gpu.gpu_length_mm) > Number(itemCase.max_gpu_length_mm)) {
+                        messages.push('Відеокарта завелика для цього корпусу.');
+                    }
+
+                    if (cooler && cpu && cpu.socket && Array.isArray(cooler.supported_sockets) && cooler.supported_sockets.length > 0 && !cooler.supported_sockets.includes(cpu.socket)) {
+                        messages.push('Охолодження CPU не підтримує сокет обраного процесора.');
+                    }
+
+                    if (cooler && itemCase) {
+                        const radiatorSize = Number(cooler.radiator_size_mm ?? 0);
+                        const supportedRadiators = Array.isArray(itemCase.supported_radiator_sizes)
+                            ? itemCase.supported_radiator_sizes.map((value) => Number(value)).filter((value) => value > 0)
+                            : [];
+                        const coolerHeight = Number(cooler.max_cooler_height_mm ?? 0);
+                        const caseCoolerLimit = Number(itemCase.max_cooler_height_mm ?? 0);
+
+                        if (radiatorSize > 0 && supportedRadiators.length > 0 && !supportedRadiators.includes(radiatorSize)) {
+                            messages.push('Корпус не підтримує цей радіатор СВО.');
+                        }
+
+                        if (radiatorSize === 0 && coolerHeight > 0 && caseCoolerLimit > 0 && coolerHeight > caseCoolerLimit) {
+                            messages.push('Повітряний кулер не поміщається в корпус по висоті.');
+                        }
+                    }
+
+                    if (gpu && psu && Number(gpu.gpu_power_connectors) > 0 && Number(psu.pcie_power_connectors) > 0 && Number(gpu.gpu_power_connectors) > Number(psu.pcie_power_connectors)) {
+                        messages.push('Блок живлення не має достатньо PCIe-конекторів для цієї відеокарти.');
+                    }
+
+                    if (cpu && gpu && psu) {
+                        const requiredWattage = Math.ceil(((Number(cpu.cpu_tdp_w ?? 0) + Number(gpu.gpu_power_w ?? 0)) * 1.35) + 80);
+                        const psuWattage = Number(psu.psu_wattage ?? 0);
+
+                        if (requiredWattage > 0 && psuWattage > 0 && psuWattage < requiredWattage) {
+                            messages.push('Потужності блока живлення замало для поточної конфігурації.');
+                        }
+                    }
+
+                    return {
+                        isValid: messages.length === 0,
+                        messages,
+                        addons,
+                        selection,
+                        summary,
+                    };
                 };
 
                 const syncProductFps = () => {
@@ -1634,11 +2199,12 @@
 
                 const syncProductPricing = () => {
                     if (!pricingRoot) {
-                        return { addons: 0, total: 0 };
+                        return { addons: 0, total: 0, isValid: true, messages: [], selection: {}, summary: [] };
                     }
 
                     const basePrice = Number(pricingRoot.dataset.basePrice ?? 0);
-                    const addons = optionInputs.reduce((sum, input) => sum + (input.checked ? Number(input.dataset.optionPrice ?? 0) : 0), 0);
+                    const evaluation = getConfiguratorEvaluation();
+                    const addons = evaluation.addons;
                     const total = basePrice + addons;
 
                     pricingRoot.dataset.totalPrice = `${total}`;
@@ -1652,8 +2218,19 @@
                     }
 
                     syncOptionSelections();
+                    renderCompatibility(evaluation.messages ?? []);
 
-                    return { addons, total };
+                    if (addToCartButton) {
+                        addToCartButton.disabled = !evaluation.isValid;
+                    }
+
+                    if (productFeedback) {
+                        productFeedback.textContent = evaluation.isValid
+                            ? 'Можемо зібрати, протестувати і відправити після узгодження обраних опцій.'
+                            : (evaluation.messages?.[0] ?? 'Перевір сумісність обраних комплектуючих.');
+                    }
+
+                    return { ...evaluation, total };
                 };
 
                 const normalizeQuantity = () => {
@@ -1771,18 +2348,87 @@
                     });
                 });
 
+                optionImageTriggers.forEach((trigger) => {
+                    trigger.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        let gallery = [];
+
+                        try {
+                            gallery = JSON.parse(trigger.dataset.optionImageGallery ?? '[]');
+                        } catch (error) {
+                            gallery = [];
+                        }
+
+                        openOptionImageModal(
+                            normalizeOptionImageGallery(gallery, trigger.dataset.optionImageSrc ?? ''),
+                            trigger.dataset.optionImageAlt ?? '',
+                        );
+                    });
+                });
+
+                optionImageModalPrev?.addEventListener('click', () => {
+                    if (optionImageGallery.length < 2) {
+                        return;
+                    }
+
+                    optionImageGalleryIndex = (optionImageGalleryIndex - 1 + optionImageGallery.length) % optionImageGallery.length;
+                    renderOptionImageModal(optionImageModalImage?.getAttribute('alt') ?? '');
+                });
+
+                optionImageModalNext?.addEventListener('click', () => {
+                    if (optionImageGallery.length < 2) {
+                        return;
+                    }
+
+                    optionImageGalleryIndex = (optionImageGalleryIndex + 1) % optionImageGallery.length;
+                    renderOptionImageModal(optionImageModalImage?.getAttribute('alt') ?? '');
+                });
+
+                optionImageModalClose?.addEventListener('click', closeOptionImageModal);
+
+                optionImageModalThumbs?.addEventListener('click', (event) => {
+                    const button = event.target.closest('[data-option-image-thumb]');
+
+                    if (!(button instanceof HTMLElement)) {
+                        return;
+                    }
+
+                    const nextIndex = Number.parseInt(button.dataset.optionImageThumb ?? '0', 10);
+
+                    if (!Number.isNaN(nextIndex)) {
+                        optionImageGalleryIndex = nextIndex;
+                        renderOptionImageModal(optionImageModalImage?.getAttribute('alt') ?? '');
+                    }
+                });
+
+                optionImageModal?.addEventListener('click', (event) => {
+                    if (event.target === optionImageModal) {
+                        closeOptionImageModal();
+                    }
+                });
+
                 quantityInput?.addEventListener('change', normalizeQuantity);
                 quantityInput?.addEventListener('input', normalizeQuantity);
 
                 addToCartButton?.addEventListener('click', () => {
-                    const { total } = syncProductPricing();
+                    const pricingState = syncProductPricing();
+                    const { total } = pricingState;
                     const quantity = normalizeQuantity();
                     const lineTotal = total * quantity;
+
+                    if (!pricingState.isValid) {
+                        return;
+                    }
 
                     if (window.KondorCart) {
                         window.KondorCart.addItem({
                             ...productCartItem,
                             price: total,
+                            cartKey: makeCartKey(productCartItem.slug, pricingState.selection ?? {}),
+                            configuration: pricingState.selection ?? {},
+                            configurationSummary: pricingState.summary ?? [],
                         }, quantity);
                     } else {
                         cartTotal += lineTotal;
@@ -1809,6 +2455,75 @@
                     }, 1600);
                 });
 
+                buildShareButton?.addEventListener('click', async () => {
+                    const shareEndpoint = buildShareButton.dataset.shareEndpoint ?? '';
+
+                    if (!shareEndpoint) {
+                        return;
+                    }
+
+                    const pricingState = syncProductPricing();
+                    const defaultLabel = buildShareButton.dataset.defaultLabel ?? buildShareButtonLabel?.textContent?.trim() ?? buildShareButton.textContent?.trim() ?? 'Скопіювати посилання';
+                    buildShareButton.dataset.defaultLabel = defaultLabel;
+                    buildShareButton.disabled = true;
+                    if (buildShareButtonLabel) {
+                        buildShareButtonLabel.textContent = 'Створюємо посилання...';
+                    }
+
+                    try {
+                        const response = await fetch(shareEndpoint, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                            body: JSON.stringify({
+                                selection: pricingState.selection ?? getSelectedConfiguratorState(),
+                            }),
+                        });
+
+                        const payload = await response.json();
+
+                        if (!response.ok || !payload.url) {
+                            throw new Error(payload.message || 'Не вдалося створити посилання на збірку.');
+                        }
+
+                        openBuildShareModal(payload.url, payload.expires_at ?? '');
+                    } catch (error) {
+                        if (productFeedback) {
+                            productFeedback.textContent = error.message || 'Не вдалося створити посилання на збірку.';
+                        }
+                    } finally {
+                        buildShareButton.disabled = false;
+                        if (buildShareButtonLabel) {
+                            buildShareButtonLabel.textContent = buildShareButton.dataset.defaultLabel ?? defaultLabel;
+                        }
+                    }
+                });
+
+                buildShareCopyButton?.addEventListener('click', async () => {
+                    if (!buildShareLinkInput?.value) {
+                        return;
+                    }
+
+                    try {
+                        await navigator.clipboard.writeText(buildShareLinkInput.value);
+                        buildShareCopyButton.textContent = 'Скопійовано';
+
+                        window.setTimeout(() => {
+                            buildShareCopyButton.textContent = 'Копіювати посилання';
+                        }, 1400);
+                    } catch (error) {
+                        buildShareLinkInput.select();
+                        document.execCommand('copy');
+                    }
+                });
+
+                buildShareCloseButtons.forEach((button) => {
+                    button.addEventListener('click', closeBuildShareModal);
+                });
+
                 document.addEventListener('click', (event) => {
                     if (galleryInfo && !event.target.closest('[data-gallery-info]')) {
                         closeGalleryInfo();
@@ -1820,13 +2535,27 @@
                 });
 
                 document.addEventListener('keydown', (event) => {
-                    if (event.key !== 'Escape') {
+                    if (event.key === 'ArrowLeft' && optionImageGallery.length > 1 && optionImageModal && !optionImageModal.hidden) {
+                        event.preventDefault();
+                        optionImageGalleryIndex = (optionImageGalleryIndex - 1 + optionImageGallery.length) % optionImageGallery.length;
+                        renderOptionImageModal(optionImageModalImage?.getAttribute('alt') ?? '');
                         return;
                     }
 
-                    closeGalleryInfo();
-                    closeAllDropdowns();
-                    closeMobileMenu();
+                    if (event.key === 'ArrowRight' && optionImageGallery.length > 1 && optionImageModal && !optionImageModal.hidden) {
+                        event.preventDefault();
+                        optionImageGalleryIndex = (optionImageGalleryIndex + 1) % optionImageGallery.length;
+                        renderOptionImageModal(optionImageModalImage?.getAttribute('alt') ?? '');
+                        return;
+                    }
+
+                    if (event.key === 'Escape') {
+                        closeGalleryInfo();
+                        closeOptionImageModal();
+                        closeBuildShareModal();
+                        closeAllDropdowns();
+                        closeMobileMenu();
+                    }
                 });
 
                 window.addEventListener('scroll', syncHeaderState, { passive: true });

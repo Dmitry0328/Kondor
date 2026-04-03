@@ -1097,6 +1097,116 @@
                 background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.88), transparent);
             }
 
+            .build-card__media.has-gallery {
+                overflow: hidden;
+                background: linear-gradient(180deg, #ffffff 0%, #f3f7fb 100%);
+            }
+
+            .build-card__media.has-gallery::before,
+            .build-card__media.has-gallery::after {
+                content: none;
+            }
+
+            .build-card__gallery {
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+            }
+
+            .build-card__gallery-slide {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transform: scale(1.02);
+                transition: opacity 0.26s ease, transform 0.26s ease;
+                pointer-events: none;
+            }
+
+            .build-card__gallery-slide.is-active {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            .build-card__gallery-slide img {
+                width: 100%;
+                height: 100%;
+                padding: 18px 22px 42px;
+                object-fit: contain;
+                user-select: none;
+                -webkit-user-drag: none;
+            }
+
+            .build-card__gallery-controls {
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                bottom: 12px;
+                z-index: 2;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                pointer-events: none;
+            }
+
+            .build-card__gallery-button,
+            .build-card__gallery-dot {
+                pointer-events: auto;
+            }
+
+            .build-card__gallery-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;
+                padding: 0;
+                border: 1px solid rgba(204, 213, 225, 0.96);
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.96);
+                color: #475569;
+                box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
+                transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+            }
+
+            .build-card__gallery-button:hover {
+                transform: translateY(-1px);
+                border-color: #b6c3d5;
+                color: #0f172a;
+            }
+
+            .build-card__gallery-button svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            .build-card__gallery-dots {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                min-width: 40px;
+            }
+
+            .build-card__gallery-dot {
+                width: 6px;
+                height: 6px;
+                padding: 0;
+                border: 0;
+                border-radius: 999px;
+                background: rgba(148, 163, 184, 0.45);
+                transition: width 0.18s ease, background 0.18s ease, transform 0.18s ease;
+            }
+
+            .build-card__gallery-dot.is-active {
+                width: 18px;
+                background: linear-gradient(180deg, #8424f0, #6816cb);
+                box-shadow: 0 4px 10px rgba(104, 22, 203, 0.24);
+            }
+
             .build-card__body {
                 display: flex;
                 flex: 1;
@@ -1380,6 +1490,21 @@
                 font-weight: 800;
                 text-decoration: underline;
                 text-underline-offset: 3px;
+            }
+
+            .build-card__meta {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                margin-top: 14px;
+            }
+
+            .build-card__code {
+                color: #5c6674;
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: -0.01em;
             }
 
             .build-card__action {
@@ -2579,6 +2704,21 @@
                     padding-inline: 18px;
                 }
 
+                .build-card__gallery-slide img {
+                    padding: 14px 16px 38px;
+                }
+
+                .build-card__gallery-controls {
+                    left: 10px;
+                    right: 10px;
+                    bottom: 10px;
+                }
+
+                .build-card__gallery-button {
+                    width: 22px;
+                    height: 22px;
+                }
+
                 .build-card__content {
                     grid-template-columns: minmax(0, 1fr) 74px;
                 }
@@ -2599,6 +2739,10 @@
 
                 .build-card__title {
                     font-size: 22px;
+                }
+
+                .build-card__code {
+                    font-size: 12px;
                 }
 
                 .fps-lab__scene {
@@ -3265,17 +3409,7 @@ SVG;
                                 data-current-fps="{{ $build['fps_value'] }}"
                                 style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
                             >
-                                @php
-                                    $buildCoverImageUrl = \App\Support\SiteImages::url('build.' . $build['slug'] . '.cover');
-                                @endphp
-                                <div
-                                    class="build-card__media site-image-target{{ $buildCoverImageUrl ? ' has-site-image' : '' }}"
-                                    data-site-image-key="build.{{ $build['slug'] }}.cover"
-                                    @if ($buildCoverImageUrl)
-                                        style="--site-image-url: url('{{ $buildCoverImageUrl }}');"
-                                    @endif
-                                    aria-hidden="true"
-                                ></div>
+                                @include('partials.build-card-media', ['build' => $build])
 
                                 <div class="build-card__body">
                                     <h3 class="build-card__title">{{ $build['name'] }}</h3>
@@ -3340,6 +3474,9 @@ SVG;
 
                                     <span class="build-card__price-label">Ціна за збірку</span>
                                     <span class="build-card__price">{{ $build['price'] }}</span>
+                                    <div class="build-card__meta">
+                                        <span class="build-card__code">Код: {{ $build['product_code'] ?? '—' }}</span>
+                                    </div>
                                     <div class="build-card__actions">
                                         <button class="catalog-cta build-card__action build-card__action--cart" type="button" data-build-add>
                                             Додати в кошик
@@ -3632,6 +3769,7 @@ SVG;
                 const fpsSceneMeta = document.querySelector('[data-fps-scene-meta]');
                 const fpsCards = Array.from(document.querySelectorAll('[data-fps-card]'));
                 const buildCopyWrappers = Array.from(document.querySelectorAll('[data-build-copy-wrap]'));
+                const buildGalleries = Array.from(document.querySelectorAll('[data-build-gallery]'));
                 const addToCartButtons = Array.from(document.querySelectorAll('[data-build-add]'));
                 const headerCartValue = document.querySelector('.header-cart span');
                 const fpsConfig = @json($fpsClientConfig);
@@ -3843,6 +3981,31 @@ SVG;
                     fpsCards.forEach((card) => {
                         animateFpsCard(card, resolveCardFps(card, state), immediate);
                     });
+                };
+
+                const syncBuildGallery = (gallery, nextIndex) => {
+                    const slides = Array.from(gallery.querySelectorAll('[data-build-gallery-slide]'));
+                    const dots = Array.from(gallery.querySelectorAll('[data-build-gallery-dot]'));
+
+                    if (!slides.length) {
+                        return;
+                    }
+
+                    const activeIndex = ((nextIndex % slides.length) + slides.length) % slides.length;
+                    gallery.dataset.galleryIndex = `${activeIndex}`;
+
+                    slides.forEach((slide, index) => {
+                        slide.classList.toggle('is-active', index === activeIndex);
+                    });
+
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('is-active', index === activeIndex);
+                    });
+                };
+
+                const stepBuildGallery = (gallery, direction) => {
+                    const currentIndex = Number(gallery.dataset.galleryIndex ?? 0);
+                    syncBuildGallery(gallery, currentIndex + direction);
                 };
 
                 const collapsedBuildCopyLabel = 'Показати характеристики';
@@ -4082,6 +4245,59 @@ SVG;
                         wrapper.dataset.expanded = nextExpanded ? 'true' : 'false';
                         syncBuildCopyToggles();
                     });
+                });
+
+                buildGalleries.forEach((gallery) => {
+                    const slides = Array.from(gallery.querySelectorAll('[data-build-gallery-slide]'));
+                    const dots = Array.from(gallery.querySelectorAll('[data-build-gallery-dot]'));
+
+                    if (slides.length <= 1) {
+                        return;
+                    }
+
+                    let touchStartX = null;
+
+                    syncBuildGallery(gallery, Number(gallery.dataset.galleryIndex ?? 0));
+
+                    gallery.querySelector('[data-build-gallery-prev]')?.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        stepBuildGallery(gallery, -1);
+                    });
+
+                    gallery.querySelector('[data-build-gallery-next]')?.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        stepBuildGallery(gallery, 1);
+                    });
+
+                    dots.forEach((dot) => {
+                        dot.addEventListener('click', (event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            syncBuildGallery(gallery, Number(dot.dataset.buildGalleryIndex ?? 0));
+                        });
+                    });
+
+                    gallery.addEventListener('touchstart', (event) => {
+                        touchStartX = event.touches[0]?.clientX ?? null;
+                    }, { passive: true });
+
+                    gallery.addEventListener('touchend', (event) => {
+                        if (touchStartX === null) {
+                            return;
+                        }
+
+                        const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+                        const delta = touchEndX - touchStartX;
+                        touchStartX = null;
+
+                        if (Math.abs(delta) < 28) {
+                            return;
+                        }
+
+                        stepBuildGallery(gallery, delta > 0 ? -1 : 1);
+                    }, { passive: true });
                 });
 
                 addToCartButtons.forEach((button) => {

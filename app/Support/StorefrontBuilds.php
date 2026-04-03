@@ -86,6 +86,10 @@ class StorefrontBuilds
             $build['price'] = static::formatPrice($build['price']);
         }
 
+        if (! isset($build['product_code']) || trim((string) $build['product_code']) === '') {
+            $build['product_code'] = (string) (570000 + ($index + 1));
+        }
+
         $build['sort_order'] = $build['sort_order'] ?? ($index + 1);
         $build['is_active'] = $build['is_active'] ?? true;
 

@@ -7,6 +7,9 @@ use App\Filament\Resources\Orders\Pages\ViewOrder;
 use App\Models\Order;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\RepeatableEntry\TableColumn as RepeatableTableColumn;
@@ -71,7 +74,7 @@ class OrderResource extends Resource
 
     public static function canDelete($record): bool
     {
-        return false;
+        return true;
     }
 
     public static function form(Schema $schema): Schema
@@ -202,9 +205,15 @@ class OrderResource extends Resource
             ])
             ->recordActions([
                 ViewAction::make(),
+                DeleteAction::make(),
                 static::makeStatusAction('processing', 'В роботу', Heroicon::OutlinedClock, 'warning'),
                 static::makeStatusAction('completed', 'Завершити', Heroicon::OutlinedCheckCircle, 'success'),
                 static::makeStatusAction('cancelled', 'Скасувати', Heroicon::OutlinedXCircle, 'danger'),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
