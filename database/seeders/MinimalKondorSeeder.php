@@ -1,12 +1,14 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-return new class extends Migration
+class MinimalKondorSeeder extends Seeder
 {
-    public function up(): void
+    public function run(): void
     {
         $now = now();
 
@@ -75,24 +77,6 @@ return new class extends Migration
             'is_active',
             'updated_at',
         ]);
-    }
-
-    public function down(): void
-    {
-        DB::table('components')->whereIn('slug', [
-            'korpus-qube-reef-argb-black-reef-gbnu3',
-            'korpus-qube-mirage-black-mirage-gbnu3',
-        ])->delete();
-
-        DB::table('builds')->whereIn('slug', [
-            'phantom',
-            'nova',
-            'vector',
-            'crystal',
-            'storm',
-        ])->delete();
-
-        DB::table('users')->where('email', (string) env('ADMIN_DEFAULT_EMAIL', 'admin@kondor.local'))->delete();
     }
 
     protected function buildRows($now): array
@@ -308,4 +292,4 @@ return new class extends Migration
 
         return json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
-};
+}
