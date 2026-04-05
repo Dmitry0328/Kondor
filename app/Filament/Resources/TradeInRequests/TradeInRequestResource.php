@@ -151,10 +151,12 @@ class TradeInRequestResource extends Resource
                     ->view('filament.tables.columns.admin-image-preview')
                     ->viewData(fn (TradeInRequest $record): array => [
                         'imageUrl' => $record->primaryPhotoUrl(),
+                        'imageUrls' => $record->photoUrls(),
                         'placeholderUrl' => $record->placeholderUrl(),
                         'hasImage' => $record->hasPhotos(),
                         'caption' => 'Trade-in #' . $record->getKey(),
                         'alt' => $record->target_build_label,
+                        'clickToOpen' => $record->hasPhotos(),
                     ]),
                 TextColumn::make('target_build_label')
                     ->label('Збірка')

@@ -74,6 +74,6 @@ class CreateBuild extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return static::getResource()::getUrl('edit', ['record' => $this->getRecord()->getKey()], isAbsolute: false);
+        return static::getResource()::getUrl('index', isAbsolute: false);
     }
 }

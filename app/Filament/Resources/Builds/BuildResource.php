@@ -431,9 +431,11 @@ class BuildResource extends Resource
                     ->view('filament.tables.columns.admin-image-preview')
                     ->viewData(function (Build $record): array {
                         $imageUrl = static::coverImageUrl($record);
+                        $imageUrls = BuildImages::urlsForSlug((string) $record->slug);
 
                         return [
                             'imageUrl' => $imageUrl,
+                            'imageUrls' => $imageUrls !== [] ? $imageUrls : [],
                             'placeholderUrl' => static::coverPlaceholderUrl(),
                             'hasImage' => filled($imageUrl),
                             'caption' => (string) $record->name,
