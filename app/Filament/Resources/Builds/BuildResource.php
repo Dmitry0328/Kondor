@@ -8,6 +8,7 @@ use App\Filament\Resources\Builds\Pages\ListBuilds;
 use App\Models\Build;
 use App\Models\Component;
 use App\Support\AdminFormPreview;
+use App\Support\AdminSlug;
 use App\Support\BuildAbout;
 use App\Support\BuildConfigurator;
 use App\Support\BuildImages;
@@ -123,11 +124,14 @@ class BuildResource extends Resource
                     ->label('Назва')
                     ->required()
                     ->live(debounce: 300)
+                    ->afterStateUpdated(fn ($state, $old, callable $get, callable $set) => AdminSlug::syncFromSource($state, $old, $get, $set))
                     ->maxLength(255),
                 TextInput::make('slug')
                     ->label('Slug')
                     ->required()
+                    ->live(debounce: 300)
                     ->maxLength(255)
+                    ->dehydrateStateUsing(fn ($state): string => AdminSlug::normalize($state))
                     ->helperText("Використовується в URL. Якщо змінити slug, прив'язані фото збірки також перейдуть на новий ключ.")
                     ->rule(fn ($record): Unique => Rule::unique('builds', 'slug')->ignore($record)),
                 TextInput::make('product_code')

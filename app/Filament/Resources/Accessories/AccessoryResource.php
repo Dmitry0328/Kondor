@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Accessories;
 use App\Filament\Resources\Accessories\Pages\ManageAccessories;
 use App\Models\Accessory;
 use App\Support\AdminFormPreview;
+use App\Support\AdminSlug;
 use App\Support\AccessoryCatalog;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -80,11 +81,14 @@ class AccessoryResource extends Resource
                                 ->label('Назва')
                                 ->required()
                                 ->live(debounce: 300)
+                                ->afterStateUpdated(fn ($state, $old, callable $get, callable $set) => AdminSlug::syncFromSource($state, $old, $get, $set))
                                 ->maxLength(255),
                             TextInput::make('slug')
                                 ->label('Slug')
                                 ->required()
+                                ->live(debounce: 300)
                                 ->maxLength(255)
+                                ->dehydrateStateUsing(fn ($state): string => AdminSlug::normalize($state))
                                 ->unique(ignoreRecord: true),
                             TextInput::make('vendor')
                                 ->label('Бренд')

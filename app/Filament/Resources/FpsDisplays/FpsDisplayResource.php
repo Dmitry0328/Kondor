@@ -5,6 +5,7 @@ namespace App\Filament\Resources\FpsDisplays;
 use App\Filament\Clusters\FpsCluster;
 use App\Filament\Resources\FpsDisplays\Pages\ManageFpsDisplays;
 use App\Models\FpsDisplay;
+use App\Support\AdminSlug;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -53,11 +54,15 @@ class FpsDisplayResource extends Resource
                     TextInput::make('name')
                         ->label('Назва')
                         ->required()
+                        ->live(debounce: 300)
+                        ->afterStateUpdated(fn ($state, $old, callable $get, callable $set) => AdminSlug::syncFromSource($state, $old, $get, $set, 'key'))
                         ->maxLength(255),
                     TextInput::make('key')
                         ->label('Ключ (ID)')
                         ->required()
+                        ->live(debounce: 300)
                         ->maxLength(255)
+                        ->dehydrateStateUsing(fn ($state): string => AdminSlug::normalize($state))
                         ->unique(ignoreRecord: true)
                         ->helperText('Латиниця, без пробілів. Напр.: 1440p'),
                     TextInput::make('mobile_name')

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\FpsGames;
 use App\Filament\Clusters\FpsCluster;
 use App\Filament\Resources\FpsGames\Pages\ManageFpsGames;
 use App\Models\FpsGame;
+use App\Support\AdminSlug;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -53,11 +54,15 @@ class FpsGameResource extends Resource
                     TextInput::make('name')
                         ->label('Назва')
                         ->required()
+                        ->live(debounce: 300)
+                        ->afterStateUpdated(fn ($state, $old, callable $get, callable $set) => AdminSlug::syncFromSource($state, $old, $get, $set, 'key'))
                         ->maxLength(255),
                     TextInput::make('key')
                         ->label('Ключ (ID)')
                         ->required()
+                        ->live(debounce: 300)
                         ->maxLength(255)
+                        ->dehydrateStateUsing(fn ($state): string => AdminSlug::normalize($state))
                         ->unique(ignoreRecord: true)
                         ->helperText('Латиниця, без пробілів. Напр.: cyberpunk-2077'),
                     TextInput::make('badge')

@@ -6,6 +6,7 @@ use App\Filament\Clusters\ConfiguratorCluster;
 use App\Filament\Resources\Components\Pages\ManageComponents;
 use App\Models\Component;
 use App\Support\AdminFormPreview;
+use App\Support\AdminSlug;
 use App\Support\BuildConfigurator;
 use App\Support\ComponentImages;
 use BackedEnum;
@@ -144,11 +145,14 @@ class ComponentResource extends Resource
                     ->label('Назва')
                     ->required()
                     ->live(debounce: 300)
+                    ->afterStateUpdated(fn ($state, $old, callable $get, callable $set) => AdminSlug::syncFromSource($state, $old, $get, $set))
                     ->maxLength(255),
                 TextInput::make('slug')
                     ->label('Slug')
                     ->required()
+                    ->live(debounce: 300)
                     ->maxLength(255)
+                    ->dehydrateStateUsing(fn ($state): string => AdminSlug::normalize($state))
                     ->unique(ignoreRecord: true),
                 TextInput::make('vendor')
                     ->label('Бренд')
