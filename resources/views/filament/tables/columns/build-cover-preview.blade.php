@@ -27,11 +27,8 @@
         @endunless
     </button>
 
-    <template x-teleport="body">
+    <template x-if="open">
         <div
-            x-cloak
-            x-show="open"
-            x-transition.opacity.duration.150ms
             x-on:click.self="open = false"
             x-on:keydown.escape.window="open = false"
             style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:32px;background:rgba(15,23,42,0.78);backdrop-filter:blur(4px);"
