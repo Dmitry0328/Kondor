@@ -24,45 +24,16 @@
     x-data='{
         open: false,
         activeIndex: 0,
-        pointerArmedUntil: 0,
         imageUrls: @json($imageUrls),
-        armPointer() {
-            this.pointerArmedUntil = Date.now() + 800;
-        },
-        openPreview(force = false) {
-            if (! force && Date.now() > this.pointerArmedUntil) {
-                return;
-            }
-
-            this.open = true;
-        },
-        closePreview() {
-            this.open = false;
-            this.activeIndex = 0;
-        },
-        prev() {
-            if (this.imageUrls.length < 2) return;
-            this.activeIndex = (this.activeIndex + this.imageUrls.length - 1) % this.imageUrls.length;
-        },
-        next() {
-            if (this.imageUrls.length < 2) return;
-            this.activeIndex = (this.activeIndex + 1) % this.imageUrls.length;
-        },
-        setActive(index) {
-            if (index < 0 || index >= this.imageUrls.length) return;
-            this.activeIndex = index;
-        },
     }'
     data-admin-image-preview
 >
     @if ($clickToOpen)
         <button
             type="button"
-            x-on:pointerdown="armPointer()"
-            x-on:mousedown="armPointer()"
-            x-on:click.stop.prevent="openPreview()"
-            x-on:keydown.enter.prevent="openPreview(true)"
-            x-on:keydown.space.prevent="openPreview(true)"
+            x-on:click.stop.prevent="open = true; activeIndex = 0"
+            x-on:keydown.enter.prevent="open = true; activeIndex = 0"
+            x-on:keydown.space.prevent="open = true; activeIndex = 0"
             title="{{ $buttonTitle }}"
             style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;padding:0;border:1px solid #d7deea;border-radius:14px;background:#fff;overflow:hidden;cursor:zoom-in;box-shadow:0 8px 18px rgba(15,23,42,0.08);"
         >
@@ -115,15 +86,16 @@
         <template x-teleport="body">
             <div
                 x-cloak
-                x-show="open"
                 x-transition.opacity.duration.150ms
-                x-on:click.self="closePreview()"
-                x-on:keydown.escape.window="closePreview()"
-                style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:32px;background:rgba(15,23,42,0.78);backdrop-filter:blur(4px);"
+                x-bind:style="open
+                    ? 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:32px;background:rgba(15,23,42,0.78);backdrop-filter:blur(4px);'
+                    : 'display:none;'"
+                x-on:click.self="open = false; activeIndex = 0"
+                x-on:keydown.escape.window="open = false; activeIndex = 0"
             >
                 <button
                     type="button"
-                    x-on:click.stop="closePreview()"
+                    x-on:click.stop="open = false; activeIndex = 0"
                     aria-label="Close"
                     style="position:absolute;top:20px;right:20px;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:999px;background:rgba(255,255,255,0.14);color:#fff;font-size:28px;line-height:1;cursor:pointer;"
                 >
@@ -136,7 +108,7 @@
                             <div style="display:flex;align-items:center;gap:12px;">
                                 <button
                                     type="button"
-                                    x-on:click.stop="prev()"
+                                    x-on:click.stop="if (imageUrls.length > 1) activeIndex = (activeIndex + imageUrls.length - 1) % imageUrls.length"
                                     aria-label="Previous image"
                                     style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:999px;background:rgba(255,255,255,0.16);color:#fff;font-size:26px;line-height:1;cursor:pointer;"
                                 >
@@ -145,7 +117,7 @@
                                 <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;" x-text="`${activeIndex + 1} / ${imageUrls.length}`"></div>
                                 <button
                                     type="button"
-                                    x-on:click.stop="next()"
+                                    x-on:click.stop="if (imageUrls.length > 1) activeIndex = (activeIndex + 1) % imageUrls.length"
                                     aria-label="Next image"
                                     style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:999px;background:rgba(255,255,255,0.16);color:#fff;font-size:26px;line-height:1;cursor:pointer;"
                                 >
@@ -172,7 +144,7 @@
                             @foreach ($imageUrls as $imageIndex => $galleryImageUrl)
                                 <button
                                     type="button"
-                                    x-on:click.stop="setActive({{ $imageIndex }})"
+                                    x-on:click.stop="activeIndex = {{ $imageIndex }}"
                                     x-bind:style="activeIndex === {{ $imageIndex }} ? 'border:2px solid #fff;box-shadow:0 10px 24px rgba(15,23,42,0.22);' : 'border:2px solid transparent;'"
                                     aria-label="Open image {{ $imageIndex + 1 }}"
                                     style="padding:0;border-radius:16px;background:transparent;overflow:hidden;cursor:pointer;"
