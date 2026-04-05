@@ -27,10 +27,46 @@
         });
     };
 
+    const updateBuildCardGallery = (element, url) => {
+        const slides = Array.from(element.querySelectorAll('[data-build-gallery-slide]'));
+        const dots = Array.from(element.querySelectorAll('[data-build-gallery-dot]'));
+
+        if (!slides.length) {
+            return false;
+        }
+
+        const firstSlide = slides[0];
+        const image = firstSlide.querySelector('img');
+
+        if (image) {
+            image.src = url;
+            image.srcset = '';
+        }
+
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('is-active', index === 0);
+        });
+
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('is-active', index === 0);
+        });
+
+        element.dataset.galleryIndex = '0';
+        element.style.removeProperty('--site-image-url');
+        element.classList.remove('has-site-image');
+
+        return true;
+    };
+
     const applyImage = (key, url) => {
         document.querySelectorAll(`[data-site-image-key="${key}"]`).forEach((element) => {
-            element.classList.add('has-site-image');
-            element.style.setProperty('--site-image-url', `url("${url}")`);
+            const handledByGallery = updateBuildCardGallery(element, url);
+
+            if (!handledByGallery) {
+                element.classList.add('has-site-image');
+                element.style.setProperty('--site-image-url', `url("${url}")`);
+            }
+
             element.dataset.siteImageUrl = url;
         });
     };
