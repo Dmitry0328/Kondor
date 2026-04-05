@@ -78,14 +78,39 @@
                 color: #18202a;
             }
 
+            .tradein-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+                gap: 24px;
+                align-items: start;
+            }
+
+            [data-tradein-main] > .tradein-hero:not(.tradein-hero--live),
+            [data-tradein-main] > .tradein-panel:not(.tradein-panel--live) {
+                display: none;
+            }
+
             .tradein-panel {
                 display: grid;
-                gap: 14px;
+                gap: 20px;
                 padding: 40px 34px;
                 border: 1px solid #dde5ef;
                 border-radius: 32px;
                 background: #fff;
                 box-shadow: 0 18px 38px rgba(24, 32, 42, 0.06);
+            }
+
+            .tradein-panel--aside {
+                position: sticky;
+                top: 112px;
+            }
+
+            .tradein-panel__eyebrow {
+                color: #7a28dc;
+                font-size: 12px;
+                font-weight: 900;
+                letter-spacing: .12em;
+                text-transform: uppercase;
             }
 
             .tradein-panel__title {
@@ -100,9 +125,337 @@
             .tradein-panel__text {
                 margin: 0;
                 color: #5f6b79;
-                font-size: 19px;
+                font-size: 18px;
                 font-weight: 700;
                 line-height: 1.55;
+            }
+
+            .tradein-alert {
+                display: grid;
+                gap: 8px;
+                padding: 16px 18px;
+                border-radius: 20px;
+                border: 1px solid #cfe3d2;
+                background: linear-gradient(180deg, #f6fff7, #f0fbf2);
+                color: #165b2d;
+                box-shadow: 0 10px 22px rgba(22, 91, 45, 0.08);
+            }
+
+            .tradein-alert--error {
+                border-color: #f2c7c7;
+                background: linear-gradient(180deg, #fff8f8, #fff1f1);
+                color: #9f1d1d;
+                box-shadow: 0 10px 22px rgba(159, 29, 29, 0.08);
+            }
+
+            .tradein-alert__title {
+                font-size: 16px;
+                font-weight: 900;
+            }
+
+            .tradein-alert__text,
+            .tradein-alert__list {
+                margin: 0;
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 1.6;
+            }
+
+            .tradein-alert__list {
+                display: grid;
+                gap: 6px;
+                padding-left: 18px;
+            }
+
+            .tradein-form {
+                display: grid;
+                gap: 18px;
+            }
+
+            .tradein-form__grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+            }
+
+            .tradein-form__field {
+                display: grid;
+                gap: 8px;
+            }
+
+            .tradein-form__field--full {
+                grid-column: 1 / -1;
+            }
+
+            .tradein-form__label {
+                color: #18202a;
+                font-size: 14px;
+                font-weight: 900;
+            }
+
+            .tradein-form__input,
+            .tradein-form__textarea,
+            .tradein-form__select,
+            .tradein-form__files {
+                width: 100%;
+                min-height: 56px;
+                padding: 0 18px;
+                border: 1px solid #d6e0ec;
+                border-radius: 18px;
+                background: #fbfdff;
+                color: #18202a;
+                font-size: 16px;
+                font-weight: 700;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+                transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+            }
+
+            .tradein-form__textarea {
+                min-height: 180px;
+                padding: 16px 18px;
+                resize: vertical;
+            }
+
+            .tradein-form__files {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+
+            .tradein-upload {
+                display: grid;
+                gap: 12px;
+                padding: 16px 18px;
+                border: 1px solid #d6e0ec;
+                border-radius: 22px;
+                background: linear-gradient(180deg, #ffffff, #f8fbff);
+                box-shadow: inset 0 1px 0 rgba(255,255,255,.85);
+                transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+                cursor: pointer;
+            }
+
+            .tradein-upload:hover {
+                border-color: #c6d3e3;
+                background: linear-gradient(180deg, #ffffff, #f4f8ff);
+            }
+
+            .tradein-upload:focus-within {
+                border-color: #a26bf2;
+                box-shadow: 0 0 0 4px rgba(122, 40, 220, 0.12);
+                background: #fff;
+            }
+
+            .tradein-upload__row {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                min-width: 0;
+            }
+
+            .tradein-upload__icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 46px;
+                width: 46px;
+                height: 46px;
+                border-radius: 16px;
+                background: linear-gradient(180deg, #f7ecff, #efe4ff);
+                color: #7a28dc;
+                box-shadow: 0 10px 18px rgba(122, 40, 220, 0.12);
+            }
+
+            .tradein-upload__icon svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .tradein-upload__copy {
+                display: grid;
+                gap: 2px;
+                min-width: 0;
+                flex: 1 1 auto;
+            }
+
+            .tradein-upload__title {
+                color: #18202a;
+                font-size: 15px;
+                font-weight: 900;
+                line-height: 1.35;
+            }
+
+            .tradein-upload__meta {
+                color: #64748b;
+                font-size: 13px;
+                font-weight: 700;
+                line-height: 1.5;
+            }
+
+            .tradein-upload__badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 42px;
+                padding: 0 16px;
+                border-radius: 14px;
+                background: linear-gradient(180deg, #8424f0, #6816cb);
+                color: #fff;
+                font-size: 14px;
+                font-weight: 900;
+                white-space: nowrap;
+                box-shadow: 0 12px 20px rgba(105, 22, 203, 0.2);
+            }
+
+            .tradein-upload__files {
+                display: none;
+                gap: 6px;
+                padding-top: 2px;
+                color: #445164;
+                font-size: 13px;
+                font-weight: 700;
+                line-height: 1.5;
+            }
+
+            .tradein-upload__files.is-visible {
+                display: grid;
+            }
+
+            .tradein-form__input:focus,
+            .tradein-form__textarea:focus,
+            .tradein-form__select:focus,
+            .tradein-form__files:focus {
+                outline: none;
+                border-color: #a26bf2;
+                box-shadow: 0 0 0 4px rgba(122, 40, 220, 0.12);
+                background: #fff;
+            }
+
+            .tradein-form__hint {
+                margin: 0;
+                color: #64748b;
+                font-size: 13px;
+                font-weight: 700;
+                line-height: 1.6;
+            }
+
+            .tradein-selection {
+                display: grid;
+                gap: 12px;
+                padding: 18px;
+                border: 1px solid #dddff4;
+                border-radius: 22px;
+                background: linear-gradient(180deg, #fcfaff, #f7f2ff);
+                box-shadow: 0 12px 24px rgba(122, 40, 220, 0.08);
+            }
+
+            .tradein-selection__title {
+                color: #18202a;
+                font-size: 15px;
+                font-weight: 900;
+            }
+
+            .tradein-selection__list {
+                display: grid;
+                gap: 8px;
+                margin: 0;
+                padding-left: 18px;
+                color: #4d5a6b;
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 1.55;
+            }
+
+            .tradein-selection__meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .tradein-selection__badge,
+            .tradein-selection__link {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 38px;
+                padding: 0 14px;
+                border-radius: 999px;
+                border: 1px solid #d8def0;
+                background: #fff;
+                color: #18202a;
+                font-size: 13px;
+                font-weight: 800;
+            }
+
+            .tradein-selection__link {
+                text-decoration: none;
+            }
+
+            .tradein-form__actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 14px;
+                align-items: center;
+            }
+
+            .tradein-form__submit {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 240px;
+                min-height: 56px;
+                padding: 0 26px;
+                border: 0;
+                border-radius: 18px;
+                background: linear-gradient(180deg, #8424f0, #6816cb);
+                color: #fff;
+                font-size: 17px;
+                font-weight: 900;
+                cursor: pointer;
+                box-shadow: 0 16px 28px rgba(105, 22, 203, 0.22);
+                transition: transform .18s ease, box-shadow .18s ease;
+            }
+
+            .tradein-form__submit:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 18px 32px rgba(105, 22, 203, 0.26);
+            }
+
+            .tradein-checklist {
+                display: grid;
+                gap: 12px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .tradein-checklist li {
+                display: grid;
+                grid-template-columns: 32px minmax(0, 1fr);
+                gap: 12px;
+                align-items: start;
+                color: #18202a;
+                font-size: 15px;
+                font-weight: 800;
+                line-height: 1.55;
+            }
+
+            .tradein-checklist span {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 12px;
+                background: linear-gradient(180deg, #f8edff, #f1e7ff);
+                color: #7a28dc;
+                font-size: 14px;
+                font-weight: 900;
             }
 
             .tradein-panel__back {
@@ -127,6 +480,16 @@
                 box-shadow: 0 14px 24px rgba(24, 32, 42, 0.08);
             }
 
+            @media (max-width: 980px) {
+                .tradein-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .tradein-panel--aside {
+                    position: static;
+                }
+            }
+
             @media (max-width: 760px) {
                 .tradein-page {
                     padding: 16px 0 48px;
@@ -143,8 +506,33 @@
                     font-size: 16px;
                 }
 
+                .tradein-form__grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .tradein-upload__row {
+                    flex-wrap: wrap;
+                    align-items: flex-start;
+                }
+
+                .tradein-form__actions,
+                .tradein-selection__meta {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                }
+
+                .tradein-upload__badge {
+                    width: 100%;
+                }
+
+                .tradein-selection__badge,
+                .tradein-selection__link {
+                    width: 100%;
+                }
+
                 .tradein-target,
-                .tradein-panel__back {
+                .tradein-panel__back,
+                .tradein-form__submit {
                     width: 100%;
                 }
             }
@@ -152,11 +540,15 @@
     </head>
     <body>
         @php
-            $storefrontBuilds = \App\Support\StorefrontBuilds::all();
-            $headerBuilds = array_slice($storefrontBuilds, 0, 4);
-            $selectedBuild = request()->query('build')
+            $storefrontBuilds = $storefrontBuilds ?? \App\Support\StorefrontBuilds::all();
+            $headerBuilds = $headerBuilds ?? array_slice($storefrontBuilds, 0, 4);
+            $selectedBuild = $selectedBuild ?? (request()->query('build')
                 ? \App\Support\StorefrontBuilds::findBySlug((string) request()->query('build'))
-                : null;
+                : null);
+            $selectedBuildSlug = $selectedBuildSlug ?? (string) old('build_slug', $selectedBuild['slug'] ?? '');
+            $selectedSharedBuildToken = $selectedSharedBuildToken ?? (string) old('shared_build_token', request()->query('shared_build', ''));
+            $tradeInBuildSnapshotPreview = is_array($tradeInBuildSnapshotPreview ?? null) ? $tradeInBuildSnapshotPreview : [];
+            $tradeInSuccess = $tradeInSuccess ?? session('tradeInSuccess');
         @endphp
 
         <div class="tradein-shell">
@@ -291,7 +683,160 @@
                 </div>
             </header>
 
-            <main class="tradein-page">
+            <main class="tradein-page" data-tradein-main>
+                <section class="tradein-hero tradein-hero--live">
+                    <span class="tradein-hero__eyebrow">Kondor Trade-in</span>
+                    <h1 class="tradein-hero__title">Обмін старого ПК на нову збірку</h1>
+                    <p class="tradein-hero__text">Окремо винесли трейд-ін у зручний сценарій: ти залишаєш опис і фото, а ми оцінюємо конфігурацію, стан комплектуючих, орієнтовну вартість і доплату під потрібну збірку.</p>
+
+                    @if ($selectedBuild)
+                        <div class="tradein-target">
+                            <span>Цільова збірка:</span>
+                            <strong>{{ $selectedBuild['name'] }}</strong>
+                        </div>
+                    @endif
+                </section>
+
+                <div class="tradein-grid">
+                    <section class="tradein-panel tradein-panel--live">
+                        <span class="tradein-panel__eyebrow">Trade-in Form</span>
+                        <h2 class="tradein-panel__title">Опиши свій ПК і прикріпи фото</h2>
+                        <p class="tradein-panel__text">Ми дивимось конфігурацію, стан корпусу, комплектність і вже після цього повертаємо попередню оцінку та варіант доплати під нову збірку.</p>
+
+                        @if ($tradeInSuccess)
+                            <div class="tradein-alert">
+                                <strong class="tradein-alert__title">Заявку отримано</strong>
+                                <p class="tradein-alert__text">{{ $tradeInSuccess['message'] ?? 'Ми вже отримали вашу заявку на трейд-ін.' }}</p>
+                                @if (filled($tradeInSuccess['request_id'] ?? null))
+                                    <p class="tradein-alert__text">Номер заявки: #{{ $tradeInSuccess['request_id'] }}</p>
+                                @endif
+                            </div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="tradein-alert tradein-alert--error">
+                                <strong class="tradein-alert__title">Перевір форму</strong>
+                                <ul class="tradein-alert__list">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form class="tradein-form" method="POST" action="{{ route('trade-in.submit') }}" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="shared_build_token" value="{{ $selectedSharedBuildToken }}">
+
+                            <div class="tradein-form__grid">
+                                <div class="tradein-form__field tradein-form__field--full">
+                                    <span class="tradein-form__label">Цільова збірка</span>
+                                    <select class="tradein-form__select" name="build_slug">
+                                        <option value="">Без прив’язки до конкретної збірки</option>
+                                        @foreach ($storefrontBuilds as $buildOption)
+                                            <option value="{{ $buildOption['slug'] }}" @selected($selectedBuildSlug === $buildOption['slug'])>{{ $buildOption['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="tradein-form__hint">Якщо ти зайшов зі сторінки збірки, вона вже обрана автоматично.</p>
+                                </div>
+
+                                @if (($tradeInBuildSnapshotPreview['summary'] ?? []) !== [] || filled($tradeInBuildSnapshotPreview['shared_url'] ?? null))
+                                    <div class="tradein-form__field tradein-form__field--full">
+                                        <div class="tradein-selection">
+                                            <span class="tradein-selection__title">У заявку піде саме ця конфігурація збірки</span>
+                                            @if (($tradeInBuildSnapshotPreview['summary'] ?? []) !== [])
+                                                <ul class="tradein-selection__list">
+                                                    @foreach (($tradeInBuildSnapshotPreview['summary'] ?? []) as $summaryLine)
+                                                        <li>{{ $summaryLine }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                            <div class="tradein-selection__meta">
+                                                @if (filled($tradeInBuildSnapshotPreview['additional_price'] ?? null))
+                                                    <span class="tradein-selection__badge">Додаткові опції: +{{ number_format((int) ($tradeInBuildSnapshotPreview['additional_price'] ?? 0), 0, '.', ' ') }} грн</span>
+                                                @endif
+                                                @if (filled($tradeInBuildSnapshotPreview['total_price'] ?? null))
+                                                    <span class="tradein-selection__badge">Разом: {{ number_format((int) ($tradeInBuildSnapshotPreview['total_price'] ?? 0), 0, '.', ' ') }} грн</span>
+                                                @endif
+                                                @if (filled($tradeInBuildSnapshotPreview['shared_url'] ?? null))
+                                                    <a class="tradein-selection__link" href="{{ $tradeInBuildSnapshotPreview['shared_url'] }}" target="_blank" rel="noreferrer">Відкрити точну конфігурацію</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <label class="tradein-form__field">
+                                    <span class="tradein-form__label">Ім’я</span>
+                                    <input class="tradein-form__input" type="text" name="customer_name" value="{{ old('customer_name') }}" placeholder="Як до тебе звертатись" required>
+                                </label>
+
+                                <label class="tradein-form__field">
+                                    <span class="tradein-form__label">Телефон</span>
+                                    <input class="tradein-form__input" type="text" name="phone" value="{{ old('phone') }}" placeholder="+380..." required>
+                                </label>
+
+                                <div class="tradein-form__field tradein-form__field--full">
+                                    <span class="tradein-form__label">Telegram / Viber</span>
+                                    <input class="tradein-form__input" type="text" name="messenger_contact" value="{{ old('messenger_contact') }}" placeholder="@nickname або номер для переписки">
+                                </div>
+
+                                <div class="tradein-form__field tradein-form__field--full">
+                                    <span class="tradein-form__label">Опис твого ПК</span>
+                                    <textarea class="tradein-form__textarea" name="description" placeholder="Напиши конфігурацію, стан, що мінялося, які є дефекти, чи є коробки, гарантії та що саме хочеш обміняти." required>{{ old('description') }}</textarea>
+                                    <p class="tradein-form__hint">Чим точніше опис, тим швидше ми дамо попередню оцінку.</p>
+                                </div>
+
+                                <label class="tradein-form__field tradein-form__field--full">
+                                    <span class="tradein-form__label">Фото ПК</span>
+                                    <label class="tradein-upload">
+                                        <input class="tradein-form__files" type="file" name="photos[]" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" multiple data-tradein-files-input>
+                                        <span class="tradein-upload__row">
+                                            <span class="tradein-upload__icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none">
+                                                    <path d="M12 16V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                    <path d="M8.5 11.5L12 8L15.5 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M5 16.5V17C5 18.1046 5.89543 19 7 19H17C18.1046 19 19 18.1046 19 17V16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                    <rect x="4" y="3" width="16" height="18" rx="4" stroke="currentColor" stroke-width="2"/>
+                                                </svg>
+                                            </span>
+                                            <span class="tradein-upload__copy">
+                                                <span class="tradein-upload__title" data-tradein-files-title>Додати фото ПК</span>
+                                                <span class="tradein-upload__meta" data-tradein-files-meta>Натисни, щоб вибрати JPG, PNG або WEBP</span>
+                                            </span>
+                                            <span class="tradein-upload__badge">Вибрати файли</span>
+                                        </span>
+                                        <span class="tradein-upload__files" data-tradein-files-list></span>
+                                    </label>
+                                    <p class="tradein-form__hint">До 6 фото, кожне до 8MB. Приймаємо лише JPG, PNG або WEBP. На сервері перевіряємо реальний тип файлу й зберігаємо тільки очищену копію, а не оригінал напряму.</p>
+                                </label>
+                            </div>
+
+                            <div class="tradein-form__actions">
+                                <button class="tradein-form__submit" type="submit">Надіслати заявку на трейд-ін</button>
+
+                                @if ($selectedBuild)
+                                    <a class="tradein-panel__back" href="{{ route('product.show', ['slug' => $selectedBuild['slug']]) }}">Повернутися до {{ $selectedBuild['name'] }}</a>
+                                @endif
+                            </div>
+                        </form>
+                    </section>
+
+                    <aside class="tradein-panel tradein-panel--live tradein-panel--aside">
+                        <span class="tradein-panel__eyebrow">Як це працює</span>
+                        <h2 class="tradein-panel__title">Що краще додати одразу</h2>
+                        <p class="tradein-panel__text">Щоб не тягнути з оцінкою, краще з першого повідомлення дати максимум корисної інформації.</p>
+
+                        <ul class="tradein-checklist">
+                            <li><span>1</span><div>Фото корпусу спереду, збоку, ззаду та бажано всередині.</div></li>
+                            <li><span>2</span><div>Точну конфігурацію: CPU, GPU, RAM, накопичувачі, блок живлення.</div></li>
+                            <li><span>3</span><div>Стан системи: шум, перегрів, ремонти, дефекти, подряпини або відсутні елементи.</div></li>
+                            <li><span>4</span><div>Що саме хочеш отримати взамін: конкретну збірку або орієнтир по бюджету.</div></li>
+                        </ul>
+
+                        <p class="tradein-form__hint">Ми свідомо не приймаємо SVG, архіви або нестандартні вкладення. Це не повноцінний антивірус на рівні інфраструктури, але серверна перевірка типу файлу та повторне збереження картинки суттєво знижують ризик шкідливих вкладень.</p>
+                    </aside>
+                </div>
                 <section class="tradein-hero">
                     <span class="tradein-hero__eyebrow">Kondor Trade-in</span>
                     <h1 class="tradein-hero__title">Обмін старого ПК на нову збірку</h1>
@@ -369,6 +914,10 @@
                 const panels = Array.from(document.querySelectorAll('[data-dropdown-panel]'));
                 const mobileToggle = document.querySelector('[data-mobile-toggle]');
                 const mobileMenu = document.querySelector('[data-mobile-menu]');
+                const tradeInFilesInput = document.querySelector('[data-tradein-files-input]');
+                const tradeInFilesTitle = document.querySelector('[data-tradein-files-title]');
+                const tradeInFilesMeta = document.querySelector('[data-tradein-files-meta]');
+                const tradeInFilesList = document.querySelector('[data-tradein-files-list]');
                 let closeTimer;
 
                 const syncHeaderState = () => {
@@ -524,6 +1073,31 @@
 
                 syncHeaderState();
                 positionConsultationPanel();
+
+                if (tradeInFilesInput && tradeInFilesTitle && tradeInFilesMeta && tradeInFilesList) {
+                    const syncTradeInFiles = () => {
+                        const files = Array.from(tradeInFilesInput.files ?? []);
+
+                        if (files.length === 0) {
+                            tradeInFilesTitle.textContent = 'Додати фото ПК';
+                            tradeInFilesMeta.textContent = 'Натисни, щоб вибрати JPG, PNG або WEBP';
+                            tradeInFilesList.textContent = '';
+                            tradeInFilesList.classList.remove('is-visible');
+                            return;
+                        }
+
+                        tradeInFilesTitle.textContent = files.length === 1
+                            ? 'Вибрано 1 фото'
+                            : `Вибрано ${files.length} фото`;
+                        tradeInFilesMeta.textContent = files.map((file) => file.name).join(' • ');
+                        tradeInFilesList.textContent = files.map((file) => file.name).join(', ');
+                        tradeInFilesList.classList.add('is-visible');
+                    };
+
+                    tradeInFilesInput.addEventListener('change', syncTradeInFiles);
+                    syncTradeInFiles();
+                }
+
                 if (window.KondorCart) {
                     window.KondorCart.renderPreviews();
                 }

@@ -20,7 +20,7 @@
                 --primary: #6f10c9;
                 --primary-dark: #5809a7;
                 --shadow: 0 18px 45px rgba(24, 32, 42, 0.08);
-                --container: min(100% - 28px, 1920px);
+                --container: min(calc(100% - 28px), 1920px);
                 --win-border: #c9d0da;
                 --win-surface-top: #ffffff;
                 --win-surface-bottom: #eef2f6;
@@ -2276,7 +2276,7 @@
 
             @media (max-width: 760px) {
                 .container {
-                    width: min(100% - 20px, 100%);
+                    width: calc(100% - 20px);
                 }
 
                 .topbar {
@@ -2715,8 +2715,8 @@
                 }
 
                 .build-card__gallery-button {
-                    width: 22px;
-                    height: 22px;
+                    width: 34px;
+                    height: 34px;
                 }
 
                 .build-card__content {

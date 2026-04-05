@@ -24,7 +24,7 @@ class EditBuild extends EditRecord
         $data = [
             ...$data,
             'gallery_uploads' => BuildResource::galleryImagePathsForSlug($data['slug'] ?? null),
-            ...BuildResource::expandAboutForForm($data['about'] ?? null),
+            ...BuildResource::expandAboutForForm($data),
         ];
 
         $data = BuildResource::expandConfiguratorForForm($data);

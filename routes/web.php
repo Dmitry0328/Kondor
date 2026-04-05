@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteAdminNotificationController;
 use App\Http\Controllers\SiteImageController;
+use App\Http\Controllers\TradeInController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,7 +24,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::view('/catalog', 'catalog')->name('catalog');
-Route::view('/trade-in', 'trade-in')->name('trade-in');
+Route::get('/trade-in', [TradeInController::class, 'show'])->name('trade-in');
+Route::post('/trade-in', [TradeInController::class, 'store'])->name('trade-in.submit');
 
 Route::get('/catalog/shared/{token}', [ProductController::class, 'showShared'])->name('product.shared');
 Route::post('/catalog/{slug}/share', [ProductController::class, 'share'])->name('product.share');

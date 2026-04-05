@@ -1257,6 +1257,13 @@ textarea {
         text-align: center;
     }
 
+    .cart-shared-pill {
+        width: 100%;
+        justify-items: center;
+        text-align: center;
+        white-space: normal;
+    }
+
     .cart-hero__eyebrow,
     .cart-hero__text {
         display: none;
@@ -1457,6 +1464,7 @@ textarea {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .cart-inline-button {

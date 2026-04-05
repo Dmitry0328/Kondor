@@ -1,3 +1,15 @@
+@php
+    $cartValidSlugs = collect(\App\Support\StorefrontBuilds::all())
+        ->pluck('slug')
+        ->filter(fn ($slug): bool => is_string($slug) && trim($slug) !== '')
+        ->values();
+@endphp
+
+<div
+    data-cart-valid-slugs='@json($cartValidSlugs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)'
+    hidden
+></div>
+
 <div class="header-cart-shell" data-cart-shell>
     <a class="header-cart" href="{{ route('cart') }}" aria-label="Кошик">
         <span data-cart-amount>0 ₴</span>

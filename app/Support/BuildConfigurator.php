@@ -492,9 +492,10 @@ class BuildConfigurator
 
             $normalizedSelection[$groupKey] = (string) ($selectedOption['key'] ?? '');
             $optionPrice = (int) ($selectedOption['price'] ?? $selectedOption['price_delta'] ?? 0);
+            $isDefaultOption = (bool) ($selectedOption['is_default'] ?? false);
             $additionalPrice += $optionPrice;
 
-            if ($optionPrice > 0 || ! in_array($slot, ['modding', 'adapters', 'other'], true)) {
+            if ($optionPrice > 0 || (! $isDefaultOption) || ! in_array($slot, ['modding', 'adapters', 'other'], true)) {
                 $summary[] = static::slotLabel($slot) . ': ' . (string) ($selectedOption['label'] ?? 'Вибрано');
             }
         }

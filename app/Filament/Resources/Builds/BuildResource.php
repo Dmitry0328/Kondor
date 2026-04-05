@@ -7,6 +7,8 @@ use App\Filament\Resources\Builds\Pages\EditBuild;
 use App\Filament\Resources\Builds\Pages\ListBuilds;
 use App\Models\Build;
 use App\Models\Component;
+use App\Support\AdminFormPreview;
+use App\Support\BuildAbout;
 use App\Support\BuildConfigurator;
 use App\Support\BuildImages;
 use App\Support\FpsCatalog;
@@ -27,6 +29,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -74,12 +77,40 @@ class BuildResource extends Resource
         ];
 
         return $schema->components([
-            static::basicFormSection(),
-            static::cardFormSection(),
-            static::configuratorFormSection(),
-            static::productSpecsFormSection(),
-            static::aboutFormSection(),
-            static::fpsFormSection($fpsOptions, $fpsDefaultRow),
+            Grid::make([
+                'default' => 1,
+                'xl' => 12,
+            ])->schema([
+                Group::make([
+                    static::basicFormSection(),
+                    static::cardFormSection(),
+                    static::configuratorFormSection(),
+                    static::productSpecsFormSection(),
+                    static::aboutFormSection(),
+                    static::fpsFormSection($fpsOptions, $fpsDefaultRow),
+                ])
+                    ->extraAttributes(['class' => 'admin-build-form-stack'])
+                    ->columnSpan([
+                    'default' => 1,
+                    'xl' => 12,
+                ]),
+                Section::make('Живий превʼю')
+                    ->description('Показує, як збірка виглядатиме на storefront під час редагування.')
+                    ->schema([
+                        Placeholder::make('live_preview')
+                            ->hiddenLabel()
+                            ->content(fn (callable $get, ?Build $record): HtmlString => new HtmlString(
+                                view('filament.previews.build-live-preview', [
+                                    'preview' => static::livePreviewData($get, $record),
+                                ])->render()
+                            )),
+                    ])
+                    ->extraAttributes(['class' => 'admin-build-live-preview-shell'])
+                    ->columnSpan([
+                        'default' => 1,
+                        'xl' => 12,
+                    ]),
+            ]),
         ]);
     }
 
@@ -91,6 +122,7 @@ class BuildResource extends Resource
                 TextInput::make('name')
                     ->label('Назва')
                     ->required()
+                    ->live(debounce: 300)
                     ->maxLength(255),
                 TextInput::make('slug')
                     ->label('Slug')
@@ -101,12 +133,14 @@ class BuildResource extends Resource
                 TextInput::make('product_code')
                     ->label('Код товару')
                     ->required()
+                    ->live(debounce: 300)
                     ->maxLength(64)
                     ->rule(fn ($record): Unique => Rule::unique('builds', 'product_code')->ignore($record))
                     ->helperText('Показується в картці збірки, у каталозі та на сторінці товару.'),
                 Select::make('tone')
                     ->label('Колір картки')
                     ->required()
+                    ->live()
                     ->options([
                         'violet' => 'Violet',
                         'magenta' => 'Magenta',
@@ -118,6 +152,7 @@ class BuildResource extends Resource
                 TextInput::make('price')
                     ->label('Ціна, ₴')
                     ->numeric()
+                    ->live()
                     ->minValue(0)
                     ->required(),
                 TextInput::make('sort_order')
@@ -129,6 +164,7 @@ class BuildResource extends Resource
                 Toggle::make('is_active')
                     ->label('Опубліковано')
                     ->helperText('Увімкнено — збірка видима на сайті. Вимкнено — це чернетка.')
+                    ->live()
                     ->default(true),
             ])
             ->columns(2);
@@ -162,6 +198,7 @@ class BuildResource extends Resource
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->maxSize(10240)
                     ->fetchFileInformation(true)
+                    ->live()
                     ->deletable()
                     ->columnSpanFull()
                     ->helperText('JPG/PNG/WEBP до 10MB. Можна додати кілька фото: перше буде головним у картці, а решта зʼявиться в галереї товару.'),
@@ -320,10 +357,12 @@ class BuildResource extends Resource
             ->schema([
                 Textarea::make('about_intro_text')
                     ->label('Вступні абзаци')
-                    ->rows(6),
+                    ->rows(6)
+                    ->live(debounce: 300),
                 Textarea::make('about_notes_text')
                     ->label('Короткі примітки')
                     ->rows(5)
+                    ->live(debounce: 300)
                     ->helperText('По одному пункту на рядок.'),
                 TextInput::make('about_setup_title')
                     ->label('Заголовок блоку "Що буде зроблено"')
@@ -419,6 +458,12 @@ class BuildResource extends Resource
                     ->label('Ціна')
                     ->formatStateUsing(fn ($state): string => number_format((int) $state, 0, '', ' ') . ' ₴')
                     ->sortable(),
+                TextColumn::make('trade_in_requests_count')
+                    ->label('Trade-in')
+                    ->counts('tradeInRequests')
+                    ->badge()
+                    ->color('warning')
+                    ->alignCenter(),
                 TextColumn::make('fps_score')
                     ->label('FPS (дефолт)')
                     ->sortable(),
@@ -457,6 +502,67 @@ class BuildResource extends Resource
             'create' => CreateBuild::route('/create'),
             'edit' => EditBuild::route('/{record}/edit'),
         ];
+    }
+
+    protected static function livePreviewData(callable $get, ?Build $record): array
+    {
+        $name = AdminFormPreview::cleanText($get('name') ?: $record?->name, 'Назва збірки');
+        $galleryUrls = AdminFormPreview::imageUrls($get('gallery_uploads'));
+
+        if ($galleryUrls === [] && $record instanceof Build) {
+            $galleryUrls = BuildImages::urlsForSlug((string) $record->slug);
+        }
+
+        $aboutSource = [
+            'about' => $record?->about,
+            'about_intro_text' => $get('about_intro_text'),
+            'about_notes_text' => $get('about_notes_text'),
+            'about_setup_title' => $get('about_setup_title'),
+            'about_setup_items_text' => $get('about_setup_items_text'),
+            'about_delivery_title' => $get('about_delivery_title'),
+            'about_delivery_items_text' => $get('about_delivery_items_text'),
+            'about_delivery_steps_text' => $get('about_delivery_steps_text'),
+            'about_warranty_title' => $get('about_warranty_title'),
+            'about_warranty_items_text' => $get('about_warranty_items_text'),
+        ];
+
+        if (filled($aboutSource['about_intro_text']) || filled($aboutSource['about_notes_text']) || filled($aboutSource['about_setup_title']) || filled($aboutSource['about_setup_items_text']) || filled($aboutSource['about_delivery_title']) || filled($aboutSource['about_delivery_items_text']) || filled($aboutSource['about_delivery_steps_text']) || filled($aboutSource['about_warranty_title']) || filled($aboutSource['about_warranty_items_text'])) {
+            $aboutSource = static::collapseAboutFromForm($aboutSource);
+        }
+
+        $about = BuildAbout::resolve($aboutSource);
+        $specs = collect((array) ($get('product_specs') ?? $record?->product_specs ?? []))
+            ->filter(fn ($row): bool => is_array($row))
+            ->map(static function (array $row): array {
+                return [
+                    'label' => trim((string) ($row['label'] ?? '')),
+                    'value' => trim((string) ($row['value'] ?? '')),
+                ];
+            })
+            ->filter(fn (array $row): bool => $row['label'] !== '' && $row['value'] !== '')
+            ->take(6)
+            ->values()
+            ->all();
+
+        return [
+            'name' => $name,
+            'product_code' => AdminFormPreview::cleanText($get('product_code') ?: $record?->product_code, '000000'),
+            'tone' => (string) ($get('tone') ?: $record?->tone ?: 'violet'),
+            'price' => AdminFormPreview::formatPrice($get('price') ?? $record?->price ?? 0, '₴'),
+            'image_urls' => $galleryUrls !== [] ? $galleryUrls : [BuildImages::placeholderUrl($name)],
+            'gpu' => static::previewTextValue($get('gpu') ?: $record?->gpu, 'Відеокарта'),
+            'cpu' => static::previewTextValue($get('cpu') ?: $record?->cpu, 'Процесор'),
+            'ram' => static::previewTextValue($get('ram') ?: $record?->ram, "Оперативна памʼять"),
+            'storage' => static::previewTextValue($get('storage') ?: $record?->storage, 'Накопичувач'),
+            'specs' => $specs,
+            'about' => $about,
+            'is_active' => (bool) (($get('is_active') ?? $record?->is_active) ?? true),
+        ];
+    }
+
+    protected static function previewTextValue(mixed $value, string $fallback): string
+    {
+        return AdminFormPreview::cleanText($value, $fallback);
     }
 
     public static function galleryImagePathsForSlug(?string $slug): array
@@ -543,9 +649,9 @@ class BuildResource extends Resource
         return $data;
     }
 
-    public static function expandAboutForForm(?array $about): array
+    public static function expandAboutForForm(array $data): array
     {
-        $about ??= [];
+        $about = BuildAbout::resolve($data);
 
         return [
             'about_intro_text' => implode("\n\n", $about['intro'] ?? []),

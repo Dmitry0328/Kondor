@@ -1,6 +1,31 @@
 (function () {
     const storageKey = 'kondor-cart-v1';
     const listeners = new Set();
+    const validSlugsElement = document.querySelector('[data-cart-valid-slugs]');
+
+    const parseValidSlugs = () => {
+        if (!validSlugsElement) {
+            return new Set();
+        }
+
+        try {
+            const parsed = JSON.parse(validSlugsElement.dataset.cartValidSlugs ?? '[]');
+
+            if (!Array.isArray(parsed)) {
+                return new Set();
+            }
+
+            return new Set(
+                parsed
+                    .map((slug) => `${slug ?? ''}`.trim())
+                    .filter(Boolean),
+            );
+        } catch (error) {
+            return new Set();
+        }
+    };
+
+    const validBuildSlugs = parseValidSlugs();
 
     const clampQuantity = (value) => {
         const parsed = Number.parseInt(`${value ?? 1}`, 10) || 1;
@@ -31,6 +56,14 @@
     const normalizeConfigurationSummary = (value) => Array.isArray(value)
         ? value.map((entry) => `${entry ?? ''}`.trim()).filter(Boolean).slice(0, 8)
         : [];
+
+    const filterAvailableItems = (items) => {
+        if (!validBuildSlugs.size) {
+            return items;
+        }
+
+        return items.filter((item) => validBuildSlugs.has(item.slug));
+    };
 
     const normalizeItem = (item) => {
         if (!item || !item.slug) {
@@ -66,7 +99,18 @@
                 return [];
             }
 
-            return parsed.map(normalizeItem).filter(Boolean);
+            const normalized = parsed.map(normalizeItem).filter(Boolean);
+            const filtered = filterAvailableItems(normalized);
+
+            if (filtered.length !== normalized.length) {
+                try {
+                    window.localStorage.setItem(storageKey, JSON.stringify(filtered));
+                } catch (error) {
+                    // Ignore storage failures and keep current page interactive.
+                }
+            }
+
+            return filtered;
         } catch (error) {
             return [];
         }

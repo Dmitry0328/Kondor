@@ -10,6 +10,39 @@ use Illuminate\Support\Facades\Storage;
 
 class BuildImages
 {
+    public static function placeholderUrl(?string $label = null): string
+    {
+        $label = static::shortLabel($label);
+        $labelSvg = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+
+        $svg = <<<SVG
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="72" y1="54" x2="628" y2="642" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f172a"/>
+      <stop offset="0.52" stop-color="#312e81"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="182" y1="194" x2="504" y2="462" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="720" rx="56" fill="url(#bg)"/>
+  <rect x="44" y="44" width="632" height="632" rx="42" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.16)" stroke-width="2"/>
+  <rect x="146" y="142" width="428" height="298" rx="34" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.18)" stroke-width="3"/>
+  <path d="M186 392L278 292C294 275 320 275 336 292L402 358L450 310C466 294 492 294 508 310L574 376V404C574 427 555 446 532 446H188C165 446 146 427 146 404V392H186Z" fill="url(#glow)"/>
+  <circle cx="474" cy="236" r="42" fill="rgba(255,255,255,0.92)"/>
+  <rect x="92" y="92" width="198" height="54" rx="27" fill="rgba(15,23,42,0.82)" stroke="rgba(255,255,255,0.18)"/>
+  <text x="191" y="126" fill="white" font-size="28" font-family="Manrope, Arial, sans-serif" font-weight="800" text-anchor="middle">BUILD</text>
+  <rect x="164" y="506" width="392" height="74" rx="37" fill="rgba(255,255,255,0.1)"/>
+  <text x="360" y="552" fill="white" font-size="34" font-family="Manrope, Arial, sans-serif" font-weight="800" text-anchor="middle">{$labelSvg}</text>
+</svg>
+SVG;
+
+        return 'data:image/svg+xml;charset=UTF-8,' . rawurlencode($svg);
+    }
+
     public static function pathsForSlug(?string $slug): array
     {
         return static::recordsForSlug($slug)
@@ -206,5 +239,20 @@ class BuildImages
         }
 
         return $url;
+    }
+
+    protected static function shortLabel(?string $label): string
+    {
+        $label = trim(preg_replace('/\s+/', ' ', (string) $label) ?? '');
+
+        if ($label === '') {
+            return 'NO PHOTO';
+        }
+
+        if (mb_strlen($label) <= 22) {
+            return $label;
+        }
+
+        return rtrim(mb_substr($label, 0, 22)) . '...';
     }
 }

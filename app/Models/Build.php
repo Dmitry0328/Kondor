@@ -9,6 +9,7 @@ use App\Support\FpsProfiles;
 use App\Support\SiteImages;
 use App\Support\StorefrontBuilds;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 class Build extends Model
@@ -102,13 +103,16 @@ class Build extends Model
         $ram = $this->displayComponentValue('ram', (string) $this->ram, $baseComponentIds, $baseComponents);
         $storage = $this->displayComponentValue('storage', (string) $this->storage, $baseComponentIds, $baseComponents);
 
+        $galleryImages = BuildImages::urlsForSlug((string) $this->slug);
+        $coverImageUrl = $galleryImages[0] ?? BuildImages::placeholderUrl((string) $this->name);
+
         return [
             'slug' => $this->slug,
             'tone' => $this->tone,
             'name' => $this->name,
             'product_code' => $this->resolveProductCode(),
-            'image_url' => BuildImages::coverUrlForSlug((string) $this->slug),
-            'gallery_images' => BuildImages::urlsForSlug((string) $this->slug),
+            'image_url' => $coverImageUrl,
+            'gallery_images' => $galleryImages,
             'gpu' => $gpu,
             'cpu' => $cpu,
             'ram' => $ram,
@@ -197,5 +201,10 @@ class Build extends Model
         }
 
         return (string) (570000 + (int) $this->getKey());
+    }
+
+    public function tradeInRequests(): HasMany
+    {
+        return $this->hasMany(TradeInRequest::class);
     }
 }

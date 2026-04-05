@@ -296,14 +296,57 @@
             .product-gear__title { color:#18202a; font-family:'Space Grotesk',sans-serif; font-size:28px; font-weight:700; line-height:1; letter-spacing:-.04em; }
             .product-gear__text { margin:0; color:#5f6b79; font-size:14px; font-weight:700; line-height:1.5; }
             .product-gear__grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; }
-            .product-gear__item { display:grid; gap:8px; align-content:start; min-height:100%; padding:14px 12px; border:1px solid #dbe3ee; border-radius:16px; background:#fff; box-shadow:0 8px 16px rgba(24,32,42,.04); transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
+            .product-gear__item { display:grid; gap:8px; align-content:start; min-height:100%; padding:14px 12px; border:1px solid #dbe3ee; border-radius:16px; background:#fff; box-shadow:0 8px 16px rgba(24,32,42,.04); transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease; cursor:pointer; text-align:left; appearance:none; }
             .product-gear__item:hover { transform:translateY(-1px); border-color:#cbd6e4; background:#fbfcfe; box-shadow:0 14px 22px rgba(24,32,42,.08); }
+            .product-gear__item:focus-visible { outline:2px solid rgba(111,16,201,.28); outline-offset:2px; }
             .product-gear__icon { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:12px; background:linear-gradient(180deg,#f3ebff,#efe6ff); color:#6f10c9; }
             .product-gear__icon svg { width:18px; height:18px; }
             .product-gear__label { color:#18202a; font-size:14px; font-weight:800; line-height:1.25; }
             .product-gear__meta { color:#667282; font-size:12px; font-weight:700; line-height:1.4; }
-            .product-gear__button { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:0 20px; border-radius:16px; background:linear-gradient(180deg,#8424f0,#6816cb); color:#fff; font-size:16px; font-weight:800; box-shadow:0 14px 24px rgba(105,22,203,.18); transition:transform .18s ease, box-shadow .18s ease; }
-            .product-gear__button:hover { transform:translateY(-1px); box-shadow:0 16px 26px rgba(105,22,203,.22); }
+            .product-gear__selection { color:#6f10c9; font-size:12px; font-weight:900; line-height:1.45; }
+            .product-gear__item.is-selected { border-color:#cfaeff; background:linear-gradient(180deg,#fff,#faf6ff); box-shadow:0 16px 26px rgba(105,22,203,.1); }
+            .product-gear__count { display:inline-flex; align-items:center; width:fit-content; min-height:24px; padding:0 10px; border-radius:999px; background:#f4efff; color:#6f10c9; font-size:11px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+            .accessory-modal[hidden], .accessory-sheet[hidden] { display:none; }
+            .accessory-modal, .accessory-sheet { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(15,23,42,.58); backdrop-filter:blur(8px); }
+            .accessory-modal { z-index:130; }
+            .accessory-sheet { z-index:135; }
+            .accessory-modal__dialog, .accessory-sheet__dialog { position:relative; width:min(1120px,calc(100vw - 32px)); max-height:calc(100vh - 40px); overflow:auto; padding:34px 36px; border:1px solid rgba(218,226,238,.86); border-radius:34px; background:linear-gradient(180deg,#fff,#f9fbff); box-shadow:0 30px 80px rgba(15,23,42,.24); }
+            .accessory-sheet__dialog { width:min(980px,calc(100vw - 32px)); padding:36px 40px; }
+            .accessory-modal__close, .accessory-sheet__close { position:absolute; top:18px; right:18px; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; padding:0; border:0; background:transparent; color:#1b1f27; font-size:48px; line-height:1; cursor:pointer; }
+            .accessory-modal__header, .accessory-sheet__header { display:grid; gap:8px; margin-bottom:22px; }
+            .accessory-modal__eyebrow { color:#6f10c9; font-size:12px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+            .accessory-modal__title, .accessory-sheet__title { margin:0; color:#1b1f27; font-size:clamp(30px,3vw,42px); font-weight:900; letter-spacing:-.04em; }
+            .accessory-modal__text { margin:0; color:#5f6b79; font-size:16px; font-weight:700; line-height:1.55; }
+            .accessory-modal__grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+            .accessory-card { display:grid; gap:16px; padding:18px; border:1px solid #dae3ee; border-radius:24px; background:#fff; box-shadow:0 12px 26px rgba(24,32,42,.06); }
+            .accessory-card__media { display:block; width:100%; padding:0; border:1px solid #d8e1ee; border-radius:22px; background:#fff; overflow:hidden; cursor:zoom-in; box-shadow:0 10px 22px rgba(24,32,42,.08); }
+            .accessory-card__media img { display:block; width:100%; aspect-ratio:1 / 1; object-fit:cover; background:linear-gradient(180deg,#f4f7fb,#e8eef7); }
+            .accessory-card__body { display:grid; gap:10px; }
+            .accessory-card__vendor { color:#6f10c9; font-size:11px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
+            .accessory-card__name { margin:0; color:#18202a; font-size:24px; font-weight:900; line-height:1.08; letter-spacing:-.03em; }
+            .accessory-card__summary { margin:0; color:#5f6b79; font-size:14px; font-weight:700; line-height:1.55; }
+            .accessory-card__price { margin:0; color:#18202a; font-size:18px; font-weight:900; line-height:1.15; }
+            .accessory-card__actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:4px; }
+            .accessory-card__button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 16px; border:1px solid #d7deea; border-radius:14px; background:#fff; color:#18202a; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 10px 18px rgba(24,32,42,.05); transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
+            .accessory-card__button:hover { transform:translateY(-1px); border-color:#c8d2df; background:#fbfcfe; box-shadow:0 14px 22px rgba(24,32,42,.08); }
+            .accessory-card__button--primary { border-color:#6f10c9; background:linear-gradient(180deg,#8424f0,#6816cb); color:#fff; box-shadow:0 16px 28px rgba(105,22,203,.18); }
+            .accessory-card__button--primary:hover { border-color:#6916cb; background:linear-gradient(180deg,#8f2fff,#7420d3); }
+            .accessory-card__button--select { border-color:#18202a; background:#18202a; color:#fff; box-shadow:0 16px 24px rgba(24,32,42,.16); }
+            .accessory-card__button--select:hover { border-color:#111723; background:#111723; }
+            .accessory-card__button--select.is-selected { border-color:#0f8a48; background:linear-gradient(180deg,#12a150,#0f8a48); color:#fff; box-shadow:0 16px 24px rgba(15,138,72,.18); }
+            .accessory-modal__empty { display:grid; gap:10px; padding:22px; border:1px dashed #d8e1ee; border-radius:24px; background:#fff; color:#5f6b79; font-size:15px; font-weight:700; line-height:1.55; }
+            .accessory-modal__empty strong { color:#18202a; font-size:20px; }
+            .accessory-sheet__rows { display:grid; gap:8px; }
+            .accessory-sheet__spec { display:grid; grid-template-columns:minmax(180px,240px) minmax(0,1fr); gap:18px; align-items:start; padding:0 0 8px; color:#1b1f27; font-size:18px; font-weight:800; }
+            .accessory-sheet__spec-label { display:block; padding:8px 0 0; }
+            .accessory-sheet__spec-value { display:block; padding:8px 0 0; font-weight:900; }
+            .accessory-sheet__spec.is-highlighted .accessory-sheet__spec-label,
+            .accessory-sheet__spec.is-highlighted .accessory-sheet__spec-value { display:inline-flex; align-items:center; min-height:40px; padding:6px 16px; border-radius:14px; background:#ffb414; }
+            .accessory-sheet__package-item { display:flex; align-items:flex-start; gap:16px; color:#1b1f27; font-size:18px; font-weight:900; }
+            .accessory-sheet__package-badge { display:inline-flex; align-items:center; gap:14px; width:max-content; max-width:100%; padding:8px 14px; border-radius:14px; }
+            .accessory-sheet__package-item.is-highlighted .accessory-sheet__package-badge { background:#ffb414; }
+            .accessory-sheet__package-icon { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; color:#1b1f27; flex:none; }
+            .accessory-sheet__package-icon svg { width:22px; height:22px; }
             .product-tradein { display:grid; gap:16px; margin-top:28px; padding:28px; border:1px solid #dce5f0; border-radius:28px; background:linear-gradient(180deg,#fff,#f7fbff); box-shadow:0 16px 34px rgba(24,32,42,.06); }
             .product-tradein__eyebrow { color:#7a28dc; font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
             .product-tradein__title { margin:0; color:#18202a; font-family:'Space Grotesk',sans-serif; font-size:clamp(28px,3vw,40px); font-weight:700; letter-spacing:-.04em; line-height:1.08; }
@@ -407,6 +450,7 @@
                 .product-option__panel { padding:0 14px 14px; }
                 .product-choice { grid-template-columns:auto 76px minmax(0,1fr); }
                 .product-choice__preview { width:76px; border-radius:16px; }
+                .product-choice__price { white-space:normal; }
                 .product-choice__price { grid-column:3; justify-self:start; }
                 .product-option-lightbox { padding:16px; }
                 .product-option-lightbox__dialog { width:100%; padding:18px 18px 16px; border-radius:24px; }
@@ -424,7 +468,7 @@
                 .product-actions__controls { grid-template-columns:1fr; }
                 .product-actions__share { justify-content:stretch; }
                 .product-actions__share-button { width:100%; min-width:0; }
-                .product-gear__grid { grid-template-columns:repeat(3, minmax(0,1fr)); }
+                .product-gear__grid { grid-template-columns:repeat(2, minmax(0,1fr)); }
                 .product-custom-cta { padding-top:56px; }
                 .product-custom-cta__title { font-size:34px; }
                 .product-custom-cta__text { font-size:16px; }
@@ -453,7 +497,31 @@
                 .product-fps__meter-label { font-size:24px; }
                 .product-fps__value { min-width:42px; font-size:30px; }
             }
-            @media (max-width:560px) { .page { padding-top:16px; } .product-breadcrumbs { gap:8px; font-size:12px; } .product-gallery__stage { padding:0; border-radius:0; } .product-gallery__slide { inset:0; border-radius:0; } .product-gallery__info { top:12px; left:12px; gap:8px; } .product-gallery__info-button { width:30px; height:30px; } .product-gallery__info-button span { font-size:17px; } .product-gallery__info-tooltip { max-width:min(280px, calc(100vw - 72px)); padding:8px 12px; font-size:12px; } .product-gallery__nav { width:36px; height:36px; margin-top:-18px; } .product-gallery__nav--prev { left:12px; } .product-gallery__nav--next { right:12px; } .product-rig { width:min(78%,360px); } .product-benchmark__panel { inset:14% 12% 14%; } .product-benchmark__rows { left:15%; right:15%; top:23%; bottom:14%; gap:14px; } .product-gallery__thumbs { display:flex; overflow-x:auto; padding-bottom:2px; } .product-gallery__thumb { flex:0 0 96px; } .product-about { gap:18px; padding-top:8px; } .product-about__title { font-size:30px; } .product-about__lead, .product-about__note, .product-about__section-title, .product-about__list, .product-about__steps { font-size:15px; } .product-aside__title { font-size:34px; } .product-aside__code { font-size:12px; } .product-section-title { font-size:28px; } .product-spec { grid-template-columns:28px minmax(0,1fr); gap:12px; } .product-spec__icon { width:28px; height:28px; } .product-spec__icon svg { width:24px; height:24px; } .product-options__intro { font-size:15px; } .product-pricing__label { font-size:15px; } .product-pricing__value { font-size:28px; } .product-actions__button { font-size:16px; } .product-actions__share-button { min-height:50px; padding:0 18px; font-size:15px; } .product-gear { gap:14px; padding:16px; } .product-gear__title { font-size:24px; } .product-gear__grid { grid-template-columns:1fr; } .product-gear__item { padding:12px; } .product-gear__button { width:100%; min-height:50px; font-size:15px; } .product-tradein { gap:14px; margin-top:22px; padding:18px; border-radius:22px; } .product-tradein__title { font-size:26px; } .product-tradein__text { font-size:15px; } .product-tradein__button { width:100%; min-width:0; min-height:52px; font-size:15px; } .product-custom-cta { gap:14px; padding:44px 0 6px; } .product-custom-cta__title { font-size:28px; } .product-custom-cta__text { font-size:15px; } .product-custom-cta__button { width:100%; min-width:0; min-height:54px; padding:0 20px; font-size:16px; } .product-related { gap:18px; padding-top:34px; } .product-related__title { font-size:28px; } .product-related__grid { grid-template-columns:1fr; } .product-related-card__body { gap:14px; padding:16px 16px 18px; } .product-related-card__specs li { font-size:13px; } .product-related__button { width:100%; min-width:0; min-height:54px; font-size:16px; } .product-placeholder__copy { font-size:16px; } .footer__brand-name { font-size:36px; } .footer__nav a, .footer__contacts a { font-size:17px; } .footer__bottom-inner { min-height:64px; padding:10px 0; font-size:14px; } }
+            @media (max-width:560px) { .page { padding-top:16px; } .product-breadcrumbs { gap:8px; font-size:12px; } .product-gallery__stage { padding:0; border-radius:0; } .product-gallery__slide { inset:0; border-radius:0; } .product-gallery__info { top:12px; left:12px; gap:8px; } .product-gallery__info-button { width:30px; height:30px; } .product-gallery__info-button span { font-size:17px; } .product-gallery__info-tooltip { max-width:min(280px, calc(100vw - 72px)); padding:8px 12px; font-size:12px; } .product-gallery__nav { width:36px; height:36px; margin-top:-18px; } .product-gallery__nav--prev { left:12px; } .product-gallery__nav--next { right:12px; } .product-rig { width:min(78%,360px); } .product-benchmark__panel { inset:14% 12% 14%; } .product-benchmark__rows { left:15%; right:15%; top:23%; bottom:14%; gap:14px; } .product-gallery__thumbs { display:flex; overflow-x:auto; padding-bottom:2px; } .product-gallery__thumb { flex:0 0 96px; } .product-about { gap:18px; padding-top:8px; } .product-about__title { font-size:30px; } .product-about__lead, .product-about__note, .product-about__section-title, .product-about__list, .product-about__steps { font-size:15px; } .product-aside__title { font-size:34px; } .product-aside__code { font-size:12px; } .product-section-title { font-size:28px; } .product-spec { grid-template-columns:28px minmax(0,1fr); gap:12px; } .product-spec__icon { width:28px; height:28px; } .product-spec__icon svg { width:24px; height:24px; } .product-options__intro { font-size:15px; } .product-pricing__label { font-size:15px; } .product-pricing__value { font-size:28px; } .product-actions__button { font-size:16px; } .product-actions__share-button { min-height:50px; padding:0 18px; font-size:15px; } .product-gear { gap:14px; padding:16px; } .product-gear__title { font-size:24px; } .product-gear__grid { grid-template-columns:1fr; } .product-gear__item { padding:12px; } .product-tradein { gap:14px; margin-top:22px; padding:18px; border-radius:22px; } .product-tradein__title { font-size:26px; } .product-tradein__text { font-size:15px; } .product-tradein__button { width:100%; min-width:0; min-height:52px; font-size:15px; } .product-custom-cta { gap:14px; padding:44px 0 6px; } .product-custom-cta__title { font-size:28px; } .product-custom-cta__text { font-size:15px; } .product-custom-cta__button { width:100%; min-width:0; min-height:54px; padding:0 20px; font-size:16px; } .product-related { gap:18px; padding-top:34px; } .product-related__title { font-size:28px; } .product-related__grid { grid-template-columns:1fr; } .product-related-card__body { gap:14px; padding:16px 16px 18px; } .product-related-card__specs li { font-size:13px; } .product-related__button { width:100%; min-width:0; min-height:54px; font-size:16px; } .product-placeholder__copy { font-size:16px; } .footer__brand-name { font-size:36px; } .footer__nav a, .footer__contacts a { font-size:17px; } .footer__bottom-inner { min-height:64px; padding:10px 0; font-size:14px; } }
+            @media (max-width:760px) {
+                .accessory-modal,
+                .accessory-sheet { padding:14px; }
+                .accessory-modal__dialog,
+                .accessory-sheet__dialog { width:min(100%,calc(100vw - 12px)); max-height:calc(100vh - 20px); padding:22px 18px; border-radius:26px; }
+                .accessory-modal__close,
+                .accessory-sheet__close { top:12px; right:12px; width:38px; height:38px; font-size:40px; }
+                .accessory-modal__header,
+                .accessory-sheet__header { margin-bottom:18px; }
+                .accessory-modal__title,
+                .accessory-sheet__title { padding-right:36px; font-size:28px; }
+                .accessory-modal__text { font-size:15px; }
+                .accessory-modal__grid { grid-template-columns:1fr; gap:14px; }
+                .accessory-card { gap:14px; padding:14px; border-radius:20px; }
+                .accessory-card__name { font-size:20px; }
+                .accessory-card__actions { gap:8px; }
+                .accessory-card__button { width:100%; }
+                .accessory-sheet__spec { grid-template-columns:1fr; gap:8px; font-size:15px; }
+                .accessory-sheet__spec-label { padding-top:0; }
+                .accessory-sheet__spec-value { padding:10px 14px; border-radius:14px; }
+                .accessory-sheet__package-badge { width:100%; justify-content:flex-start; }
+                .accessory-sheet__package-item { gap:12px; font-size:15px; }
+                .accessory-sheet__package-icon { width:36px; height:36px; border-radius:12px; }
+            }
         </style>
     </head>
     <body @class(['has-preview-dock' => $isPreview ?? false])>
@@ -495,7 +563,8 @@
             $powerBase = $basePrice >= 100000 ? '850W 80+ Gold' : '650W 80+ Bronze';
             $powerUpgrade = $basePrice >= 100000 ? '1000W 80+ Gold' : '850W 80+ Gold';
             $appearanceHint = 'Зовнішній вигляд комп\'ютера залежить від обраних комплектуючих.';
-            $deviceCatalogUrl = 'https://www.kondordevice.com/catalog';
+            $accessoryGroups = is_array($accessoryGroups ?? null) ? $accessoryGroups : \App\Support\AccessoryCatalog::storefrontGroups();
+            /* Legacy device redirects removed from storefront.
             $deviceLinks = [
                 [
                     'label' => 'Клавіатури',
@@ -516,6 +585,7 @@
                     'icon' => 'pad',
                 ],
             ];
+            */
             $performanceLine = match (true) {
                 $build['fps_score'] >= 160 => 'забезпечують високий FPS у сучасних іграх',
                 $build['fps_score'] >= 120 => 'забезпечують впевнений FPS у сучасних іграх',
@@ -563,6 +633,10 @@
                     'Безкоштовний ремонт протягом всього гарантійного терміну, при дотриманні гарантійних умов',
                 ],
             ];
+            $productAbout = \App\Support\BuildAbout::resolve([
+                ...$build,
+                'about' => $productAbout,
+            ]);
             $relatedBuilds = [];
             foreach ($storefrontBuilds as $candidateBuild) {
                 if (($candidateBuild['slug'] ?? null) === ($build['slug'] ?? null)) {
@@ -706,7 +780,9 @@
                 'lookup' => $productFpsLookup,
             ];
             $sharedBuildLink = $sharedBuildLink ?? null;
+            $sharedBuildPayload = is_array($sharedBuildPayload ?? null) ? $sharedBuildPayload : [];
             $sharedBuildSelection = is_array($sharedBuildSelection ?? null) ? $sharedBuildSelection : [];
+            $sharedAccessorySelections = [];
             $productConfigurator = \App\Support\BuildConfigurator::storefrontPayload($build);
             $productConfiguratorEnabled = (bool) ($productConfigurator['enabled'] ?? false);
             $productConfiguratorClient = $productConfigurator['client'] ?? ['enabled' => false];
@@ -717,6 +793,11 @@
             $previewBackUrl = is_string($build['preview_back_url'] ?? null) ? trim((string) ($build['preview_back_url'] ?? '')) : '';
             $previewPersistUrl = $isPreview && $previewToken !== '' ? route('product.preview.persist', ['token' => $previewToken]) : '';
             $previewPersistState = is_array(session('previewPersistState')) ? session('previewPersistState') : [];
+            $accessoryLookup = collect($accessoryGroups ?? [])
+                ->flatMap(static fn (array $group) => collect($group['items'] ?? [])
+                    ->mapWithKeys(static fn (array $item): array => [((string) ($item['slug'] ?? '')) => $item]))
+                ->filter(static fn ($item, string $slug): bool => $slug !== '')
+                ->all();
             $previewPersistError = trim((string) session('previewPersistError', ''));
             $previewStatusLabel = (bool) ($build['is_active'] ?? false) ? 'Опубліковано' : 'Чернетка';
 
@@ -729,8 +810,8 @@
                     $sharedResolvedConfigurator = \App\Support\BuildConfigurator::resolvePayloadSelection($productConfigurator, $sharedBuildSelection);
                     $resolvedConfiguratorSelection = $sharedResolvedConfigurator['selection'] ?? $resolvedConfiguratorSelection;
                     $productCompatibility = $sharedResolvedConfigurator['compatibility'] ?? $productCompatibility;
-                    $defaultAdditionalPrice = (int) ($sharedResolvedConfigurator['additional_price'] ?? 0);
-                    $initialTotalPrice = (int) ($sharedResolvedConfigurator['total_price'] ?? ($basePrice + $defaultAdditionalPrice));
+                    $defaultAdditionalPrice = (int) ($sharedBuildPayload['additional_price'] ?? $sharedResolvedConfigurator['additional_price'] ?? 0);
+                    $initialTotalPrice = (int) ($sharedBuildPayload['total_price'] ?? $sharedResolvedConfigurator['total_price'] ?? ($basePrice + $defaultAdditionalPrice));
                 } else {
                     $defaultAdditionalPrice = (int) ($productConfigurator['additionalPrice'] ?? 0);
                     $initialTotalPrice = (int) ($productConfigurator['totalPrice'] ?? ($basePrice + $defaultAdditionalPrice));
@@ -766,6 +847,7 @@
                                             is_array($option['component']['image_urls'] ?? null) ? $option['component']['image_urls'] : [$imageUrl],
                                         ))),
                                         'price' => (int) ($option['price'] ?? $option['price_delta'] ?? 0),
+                                        'is_default' => (bool) ($option['is_default'] ?? false),
                                         'selected' => (($resolvedConfiguratorSelection[$groupKey] ?? ($option['is_default'] ?? false ? (string) ($option['key'] ?? '') : null)) === (string) ($option['key'] ?? '')),
                                         'component_id' => $option['component_id'] ?? null,
                                     ];
@@ -776,6 +858,28 @@
                     })
                     ->values()
                     ->all();
+            }
+
+            foreach ($sharedBuildSelection as $selectionKey => $selectionValue) {
+                $selectionKey = trim((string) $selectionKey);
+
+                if (! str_starts_with($selectionKey, 'accessory_')) {
+                    continue;
+                }
+
+                $type = substr($selectionKey, strlen('accessory_'));
+                $slug = trim((string) $selectionValue);
+                $item = $accessoryLookup[$slug] ?? null;
+
+                if ($type === '' || ! is_array($item)) {
+                    continue;
+                }
+
+                $sharedAccessorySelections[$type] = [
+                    'slug' => $slug,
+                    'name' => (string) ($item['name'] ?? ''),
+                    'price' => (int) ($item['price_raw'] ?? 0),
+                ];
             }
         @endphp
 
@@ -1189,7 +1293,13 @@
                                 <span class="product-tradein__eyebrow">Trade-in</span>
                                 <h2 class="product-tradein__title" id="product-tradein-title">Бажаєте замінити свій старий ПК з доплатою на {{ $build['name'] }}?</h2>
                                 <p class="product-tradein__text">Запропонуйте свій поточний комп'ютер, а ми попередньо оцінимо його та підготуємо пропозицію по трейд-іну саме під цю збірку.</p>
-                                <a class="product-tradein__button" href="{{ route('trade-in', ['build' => $build['slug']]) }}">Запропонувати свій ПК</a>
+                                <a
+                                    class="product-tradein__button"
+                                    href="{{ route('trade-in', ['build' => $build['slug']]) }}"
+                                    data-product-tradein
+                                    data-base-href="{{ route('trade-in', ['build' => $build['slug']]) }}"
+                                    data-share-endpoint="{{ route('product.share', ['slug' => $build['slug']]) }}"
+                                >Запропонувати свій ПК</a>
                             </section>
                         </div>
 
@@ -1345,7 +1455,7 @@
                                                             <span class="product-choice__label">{{ $option['label'] }}</span>
                                                             <span class="product-choice__meta">{{ $option['description'] }}</span>
                                                         </span>
-                                                        <span class="product-choice__price">{{ $option['price'] > 0 ? '+' . $priceFormatter($option['price']) : 'Входить' }}</span>
+                                                        <span class="product-choice__price">{{ $option['price'] > 0 ? '+' . $priceFormatter($option['price']) : (!empty($option['is_default']) ? 'Входить' : 'Без доплати') }}</span>
                                                     </label>
                                                 @endforeach
                                             </div>
@@ -1414,10 +1524,10 @@
                                 </div>
 
                                 <div class="product-gear__grid">
-                                    @foreach ($deviceLinks as $deviceLink)
-                                        <a class="product-gear__item" href="{{ $deviceLink['href'] }}" target="_blank" rel="noreferrer">
+                                    @foreach ($accessoryGroups as $accessoryGroup)
+                                        <button class="product-gear__item" type="button" data-accessory-category-open="{{ $accessoryGroup['type'] }}" aria-label="{{ $accessoryGroup['label'] }}">
                                             <span class="product-gear__icon" aria-hidden="true">
-                                                @switch($deviceLink['icon'])
+                                                @switch($accessoryGroup['icon'])
                                                     @case('keyboard')
                                                         <svg viewBox="0 0 24 24" fill="none">
                                                             <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
@@ -1437,13 +1547,14 @@
                                                         </svg>
                                                 @endswitch
                                             </span>
-                                            <span class="product-gear__label">{{ $deviceLink['label'] }}</span>
-                                            <span class="product-gear__meta">{{ $deviceLink['meta'] }}</span>
-                                        </a>
+                                            <span class="product-gear__label">{{ $accessoryGroup['label'] }}</span>
+                                            <span class="product-gear__meta">{{ $accessoryGroup['meta'] }}</span>
+                                            <span class="product-gear__selection" data-accessory-category-summary>Ще не обрано</span>
+                                            <span class="product-gear__count">{{ count($accessoryGroup['items']) }} моделей</span>
+                                        </button>
                                     @endforeach
                                 </div>
 
-                                <a class="product-gear__button" href="{{ $deviceCatalogUrl }}" target="_blank" rel="noreferrer">Перейти до девайсів</a>
                             </section>
                         </aside>
                     </section>
@@ -1635,6 +1746,176 @@
             </div>
         </div>
 
+        @foreach ($accessoryGroups as $accessoryGroup)
+            <div class="accessory-modal" data-accessory-category-modal="{{ $accessoryGroup['type'] }}" hidden>
+                <div class="accessory-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="accessory-category-title-{{ $accessoryGroup['type'] }}">
+                    <button type="button" class="accessory-modal__close" data-accessory-modal-close aria-label="Закрити">&times;</button>
+                    <div class="accessory-modal__header">
+                        <span class="accessory-modal__eyebrow">Kondor Device</span>
+                        <h2 class="accessory-modal__title" id="accessory-category-title-{{ $accessoryGroup['type'] }}">{{ $accessoryGroup['label'] }}</h2>
+                        <p class="accessory-modal__text">{{ $accessoryGroup['meta'] }}. Обирай модель прямо на сайті, переглядай фото та відкривай попапи з деталями.</p>
+                    </div>
+
+                    @if ($accessoryGroup['items'] !== [])
+                        <div class="accessory-modal__grid">
+                            @foreach ($accessoryGroup['items'] as $accessory)
+                                <article class="accessory-card">
+                                    <button
+                                        type="button"
+                                        class="accessory-card__media"
+                                        data-option-image-trigger
+                                        data-option-image-src="{{ $accessory['image_url'] }}"
+                                        data-option-image-alt="{{ $accessory['name'] }}"
+                                        data-option-image-gallery='@json($accessory['image_urls'])'
+                                    >
+                                        <img src="{{ $accessory['image_url'] }}" alt="{{ $accessory['name'] }}">
+                                    </button>
+
+                                    <div class="accessory-card__body">
+                                        @if ($accessory['vendor'] !== '')
+                                            <span class="accessory-card__vendor">{{ $accessory['vendor'] }}</span>
+                                        @endif
+
+                                        <h3 class="accessory-card__name">{{ $accessory['name'] }}</h3>
+
+                                        @if ($accessory['summary'] !== '')
+                                            <p class="accessory-card__summary">{{ $accessory['summary'] }}</p>
+                                        @endif
+
+                                        <p class="accessory-card__price">{{ $priceFormatter((int) ($accessory['price_raw'] ?? 0)) }}</p>
+
+                                        <div class="accessory-card__actions">
+                                            <button
+                                                type="button"
+                                                class="accessory-card__button accessory-card__button--select"
+                                                data-accessory-select="{{ $accessory['slug'] }}"
+                                                data-accessory-type="{{ $accessoryGroup['type'] }}"
+                                                data-accessory-name="{{ $accessory['name'] }}"
+                                                data-accessory-price="{{ (int) ($accessory['price_raw'] ?? 0) }}"
+                                                aria-pressed="false"
+                                            >
+                                                Обрати
+                                            </button>
+
+                                            @if ($accessory['specs'] !== [])
+                                                <button type="button" class="accessory-card__button accessory-card__button--primary" data-accessory-sheet-open="{{ $accessory['slug'] }}:specs">
+                                                    Інформація
+                                                </button>
+                                            @endif
+
+                                            @if ($accessory['package_items'] !== [])
+                                                <button type="button" class="accessory-card__button" data-accessory-sheet-open="{{ $accessory['slug'] }}:package">
+                                                    Комплектація
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="accessory-modal__empty">
+                            <strong>Поки що порожньо</strong>
+                            <span>У цій категорії ще немає активних девайсів. Додай їх в адмінці в розділі “Девайси”, і вони одразу зʼявляться тут.</span>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endforeach
+
+        @foreach ($accessoryGroups as $accessoryGroup)
+            @foreach ($accessoryGroup['items'] as $accessory)
+                @if ($accessory['specs'] !== [])
+                    <div class="accessory-sheet" data-accessory-sheet="{{ $accessory['slug'] }}:specs" hidden>
+                        <div class="accessory-sheet__dialog" role="dialog" aria-modal="true" aria-labelledby="accessory-specs-title-{{ $accessory['slug'] }}">
+                            <button type="button" class="accessory-sheet__close" data-accessory-sheet-close aria-label="Закрити">&times;</button>
+                            <div class="accessory-sheet__header">
+                                <h3 class="accessory-sheet__title" id="accessory-specs-title-{{ $accessory['slug'] }}">Загальні характеристики</h3>
+                            </div>
+                            <div class="accessory-sheet__rows">
+                                @foreach ($accessory['specs'] as $spec)
+                                    <div class="accessory-sheet__spec{{ $spec['is_highlighted'] ? ' is-highlighted' : '' }}">
+                                        <span class="accessory-sheet__spec-label">{{ $spec['label'] }}</span>
+                                        <strong class="accessory-sheet__spec-value">{{ $spec['value'] }}</strong>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                @if ($accessory['package_items'] !== [])
+                    <div class="accessory-sheet" data-accessory-sheet="{{ $accessory['slug'] }}:package" hidden>
+                        <div class="accessory-sheet__dialog" role="dialog" aria-modal="true" aria-labelledby="accessory-package-title-{{ $accessory['slug'] }}">
+                            <button type="button" class="accessory-sheet__close" data-accessory-sheet-close aria-label="Закрити">&times;</button>
+                            <div class="accessory-sheet__header">
+                                <h3 class="accessory-sheet__title" id="accessory-package-title-{{ $accessory['slug'] }}">Комплектація</h3>
+                            </div>
+                            <div class="accessory-sheet__rows">
+                                @foreach ($accessory['package_items'] as $packageItem)
+                                    <div class="accessory-sheet__package-item{{ $packageItem['is_highlighted'] ? ' is-highlighted' : '' }}">
+                                        <div class="accessory-sheet__package-badge">
+                                            <span class="accessory-sheet__package-icon" aria-hidden="true">
+                                                @switch($packageItem['icon'])
+                                                    @case('cable')
+                                                        <svg viewBox="0 0 24 24" fill="none">
+                                                            <path d="M8 7V6A4 4 0 0 1 12 2A4 4 0 0 1 16 6V10A4 4 0 0 1 12 14A4 4 0 0 1 8 10V9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                            <path d="M8 14V18A4 4 0 0 0 12 22A4 4 0 0 0 16 18V17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                        </svg>
+                                                        @break
+                                                    @case('switch')
+                                                        <svg viewBox="0 0 24 24" fill="none">
+                                                            <rect x="6" y="4" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                                                            <path d="M9 20H15M12 16V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                        </svg>
+                                                        @break
+                                                    @case('tool')
+                                                        <svg viewBox="0 0 24 24" fill="none">
+                                                            <path d="M14 5L19 10L10 19L5 14L14 5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                                            <path d="M13 6L18 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                        </svg>
+                                                        @break
+                                                    @case('manual')
+                                                        <svg viewBox="0 0 24 24" fill="none">
+                                                            <path d="M6 4.5H16A2.5 2.5 0 0 1 18.5 7V19.5H8A2 2 0 0 0 6 21.5V4.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                                            <path d="M8.5 8H15M8.5 11.5H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                        </svg>
+                                                        @break
+                                                    @case('sticker')
+                                                        <svg viewBox="0 0 24 24" fill="none">
+                                                            <path d="M12 3L19 7V17L12 21L5 17V7L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                                            <path d="M9 12H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                        </svg>
+                                                        @break
+                                                    @case('keycap')
+                                                        <svg viewBox="0 0 24 24" fill="none">
+                                                            <rect x="7" y="3" width="10" height="18" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                                                            <path d="M10 8H14M10 12H14M10 16H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                        </svg>
+                                                        @break
+                                                    @case('dongle')
+                                                        <svg viewBox="0 0 24 24" fill="none">
+                                                            <rect x="7" y="6" width="10" height="9" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                                                            <path d="M10 15V18M14 15V18M9 4V6M15 4V6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                        </svg>
+                                                        @break
+                                                    @default
+                                                        <svg viewBox="0 0 24 24" fill="none">
+                                                            <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/>
+                                                        </svg>
+                                                @endswitch
+                                            </span>
+                                            <span>{{ $packageItem['label'] }}</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+        @endforeach
+
         <script src="{{ asset('js/storefront-cart.js') }}"></script>
         <script>
             (() => {
@@ -1670,11 +1951,19 @@
                 const optionImageModalThumbs = document.querySelector('[data-option-image-thumbs]');
                 const buildShareButton = document.querySelector('[data-build-share]');
                 const buildShareButtonLabel = buildShareButton?.querySelector('span');
+                const productTradeInButton = document.querySelector('[data-product-tradein]');
                 const buildShareModal = document.querySelector('[data-build-share-modal]');
                 const buildShareLinkInput = document.querySelector('[data-build-share-link]');
                 const buildShareMeta = document.querySelector('[data-build-share-meta]');
                 const buildShareCopyButton = document.querySelector('[data-build-share-copy]');
                 const buildShareCloseButtons = Array.from(document.querySelectorAll('[data-build-share-close]'));
+                const accessoryCategoryButtons = Array.from(document.querySelectorAll('[data-accessory-category-open]'));
+                const accessoryCategoryModals = Array.from(document.querySelectorAll('[data-accessory-category-modal]'));
+                const accessorySheetButtons = Array.from(document.querySelectorAll('[data-accessory-sheet-open]'));
+                const accessorySelectButtons = Array.from(document.querySelectorAll('[data-accessory-select]'));
+                const accessorySheets = Array.from(document.querySelectorAll('[data-accessory-sheet]'));
+                const accessoryModalCloseButtons = Array.from(document.querySelectorAll('[data-accessory-modal-close]'));
+                const accessorySheetCloseButtons = Array.from(document.querySelectorAll('[data-accessory-sheet-close]'));
                 const pricingRoot = document.querySelector('[data-product-pricing]');
                 const addonsPriceElement = document.querySelector('[data-product-addons-price]');
                 const totalPriceElement = document.querySelector('[data-product-total-price]');
@@ -1690,6 +1979,8 @@
                     url: @json(route('product.show', ['slug' => $build['slug']])),
                     tone: @json($build['tone'] ?? 'violet'),
                 };
+                const accessorySelectionStorageKey = `kondor-accessory-selection:${productCartItem.slug}`;
+                const sharedAccessorySelections = @json($sharedAccessorySelections);
                 const productFpsConfig = @json($productFpsClientConfig);
                 const productConfigurator = @json($productConfiguratorClient);
                 const productFpsGames = Object.fromEntries((productFpsConfig.games ?? []).map((game) => [game.id, game]));
@@ -1702,6 +1993,8 @@
                 let activeSlideIndex = 0;
                 let optionImageGallery = [];
                 let optionImageGalleryIndex = 0;
+                let activeAccessoryCategory = '';
+                let accessorySelections = {};
 
                 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
                 const formatPrice = (value) => `${new Intl.NumberFormat('uk-UA').format(Math.round(value)).replace(/\u00a0/g, ' ')} ₴`;
@@ -1723,6 +2016,156 @@
                     } catch (error) {
                         return `${slug}:default`;
                     }
+                };
+
+                const loadAccessorySelections = () => {
+                    const normalizeSelections = (source) => {
+                        if (!source || typeof source !== 'object' || Array.isArray(source)) {
+                            return {};
+                        }
+
+                        return Object.entries(source).reduce((carry, [type, entry]) => {
+                            if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+                                return carry;
+                            }
+
+                            const slug = `${entry.slug ?? ''}`.trim();
+                            const name = `${entry.name ?? ''}`.trim();
+
+                            if (!type || !slug || !name) {
+                                return carry;
+                            }
+
+                            carry[type] = {
+                                slug,
+                                name,
+                                price: Math.max(0, Math.round(Number(entry.price) || 0)),
+                            };
+
+                            return carry;
+                        }, {});
+                    };
+
+                    try {
+                        const raw = window.localStorage.getItem(accessorySelectionStorageKey);
+                        const parsed = raw ? JSON.parse(raw) : {};
+
+                        return {
+                            ...normalizeSelections(parsed),
+                            ...normalizeSelections(sharedAccessorySelections),
+                        };
+                    } catch (error) {
+                        return normalizeSelections(sharedAccessorySelections);
+                    }
+                };
+
+                const saveAccessorySelections = () => {
+                    try {
+                        window.localStorage.setItem(accessorySelectionStorageKey, JSON.stringify(accessorySelections));
+                    } catch (error) {
+                        // Ignore storage failures and keep the page usable.
+                    }
+                };
+
+                const renderAccessorySelections = () => {
+                    accessoryCategoryButtons.forEach((button) => {
+                        const type = button.dataset.accessoryCategoryOpen ?? '';
+                        const summary = button.querySelector('[data-accessory-category-summary]');
+                        const selection = type ? accessorySelections[type] ?? null : null;
+
+                        button.classList.toggle('is-selected', Boolean(selection));
+
+                        if (summary) {
+                            summary.textContent = selection?.name
+                                ? `Обрано: ${selection.name}`
+                                : 'Ще не обрано';
+                        }
+                    });
+
+                    accessorySelectButtons.forEach((button) => {
+                        const type = button.dataset.accessoryType ?? '';
+                        const slug = button.dataset.accessorySelect ?? '';
+                        const selection = type ? accessorySelections[type] ?? null : null;
+                        const isSelected = Boolean(selection && selection.slug === slug);
+
+                        button.classList.toggle('is-selected', isSelected);
+                        button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+                        button.textContent = isSelected ? 'Обрано' : 'Обрати';
+                    });
+                };
+
+                const syncAccessorySelectionLabels = () => {
+                    accessoryCategoryButtons.forEach((button) => {
+                        const type = button.dataset.accessoryCategoryOpen ?? '';
+                        const summary = button.querySelector('[data-accessory-category-summary]');
+                        const selection = type ? accessorySelections[type] ?? null : null;
+
+                        if (!summary) {
+                            return;
+                        }
+
+                        summary.textContent = selection?.name
+                            ? `Обрано: ${selection.name}${Number(selection.price ?? 0) > 0 ? ` + ${formatPrice(selection.price)}` : ''}`
+                            : 'Ще не обрано';
+                    });
+
+                    accessorySelectButtons.forEach((button) => {
+                        const type = button.dataset.accessoryType ?? '';
+                        const slug = button.dataset.accessorySelect ?? '';
+                        const selection = type ? accessorySelections[type] ?? null : null;
+                        const isSelected = Boolean(selection && selection.slug === slug);
+
+                        button.textContent = isSelected ? 'Обрано' : 'Обрати';
+                    });
+                };
+
+                const getAccessorySelectionState = () => {
+                    const selection = {};
+                    const summary = [];
+                    const addons = Object.entries(accessorySelections).reduce((sum, [type, entry]) => {
+                        if (!entry || typeof entry !== 'object') {
+                            return sum;
+                        }
+
+                        const slug = `${entry.slug ?? ''}`.trim();
+                        const name = `${entry.name ?? ''}`.trim();
+                        const price = Math.max(0, Math.round(Number(entry.price) || 0));
+
+                        if (!slug || !name) {
+                            return sum;
+                        }
+
+                        selection[`accessory_${type}`] = slug;
+                        summary.push(`Девайс (${type}): ${name}${price > 0 ? ` + ${formatPrice(price)}` : ''}`);
+
+                        return sum + price;
+                    }, 0);
+
+                    return { selection, summary, addons };
+                };
+
+                const toggleAccessorySelection = (payload) => {
+                    if (!payload.type || !payload.slug || !payload.name) {
+                        return;
+                    }
+
+                    const currentSelection = accessorySelections[payload.type] ?? null;
+
+                    if (currentSelection && currentSelection.slug === payload.slug) {
+                        delete accessorySelections[payload.type];
+                    } else {
+                        accessorySelections[payload.type] = {
+                            slug: payload.slug,
+                            name: payload.name,
+                            price: Math.max(0, Math.round(Number(payload.price) || 0)),
+                        };
+                    }
+
+                    saveAccessorySelections();
+                    renderAccessorySelections();
+                    syncAccessorySelectionLabels();
+                    syncProductPricing();
+                    closeAccessoryCategoryModals();
                 };
 
                 const syncHeaderState = () => {
@@ -1837,8 +2280,10 @@
                 const syncBodyLock = () => {
                     const optionImageOpen = optionImageModal && !optionImageModal.hidden && optionImageModal.classList.contains('is-open');
                     const buildShareOpen = buildShareModal && !buildShareModal.hidden;
+                    const accessoryCategoryOpen = accessoryCategoryModals.some((modal) => !modal.hidden);
+                    const accessorySheetOpen = accessorySheets.some((sheet) => !sheet.hidden);
 
-                    document.body.style.overflow = optionImageOpen || buildShareOpen ? 'hidden' : '';
+                    document.body.style.overflow = optionImageOpen || buildShareOpen || accessoryCategoryOpen || accessorySheetOpen ? 'hidden' : '';
                 };
 
                 const normalizeOptionImageGallery = (rawGallery, fallbackSrc = '') => {
@@ -1966,6 +2411,48 @@
                     }
 
                     buildShareModal.hidden = true;
+                    syncBodyLock();
+                };
+
+                const openAccessoryCategoryModal = (type) => {
+                    const modal = document.querySelector(`[data-accessory-category-modal="${type}"]`);
+
+                    if (!modal) {
+                        return;
+                    }
+
+                    activeAccessoryCategory = type;
+                    accessoryCategoryModals.forEach((item) => {
+                        item.hidden = item !== modal;
+                    });
+                    syncBodyLock();
+                };
+
+                const closeAccessoryCategoryModals = () => {
+                    accessoryCategoryModals.forEach((modal) => {
+                        modal.hidden = true;
+                    });
+                    activeAccessoryCategory = '';
+                    syncBodyLock();
+                };
+
+                const openAccessorySheet = (key) => {
+                    const sheet = document.querySelector(`[data-accessory-sheet="${key}"]`);
+
+                    if (!sheet) {
+                        return;
+                    }
+
+                    accessorySheets.forEach((item) => {
+                        item.hidden = item !== sheet;
+                    });
+                    syncBodyLock();
+                };
+
+                const closeAccessorySheets = () => {
+                    accessorySheets.forEach((sheet) => {
+                        sheet.hidden = true;
+                    });
                     syncBodyLock();
                 };
 
@@ -2204,7 +2691,8 @@
 
                     const basePrice = Number(pricingRoot.dataset.basePrice ?? 0);
                     const evaluation = getConfiguratorEvaluation();
-                    const addons = evaluation.addons;
+                    const accessoryState = getAccessorySelectionState();
+                    const addons = evaluation.addons + accessoryState.addons;
                     const total = basePrice + addons;
 
                     pricingRoot.dataset.totalPrice = `${total}`;
@@ -2230,7 +2718,19 @@
                             : (evaluation.messages?.[0] ?? 'Перевір сумісність обраних комплектуючих.');
                     }
 
-                    return { ...evaluation, total };
+                    return {
+                        ...evaluation,
+                        addons,
+                        total,
+                        selection: {
+                            ...(evaluation.selection ?? {}),
+                            ...(accessoryState.selection ?? {}),
+                        },
+                        summary: [
+                            ...(evaluation.summary ?? []),
+                            ...(accessoryState.summary ?? []),
+                        ],
+                    };
                 };
 
                 const normalizeQuantity = () => {
@@ -2455,6 +2955,57 @@
                     }, 1600);
                 });
 
+                productTradeInButton?.addEventListener('click', async (event) => {
+                    const baseHref = productTradeInButton.dataset.baseHref ?? productTradeInButton.href;
+                    const shareEndpoint = productTradeInButton.dataset.shareEndpoint ?? '';
+
+                    if (!shareEndpoint) {
+                        return;
+                    }
+
+                    event.preventDefault();
+
+                    const defaultLabel = productTradeInButton.dataset.defaultLabel ?? productTradeInButton.textContent?.trim() ?? 'Запропонувати свій ПК';
+                    productTradeInButton.dataset.defaultLabel = defaultLabel;
+                    productTradeInButton.style.pointerEvents = 'none';
+                    productTradeInButton.textContent = 'Готуємо форму...';
+
+                    try {
+                        const pricingState = syncProductPricing();
+                        const response = await fetch(shareEndpoint, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                            body: JSON.stringify({
+                                selection: pricingState.selection ?? getSelectedConfiguratorState(),
+                            }),
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Unable to prepare shared build link.');
+                        }
+
+                        const payload = await response.json();
+                        const nextUrl = new URL(baseHref, window.location.origin);
+
+                        if (payload?.token) {
+                            nextUrl.searchParams.set('shared_build', payload.token);
+                        }
+
+                        window.location.href = nextUrl.toString();
+                        return;
+                    } catch (error) {
+                        window.location.href = baseHref;
+                        return;
+                    } finally {
+                        productTradeInButton.style.pointerEvents = '';
+                        productTradeInButton.textContent = productTradeInButton.dataset.defaultLabel ?? defaultLabel;
+                    }
+                });
+
                 buildShareButton?.addEventListener('click', async () => {
                     const shareEndpoint = buildShareButton.dataset.shareEndpoint ?? '';
 
@@ -2524,6 +3075,37 @@
                     button.addEventListener('click', closeBuildShareModal);
                 });
 
+                accessoryCategoryButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        openAccessoryCategoryModal(button.dataset.accessoryCategoryOpen ?? '');
+                    });
+                });
+
+                accessorySheetButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        openAccessorySheet(button.dataset.accessorySheetOpen ?? '');
+                    });
+                });
+
+                accessorySelectButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        toggleAccessorySelection({
+                            type: button.dataset.accessoryType ?? '',
+                            slug: button.dataset.accessorySelect ?? '',
+                            name: button.dataset.accessoryName ?? '',
+                            price: button.dataset.accessoryPrice ?? 0,
+                        });
+                    });
+                });
+
+                accessoryModalCloseButtons.forEach((button) => {
+                    button.addEventListener('click', closeAccessoryCategoryModals);
+                });
+
+                accessorySheetCloseButtons.forEach((button) => {
+                    button.addEventListener('click', closeAccessorySheets);
+                });
+
                 document.addEventListener('click', (event) => {
                     if (galleryInfo && !event.target.closest('[data-gallery-info]')) {
                         closeGalleryInfo();
@@ -2531,6 +3113,14 @@
 
                     if (!event.target.closest('[data-dropdown-trigger]') && !event.target.closest('[data-dropdown-panel]')) {
                         closeAllDropdowns();
+                    }
+
+                    if (event.target.matches('[data-accessory-category-modal]')) {
+                        closeAccessoryCategoryModals();
+                    }
+
+                    if (event.target.matches('[data-accessory-sheet]')) {
+                        closeAccessorySheets();
                     }
                 });
 
@@ -2552,6 +3142,8 @@
                     if (event.key === 'Escape') {
                         closeGalleryInfo();
                         closeOptionImageModal();
+                        closeAccessorySheets();
+                        closeAccessoryCategoryModals();
                         closeBuildShareModal();
                         closeAllDropdowns();
                         closeMobileMenu();
@@ -2570,6 +3162,9 @@
 
                 syncHeaderState();
                 positionConsultationPanel();
+                accessorySelections = loadAccessorySelections();
+                renderAccessorySelections();
+                syncAccessorySelectionLabels();
                 syncProductPricing();
                 normalizeQuantity();
                 setActiveSlide(0);

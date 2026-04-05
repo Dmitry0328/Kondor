@@ -1742,12 +1742,14 @@
                 }
 
                 .builds__sort {
-                    justify-content: flex-end;
+                    width: 100%;
+                    justify-content: flex-start;
                     gap: 10px;
                 }
 
                 .builds__sort-control {
-                    width: min(100%, 228px);
+                    width: 100%;
+                    max-width: 100%;
                 }
 
                 .build-card__content {
@@ -1839,8 +1841,8 @@
                 }
 
                 .build-card__gallery-button {
-                    width: 22px;
-                    height: 22px;
+                    width: 34px;
+                    height: 34px;
                 }
 
                 .build-card__body {

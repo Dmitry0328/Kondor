@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Filament\Resources\Builds\BuildResource;
+use App\Models\Accessory;
 use App\Models\SharedBuildLink;
+use App\Support\AccessoryCatalog;
 use App\Support\BuildConfigurator;
 use App\Support\BuildPreview;
 use Illuminate\Http\RedirectResponse;
@@ -100,12 +102,14 @@ class ProductController extends Controller
                 'additional_price' => (int) ($resolved['additional_price'] ?? 0),
                 'total_price' => (int) ($resolved['total_price'] ?? ((int) ($build['price_raw'] ?? 0))),
                 'compatibility' => $resolved['compatibility'] ?? ['is_valid' => true, 'messages' => []],
+                'accessories' => $resolved['accessories'] ?? [],
                 'build_url' => route('product.show', ['slug' => $build['slug']]),
             ],
             'expires_at' => now()->addDays(30),
         ]);
 
         return response()->json([
+            'token' => $sharedBuildLink->token,
             'url' => $sharedBuildLink->shared_url,
             'expires_at' => $sharedBuildLink->expires_at?->toIso8601String(),
         ]);
@@ -119,15 +123,18 @@ class ProductController extends Controller
     ): View
     {
         $sharedBuildSelection = [];
+        $sharedBuildPayload = [];
 
         if ($sharedBuildLink) {
-            $payload = is_array($sharedBuildLink->payload) ? $sharedBuildLink->payload : [];
-            $sharedBuildSelection = is_array($payload['selection'] ?? null) ? $payload['selection'] : [];
+            $sharedBuildPayload = is_array($sharedBuildLink->payload) ? $sharedBuildLink->payload : [];
+            $sharedBuildSelection = is_array($sharedBuildPayload['selection'] ?? null) ? $sharedBuildPayload['selection'] : [];
         }
 
         return view('product', [
             'build' => $build,
+            'accessoryGroups' => AccessoryCatalog::storefrontGroups(),
             'sharedBuildLink' => $sharedBuildLink,
+            'sharedBuildPayload' => $sharedBuildPayload,
             'sharedBuildSelection' => $sharedBuildSelection,
             'isPreview' => $isPreview,
             'previewToken' => $previewToken,
@@ -136,13 +143,12 @@ class ProductController extends Controller
 
     protected function resolveSelection(array $build, array $selection): array
     {
+        [$configuratorSelection, $accessorySelection] = $this->splitSelection($selection);
         $productConfigurator = BuildConfigurator::storefrontPayload($build);
 
-        if ((bool) ($productConfigurator['enabled'] ?? false)) {
-            return BuildConfigurator::resolvePayloadSelection($productConfigurator, $selection);
-        }
-
-        return [
+        $resolved = (bool) ($productConfigurator['enabled'] ?? false)
+            ? BuildConfigurator::resolvePayloadSelection($productConfigurator, $configuratorSelection)
+            : [
             'enabled' => false,
             'selection' => [],
             'summary' => [],
@@ -152,6 +158,119 @@ class ProductController extends Controller
                 'is_valid' => true,
                 'messages' => [],
             ],
+        ];
+
+        $resolvedAccessories = $this->resolveAccessorySelection($accessorySelection);
+        $additionalPrice = (int) ($resolved['additional_price'] ?? 0) + (int) ($resolvedAccessories['additional_price'] ?? 0);
+
+        return [
+            ...$resolved,
+            'selection' => [
+                ...(is_array($resolved['selection'] ?? null) ? $resolved['selection'] : []),
+                ...(is_array($resolvedAccessories['selection'] ?? null) ? $resolvedAccessories['selection'] : []),
+            ],
+            'summary' => [
+                ...(is_array($resolved['summary'] ?? null) ? $resolved['summary'] : []),
+                ...(is_array($resolvedAccessories['summary'] ?? null) ? $resolvedAccessories['summary'] : []),
+            ],
+            'additional_price' => $additionalPrice,
+            'total_price' => (int) ($build['price_raw'] ?? 0) + $additionalPrice,
+            'accessories' => $resolvedAccessories['items'] ?? [],
+        ];
+    }
+
+    protected function splitSelection(array $selection): array
+    {
+        $configuratorSelection = [];
+        $accessorySelection = [];
+
+        foreach ($selection as $key => $value) {
+            $key = trim((string) $key);
+            $value = trim((string) $value);
+
+            if ($key === '' || $value === '') {
+                continue;
+            }
+
+            if (Str::startsWith($key, 'accessory_')) {
+                $accessorySelection[$key] = $value;
+
+                continue;
+            }
+
+            $configuratorSelection[$key] = $value;
+        }
+
+        return [$configuratorSelection, $accessorySelection];
+    }
+
+    protected function resolveAccessorySelection(array $selection): array
+    {
+        $definitions = AccessoryCatalog::typeDefinitions();
+        $requestedTypes = [];
+
+        foreach ($selection as $key => $slug) {
+            $type = Str::after((string) $key, 'accessory_');
+
+            if ($type === '' || ! array_key_exists($type, $definitions)) {
+                continue;
+            }
+
+            $requestedTypes[$type] = trim((string) $slug);
+        }
+
+        if ($requestedTypes === []) {
+            return [
+                'selection' => [],
+                'summary' => [],
+                'additional_price' => 0,
+                'items' => [],
+            ];
+        }
+
+        $accessories = Accessory::query()
+            ->active()
+            ->whereIn('slug', array_values($requestedTypes))
+            ->get()
+            ->keyBy('slug');
+
+        $normalizedSelection = [];
+        $summary = [];
+        $items = [];
+        $additionalPrice = 0;
+
+        foreach (array_keys($definitions) as $type) {
+            $slug = $requestedTypes[$type] ?? '';
+
+            if ($slug === '') {
+                continue;
+            }
+
+            $accessory = $accessories->get($slug);
+
+            if (! $accessory instanceof Accessory) {
+                continue;
+            }
+
+            $price = max(0, (int) ($accessory->price ?? 0));
+            $label = AccessoryCatalog::typeLabel($type);
+            $normalizedSelection['accessory_' . $type] = (string) $accessory->slug;
+            $summary[] = $label . ': ' . (string) $accessory->name . ($price > 0 ? ' +' . number_format($price, 0, '.', ' ') . ' грн' : '');
+            $items[] = [
+                'type' => $type,
+                'label' => $label,
+                'slug' => (string) $accessory->slug,
+                'name' => (string) $accessory->name,
+                'price' => $price,
+            ];
+            $additionalPrice += $price;
+        }
+
+        return [
+            'selection' => $normalizedSelection,
+            'summary' => $summary,
+            'additional_price' => $additionalPrice,
+            'items' => $items,
         ];
     }
 }

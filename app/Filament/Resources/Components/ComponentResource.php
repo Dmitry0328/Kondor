@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Components;
 use App\Filament\Clusters\ConfiguratorCluster;
 use App\Filament\Resources\Components\Pages\ManageComponents;
 use App\Models\Component;
+use App\Support\AdminFormPreview;
 use App\Support\BuildConfigurator;
 use App\Support\ComponentImages;
 use BackedEnum;
@@ -15,11 +16,14 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -28,6 +32,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class ComponentResource extends Resource
 {
@@ -90,9 +95,34 @@ class ComponentResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            static::basicFormSection(),
-            static::categoryDetailsSection(),
-            static::compatibilitySection(),
+            Grid::make([
+                'default' => 1,
+                'xl' => 12,
+            ])->schema([
+                Group::make([
+                    static::basicFormSection(),
+                    static::categoryDetailsSection(),
+                    static::compatibilitySection(),
+                ])->columnSpan([
+                    'default' => 1,
+                    'xl' => 12,
+                ]),
+                Section::make('Живий превʼю')
+                    ->description('Показує, як комплектуюча виглядатиме в картці конфігуратора ще до збереження.')
+                    ->schema([
+                        Placeholder::make('live_preview')
+                            ->hiddenLabel()
+                            ->content(fn (callable $get, ?Component $record): HtmlString => new HtmlString(
+                                view('filament.previews.component-live-preview', [
+                                    'preview' => static::livePreviewData($get, $record),
+                                ])->render()
+                            )),
+                    ])
+                    ->columnSpan([
+                        'default' => 1,
+                        'xl' => 12,
+                    ]),
+            ]),
         ]);
     }
 
@@ -113,6 +143,7 @@ class ComponentResource extends Resource
                 TextInput::make('name')
                     ->label('Назва')
                     ->required()
+                    ->live(debounce: 300)
                     ->maxLength(255),
                 TextInput::make('slug')
                     ->label('Slug')
@@ -128,6 +159,7 @@ class ComponentResource extends Resource
                 Textarea::make('summary')
                     ->label('Короткий опис')
                     ->rows(3)
+                    ->live(debounce: 300)
                     ->columnSpanFull(),
                 FileUpload::make('gallery_paths')
                     ->label('Галерея фото')
@@ -138,6 +170,7 @@ class ComponentResource extends Resource
                     ->previewable()
                     ->appendFiles()
                     ->fetchFileInformation(true)
+                    ->live()
                     ->disk('public')
                     ->directory('components')
                     ->visibility('public')
@@ -154,6 +187,7 @@ class ComponentResource extends Resource
                     ->default(fn (callable $get, ?Component $record): string | int | null => static::defaultPositionAfterId((string) ($get('type') ?? ''), $record)),
                 Toggle::make('is_active')
                     ->label('Активний')
+                    ->live()
                     ->default(true),
             ])
             ->columns(2);
@@ -300,14 +334,17 @@ class ComponentResource extends Resource
                     ->label('Фото')
                     ->view('filament.tables.columns.admin-image-preview')
                     ->viewData(function (Component $record): array {
+                        $imageUrls = ComponentImages::urlsForComponent($record);
                         $imageUrl = ComponentImages::primaryUploadedUrlForComponent($record);
 
                         return [
                             'imageUrl' => $imageUrl,
+                            'imageUrls' => $imageUrl !== null ? $imageUrls : [],
                             'placeholderUrl' => ComponentImages::placeholderUrl((string) $record->type, (string) $record->name),
                             'hasImage' => $imageUrl !== null,
                             'caption' => (string) $record->name,
                             'alt' => (string) $record->name,
+                            'clickToOpen' => $imageUrl !== null,
                         ];
                     }),
                 TextColumn::make('type')
@@ -364,6 +401,79 @@ class ComponentResource extends Resource
         return [
             'index' => ManageComponents::route('/'),
         ];
+    }
+
+    protected static function livePreviewData(callable $get, ?Component $record): array
+    {
+        $type = (string) ($get('type') ?: $record?->type ?: 'other');
+        $name = AdminFormPreview::cleanText($get('name') ?: $record?->name, 'Назва комплектуючої');
+        $slug = AdminFormPreview::cleanText($get('slug') ?: $record?->slug);
+        $imageUrls = AdminFormPreview::imageUrls($get('gallery_paths'));
+
+        if ($imageUrls === [] && $record instanceof Component) {
+            $imageUrls = $record->imageUrls();
+        }
+
+        return [
+            'type' => $type,
+            'type_label' => BuildConfigurator::componentTypeLabel($type),
+            'name' => $name,
+            'slug' => $slug,
+            'vendor' => AdminFormPreview::cleanText($get('vendor') ?: $record?->vendor, 'Kondor'),
+            'sku' => AdminFormPreview::cleanText($get('sku') ?: $record?->sku),
+            'summary' => trim((string) ($get('summary') ?: $record?->summary ?: 'Короткий опис комплектуючої зʼявиться тут одразу під час редагування.')),
+            'image_urls' => $imageUrls !== [] ? $imageUrls : [ComponentImages::placeholderUrl($type, $name)],
+            'is_active' => (bool) (($get('is_active') ?? $record?->is_active) ?? true),
+            'facts' => static::previewFacts($get, $record),
+        ];
+    }
+
+    protected static function previewFacts(callable $get, ?Component $record): array
+    {
+        $entries = [
+            ['label' => 'Сокет', 'value' => static::previewChoiceLabel($get('socket') ?? $record?->socket)],
+            ['label' => 'Форм-фактор', 'value' => static::previewChoiceLabel($get('form_factor') ?? $record?->form_factor)],
+            ['label' => 'Тип памʼяті', 'value' => static::previewChoiceLabel($get('ram_type') ?? $record?->ram_type)],
+            ['label' => 'Обсяг', 'value' => static::previewIntLabel($get('memory_capacity_gb') ?? $record?->memory_capacity_gb, 'GB')],
+            ['label' => 'Частота', 'value' => static::previewIntLabel($get('memory_speed_mhz') ?? $record?->memory_speed_mhz, 'MHz')],
+            ['label' => 'Модулі', 'value' => static::previewIntLabel($get('memory_modules') ?? $record?->memory_modules, 'шт')],
+            ['label' => 'GPU довжина', 'value' => static::previewIntLabel($get('gpu_length_mm') ?? $record?->gpu_length_mm, 'мм')],
+            ['label' => 'Макс. GPU', 'value' => static::previewIntLabel($get('max_gpu_length_mm') ?? $record?->max_gpu_length_mm, 'мм')],
+            ['label' => 'Висота кулера', 'value' => static::previewIntLabel($get('max_cooler_height_mm') ?? $record?->max_cooler_height_mm, 'мм')],
+            ['label' => 'Радіатор', 'value' => static::previewIntLabel($get('radiator_size_mm') ?? $record?->radiator_size_mm, 'мм')],
+            ['label' => 'TDP CPU', 'value' => static::previewIntLabel($get('cpu_tdp_w') ?? $record?->cpu_tdp_w, 'W')],
+            ['label' => 'Блок живлення', 'value' => static::previewIntLabel($get('psu_wattage') ?? $record?->psu_wattage, 'W')],
+            ['label' => 'PCIe PSU', 'value' => static::previewIntLabel($get('pcie_power_connectors') ?? $record?->pcie_power_connectors, 'шт')],
+            ['label' => 'PCIe GPU', 'value' => static::previewIntLabel($get('gpu_power_connectors') ?? $record?->gpu_power_connectors, 'шт')],
+            ['label' => 'Інтерфейс', 'value' => AdminFormPreview::cleanText($get('storage_interface') ?? $record?->storage_interface)],
+            ['label' => 'Підтримка сокетів', 'value' => static::previewChoiceLabel($get('supported_sockets') ?? $record?->supported_sockets)],
+            ['label' => 'Плати', 'value' => static::previewChoiceLabel($get('supported_mb_form_factors') ?? $record?->supported_mb_form_factors)],
+            ['label' => 'Радіатори', 'value' => static::previewChoiceLabel($get('supported_radiator_sizes') ?? $record?->supported_radiator_sizes)],
+        ];
+
+        return collect($entries)
+            ->filter(fn (array $entry): bool => $entry['value'] !== '')
+            ->take(8)
+            ->values()
+            ->all();
+    }
+
+    protected static function previewChoiceLabel(mixed $value): string
+    {
+        if (is_array($value)) {
+            $value = array_values(array_filter(array_map(static fn ($item): string => trim((string) $item), $value)));
+
+            return implode(', ', $value);
+        }
+
+        return trim((string) $value);
+    }
+
+    protected static function previewIntLabel(mixed $value, string $suffix): string
+    {
+        $value = (int) round((float) $value);
+
+        return $value > 0 ? $value . ' ' . $suffix : '';
     }
 
     public static function makeCreateAction(): CreateAction

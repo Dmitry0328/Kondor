@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->sidebarFullyCollapsibleOnDesktop()
             ->navigationItems([
                 NavigationItem::make('На сайт')
                     ->group('Storefront')
@@ -197,6 +198,56 @@ HTML,
         font-weight: 800;
         box-shadow: 0 6px 12px rgba(24, 32, 42, .05);
     }
+    @media (min-width: 1024px) {
+        body.admin-build-preview-layout .fi-main-ctn {
+            padding-left: 27rem;
+            transition: padding-left .22s ease;
+        }
+        body.admin-build-preview-layout.admin-build-sidebar-open .fi-main-ctn {
+            padding-left: 0;
+        }
+        body.admin-build-preview-layout .admin-build-live-preview-shell {
+            position: fixed;
+            top: 5.75rem;
+            left: 1rem;
+            z-index: 30;
+            width: min(25rem, calc(100vw - 2rem));
+            max-height: calc(100vh - 7rem);
+            overflow: auto;
+            transition: opacity .18s ease, transform .18s ease;
+        }
+        body.admin-build-preview-layout.admin-build-sidebar-open .admin-build-live-preview-shell {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-10px);
+        }
+        body.admin-build-preview-layout .admin-build-live-preview-shell > .fi-section {
+            height: 100%;
+        }
+        body.admin-build-preview-layout .admin-build-form-stack,
+        body.admin-build-preview-layout .fi-main {
+            max-width: none;
+        }
+        body.admin-build-preview-layout .fi-main-sidebar {
+            transform: translateX(-105%);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.admin-build-preview-layout.admin-build-sidebar-open .fi-main-sidebar {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 80;
+        }
+        body.admin-build-preview-layout .fi-sidebar-close-overlay {
+            z-index: 70;
+            background: rgba(15, 23, 42, .36);
+        }
+        body.admin-build-preview-layout .fi-topbar-collapse-sidebar-btn-ctn {
+            display: none !important;
+        }
+    }
     @media (max-width: 640px) {
         .admin-site-toast-stack { left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom, 0px) + 8px); width: auto; max-height: calc(100vh - 20px); }
         .admin-site-toast { gap: 9px; padding: 13px 14px; border-radius: 16px; }
@@ -297,10 +348,53 @@ HTML,
         }
     };
 
+    let buildPreviewSidebarAutoClosed = false;
+
+    const getSidebarStore = () => {
+        try {
+            return window.Alpine?.store?.('sidebar') ?? null;
+        } catch (error) {
+            return null;
+        }
+    };
+
+    const syncBuildPreviewLayout = () => {
+        const isBuildEditPage = Boolean(document.querySelector('.fi-page.fi-resource-builds.fi-resource-edit-record-page, .fi-page.fi-resource-builds.fi-resource-create-record-page'));
+        document.body.classList.toggle('admin-build-preview-layout', isBuildEditPage);
+
+        if (! isBuildEditPage) {
+            document.body.classList.remove('admin-build-sidebar-open');
+            buildPreviewSidebarAutoClosed = false;
+
+            return;
+        }
+
+        const sidebarStore = getSidebarStore();
+        const isDesktop = window.innerWidth >= 1024;
+
+        if (sidebarStore && isDesktop && ! buildPreviewSidebarAutoClosed) {
+            sidebarStore.close();
+            buildPreviewSidebarAutoClosed = true;
+        }
+
+        if (! isDesktop) {
+            buildPreviewSidebarAutoClosed = false;
+        }
+
+        document.body.classList.toggle('admin-build-sidebar-open', Boolean(sidebarStore?.isOpen));
+    };
+
     window.addEventListener('DOMContentLoaded', applyBuildFormActionsPosition);
     window.addEventListener('load', applyBuildFormActionsPosition);
     window.addEventListener('resize', applyBuildFormActionsPosition);
-    setInterval(applyBuildFormActionsPosition, 900);
+    window.addEventListener('DOMContentLoaded', syncBuildPreviewLayout);
+    window.addEventListener('load', syncBuildPreviewLayout);
+    window.addEventListener('resize', syncBuildPreviewLayout);
+    document.addEventListener('livewire:navigated', syncBuildPreviewLayout);
+    setInterval(() => {
+        applyBuildFormActionsPosition();
+        syncBuildPreviewLayout();
+    }, 900);
 </script>
 HTML;
     }
