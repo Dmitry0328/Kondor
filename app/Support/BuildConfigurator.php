@@ -460,6 +460,8 @@ class BuildConfigurator
                 'compatibility' => [
                     'is_valid' => true,
                     'messages' => [],
+                    'invalid_slots' => [],
+                    'slot_messages' => [],
                     'component_ids' => is_array($client['baseComponents'] ?? null) ? $client['baseComponents'] : [],
                 ],
             ];
@@ -535,6 +537,30 @@ class BuildConfigurator
     {
         $componentIds = $baseComponents;
         $messages = [];
+        $slotMessages = [];
+        $invalidSlots = [];
+
+        $addIssue = static function (string $message, array $slots = []) use (&$messages, &$slotMessages, &$invalidSlots): void {
+            $message = trim($message);
+
+            if ($message === '') {
+                return;
+            }
+
+            $messages[] = $message;
+
+            foreach ($slots as $slot) {
+                $slot = trim((string) $slot);
+
+                if ($slot === '') {
+                    continue;
+                }
+
+                $invalidSlots[$slot] = true;
+                $slotMessages[$slot] ??= [];
+                $slotMessages[$slot][] = $message;
+            }
+        };
 
         foreach ($groups as $group) {
             $selectedKey = (string) ($selection[$group['key']] ?? '');
@@ -567,7 +593,7 @@ class BuildConfigurator
             $boardSocket = trim((string) ($motherboard['socket'] ?? ''));
 
             if ($cpuSocket !== '' && $boardSocket !== '' && $cpuSocket !== $boardSocket) {
-                $messages[] = 'Процесор не сумісний із сокетом материнської плати.';
+                $addIssue('Процесор не сумісний із сокетом материнської плати.', ['cpu', 'motherboard']);
             }
         }
 
@@ -576,16 +602,19 @@ class BuildConfigurator
             $boardRamType = trim((string) ($motherboard['ram_type'] ?? ''));
 
             if ($ramType !== '' && $boardRamType !== '' && $ramType !== $boardRamType) {
-                $messages[] = "Оперативна пам'ять не підходить до материнської плати.";
+                $addIssue("Оперативна пам'ять не підходить до материнської плати.", ['ram', 'motherboard']);
             }
         }
 
         if ($motherboard && $case) {
-            $formFactor = trim((string) ($motherboard['form_factor'] ?? ''));
-            $supported = array_filter((array) ($case['supported_mb_form_factors'] ?? []));
+            $formFactor = static::normalizeFormFactor((string) ($motherboard['form_factor'] ?? ''));
+            $supported = static::normalizeFormFactorList((array) ($case['supported_mb_form_factors'] ?? []));
 
             if ($formFactor !== '' && $supported !== [] && ! in_array($formFactor, $supported, true)) {
-                $messages[] = 'Обрана материнська плата не поміщається в цей корпус.';
+                $addIssue(
+                    'Обрана материнська плата ' . $formFactor . ' не поміщається в корпус, який підтримує ' . implode(', ', $supported) . '.',
+                    ['motherboard', 'case']
+                );
             }
         }
 
@@ -594,7 +623,10 @@ class BuildConfigurator
             $caseLimit = (int) ($case['max_gpu_length_mm'] ?? 0);
 
             if ($gpuLength > 0 && $caseLimit > 0 && $gpuLength > $caseLimit) {
-                $messages[] = 'Відеокарта завелика для цього корпусу.';
+                $addIssue(
+                    'Відеокарта довжиною ' . $gpuLength . ' мм не поміщається в корпус з лімітом ' . $caseLimit . ' мм.',
+                    ['gpu', 'case']
+                );
             }
         }
 
@@ -603,7 +635,7 @@ class BuildConfigurator
             $supportedSockets = array_filter((array) ($cooler['supported_sockets'] ?? []));
 
             if ($cpuSocket !== '' && $supportedSockets !== [] && ! in_array($cpuSocket, $supportedSockets, true)) {
-                $messages[] = 'Охолодження CPU не підтримує сокет обраного процесора.';
+                $addIssue('Охолодження CPU не підтримує сокет обраного процесора.', ['cooler', 'cpu']);
             }
         }
 
@@ -618,11 +650,14 @@ class BuildConfigurator
             $caseCoolerLimit = (int) ($case['max_cooler_height_mm'] ?? 0);
 
             if ($radiatorSize > 0 && $supportedRadiators !== [] && ! in_array($radiatorSize, $supportedRadiators, true)) {
-                $messages[] = 'Корпус не підтримує цей радіатор СВО.';
+                $addIssue('Корпус не підтримує цей радіатор СВО.', ['cooler', 'case']);
             }
 
             if ($radiatorSize === 0 && $coolerHeight > 0 && $caseCoolerLimit > 0 && $coolerHeight > $caseCoolerLimit) {
-                $messages[] = 'Повітряний кулер не поміщається в корпус по висоті.';
+                $addIssue(
+                    'Повітряний кулер висотою ' . $coolerHeight . ' мм не поміщається в корпус з лімітом ' . $caseCoolerLimit . ' мм.',
+                    ['cooler', 'case']
+                );
             }
         }
 
@@ -631,7 +666,7 @@ class BuildConfigurator
             $availableConnectors = (int) ($psu['pcie_power_connectors'] ?? 0);
 
             if ($requiredConnectors > 0 && $availableConnectors > 0 && $requiredConnectors > $availableConnectors) {
-                $messages[] = 'Блок живлення не має достатньо PCIe-конекторів для цієї відеокарти.';
+                $addIssue('Блок живлення не має достатньо PCIe-конекторів для цієї відеокарти.', ['gpu', 'psu']);
             }
         }
 
@@ -640,15 +675,24 @@ class BuildConfigurator
             $psuWattage = (int) ($psu['psu_wattage'] ?? 0);
 
             if ($requiredWattage > 0 && $psuWattage > 0 && $psuWattage < $requiredWattage) {
-                $messages[] = 'Потужності блока живлення замало для поточної конфігурації.';
+                $addIssue(
+                    'Потужності блока живлення замало: потрібно приблизно ' . $requiredWattage . ' W, а обрано ' . $psuWattage . ' W.',
+                    ['cpu', 'gpu', 'psu']
+                );
             }
         }
 
         $messages = array_values(array_unique(array_filter($messages)));
+        $slotMessages = collect($slotMessages)
+            ->map(fn (array $issues): array => array_values(array_unique(array_filter($issues))))
+            ->filter(fn (array $issues): bool => $issues !== [])
+            ->all();
 
         return [
             'is_valid' => $messages === [],
             'messages' => $messages,
+            'invalid_slots' => array_values(array_keys($invalidSlots)),
+            'slot_messages' => $slotMessages,
             'component_ids' => $componentIds,
         ];
     }
@@ -695,10 +739,11 @@ class BuildConfigurator
             'image_urls' => ComponentImages::urlsForComponent($component),
             'socket' => $component->socket,
             'ram_type' => $component->ram_type,
-            'form_factor' => $component->form_factor,
-            'supported_mb_form_factors' => $component->supported_mb_form_factors ?: [],
+            'form_factor' => static::normalizeFormFactor($component->form_factor),
+            'supported_mb_form_factors' => static::normalizeFormFactorList($component->supported_mb_form_factors ?: []),
             'supported_sockets' => $component->supported_sockets ?: [],
             'supported_radiator_sizes' => $component->supported_radiator_sizes ?: [],
+            'price' => (int) ($component->price ?? 0),
             'max_gpu_length_mm' => (int) ($component->max_gpu_length_mm ?? 0),
             'max_cooler_height_mm' => (int) ($component->max_cooler_height_mm ?? 0),
             'gpu_length_mm' => (int) ($component->gpu_length_mm ?? 0),
@@ -718,6 +763,25 @@ class BuildConfigurator
     protected static function slotLabel(string $slot): string
     {
         return static::slotOptions()[$slot] ?? 'Опція';
+    }
+
+    protected static function normalizeFormFactor(mixed $value): string
+    {
+        $value = strtoupper(trim((string) $value));
+
+        return match ($value) {
+            'ITX', 'MINI ITX', 'MINI-ITX' => 'mini-ITX',
+            'MICRO-ATX', 'MICRO ATX', 'MATX' => 'mATX',
+            default => $value !== '' ? str_replace(['MINI-'], ['mini-'], $value) : '',
+        };
+    }
+
+    protected static function normalizeFormFactorList(array $values): array
+    {
+        return array_values(array_unique(array_filter(array_map(
+            static fn ($value): string => static::normalizeFormFactor($value),
+            $values,
+        ))));
     }
 
     protected static function nullableText(mixed $value): ?string

@@ -24,6 +24,9 @@
             <div style="display:grid;gap:6px;">
                 <span style="display:inline-flex;width:max-content;align-items:center;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;">{{ $preview['type_label'] ?? 'Комплектуюча' }}</span>
                 <strong style="font-size:18px;line-height:1.2;color:#111827;">{{ $preview['name'] ?? 'Назва комплектуючої' }}</strong>
+                @if (!empty($preview['price']))
+                    <strong style="font-size:22px;line-height:1;color:#111827;">{{ $preview['price'] }}</strong>
+                @endif
                 <div style="display:flex;flex-wrap:wrap;gap:8px;color:#64748b;font-size:12px;font-weight:700;">
                     <span>{{ $preview['vendor'] ?? 'Kondor' }}</span>
                     @if (!empty($preview['sku']))

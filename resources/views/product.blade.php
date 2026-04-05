@@ -187,16 +187,25 @@
             .product-spec__label { color:#5f6b79; font-size:14px; font-weight:600; line-height:1.35; }
             .product-options__intro { margin:6px 0 2px; color:#5c6675; font-size:16px; font-weight:700; line-height:1.45; }
             .product-options { display:grid; gap:14px; }
-            .product-option { border:1px solid #dde4ee; border-radius:22px; background:#fff; box-shadow:0 10px 24px rgba(24,32,42,.05); overflow:hidden; }
+            .product-option { border:1px solid #dde4ee; border-radius:22px; background:#fff; box-shadow:0 10px 24px rgba(24,32,42,.05); overflow:hidden; transition:border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
+            .product-option.is-invalid { border-color:rgba(212,56,56,.44); background:linear-gradient(180deg,#fffdfd,#fff4f4); box-shadow:0 16px 28px rgba(181,53,53,.1); }
             .product-option summary { list-style:none; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:19px 22px; cursor:pointer; font-size:18px; font-weight:800; color:#18202a; }
+            .product-option.is-invalid summary { color:#8f2222; }
             .product-option summary::-webkit-details-marker { display:none; }
             .product-option summary::after { content:''; width:11px; height:11px; margin-right:4px; border-right:2px solid #273140; border-bottom:2px solid #273140; transform:rotate(45deg); transition:transform .2s ease; }
+            .product-option.is-invalid summary::after { border-color:#a12626; }
             .product-option[open] summary::after { transform:rotate(-135deg); margin-top:6px; }
             .product-option__panel { display:grid; gap:12px; padding:0 18px 18px; }
             .product-option__group-note { margin:2px 2px 0; color:#667282; font-size:13px; font-weight:700; line-height:1.5; }
+            .product-option__error { margin:0 2px; padding:10px 12px; border:1px solid rgba(212,56,56,.22); border-radius:14px; background:linear-gradient(180deg,#fff7f7,#fff1f1); color:#8f2222; font-size:13px; font-weight:800; line-height:1.5; }
+            .product-option__error[hidden] { display:none; }
             .product-choice { display:grid; grid-template-columns:auto 94px minmax(0,1fr) auto; gap:14px; align-items:flex-start; padding:14px 16px; border:1px solid #e3e8f0; border-radius:16px; background:#fbfcfe; transition:border-color .18s ease, background-color .18s ease, box-shadow .18s ease; }
             .product-choice:hover { border-color:#d0d9e6; }
             .product-choice.is-selected { border-color:rgba(111,16,201,.28); background:#faf5ff; box-shadow:0 10px 18px rgba(105,22,203,.08); }
+            .product-choice.is-conflict { border-color:rgba(212,56,56,.44); background:linear-gradient(180deg,#fff8f8,#fff1f1); box-shadow:0 14px 24px rgba(181,53,53,.12); }
+            .product-choice.is-conflict .product-choice__label,
+            .product-choice.is-conflict .product-choice__price { color:#8f2222; }
+            .product-choice.is-conflict .product-choice__preview { border-color:rgba(212,56,56,.35); box-shadow:0 14px 24px rgba(181,53,53,.1); }
             .product-choice input { margin-top:4px; accent-color:var(--primary); }
             .product-choice__media { display:block; }
             .product-choice__preview { display:block; width:94px; aspect-ratio:1/1; padding:0; border:1px solid #d7e0ec; border-radius:18px; background:linear-gradient(180deg,#f9fbfe,#edf3f9); box-shadow:0 10px 18px rgba(24,32,42,.05); overflow:hidden; cursor:zoom-in; transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
@@ -248,6 +257,7 @@
             .product-actions__button--secondary { background:linear-gradient(180deg,#9872df,#7b59cb); box-shadow:0 14px 24px rgba(123,89,203,.14); }
             .product-actions__button.is-added { background:linear-gradient(180deg,#2fbf75,#159658); box-shadow:0 16px 28px rgba(21,150,88,.22); }
             .product-actions__feedback { min-height:20px; color:#687385; font-size:14px; }
+            .product-actions__feedback.is-error { color:#a12626; font-weight:800; }
             .product-actions__share { display:flex; justify-content:flex-end; padding-top:2px; }
             .product-actions__share-button { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-width:260px; min-height:52px; padding:0 20px; border:1px solid #d8e0eb; border-radius:16px; background:#fff; color:#18202a; font-size:15px; font-weight:800; box-shadow:0 10px 18px rgba(24,32,42,.05); cursor:pointer; transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease, background-color .18s ease; }
             .product-actions__share-button svg { color:#5f6b79; }
@@ -826,6 +836,7 @@
                         return [
                             'id' => $groupKey,
                             'title' => (string) ($group['title'] ?? ''),
+                            'slot' => (string) ($group['slot'] ?? ''),
                             'description' => $group['description'] ?? null,
                             'options' => collect($group['options'] ?? [])
                                 ->map(static function (array $option) use ($resolvedConfiguratorSelection, $groupKey): array {
@@ -1419,13 +1430,15 @@
 
                                 <div class="product-options" data-product-configurator="{{ $productConfiguratorEnabled ? 'true' : 'false' }}">
                                     @foreach ($productOptions as $optionGroup)
-                                        <details class="product-option" data-product-option>
+                                        <details class="product-option" data-product-option data-option-slot="{{ $optionGroup['slot'] ?? '' }}" data-option-group-id="{{ $optionGroup['id'] }}">
                                             <summary>{{ $optionGroup['title'] }}</summary>
 
                                             <div class="product-option__panel">
                                                 @if (!empty($optionGroup['description']))
                                                     <p class="product-option__group-note">{{ $optionGroup['description'] }}</p>
                                                 @endif
+
+                                                <p class="product-option__error" data-option-error hidden></p>
 
                                                 @foreach ($optionGroup['options'] as $option)
                                                     <label class="product-choice{{ !empty($option['selected']) ? ' is-selected' : '' }}">
@@ -2463,6 +2476,35 @@
                     });
                 };
 
+                const renderOptionConflicts = (invalidSlots = [], slotMessages = {}) => {
+                    const activeSlots = new Set((Array.isArray(invalidSlots) ? invalidSlots : [])
+                        .map((slot) => `${slot ?? ''}`.trim())
+                        .filter(Boolean));
+
+                    productOptions.forEach((optionRoot) => {
+                        const slot = `${optionRoot.dataset.optionSlot ?? ''}`.trim();
+                        const messages = slot ? (Array.isArray(slotMessages?.[slot]) ? slotMessages[slot] : []) : [];
+                        const isInvalid = slot !== '' && activeSlots.has(slot);
+                        const errorNode = optionRoot.querySelector('[data-option-error]');
+                        const selectedChoice = optionRoot.querySelector('.product-choice input:checked')?.closest('.product-choice');
+
+                        optionRoot.classList.toggle('is-invalid', isInvalid);
+
+                        if (errorNode) {
+                            errorNode.hidden = !isInvalid || messages.length === 0;
+                            errorNode.textContent = isInvalid ? (messages[0] ?? '') : '';
+                        }
+
+                        optionRoot.querySelectorAll('.product-choice').forEach((choice) => {
+                            choice.classList.remove('is-conflict');
+                        });
+
+                        if (isInvalid && selectedChoice) {
+                            selectedChoice.classList.add('is-conflict');
+                        }
+                    });
+                };
+
                 const renderCompatibility = (messages = []) => {
                     if (!compatibilityRoot || !compatibilityList) {
                         return;
@@ -2517,6 +2559,8 @@
                         return {
                             isValid: true,
                             messages: [],
+                            invalidSlots: [],
+                            slotMessages: {},
                             addons,
                             selection,
                             summary,
@@ -2571,25 +2615,53 @@
                     const itemCase = componentFromSlot('case');
                     const cooler = componentFromSlot('cooler');
                     const messages = [];
+                    const invalidSlots = new Set();
+                    const slotMessages = {};
+
+                    const addCompatibilityIssue = (message, slots = []) => {
+                        if (!message) {
+                            return;
+                        }
+
+                        messages.push(message);
+
+                        slots.forEach((slot) => {
+                            const normalizedSlot = `${slot ?? ''}`.trim();
+
+                            if (!normalizedSlot) {
+                                return;
+                            }
+
+                            invalidSlots.add(normalizedSlot);
+                            slotMessages[normalizedSlot] ??= [];
+                            slotMessages[normalizedSlot].push(message);
+                        });
+                    };
 
                     if (cpu && motherboard && cpu.socket && motherboard.socket && cpu.socket !== motherboard.socket) {
-                        messages.push('Процесор не сумісний із сокетом материнської плати.');
+                        addCompatibilityIssue('Процесор не сумісний із сокетом материнської плати.', ['cpu', 'motherboard']);
                     }
 
                     if (ram && motherboard && ram.ram_type && motherboard.ram_type && ram.ram_type !== motherboard.ram_type) {
-                        messages.push("Оперативна пам'ять не підходить до материнської плати.");
+                        addCompatibilityIssue("Оперативна пам'ять не підходить до материнської плати.", ['ram', 'motherboard']);
                     }
 
                     if (motherboard && itemCase && motherboard.form_factor && Array.isArray(itemCase.supported_mb_form_factors) && itemCase.supported_mb_form_factors.length > 0 && !itemCase.supported_mb_form_factors.includes(motherboard.form_factor)) {
-                        messages.push('Обрана материнська плата не поміщається в цей корпус.');
+                        addCompatibilityIssue(
+                            `Обрана материнська плата ${motherboard.form_factor} не поміщається в корпус, який підтримує ${itemCase.supported_mb_form_factors.join(', ')}.`,
+                            ['motherboard', 'case'],
+                        );
                     }
 
                     if (gpu && itemCase && Number(gpu.gpu_length_mm) > 0 && Number(itemCase.max_gpu_length_mm) > 0 && Number(gpu.gpu_length_mm) > Number(itemCase.max_gpu_length_mm)) {
-                        messages.push('Відеокарта завелика для цього корпусу.');
+                        addCompatibilityIssue(
+                            `Відеокарта довжиною ${Number(gpu.gpu_length_mm)} мм не поміщається в корпус з лімітом ${Number(itemCase.max_gpu_length_mm)} мм.`,
+                            ['gpu', 'case'],
+                        );
                     }
 
                     if (cooler && cpu && cpu.socket && Array.isArray(cooler.supported_sockets) && cooler.supported_sockets.length > 0 && !cooler.supported_sockets.includes(cpu.socket)) {
-                        messages.push('Охолодження CPU не підтримує сокет обраного процесора.');
+                        addCompatibilityIssue('Охолодження CPU не підтримує сокет обраного процесора.', ['cooler', 'cpu']);
                     }
 
                     if (cooler && itemCase) {
@@ -2601,16 +2673,19 @@
                         const caseCoolerLimit = Number(itemCase.max_cooler_height_mm ?? 0);
 
                         if (radiatorSize > 0 && supportedRadiators.length > 0 && !supportedRadiators.includes(radiatorSize)) {
-                            messages.push('Корпус не підтримує цей радіатор СВО.');
+                            addCompatibilityIssue('Корпус не підтримує цей радіатор СВО.', ['cooler', 'case']);
                         }
 
                         if (radiatorSize === 0 && coolerHeight > 0 && caseCoolerLimit > 0 && coolerHeight > caseCoolerLimit) {
-                            messages.push('Повітряний кулер не поміщається в корпус по висоті.');
+                            addCompatibilityIssue(
+                                `Повітряний кулер висотою ${coolerHeight} мм не поміщається в корпус з лімітом ${caseCoolerLimit} мм.`,
+                                ['cooler', 'case'],
+                            );
                         }
                     }
 
                     if (gpu && psu && Number(gpu.gpu_power_connectors) > 0 && Number(psu.pcie_power_connectors) > 0 && Number(gpu.gpu_power_connectors) > Number(psu.pcie_power_connectors)) {
-                        messages.push('Блок живлення не має достатньо PCIe-конекторів для цієї відеокарти.');
+                        addCompatibilityIssue('Блок живлення не має достатньо PCIe-конекторів для цієї відеокарти.', ['gpu', 'psu']);
                     }
 
                     if (cpu && gpu && psu) {
@@ -2618,13 +2693,23 @@
                         const psuWattage = Number(psu.psu_wattage ?? 0);
 
                         if (requiredWattage > 0 && psuWattage > 0 && psuWattage < requiredWattage) {
-                            messages.push('Потужності блока живлення замало для поточної конфігурації.');
+                            addCompatibilityIssue(
+                                `Потужності блока живлення замало: потрібно приблизно ${requiredWattage} W, а обрано ${psuWattage} W.`,
+                                ['cpu', 'gpu', 'psu'],
+                            );
                         }
                     }
 
+                    const uniqueMessages = [...new Set(messages)];
+                    const normalizedSlotMessages = Object.fromEntries(
+                        Object.entries(slotMessages).map(([slot, issues]) => [slot, [...new Set(issues)]])
+                    );
+
                     return {
-                        isValid: messages.length === 0,
-                        messages,
+                        isValid: uniqueMessages.length === 0,
+                        messages: uniqueMessages,
+                        invalidSlots: [...invalidSlots],
+                        slotMessages: normalizedSlotMessages,
                         addons,
                         selection,
                         summary,
@@ -2686,7 +2771,7 @@
 
                 const syncProductPricing = () => {
                     if (!pricingRoot) {
-                        return { addons: 0, total: 0, isValid: true, messages: [], selection: {}, summary: [] };
+                        return { addons: 0, total: 0, isValid: true, messages: [], invalidSlots: [], slotMessages: {}, selection: {}, summary: [] };
                     }
 
                     const basePrice = Number(pricingRoot.dataset.basePrice ?? 0);
@@ -2707,15 +2792,17 @@
 
                     syncOptionSelections();
                     renderCompatibility(evaluation.messages ?? []);
+                    renderOptionConflicts(evaluation.invalidSlots ?? [], evaluation.slotMessages ?? {});
 
                     if (addToCartButton) {
                         addToCartButton.disabled = !evaluation.isValid;
                     }
 
                     if (productFeedback) {
+                        productFeedback.classList.toggle('is-error', !evaluation.isValid);
                         productFeedback.textContent = evaluation.isValid
                             ? 'Можемо зібрати, протестувати і відправити після узгодження обраних опцій.'
-                            : (evaluation.messages?.[0] ?? 'Перевір сумісність обраних комплектуючих.');
+                            : `${evaluation.messages?.[0] ?? 'Перевір сумісність обраних комплектуючих.'} Зміни підсвічені блоки або напиши менеджеру для підбору сумісної заміни.`;
                     }
 
                     return {

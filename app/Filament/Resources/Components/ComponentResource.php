@@ -160,6 +160,13 @@ class ComponentResource extends Resource
                 TextInput::make('sku')
                     ->label('SKU / артикул')
                     ->maxLength(255),
+                TextInput::make('price')
+                    ->label('Ціна, грн')
+                    ->numeric()
+                    ->live()
+                    ->default(0)
+                    ->minValue(0)
+                    ->required(),
                 Textarea::make('summary')
                     ->label('Короткий опис')
                     ->rows(3)
@@ -348,7 +355,7 @@ class ComponentResource extends Resource
                             'hasImage' => $imageUrl !== null,
                             'caption' => (string) $record->name,
                             'alt' => (string) $record->name,
-                            'clickToOpen' => $imageUrl !== null,
+                            'clickToOpen' => true,
                         ];
                     }),
                 TextColumn::make('type')
@@ -358,6 +365,10 @@ class ComponentResource extends Resource
                 TextColumn::make('name')
                     ->label('Назва')
                     ->searchable(['name', 'vendor', 'sku', 'slug'])
+                    ->sortable(),
+                TextColumn::make('price')
+                    ->label('Ціна')
+                    ->formatStateUsing(fn ($state): string => number_format((int) $state, 0, '.', ' ') . ' грн')
                     ->sortable(),
                 TextColumn::make('slug')
                     ->label('Slug')
@@ -425,6 +436,7 @@ class ComponentResource extends Resource
             'slug' => $slug,
             'vendor' => AdminFormPreview::cleanText($get('vendor') ?: $record?->vendor, 'Kondor'),
             'sku' => AdminFormPreview::cleanText($get('sku') ?: $record?->sku),
+            'price' => AdminFormPreview::formatPrice($get('price') ?? $record?->price ?? 0, 'грн'),
             'summary' => trim((string) ($get('summary') ?: $record?->summary ?: 'Короткий опис комплектуючої зʼявиться тут одразу під час редагування.')),
             'image_urls' => $imageUrls !== [] ? $imageUrls : [ComponentImages::placeholderUrl($type, $name)],
             'is_active' => (bool) (($get('is_active') ?? $record?->is_active) ?? true),
@@ -435,6 +447,7 @@ class ComponentResource extends Resource
     protected static function previewFacts(callable $get, ?Component $record): array
     {
         $entries = [
+            ['label' => 'Ціна', 'value' => AdminFormPreview::formatPrice($get('price') ?? $record?->price ?? 0, 'грн')],
             ['label' => 'Сокет', 'value' => static::previewChoiceLabel($get('socket') ?? $record?->socket)],
             ['label' => 'Форм-фактор', 'value' => static::previewChoiceLabel($get('form_factor') ?? $record?->form_factor)],
             ['label' => 'Тип памʼяті', 'value' => static::previewChoiceLabel($get('ram_type') ?? $record?->ram_type)],
@@ -541,6 +554,7 @@ class ComponentResource extends Resource
         $data['slug'] = trim((string) ($data['slug'] ?? ''));
         $data['vendor'] = static::nullableText($data['vendor'] ?? null);
         $data['sku'] = static::nullableText($data['sku'] ?? null);
+        $data['price'] = max(0, (int) round((float) ($data['price'] ?? $record?->price ?? 0)));
         $data['summary'] = static::nullableText($data['summary'] ?? null);
         $data['gallery_paths'] = static::normalizeStringList($data['gallery_paths'] ?? []);
         $data['socket'] = static::implodeSingleChoice($data['socket'] ?? null);

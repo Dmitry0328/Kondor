@@ -157,6 +157,8 @@ class ProductController extends Controller
             'compatibility' => [
                 'is_valid' => true,
                 'messages' => [],
+                'invalid_slots' => [],
+                'slot_messages' => [],
             ],
         ];
 
