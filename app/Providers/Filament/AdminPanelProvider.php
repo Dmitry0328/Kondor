@@ -199,51 +199,52 @@ HTML,
         box-shadow: 0 6px 12px rgba(24, 32, 42, .05);
     }
     @media (min-width: 1024px) {
+        body.admin-build-preview-layout {
+            --admin-build-preview-width: clamp(24rem, 34vw, 38rem);
+            --admin-build-preview-gap: 1.5rem;
+        }
         body.admin-build-preview-layout .fi-main-ctn {
-            padding-inline: 1rem;
+            padding-left: 1rem;
+            padding-right: calc(var(--admin-build-preview-width) + var(--admin-build-preview-gap) + 1rem);
         }
         body.admin-build-preview-layout.admin-build-sidebar-open .fi-main-ctn {
-            padding-inline: 1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
         body.admin-build-preview-layout .fi-page,
         body.admin-build-preview-layout .fi-page-main,
         body.admin-build-preview-layout .fi-page-content {
             max-width: none;
         }
-        body.admin-build-preview-layout .fi-page-header-main-ctn {
-            gap: 1.5rem;
-        }
-        body.admin-build-preview-layout .fi-header {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(19rem, 22rem);
-            align-items: start;
-            gap: 1.5rem;
-        }
-        body.admin-build-preview-layout .fi-header > div:first-child {
-            min-width: 0;
-        }
         body.admin-build-preview-layout .fi-header-actions-ctn {
-            grid-column: 2;
-            justify-self: stretch;
+            position: fixed;
+            top: 10.5rem;
+            right: 1rem;
+            z-index: 25;
+            width: var(--admin-build-preview-width);
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: flex-start;
-            padding-top: .5rem;
+            pointer-events: none;
+        }
+        body.admin-build-preview-layout .fi-header-actions-ctn > * {
+            pointer-events: auto;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
-            position: sticky;
-            top: 5.75rem;
-            z-index: 10;
-            width: 100%;
-            min-width: 0;
-            max-height: calc(100vh - 7rem);
+            position: fixed;
+            top: 14rem;
+            right: 1rem;
+            z-index: 20;
+            width: var(--admin-build-preview-width);
+            max-width: calc(100vw - 2rem);
+            max-height: calc(100vh - 15rem);
             overflow: auto;
             align-self: start;
         }
         body.admin-build-preview-layout.admin-build-sidebar-open .admin-build-live-preview-shell {
-            opacity: 1;
-            pointer-events: auto;
-            transform: none;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(10px);
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell > .fi-section {
             height: auto;
@@ -268,6 +269,7 @@ HTML,
             z-index: 70;
             background: rgba(15, 23, 42, .36);
         }
+        body.admin-build-preview-layout .fi-page-header-main-ctn,
         body.admin-build-preview-layout .fi-page-header-main,
         body.admin-build-preview-layout .fi-page-main {
             max-width: none;
