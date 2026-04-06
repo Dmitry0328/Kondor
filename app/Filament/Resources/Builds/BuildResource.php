@@ -80,7 +80,7 @@ class BuildResource extends Resource
         return $schema->components([
             Grid::make([
                 'default' => 1,
-                'xl' => 12,
+                'xl' => 2,
             ])
                 ->extraAttributes(['class' => 'admin-build-editor-grid'])
                 ->schema([
@@ -95,7 +95,7 @@ class BuildResource extends Resource
                     ->extraAttributes(['class' => 'admin-build-form-stack'])
                     ->columnSpan([
                         'default' => 1,
-                        'xl' => 8,
+                        'xl' => 1,
                     ]),
                 Section::make('Живий превʼю')
                     ->description('Показує, як збірка виглядатиме на storefront під час редагування.')
@@ -111,7 +111,7 @@ class BuildResource extends Resource
                     ->extraAttributes(['class' => 'admin-build-live-preview-shell'])
                     ->columnSpan([
                         'default' => 1,
-                        'xl' => 4,
+                        'xl' => 1,
                     ]),
                 ]),
         ]);

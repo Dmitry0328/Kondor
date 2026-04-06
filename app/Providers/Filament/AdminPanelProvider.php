@@ -229,14 +229,18 @@ HTML,
             min-width: 0;
         }
         body.admin-build-preview-layout .admin-build-editor-grid {
+            display: grid !important;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
             column-gap: 1rem;
             row-gap: 1rem;
         }
         body.admin-build-preview-layout .admin-build-form-stack {
             order: 1;
+            grid-column: 1;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
             order: 2;
+            grid-column: 2;
             position: sticky;
             top: 5.75rem;
             align-self: start;
