@@ -93,7 +93,7 @@ class BuildResource extends Resource
                     ->extraAttributes(['class' => 'admin-build-form-stack'])
                     ->columnSpan([
                         'default' => 1,
-                        'xl' => 12,
+                        'xl' => 7,
                     ]),
                 Section::make('Живий превʼю')
                     ->description('Показує, як збірка виглядатиме на storefront під час редагування.')
@@ -109,7 +109,7 @@ class BuildResource extends Resource
                     ->extraAttributes(['class' => 'admin-build-live-preview-shell'])
                     ->columnSpan([
                         'default' => 1,
-                        'xl' => 12,
+                        'xl' => 5,
                     ]),
             ]),
         ]);

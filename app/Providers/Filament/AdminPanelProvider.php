@@ -199,59 +199,56 @@ HTML,
         box-shadow: 0 6px 12px rgba(24, 32, 42, .05);
     }
     @media (min-width: 1024px) {
-        body.admin-build-preview-layout {
-            --admin-build-preview-width: clamp(24rem, 34vw, 38rem);
-            --admin-build-preview-gap: 1.5rem;
-        }
         body.admin-build-preview-layout .fi-main-ctn {
-            padding-left: 1rem;
-            padding-right: calc(var(--admin-build-preview-width) + var(--admin-build-preview-gap) + 1rem);
+            padding-inline: 1rem;
         }
         body.admin-build-preview-layout.admin-build-sidebar-open .fi-main-ctn {
-            padding-left: 1rem;
-            padding-right: 1rem;
+            padding-inline: 1rem;
         }
         body.admin-build-preview-layout .fi-page,
         body.admin-build-preview-layout .fi-page-main,
         body.admin-build-preview-layout .fi-page-content {
             max-width: none;
         }
+        body.admin-build-preview-layout .fi-page-header-main-ctn {
+            gap: 1rem;
+        }
+        body.admin-build-preview-layout .fi-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            align-items: start;
+            gap: 1rem;
+        }
+        body.admin-build-preview-layout .fi-header > div:first-child {
+            min-width: 0;
+        }
         body.admin-build-preview-layout .fi-header-actions-ctn {
-            position: fixed;
-            top: 10.5rem;
-            right: 1rem;
-            z-index: 25;
-            width: var(--admin-build-preview-width);
+            grid-column: 2;
+            justify-self: stretch;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            pointer-events: none;
-        }
-        body.admin-build-preview-layout .fi-header-actions-ctn > * {
-            pointer-events: auto;
+            min-width: 0;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
-            position: fixed;
-            top: 14rem;
-            right: 1rem;
-            z-index: 20;
-            width: var(--admin-build-preview-width);
-            max-width: calc(100vw - 2rem);
-            max-height: calc(100vh - 15rem);
-            overflow: auto;
+            position: sticky;
+            top: 5.75rem;
             align-self: start;
+            min-width: 0;
         }
         body.admin-build-preview-layout.admin-build-sidebar-open .admin-build-live-preview-shell {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(10px);
+            opacity: 1;
+            pointer-events: auto;
+            transform: none;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell > .fi-section {
-            height: auto;
+            max-height: calc(100vh - 7rem);
+            overflow: auto;
         }
         body.admin-build-preview-layout .admin-build-form-stack,
         body.admin-build-preview-layout .fi-main {
             max-width: none;
+            min-width: 0;
         }
         body.admin-build-preview-layout .fi-main-sidebar {
             transform: translateX(-105%);
