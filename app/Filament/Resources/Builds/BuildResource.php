@@ -92,7 +92,7 @@ class BuildResource extends Resource
                     static::aboutFormSection(),
                     static::fpsFormSection($fpsOptions, $fpsDefaultRow),
                 ])
-                    ->extraAttributes(['class' => 'admin-build-form-stack'])
+                    ->extraAttributes(['class' => 'admin-build-form-stack admin-preview-form-stack'])
                     ->columnSpan([
                         'default' => 1,
                         'lg' => 8,

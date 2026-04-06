@@ -99,15 +99,17 @@ class ComponentResource extends Resource
         return $schema->components([
             Grid::make([
                 'default' => 1,
-                'xl' => 12,
+                'lg' => 12,
             ])->schema([
                 Group::make([
                     static::basicFormSection(),
                     static::categoryDetailsSection(),
                     static::compatibilitySection(),
-                ])->columnSpan([
+                ])
+                    ->extraAttributes(['class' => 'admin-preview-form-stack'])
+                    ->columnSpan([
                     'default' => 1,
-                    'xl' => 12,
+                    'lg' => 8,
                 ]),
                 Section::make('Живий превʼю')
                     ->description('Показує, як комплектуюча виглядатиме в картці конфігуратора ще до збереження.')
@@ -120,9 +122,10 @@ class ComponentResource extends Resource
                                 ])->render()
                             )),
                     ])
+                    ->extraAttributes(['class' => 'admin-preview-live-preview-shell'])
                     ->columnSpan([
                         'default' => 1,
-                        'xl' => 12,
+                        'lg' => 4,
                     ]),
             ]),
         ]);

@@ -232,6 +232,10 @@ HTML,
             column-gap: 1rem;
             row-gap: 1rem;
         }
+        body.admin-build-preview-layout .admin-preview-form-stack .fi-section,
+        .admin-preview-form-stack .fi-section {
+            margin-right: -390px;
+        }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
             position: sticky;
             top: 5.75rem;

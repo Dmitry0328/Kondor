@@ -66,7 +66,7 @@ class AccessoryResource extends Resource
         return $schema->components([
             Grid::make([
                 'default' => 1,
-                'xl' => 12,
+                'lg' => 12,
             ])->schema([
                 Group::make([
                     Section::make('Основне')
@@ -197,9 +197,11 @@ class AccessoryResource extends Resource
                                 ->collapsible()
                                 ->columnSpanFull(),
                         ]),
-                ])->columnSpan([
+                ])
+                    ->extraAttributes(['class' => 'admin-preview-form-stack'])
+                    ->columnSpan([
                     'default' => 1,
-                    'xl' => 12,
+                    'lg' => 8,
                 ]),
                 Section::make('Живий превʼю')
                     ->description('Праворуч одразу видно, як девайс виглядатиме на сайті.')
@@ -212,9 +214,10 @@ class AccessoryResource extends Resource
                                 ])->render()
                             )),
                     ])
+                    ->extraAttributes(['class' => 'admin-preview-live-preview-shell'])
                     ->columnSpan([
                         'default' => 1,
-                        'xl' => 12,
+                        'lg' => 4,
                     ]),
             ]),
         ]);
