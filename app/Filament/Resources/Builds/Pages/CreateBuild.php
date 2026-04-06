@@ -43,12 +43,19 @@ class CreateBuild extends CreateRecord
     protected function getSaveDraftFormAction(): Action
     {
         return Action::make('saveDraft')
-            ->label('Зберегти в чернетку')
+            ->label('Чернетка')
             ->color('gray')
             ->action(function (): void {
                 $this->forcedPublicationState = false;
                 $this->create(false);
             });
+    }
+
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->label('Скасувати')
+            ->color('gray');
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array

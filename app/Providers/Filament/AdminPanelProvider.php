@@ -271,25 +271,43 @@ HTML,
         .fi-page.fi-resource-builds.fi-resource-create-record-page #content\\.form-actions .fi-ac,
         .fi-page.fi-resource-builds.fi-resource-edit-record-page [wire\\:key$="form-actions"] .fi-ac,
         .fi-page.fi-resource-builds.fi-resource-create-record-page [wire\\:key$="form-actions"] .fi-ac {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 6px;
-            overflow-x: auto;
-            flex-wrap: nowrap;
-            width: auto;
+            overflow: visible;
+            width: 100%;
             max-width: 100%;
-            padding: 6px 7px;
-            border-radius: 14px;
-            padding-bottom: 2px;
+            padding: 8px;
+            border-radius: 16px;
         }
         .fi-page.fi-resource-builds.fi-resource-edit-record-page #content\\.form-actions .fi-btn,
         .fi-page.fi-resource-builds.fi-resource-create-record-page #content\\.form-actions .fi-btn,
         .fi-page.fi-resource-builds.fi-resource-edit-record-page [wire\\:key$="form-actions"] .fi-btn,
         .fi-page.fi-resource-builds.fi-resource-create-record-page [wire\\:key$="form-actions"] .fi-btn {
-            width: auto;
-            white-space: nowrap;
-            min-height: 34px;
-            padding-inline: 12px;
-            font-size: 12px;
+            width: 100%;
+            min-width: 0;
+            min-height: 38px;
+            padding: 8px 10px;
+            font-size: 11px;
+            line-height: 1.15;
+            white-space: normal;
+            text-align: center;
+            box-shadow: none;
+        }
+        .fi-page.fi-resource-builds.fi-resource-edit-record-page #content\\.form-actions .fi-btn-label,
+        .fi-page.fi-resource-builds.fi-resource-create-record-page #content\\.form-actions .fi-btn-label,
+        .fi-page.fi-resource-builds.fi-resource-edit-record-page [wire\\:key$="form-actions"] .fi-btn-label,
+        .fi-page.fi-resource-builds.fi-resource-create-record-page [wire\\:key$="form-actions"] .fi-btn-label {
+            overflow: visible;
+            text-overflow: unset;
+            white-space: normal;
+        }
+        .fi-page.fi-resource-builds.fi-resource-edit-record-page #content\\.form-actions .fi-btn svg,
+        .fi-page.fi-resource-builds.fi-resource-create-record-page #content\\.form-actions .fi-btn svg,
+        .fi-page.fi-resource-builds.fi-resource-edit-record-page [wire\\:key$="form-actions"] .fi-btn svg,
+        .fi-page.fi-resource-builds.fi-resource-create-record-page [wire\\:key$="form-actions"] .fi-btn svg {
+            width: .9rem;
+            height: .9rem;
         }
     }
 </style>

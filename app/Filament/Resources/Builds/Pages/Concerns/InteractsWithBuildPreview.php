@@ -12,7 +12,7 @@ trait InteractsWithBuildPreview
     protected function getPreviewAction(): Action
     {
         return Action::make('previewBeforeSave')
-            ->label('Перегляд перед збереженням')
+            ->label('Перегляд')
             ->icon(Heroicon::OutlinedEye)
             ->color('gray')
             ->action(function (): void {
