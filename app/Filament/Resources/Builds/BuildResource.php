@@ -80,7 +80,7 @@ class BuildResource extends Resource
         return $schema->components([
             Grid::make([
                 'default' => 1,
-                'xl' => 2,
+                'xl' => 12,
             ])
                 ->extraAttributes(['class' => 'admin-build-editor-grid'])
                 ->schema([

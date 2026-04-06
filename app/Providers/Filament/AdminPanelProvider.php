@@ -232,7 +232,11 @@ HTML,
             column-gap: 1rem;
             row-gap: 1rem;
         }
+        body.admin-build-preview-layout .admin-build-form-stack {
+            order: 1;
+        }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
+            order: 2;
             position: sticky;
             top: 5.75rem;
             align-self: start;
