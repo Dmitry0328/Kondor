@@ -3,12 +3,24 @@
         ->pluck('slug')
         ->filter(fn ($slug): bool => is_string($slug) && trim($slug) !== '')
         ->values();
+    $hideTrackingLink = (bool) ($hideTrackingLink ?? false);
 @endphp
 
 <div
     data-cart-valid-slugs='@json($cartValidSlugs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)'
     hidden
 ></div>
+
+@unless ($hideTrackingLink)
+    <a class="header-button" href="{{ route('orders.track') }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Статус замовлення
+    </a>
+@endunless
 
 <div class="header-cart-shell" data-cart-shell>
     <a class="header-cart" href="{{ route('cart') }}" aria-label="Кошик">

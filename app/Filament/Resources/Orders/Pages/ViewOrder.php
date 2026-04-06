@@ -3,7 +3,10 @@
 namespace App\Filament\Resources\Orders\Pages;
 
 use App\Filament\Resources\Orders\OrderResource;
+use App\Models\Order;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Icons\Heroicon;
 
 class ViewOrder extends ViewRecord
 {
@@ -12,9 +15,11 @@ class ViewOrder extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            OrderResource::makeStatusAction('processing', 'В роботу', \Filament\Support\Icons\Heroicon::OutlinedClock, 'warning'),
-            OrderResource::makeStatusAction('completed', 'Завершити', \Filament\Support\Icons\Heroicon::OutlinedCheckCircle, 'success'),
-            OrderResource::makeStatusAction('cancelled', 'Скасувати', \Filament\Support\Icons\Heroicon::OutlinedXCircle, 'danger'),
+            EditAction::make(),
+            OrderResource::makeStatusAction(Order::STATUS_PROCESSING, 'В роботу', Heroicon::OutlinedClock, 'warning'),
+            OrderResource::makeStatusAction(Order::STATUS_SHIPPED, 'Відправити', Heroicon::OutlinedTruck, 'primary'),
+            OrderResource::makeStatusAction(Order::STATUS_COMPLETED, 'Завершити', Heroicon::OutlinedCheckCircle, 'success'),
+            OrderResource::makeStatusAction(Order::STATUS_CANCELLED, 'Скасувати', Heroicon::OutlinedXCircle, 'danger'),
         ];
     }
 }

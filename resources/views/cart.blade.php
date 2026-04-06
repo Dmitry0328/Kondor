@@ -63,19 +63,14 @@
                     </a>
 
                     <div class="header__actions">
-                        <a class="header-button header-button--primary" href="{{ route('catalog') }}">
+                        <a class="header-button header-button--primary" href="{{ route('orders.track') }}">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             </svg>
-                            Наші збірки
+                            Статус замовлення
                         </a>
-
-                        <button class="header-button" type="button" data-dropdown-trigger="builds" aria-expanded="false" aria-controls="builds-dropdown" aria-haspopup="true">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            </svg>
-                            Каталог збірок
-                        </button>
 
                         <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -85,15 +80,15 @@
                             Консультація
                         </button>
 
-                        <a class="header-link--primary" href="{{ route('catalog') }}">До каталогу</a>
+                        <a class="header-link--primary" href="{{ route('orders.track') }}">Статус замовлення</a>
                         <a class="header-link" href="{{ url('/') }}">Головна</a>
-                        <a class="header-link" href="{{ route('catalog') }}">Каталог збірок</a>
+                        <a class="header-link" href="{{ route('orders.track') }}">Статус замовлення</a>
                         @auth
                             @if (auth()->user()?->is_admin)
                                 <a class="header-button" href="{{ url('/admin') }}">Адмінка</a>
                             @endif
                         @endauth
-                        @include('partials.header-cart')
+                        @include('partials.header-cart', ['hideTrackingLink' => true])
                         <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
                     </div>
                 </div>
@@ -139,7 +134,7 @@
                 <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
                     <div class="container mobile-menu__inner">
                         <a href="{{ url('/') }}">Головна</a>
-                        <a href="{{ route('catalog') }}">Каталог збірок</a>
+                        <a href="{{ route('orders.track') }}">Статус замовлення</a>
                         <a href="{{ url('/') }}#about">Про нас</a>
                         <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
                         <a href="#contacts">Контакти</a>
@@ -247,6 +242,11 @@
                             </label>
 
                             <label class="cart-field">
+                                <span>Email</span>
+                                <input type="email" name="email" placeholder="name@example.com">
+                            </label>
+
+                            <label class="cart-field">
                                 <span>Telegram / Viber</span>
                                 <input type="text" name="messenger_contact" placeholder="@nickname або +380...">
                             </label>
@@ -269,6 +269,38 @@
                             </div>
 
                             <button class="cart-primary-button" type="submit">Оформити замовлення</button>
+
+                            <section class="cart-order-access" data-order-access hidden>
+                                <div class="cart-order-access__eyebrow">Відстеження замовлення</div>
+                                <h3>Збережи дані для перегляду статусу</h3>
+
+                                <div class="cart-order-access__grid">
+                                    <button class="cart-order-access__item" type="button" data-order-access-copy="number" data-copy-value="">
+                                        <span>Номер замовлення</span>
+                                        <strong data-order-access-number-value>—</strong>
+                                        <small>Натисни, щоб скопіювати</small>
+                                    </button>
+
+                                    <button class="cart-order-access__item" type="button" data-order-access-copy="phone" data-copy-value="">
+                                        <span>Телефон</span>
+                                        <strong data-order-access-phone-value>—</strong>
+                                        <small>Натисни, щоб скопіювати</small>
+                                    </button>
+
+                                    <button class="cart-order-access__item" type="button" data-order-access-copy="password" data-copy-value="">
+                                        <span>Пароль</span>
+                                        <strong data-order-access-password-value>—</strong>
+                                        <small>Натисни, щоб скопіювати</small>
+                                    </button>
+                                </div>
+
+                                <a class="cart-secondary-button cart-order-access__link" href="{{ route('orders.track') }}" data-order-access-link>
+                                    Перейти до відстеження замовлення
+                                </a>
+
+                                <p class="cart-order-access__meta" data-order-access-meta></p>
+                            </section>
+
                             <p class="cart-feedback" data-checkout-feedback></p>
                         </form>
                     </aside>

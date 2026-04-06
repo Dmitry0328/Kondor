@@ -255,7 +255,9 @@ class BuildConfigurator
                     'component_id' => $component?->id,
                     'label' => $label,
                     'description' => static::nullableText($option['description'] ?? ($component?->summary ?? null)),
-                    'price_delta' => max(0, (int) round((float) ($option['price_delta'] ?? 0))),
+                    'price_delta' => array_key_exists('price_delta', $option) && $option['price_delta'] !== null && $option['price_delta'] !== ''
+                        ? (int) round((float) $option['price_delta'])
+                        : null,
                     'is_default' => (bool) ($option['is_default'] ?? false),
                     'is_active' => array_key_exists('is_active', $option) ? (bool) $option['is_active'] : true,
                 ];
@@ -373,12 +375,15 @@ class BuildConfigurator
                     continue;
                 }
 
+                $resolvedPrice = static::resolveComponentPriceDelta($baseComponent, $componentPayload, $option['price_delta'] ?? null);
+
                 $resolvedOptions[] = [
                     ...$option,
                     'component' => $componentPayload,
                     'label' => $label,
                     'description' => static::nullableText($option['description'] ?? ($componentPayload['summary'] ?? null)),
-                    'price' => (int) ($option['price_delta'] ?? 0),
+                    'price_delta' => $resolvedPrice,
+                    'price' => $resolvedPrice,
                     'is_default' => false,
                 ];
             }
@@ -916,5 +921,18 @@ class BuildConfigurator
         $componentId = (int) ($componentIds[$slot] ?? 0);
 
         return $componentId > 0 ? ($components[$componentId] ?? null) : null;
+    }
+
+protected static function resolveComponentPriceDelta(?array $baseComponent, ?array $optionComponent, mixed $storedValue): int
+    {
+        if ($storedValue !== null && $storedValue !== '') {
+            return (int) round((float) $storedValue);
+        }
+
+        if (! is_array($baseComponent) || ! is_array($optionComponent)) {
+            return 0;
+        }
+
+        return ((int) ($optionComponent['price'] ?? 0)) - ((int) ($baseComponent['price'] ?? 0));
     }
 }

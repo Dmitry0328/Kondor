@@ -7,10 +7,12 @@ use App\Models\Order;
 use App\Models\SharedCart;
 use App\Models\User;
 use App\Notifications\NewOrderPlacedNotification;
+use App\Notifications\OrderTrackingCredentialsNotification;
 use App\Support\BuildConfigurator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -76,6 +78,7 @@ class CartController extends Controller
         $validated = Validator::make($request->all(), [
             'customer_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:40'],
+            'email' => ['nullable', 'email', 'max:255'],
             'messenger_contact' => ['nullable', 'string', 'max:255'],
             'comment' => ['nullable', 'string', 'max:2000'],
             'payment_method' => ['required', 'in:cash_on_delivery'],
@@ -97,11 +100,12 @@ class CartController extends Controller
 
         $order = DB::transaction(function () use ($validated, $items, $totalAmount) {
             $order = Order::create([
-                'status' => 'new',
+                'status' => Order::STATUS_NEW,
+                'ordered_at' => now(),
                 'customer_name' => $validated['customer_name'],
                 'phone' => $validated['phone'],
+                'email' => $validated['email'] ?? null,
                 'messenger_contact' => $validated['messenger_contact'] ?? null,
-                'email' => null,
                 'comment' => $validated['comment'] ?? null,
                 'payment_method' => $validated['payment_method'],
                 'total_amount' => $totalAmount,
@@ -112,7 +116,7 @@ class CartController extends Controller
             ]);
 
             $order->update([
-                'number' => 'KP-' . now()->format('ymd') . '-' . str_pad((string) $order->id, 5, '0', STR_PAD_LEFT),
+                'number' => Order::makeOrderNumber($order),
             ]);
 
             foreach ($items as $item) {
@@ -140,9 +144,17 @@ class CartController extends Controller
             ->get()
             ->each(fn (User $admin) => $admin->notify(new NewOrderPlacedNotification($order)));
 
+        if ($order->email) {
+            Notification::route('mail', $order->email)
+                ->notify(new OrderTrackingCredentialsNotification($order));
+        }
+
         return response()->json([
-            'message' => 'Замовлення оформлено. Ми зв\'яжемося з вами для підтвердження деталей.',
+            'message' => 'Замовлення оформлено. Ми звʼяжемося з вами для підтвердження деталей.',
             'order_number' => $order->number,
+            'tracking_password' => $order->tracking_password,
+            'tracking_url' => $order->tracking_url,
+            'email_sent' => filled($order->email),
         ]);
     }
 

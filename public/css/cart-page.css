@@ -1001,6 +1001,94 @@ textarea {
     color: #c23b54;
 }
 
+.cart-order-access {
+    display: grid;
+    gap: 16px;
+    margin-top: 18px;
+    padding: 18px;
+    border: 1px solid rgba(111, 16, 201, 0.18);
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(132, 36, 240, 0.08), rgba(255, 255, 255, 0.96));
+}
+
+.cart-order-access__eyebrow {
+    color: #7a30d3;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.cart-order-access h3 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.cart-order-access__grid {
+    display: grid;
+    gap: 12px;
+}
+
+.cart-order-access__item {
+    display: grid;
+    gap: 6px;
+    padding: 12px 14px;
+    border: 1px solid rgba(209, 218, 231, 0.9);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.92);
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.cart-order-access__item:hover {
+    transform: translateY(-1px);
+    border-color: rgba(111, 16, 201, 0.28);
+    box-shadow: 0 12px 22px rgba(111, 16, 201, 0.1);
+}
+
+.cart-order-access__item.is-copied {
+    border-color: rgba(21, 150, 88, 0.26);
+    background: rgba(240, 253, 244, 0.96);
+}
+
+.cart-order-access__item span {
+    color: var(--cart-muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.cart-order-access__item strong {
+    font-size: 16px;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.cart-order-access__item small {
+    color: var(--cart-primary);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.cart-order-access__link {
+    width: 100%;
+    justify-content: center;
+}
+
+.cart-order-access__meta {
+    margin: 0;
+    color: var(--cart-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media (min-width: 720px) {
+    .cart-order-access__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
 .cart-site-footer {
     border-top: 1px solid var(--cart-line);
     background: rgba(255, 255, 255, 0.9);

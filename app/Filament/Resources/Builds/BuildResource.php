@@ -1072,9 +1072,9 @@ class BuildResource extends Resource
                         TextInput::make('price_delta')
                             ->label('Доплата, ₴')
                             ->numeric()
-                            ->minValue(0)
                             ->default(0)
                             ->required()
+                            ->helperText('0 = без доплати, -50 = знижка 50 грн, 100 = доплата 100 грн.')
                             ->columnSpan(3),
                         Toggle::make('is_active')
                             ->label('Активний')
@@ -1104,6 +1104,7 @@ class BuildResource extends Resource
         $groupsBySlot = collect($groups)
             ->filter(fn ($group): bool => is_array($group))
             ->keyBy(fn (array $group): string => (string) ($group['slot'] ?? ''));
+        $components = static::activeComponentsById();
 
         $state = [];
 
@@ -1111,7 +1112,7 @@ class BuildResource extends Resource
             $group = (array) ($groupsBySlot->get($slot) ?? []);
             $baseComponentId = (int) ($baseComponents[$slot] ?? static::detectBaseComponentFromGroup($group));
             $options = collect((array) ($group['options'] ?? []))
-                ->map(function ($option) use ($baseComponentId): ?array {
+                ->map(function ($option) use ($baseComponentId, $components): ?array {
                     if (! is_array($option)) {
                         return null;
                     }
@@ -1126,7 +1127,11 @@ class BuildResource extends Resource
                         'component_id' => $componentId,
                         'label' => trim((string) ($option['label'] ?? '')),
                         'description' => static::nullableString($option['description'] ?? null),
-                        'price_delta' => max(0, (int) round((float) ($option['price_delta'] ?? 0))),
+                        'price_delta' => static::resolveConfiguratorOptionPriceDelta(
+                            $baseComponentId > 0 ? $components->get($baseComponentId) : null,
+                            $componentId > 0 ? $components->get($componentId) : null,
+                            $option['price_delta'] ?? null,
+                        ),
                         'is_active' => array_key_exists('is_active', $option) ? (bool) $option['is_active'] : true,
                     ];
                 })
@@ -1204,7 +1209,11 @@ class BuildResource extends Resource
                     'component_id' => $componentId,
                     'label' => $label,
                     'description' => static::nullableString($optionState['description'] ?? $component->summary),
-                    'price_delta' => max(0, (int) round((float) ($optionState['price_delta'] ?? 0))),
+                    'price_delta' => static::resolveConfiguratorOptionPriceDelta(
+                        $baseComponentId > 0 ? $components->get($baseComponentId) : null,
+                        $component,
+                        $optionState['price_delta'] ?? null,
+                    ),
                     'is_default' => false,
                     'is_active' => array_key_exists('is_active', $optionState) ? (bool) $optionState['is_active'] : true,
                 ];
@@ -1305,7 +1314,11 @@ class BuildResource extends Resource
                 'component_id' => $componentId,
                 'label' => trim((string) ($existing['label'] ?? '')),
                 'description' => static::nullableString($existing['description'] ?? $component->summary),
-                'price_delta' => max(0, (int) round((float) ($existing['price_delta'] ?? 0))),
+                'price_delta' => static::resolveConfiguratorOptionPriceDelta(
+                    $baseComponentId > 0 ? $availableComponents->get($baseComponentId) : null,
+                    $component,
+                    $existing['price_delta'] ?? null,
+                ),
                 'is_active' => array_key_exists('is_active', $existing) ? (bool) $existing['is_active'] : true,
             ];
         }
@@ -1425,11 +1438,11 @@ class BuildResource extends Resource
         );
     }
 
-    protected static function configuratorOptionItemLabel(array $state): string
+protected static function configuratorOptionItemLabel(array $state): string
     {
         $componentId = (int) ($state['component_id'] ?? 0);
         $component = static::activeComponentsById()->get($componentId);
-        $priceDelta = max(0, (int) ($state['price_delta'] ?? 0));
+        $priceDelta = (int) round((float) ($state['price_delta'] ?? 0));
         $customLabel = trim((string) ($state['label'] ?? ''));
 
         if ($customLabel === '' && $component instanceof Component) {
@@ -1444,6 +1457,10 @@ class BuildResource extends Resource
 
         if ($priceDelta > 0) {
             $parts[] = '+' . number_format($priceDelta, 0, '', ' ') . ' ₴';
+        } elseif ($priceDelta < 0) {
+            $parts[] = number_format($priceDelta, 0, '', ' ') . ' ₴';
+        } else {
+            $parts[] = 'без доплати';
         }
 
         $parts[] = (! array_key_exists('is_active', $state) || (bool) $state['is_active'])
@@ -1582,6 +1599,19 @@ class BuildResource extends Resource
         }
 
         return $cache;
+    }
+
+protected static function resolveConfiguratorOptionPriceDelta(?Component $baseComponent, ?Component $optionComponent, mixed $storedValue): int
+    {
+        if ($storedValue !== null && $storedValue !== '') {
+            return (int) round((float) $storedValue);
+        }
+
+        if (! $baseComponent instanceof Component || ! $optionComponent instanceof Component) {
+            return 0;
+        }
+
+        return ((int) $optionComponent->price) - ((int) $baseComponent->price);
     }
 
     protected static function splitParagraphs(?string $value): array

@@ -18,6 +18,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -209,33 +210,24 @@ class ComponentResource extends Resource
         return Section::make('Характеристики категорії')
             ->description('Показуємо тільки ті поля, які потрібні для вибраної категорії.')
             ->schema([
-                CheckboxList::make('socket')
+                Radio::make('socket')
                     ->label('Socket')
                     ->options(static::SOCKET_OPTIONS)
                     ->columns(2)
-                    ->maxItems(1)
                     ->hidden(fn (callable $get): bool => ! in_array($get('type'), ['cpu', 'motherboard'], true))
-                    ->helperText('Оберіть сокет для процесора або материнської плати.')
-                    ->afterStateHydrated(fn (CheckboxList $component, $state): CheckboxList => $component->state(static::explodeSingleChoice($state)))
-                    ->dehydrateStateUsing(fn ($state): ?string => static::implodeSingleChoice($state)),
-                CheckboxList::make('form_factor')
+                    ->helperText('Оберіть сокет для процесора або материнської плати.'),
+                Radio::make('form_factor')
                     ->label('Form factor')
                     ->options(static::FORM_FACTOR_OPTIONS)
                     ->columns(2)
-                    ->maxItems(1)
                     ->hidden(fn (callable $get): bool => $get('type') !== 'motherboard')
-                    ->helperText('Форм-фактор самої материнської плати.')
-                    ->afterStateHydrated(fn (CheckboxList $component, $state): CheckboxList => $component->state(static::explodeSingleChoice($state)))
-                    ->dehydrateStateUsing(fn ($state): ?string => static::implodeSingleChoice($state)),
-                CheckboxList::make('ram_type')
+                    ->helperText('Форм-фактор самої материнської плати.'),
+                Radio::make('ram_type')
                     ->label("Тип пам'яті")
                     ->options(static::MEMORY_TYPE_OPTIONS)
                     ->columns(2)
-                    ->maxItems(1)
                     ->hidden(fn (callable $get): bool => ! in_array($get('type'), ['motherboard', 'ram'], true))
-                    ->helperText("Для материнської плати або комплекту RAM. Обирається як одна сумісна пам'ять.")
-                    ->afterStateHydrated(fn (CheckboxList $component, $state): CheckboxList => $component->state(static::explodeSingleChoice($state)))
-                    ->dehydrateStateUsing(fn ($state): ?string => static::implodeSingleChoice($state)),
+                    ->helperText("Для материнської плати або комплекту RAM. Обирається як одна сумісна пам'ять."),
                 CheckboxList::make('supported_mb_form_factors')
                     ->label('Підтримувані форм-фактори плат')
                     ->options(static::FORM_FACTOR_OPTIONS)

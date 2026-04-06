@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteAdminNotificationController;
 use App\Http\Controllers\SiteImageController;
@@ -15,6 +16,8 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::get('/cart/shared/{token}', [CartController::class, 'showShared'])->name('cart.shared');
 Route::post('/cart/share', [CartController::class, 'share'])->name('cart.share');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::get('/order-tracking', [OrderTrackingController::class, 'show'])->name('orders.track');
+Route::post('/order-tracking', [OrderTrackingController::class, 'lookup'])->name('orders.track.lookup');
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin-notifications/feed', [SiteAdminNotificationController::class, 'index'])->name('admin.notifications.feed');

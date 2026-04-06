@@ -2872,12 +2872,14 @@
                             Наші збірки
                         </a>
 
-                        <button class="header-button" type="button" data-dropdown-trigger="builds" aria-expanded="false" aria-controls="builds-dropdown" aria-haspopup="true">
+                                                <a class="header-button" href="{{ route('orders.track') }}">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             </svg>
-                            Каталог збірок
-                        </button>
+                            Статус замовлення
+                        </a>
 
                         <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -2912,7 +2914,7 @@
                             </svg>
                         </a>
 
-                        @include('partials.header-cart')
+                        @include('partials.header-cart', ['hideTrackingLink' => true])
 
                         <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu">
                             <span></span>
@@ -2965,7 +2967,7 @@
                     <div class="container mobile-menu__inner">
                         <a href="#about">Про нас</a>
                         <a href="#builds">Наші збірки</a>
-                        <button type="button" data-mobile-dropdown-toggle>Каталог збірок</button>
+                        <a href="{{ route('orders.track') }}">Статус замовлення</a>
                         <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
                         <a href="#contacts">Контакти</a>
                         @auth

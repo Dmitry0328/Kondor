@@ -936,19 +936,14 @@
                         </div>
                     </a>
                     <div class="header__actions">
-                        <a class="header-button header-button--primary" href="{{ route('catalog') }}">
+                        <a class="header-button header-button--primary" href="{{ route('orders.track') }}">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             </svg>
-                            Наші збірки
+                            Статус замовлення
                         </a>
-
-                        <button class="header-button" type="button" data-dropdown-trigger="builds" aria-expanded="false" aria-controls="builds-dropdown" aria-haspopup="true">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            </svg>
-                            Каталог збірок
-                        </button>
 
                         <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -973,11 +968,11 @@
                                 </svg>
                             </button>
                         </div>
-                        <a class="header-link--primary" href="{{ route('catalog') }}">До каталогу</a>
+                        <a class="header-link--primary" href="{{ route('orders.track') }}">Статус замовлення</a>
                         <a class="header-link" href="{{ url('/') }}">Головна</a>
-                        <a class="header-link" href="{{ route('catalog') }}">Каталог збірок</a>
+                        <a class="header-link" href="{{ route('orders.track') }}">Статус замовлення</a>
                         <a class="header-cart" href="#contacts" aria-label="Кошик"><span>0 ₴</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="19" r="1.6" fill="currentColor"/><circle cx="17" cy="19" r="1.6" fill="currentColor"/><path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-                        @include('partials.header-cart')
+                        @include('partials.header-cart', ['hideTrackingLink' => true])
                         <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
                     </div>
                 </div>
@@ -1022,7 +1017,7 @@
                 <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
                     <div class="container mobile-menu__inner">
                         <a href="{{ url('/') }}">Головна</a>
-                        <a href="{{ route('catalog') }}">Каталог збірок</a>
+                        <a href="{{ route('orders.track') }}">Статус замовлення</a>
                         <a href="{{ url('/') }}#about">Про нас</a>
                         <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
                         <a href="#contacts">Контакти</a>
@@ -1468,7 +1463,7 @@
                                                             <span class="product-choice__label">{{ $option['label'] }}</span>
                                                             <span class="product-choice__meta">{{ $option['description'] }}</span>
                                                         </span>
-                                                        <span class="product-choice__price">{{ $option['price'] > 0 ? '+' . $priceFormatter($option['price']) : (!empty($option['is_default']) ? 'Входить' : 'Без доплати') }}</span>
+                                                        <span class="product-choice__price">{{ $option['price'] > 0 ? '+' . $priceFormatter($option['price']) : ($option['price'] < 0 ? $priceFormatter($option['price']) : (!empty($option['is_default']) ? 'Входить' : 'Без доплати')) }}</span>
                                                     </label>
                                                 @endforeach
                                             </div>
