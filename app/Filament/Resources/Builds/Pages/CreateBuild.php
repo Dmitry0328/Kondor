@@ -8,12 +8,19 @@ use App\Models\Build;
 use App\Support\BuildImages;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Support\Enums\Width;
 
 class CreateBuild extends CreateRecord
 {
     use InteractsWithBuildPreview;
 
     protected static string $resource = BuildResource::class;
+
+    protected Width | string | null $maxContentWidth = 'full';
+
+    protected array $extraBodyAttributes = [
+        'class' => 'admin-build-preview-layout',
+    ];
 
     protected array $pendingGalleryUploads = [];
 

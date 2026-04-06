@@ -8,12 +8,19 @@ use App\Support\BuildImages;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\Width;
 
 class EditBuild extends EditRecord
 {
     use InteractsWithBuildPreview;
 
     protected static string $resource = BuildResource::class;
+
+    protected Width | string | null $maxContentWidth = 'full';
+
+    protected array $extraBodyAttributes = [
+        'class' => 'admin-build-preview-layout',
+    ];
 
     protected array $pendingGalleryUploads = [];
 
