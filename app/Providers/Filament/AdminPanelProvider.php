@@ -205,19 +205,17 @@ HTML,
         body.admin-build-preview-layout.admin-build-sidebar-open .fi-main-ctn {
             padding-inline: 1rem;
         }
+        body.admin-build-preview-layout .fi-page-header-main-ctn,
         body.admin-build-preview-layout .fi-page,
         body.admin-build-preview-layout .fi-page-main,
         body.admin-build-preview-layout .fi-page-content {
             max-width: none;
         }
-        body.admin-build-preview-layout .fi-page-header-main-ctn {
-            gap: 1rem;
-        }
         body.admin-build-preview-layout .fi-header {
             display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             align-items: start;
-            gap: 1rem;
+            gap: 0;
         }
         body.admin-build-preview-layout .fi-header > div:first-child {
             min-width: 0;
@@ -226,9 +224,13 @@ HTML,
             grid-column: 2;
             justify-self: stretch;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: flex-start;
             min-width: 0;
+        }
+        body.admin-build-preview-layout .admin-build-editor-grid {
+            column-gap: 0;
+            row-gap: 1rem;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
             position: sticky;
