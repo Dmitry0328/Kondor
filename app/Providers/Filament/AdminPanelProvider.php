@@ -200,18 +200,19 @@ HTML,
     }
     @media (min-width: 1024px) {
         body.admin-build-preview-layout .fi-main-ctn {
-            padding-left: 27rem;
-            transition: padding-left .22s ease;
+            padding-right: 22.5rem;
+            padding-left: 1rem;
+            transition: padding-right .22s ease;
         }
         body.admin-build-preview-layout.admin-build-sidebar-open .fi-main-ctn {
-            padding-left: 0;
+            padding-right: 0;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
             position: fixed;
             top: 5.75rem;
-            left: 1rem;
+            right: 1rem;
             z-index: 30;
-            width: min(25rem, calc(100vw - 2rem));
+            width: min(20.5rem, calc(100vw - 2rem));
             max-height: calc(100vh - 7rem);
             overflow: auto;
             transition: opacity .18s ease, transform .18s ease;
@@ -219,7 +220,7 @@ HTML,
         body.admin-build-preview-layout.admin-build-sidebar-open .admin-build-live-preview-shell {
             opacity: 0;
             pointer-events: none;
-            transform: translateX(-10px);
+            transform: translateX(10px);
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell > .fi-section {
             height: 100%;
@@ -243,6 +244,17 @@ HTML,
         body.admin-build-preview-layout .fi-sidebar-close-overlay {
             z-index: 70;
             background: rgba(15, 23, 42, .36);
+        }
+        body.admin-build-preview-layout .fi-page-header {
+            max-width: min(1040px, 100%);
+        }
+        body.admin-build-preview-layout .fi-page-header-main-ctn,
+        body.admin-build-preview-layout .fi-page-header-main {
+            max-width: none;
+        }
+        body.admin-build-preview-layout .fi-page-header-heading,
+        body.admin-build-preview-layout .fi-section-content {
+            word-break: break-word;
         }
         body.admin-build-preview-layout .fi-topbar-collapse-sidebar-btn-ctn {
             display: none !important;
