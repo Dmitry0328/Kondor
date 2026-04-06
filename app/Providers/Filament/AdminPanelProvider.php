@@ -200,30 +200,53 @@ HTML,
     }
     @media (min-width: 1024px) {
         body.admin-build-preview-layout .fi-main-ctn {
-            padding-right: 22.5rem;
-            padding-left: 1rem;
-            transition: padding-right .22s ease;
+            padding-inline: 1rem;
         }
         body.admin-build-preview-layout.admin-build-sidebar-open .fi-main-ctn {
-            padding-right: 0;
+            padding-inline: 1rem;
+        }
+        body.admin-build-preview-layout .fi-page,
+        body.admin-build-preview-layout .fi-page-main,
+        body.admin-build-preview-layout .fi-page-content {
+            max-width: none;
+        }
+        body.admin-build-preview-layout .fi-page-header-main-ctn {
+            gap: 1.5rem;
+        }
+        body.admin-build-preview-layout .fi-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(19rem, 22rem);
+            align-items: start;
+            gap: 1.5rem;
+        }
+        body.admin-build-preview-layout .fi-header > div:first-child {
+            min-width: 0;
+        }
+        body.admin-build-preview-layout .fi-header-actions-ctn {
+            grid-column: 2;
+            justify-self: stretch;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding-top: .5rem;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
-            position: fixed;
+            position: sticky;
             top: 5.75rem;
-            right: 1rem;
-            z-index: 30;
-            width: min(20.5rem, calc(100vw - 2rem));
+            z-index: 10;
+            width: 100%;
+            min-width: 0;
             max-height: calc(100vh - 7rem);
             overflow: auto;
-            transition: opacity .18s ease, transform .18s ease;
+            align-self: start;
         }
         body.admin-build-preview-layout.admin-build-sidebar-open .admin-build-live-preview-shell {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(10px);
+            opacity: 1;
+            pointer-events: auto;
+            transform: none;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell > .fi-section {
-            height: 100%;
+            height: auto;
         }
         body.admin-build-preview-layout .admin-build-form-stack,
         body.admin-build-preview-layout .fi-main {
@@ -245,11 +268,8 @@ HTML,
             z-index: 70;
             background: rgba(15, 23, 42, .36);
         }
-        body.admin-build-preview-layout .fi-page-header {
-            max-width: min(1040px, 100%);
-        }
-        body.admin-build-preview-layout .fi-page-header-main-ctn,
-        body.admin-build-preview-layout .fi-page-header-main {
+        body.admin-build-preview-layout .fi-page-header-main,
+        body.admin-build-preview-layout .fi-page-main {
             max-width: none;
         }
         body.admin-build-preview-layout .fi-page-header-heading,
