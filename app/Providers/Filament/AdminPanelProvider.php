@@ -213,9 +213,9 @@ HTML,
         }
         body.admin-build-preview-layout .fi-header {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
             align-items: start;
-            gap: 0;
+            gap: 1rem;
         }
         body.admin-build-preview-layout .fi-header > div:first-child {
             min-width: 0;
@@ -229,7 +229,7 @@ HTML,
             min-width: 0;
         }
         body.admin-build-preview-layout .admin-build-editor-grid {
-            column-gap: 0;
+            column-gap: 1rem;
             row-gap: 1rem;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
