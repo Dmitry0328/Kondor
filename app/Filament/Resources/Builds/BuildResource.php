@@ -979,6 +979,9 @@ class BuildResource extends Resource
         $optionsLabel = mb_strtolower((string) ($definition['label'] ?? 'комплектуючі'));
 
         return Section::make(BuildConfigurator::defaultGroupTitle($slot))
+            ->extraAttributes([
+                'style' => 'margin-left: 10px; margin-right: 400px;',
+            ])
             ->description('Спочатку обирається базова комплектуюча збірки, потім — додаткові варіанти для конфігуратора.')
             ->schema([
                 Placeholder::make("configurator_slot_guide_$slot")

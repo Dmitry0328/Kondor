@@ -232,8 +232,8 @@ HTML,
             column-gap: 1rem;
             row-gap: 1rem;
         }
-        body.admin-build-preview-layout .admin-preview-form-stack > .fi-grid-col > .fi-sc-component > .fi-section,
-        .admin-preview-form-stack > .fi-grid-col > .fi-sc-component > .fi-section {
+        body.admin-build-preview-layout .admin-preview-form-stack .fi-section,
+        .admin-preview-form-stack .fi-section {
             margin-right: -390px;
         }
         body.admin-build-preview-layout .admin-build-live-preview-shell {
