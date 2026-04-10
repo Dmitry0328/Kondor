@@ -980,7 +980,7 @@ class BuildResource extends Resource
 
         return Section::make(BuildConfigurator::defaultGroupTitle($slot))
             ->extraAttributes([
-                'style' => 'margin-left: 10px; margin-right: 400px;',
+                'class' => 'admin-configurator-slot-section',
             ])
             ->description('Спочатку обирається базова комплектуюча збірки, потім — додаткові варіанти для конфігуратора.')
             ->schema([

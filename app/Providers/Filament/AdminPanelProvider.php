@@ -349,6 +349,26 @@ HTML,
             height: .9rem;
         }
     }
+    @media (min-width: 1024px) {
+    body:not(.admin-build-preview-layout) .admin-preview-form-stack .fi-section {
+        margin-right: -220px;
+    }
+
+    body:not(.admin-build-preview-layout) .admin-preview-live-preview-shell {
+        position: sticky;
+        top: 3.75rem;
+        align-self: start;
+        min-width: 0;
+        margin-left: 278px;
+        margin-right: -596px;
+    }
+
+    body:not(.admin-build-preview-layout) .admin-preview-live-preview-shell > .fi-section {
+        max-height: calc(100vh - 7rem);
+        overflow: auto;
+    }
+}
+
 </style>
 <div class="admin-site-toast-stack" data-admin-site-notifications data-feed-url="{$feedUrl}"></div>
 <script src="{$scriptUrl}"></script>

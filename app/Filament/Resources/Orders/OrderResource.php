@@ -196,7 +196,7 @@ class OrderResource extends Resource
                         ]),
                 ])->columnSpan([
                     'default' => 1,
-                    'xl' => 4,
+                    'xl' => 8,
                 ]),
             ]),
         ]);

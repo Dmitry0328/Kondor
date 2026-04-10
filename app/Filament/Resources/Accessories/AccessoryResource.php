@@ -198,11 +198,14 @@ class AccessoryResource extends Resource
                                 ->columnSpanFull(),
                         ]),
                 ])
-                    ->extraAttributes(['class' => 'admin-preview-form-stack'])
+                    ->extraAttributes([
+                        'class' => 'admin-preview-form-stack',
+                        'style' => 'min-width: 0;',
+                    ])
                     ->columnSpan([
-                    'default' => 1,
-                    'lg' => 8,
-                ]),
+                        'default' => 1,
+                        'lg' => 7,
+                    ]),
                 Section::make('Живий превʼю')
                     ->description('Праворуч одразу видно, як девайс виглядатиме на сайті.')
                     ->schema([
@@ -214,10 +217,13 @@ class AccessoryResource extends Resource
                                 ])->render()
                             )),
                     ])
-                    ->extraAttributes(['class' => 'admin-preview-live-preview-shell'])
+                    ->extraAttributes([
+                        'class' => 'admin-preview-live-preview-shell',
+                        'style' => 'min-width: 420px; margin-left: clamp(40px, 18vw, 400px);',
+                    ])
                     ->columnSpan([
                         'default' => 1,
-                        'lg' => 4,
+                        'lg' => 5,
                     ]),
             ]),
         ]);
