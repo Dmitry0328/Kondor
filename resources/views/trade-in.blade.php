@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <link rel="stylesheet" href="{{ asset('css/cart-page.css') }}">
         <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
+        @include('partials.theme-head')
         <style>
             .tradein-shell {
                 min-height: 100vh;
@@ -901,7 +902,7 @@
 
         @include('partials.admin-site-notifications')
         @include('partials.admin-inline-images')
-        <script src="{{ asset('js/storefront-cart.js') }}"></script>
+        <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
         <script>
             (() => {
                 const header = document.querySelector('.header');
@@ -1098,5 +1099,6 @@
                 }
             })();
         </script>
+        @include('partials.theme-toggle')
     </body>
 </html>

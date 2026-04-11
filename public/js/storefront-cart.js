@@ -134,9 +134,14 @@
         });
 
         document.querySelectorAll('.header-cart').forEach((element) => {
+            const cartLabel = '\u041A\u043E\u0448\u0438\u043A';
+            const singleItemLabel = '\u0442\u043E\u0432\u0430\u0440';
+            const fewItemsLabel = '\u0442\u043E\u0432\u0430\u0440\u0438';
+            const manyItemsLabel = '\u0442\u043E\u0432\u0430\u0440\u0456\u0432';
+
             element.setAttribute(
                 'aria-label',
-                count > 0 ? `Кошик, ${count} ${count === 1 ? 'товар' : count < 5 ? 'товари' : 'товарів'}` : 'Кошик',
+                count > 0 ? `${cartLabel}, ${count} ${count === 1 ? singleItemLabel : count < 5 ? fewItemsLabel : manyItemsLabel}` : cartLabel,
             );
         });
 

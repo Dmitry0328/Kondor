@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <link rel="stylesheet" href="{{ asset('css/cart-page.css') }}">
         <link rel="stylesheet" href="{{ asset('css/order-tracking.css') }}">
+        @include('partials.theme-head')
     </head>
     <body>
         <div class="cart-site-shell">
@@ -300,7 +301,8 @@
             </footer>
         </div>
 
-        <script src="{{ asset('js/storefront-cart.js') }}"></script>
+        <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
+        @include('partials.theme-toggle')
         <script>
             document.querySelectorAll('[data-copy-ttn]').forEach((button) => {
                 button.addEventListener('click', async () => {

@@ -8,6 +8,7 @@
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
+        @include('partials.theme-head')
         <style>
             :root { --bg:#fff; --surface:#fff; --text:#18202a; --muted:#646d79; --line:#dfe3eb; --primary:#6f10c9; --shadow:0 18px 45px rgba(24,32,42,.08); --container:min(calc(100% - 28px),1920px); --content:min(calc(100% - 28px),1440px); --win-border:#c9d0da; --win-surface-top:#fff; --win-surface-bottom:#eef2f6; --win-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(16,24,40,.08); }
             * { box-sizing:border-box; }
@@ -1924,7 +1925,7 @@
             @endforeach
         @endforeach
 
-        <script src="{{ asset('js/storefront-cart.js') }}"></script>
+        <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
         <script>
             (() => {
                 const header = document.querySelector('.header');
@@ -3256,6 +3257,7 @@
                 }
             })();
         </script>
+        @include('partials.theme-toggle')
         @include('partials.admin-site-notifications')
         @include('partials.admin-inline-images')
     </body>

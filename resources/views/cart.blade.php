@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <link rel="stylesheet" href="{{ asset('css/cart-page.css') }}">
         <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
+        @include('partials.theme-head')
     </head>
     <body>
         @php
@@ -375,7 +376,8 @@
 
         @include('partials.admin-site-notifications')
         @include('partials.admin-inline-images')
-        <script src="{{ asset('js/storefront-cart.js') }}"></script>
+        @include('partials.theme-toggle')
+        <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
         <script src="{{ asset('js/cart-page.js') }}"></script>
     </body>
 </html>

@@ -8,6 +8,7 @@
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
+        @include('partials.theme-head')
         <style>
             :root {
                 --bg: #ffffff;
@@ -2444,7 +2445,7 @@
             </footer>
         </div>
 
-        <script src="{{ asset('js/storefront-cart.js') }}"></script>
+        <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
         <script>
             (() => {
                 const header = document.querySelector('.header');
@@ -3084,6 +3085,7 @@
                 window.addEventListener('load', syncBuildCopyToggles);
             })();
         </script>
+        @include('partials.theme-toggle')
         @include('partials.admin-site-notifications')
         @include('partials.admin-inline-images')
     </body>
