@@ -12,39 +12,54 @@
         <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
         @include('partials.theme-head')
         <style>
-            body { margin: 0; font-family: 'Manrope', sans-serif; background: #08111c; color: #f5f7fb; }
+            body { margin: 0; font-family: 'Manrope', sans-serif; background: #f6f8fc; color: #18202a; }
             a { color: inherit; text-decoration: none; }
-            .page { min-height: 100vh; background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.2), transparent 28%), linear-gradient(180deg, #0d1726 0%, #070c14 100%); }
-            .hero { padding: 22px 0 12px; }
-            .back { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 999px; background: rgba(255, 255, 255, 0.04); color: #dce3f2; }
-            .layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); gap: 28px; padding: 16px 0 70px; }
-            .gallery, .panel, .section { border-radius: 30px; border: 1px solid rgba(145, 158, 185, 0.16); background: linear-gradient(180deg, rgba(18, 24, 35, 0.98), rgba(10, 15, 24, 0.98)); box-shadow: 0 24px 52px rgba(2, 8, 18, 0.36); }
+            .page { min-height: 100vh; background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.12), transparent 28%), linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%); }
+            .hero { padding: 8px 0 12px; }
+            .back { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 999px; border: 1px solid #d8e1ee; background: rgba(255, 255, 255, 0.92); color: #364255; box-shadow: 0 12px 24px rgba(24, 32, 42, 0.06); }
+            .layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); gap: 28px; padding: 0 0 70px; }
+            .gallery, .panel, .section { border-radius: 30px; border: 1px solid #dce4ef; background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 253, 0.98)); box-shadow: 0 22px 46px rgba(24, 32, 42, 0.08); }
             .gallery { padding: 26px; }
             .gallery__main { display: grid; place-items: center; aspect-ratio: 1 / 1; border-radius: 24px; background: #fff; padding: 28px; }
             .gallery__main img { width: 100%; height: 100%; object-fit: contain; }
             .thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 12px; margin-top: 16px; }
-            .thumbs button { padding: 8px; border-radius: 18px; border: 1px solid rgba(145, 158, 185, 0.18); background: rgba(255, 255, 255, 0.04); cursor: pointer; }
+            .thumbs button { padding: 8px; border-radius: 18px; border: 1px solid #dde5f0; background: rgba(255, 255, 255, 0.92); cursor: pointer; box-shadow: 0 10px 18px rgba(24, 32, 42, 0.05); }
             .thumbs button.is-active { border-color: rgba(124, 58, 237, 0.66); box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.18); }
             .thumbs img { width: 100%; height: 90px; object-fit: contain; background: #fff; border-radius: 14px; }
             .panel { padding: 30px; }
             .panel__eyebrow { color: #a78bfa; font-size: 12px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; }
             .panel__title { margin: 14px 0 10px; font-size: clamp(34px, 4.5vw, 58px); line-height: 0.96; letter-spacing: -0.05em; }
-            .panel__summary { margin: 0; color: #98a5be; line-height: 1.75; font-size: 17px; }
+            .panel__summary { margin: 0; color: #627184; line-height: 1.75; font-size: 17px; }
             .panel__price { margin: 24px 0; font-size: 48px; font-weight: 800; }
             .buy { display: flex; gap: 12px; align-items: center; margin-top: 22px; flex-wrap: wrap; }
-            .qty { display: inline-flex; align-items: center; gap: 8px; padding: 8px; border-radius: 18px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(145, 158, 185, 0.16); }
-            .qty button { width: 42px; height: 42px; border: 0; border-radius: 14px; background: rgba(255, 255, 255, 0.05); color: #fff; font-size: 24px; cursor: pointer; }
-            .qty input { width: 52px; border: 0; background: transparent; color: #fff; text-align: center; font-size: 20px; font-weight: 800; }
+            .qty { display: inline-flex; align-items: center; gap: 8px; padding: 8px; border-radius: 18px; background: rgba(255, 255, 255, 0.92); border: 1px solid #dce4ef; box-shadow: 0 10px 22px rgba(24, 32, 42, 0.05); }
+            .qty button { width: 42px; height: 42px; border: 0; border-radius: 14px; background: #eff3f9; color: #18202a; font-size: 24px; cursor: pointer; }
+            .qty input { width: 52px; border: 0; background: transparent; color: #18202a; text-align: center; font-size: 20px; font-weight: 800; }
             .buy__button { min-height: 58px; padding: 0 28px; border: 0; border-radius: 20px; background: linear-gradient(135deg, #7c3aed, #9f67ff); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 18px 30px rgba(124, 58, 237, 0.28); }
-            .feedback { margin-top: 14px; color: #b8c2d9; min-height: 24px; }
+            .feedback { margin-top: 14px; color: #627184; min-height: 24px; }
             .section { padding: 28px; }
             .section h2 { margin: 0 0 18px; font-size: 28px; }
             .specs { display: grid; gap: 12px; }
-            .spec { display: grid; gap: 6px; padding: 14px 16px; border-radius: 18px; background: rgba(255, 255, 255, 0.04); }
-            .spec strong { font-size: 15px; color: #b7c3db; }
+            .spec { display: grid; gap: 6px; padding: 14px 16px; border-radius: 18px; background: #f6f9fd; border: 1px solid #e1e8f2; }
+            .spec strong { font-size: 15px; color: #627184; }
             .spec span { font-size: 18px; font-weight: 700; }
             .package { display: grid; gap: 12px; }
-            .package div { padding: 14px 16px; border-radius: 18px; background: rgba(255, 255, 255, 0.04); }
+            .package div { padding: 14px 16px; border-radius: 18px; background: #f6f9fd; border: 1px solid #e1e8f2; }
+            html[data-theme="dark"] body { background: #08111c; color: #f5f7fb; }
+            html[data-theme="dark"] .page { background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.2), transparent 28%), linear-gradient(180deg, #0d1726 0%, #070c14 100%); }
+            html[data-theme="dark"] .back { border-color: transparent; background: rgba(255, 255, 255, 0.04); color: #dce3f2; box-shadow: none; }
+            html[data-theme="dark"] .gallery,
+            html[data-theme="dark"] .panel,
+            html[data-theme="dark"] .section { border-color: rgba(145, 158, 185, 0.16); background: linear-gradient(180deg, rgba(18, 24, 35, 0.98), rgba(10, 15, 24, 0.98)); box-shadow: 0 24px 52px rgba(2, 8, 18, 0.36); }
+            html[data-theme="dark"] .thumbs button { border-color: rgba(145, 158, 185, 0.18); background: rgba(255, 255, 255, 0.04); box-shadow: none; }
+            html[data-theme="dark"] .panel__summary,
+            html[data-theme="dark"] .feedback { color: #98a5be; }
+            html[data-theme="dark"] .qty { background: rgba(255, 255, 255, 0.04); border-color: rgba(145, 158, 185, 0.16); box-shadow: none; }
+            html[data-theme="dark"] .qty button { background: rgba(255, 255, 255, 0.05); color: #fff; }
+            html[data-theme="dark"] .qty input { color: #fff; }
+            html[data-theme="dark"] .spec,
+            html[data-theme="dark"] .package div { background: rgba(255, 255, 255, 0.04); border-color: transparent; }
+            html[data-theme="dark"] .spec strong { color: #b7c3db; }
             @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
         </style>
     </head>
@@ -276,5 +291,8 @@
                 window.KondorCart.renderPreviews();
             }
         </script>
+        @include('partials.theme-toggle')
+        @include('partials.admin-site-notifications')
+        @include('partials.admin-inline-images')
     </body>
 </html>

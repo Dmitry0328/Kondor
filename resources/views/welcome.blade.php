@@ -2789,6 +2789,84 @@
                 gap: 18px;
             }
 
+            html:not([data-theme="dark"]) .showcase-section__title,
+            html:not([data-theme="dark"]) .showcase-section__title span {
+                color: #18202a;
+            }
+
+            html:not([data-theme="dark"]) .showcase-section__link {
+                color: #4f5b6d;
+            }
+
+            html:not([data-theme="dark"]) .showcase-section__link:hover {
+                color: #1a2230;
+            }
+
+            html:not([data-theme="dark"]) .accessories-card {
+                border-color: rgba(210, 219, 232, 0.92);
+                background:
+                    radial-gradient(circle at 82% 18%, rgba(143, 47, 255, 0.1), transparent 20%),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 248, 253, 0.98));
+                color: #18202a;
+                box-shadow: 0 22px 54px rgba(24, 32, 42, 0.1);
+            }
+
+            html:not([data-theme="dark"]) .accessories-card:hover {
+                border-color: rgba(143, 47, 255, 0.32);
+                box-shadow:
+                    0 28px 64px rgba(24, 32, 42, 0.14),
+                    0 0 0 1px rgba(143, 47, 255, 0.08) inset;
+            }
+
+            html:not([data-theme="dark"]) .accessories-card__kicker {
+                color: rgba(73, 83, 98, 0.76);
+            }
+
+            html:not([data-theme="dark"]) .accessories-card__text {
+                color: #5b6676;
+            }
+
+            html:not([data-theme="dark"]) .accessories-card__external {
+                border-color: rgba(143, 47, 255, 0.48);
+                background: rgba(143, 47, 255, 0.04);
+                color: #7c35df;
+            }
+
+            html:not([data-theme="dark"]) .accessories-card:hover .accessories-card__external {
+                background: rgba(143, 47, 255, 0.1);
+                color: #6f21d5;
+            }
+
+            html:not([data-theme="dark"]) .accessories-card__art--combo::before,
+            html:not([data-theme="dark"]) .accessories-card__art--combo::after,
+            html:not([data-theme="dark"]) .accessories-card__art--mouse::before,
+            html:not([data-theme="dark"]) .accessories-card__art--keyboard::before,
+            html:not([data-theme="dark"]) .accessories-card__art--pad::before {
+                background: linear-gradient(180deg, rgba(31, 41, 55, 0.12), rgba(31, 41, 55, 0.04));
+                box-shadow:
+                    0 14px 28px rgba(24, 32, 42, 0.12),
+                    0 0 18px rgba(143, 47, 255, 0.08);
+            }
+
+            html:not([data-theme="dark"]) .accessories-card__art--combo span {
+                border-color: rgba(31, 41, 55, 0.14);
+                box-shadow: 0 0 14px rgba(143, 47, 255, 0.12);
+            }
+
+            html:not([data-theme="dark"]) .accessories-card__art--mouse span {
+                background: rgba(31, 41, 55, 0.72);
+                box-shadow: 0 0 12px rgba(143, 47, 255, 0.1);
+            }
+
+            html:not([data-theme="dark"]) .accessories-card__art--keyboard span {
+                background:
+                    linear-gradient(90deg, rgba(31, 41, 55, 0.14) 0 8%, transparent 8% 10%, rgba(31, 41, 55, 0.14) 10% 18%, transparent 18% 20%, rgba(31, 41, 55, 0.14) 20% 28%, transparent 28% 30%, rgba(31, 41, 55, 0.14) 30% 38%, transparent 38% 40%, rgba(31, 41, 55, 0.14) 40% 48%, transparent 48% 50%, rgba(31, 41, 55, 0.14) 50% 58%, transparent 58% 60%, rgba(31, 41, 55, 0.14) 60% 68%, transparent 68% 70%, rgba(31, 41, 55, 0.14) 70% 78%, transparent 78% 80%, rgba(31, 41, 55, 0.14) 80% 88%, transparent 88% 90%, rgba(31, 41, 55, 0.14) 90% 98%);
+            }
+
+            html:not([data-theme="dark"]) .accessories-card__art--pad span {
+                border-color: rgba(143, 47, 255, 0.3);
+            }
+
             .services-card {
                 min-height: 480px;
                 padding: 34px 34px 28px;
