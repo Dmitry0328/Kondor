@@ -225,18 +225,30 @@
             .product-fps__value.is-empty { min-width:40px; color:#6a7789; font-size:30px; text-align:center; }
             .product-fps__status { display:none; margin-top:2px; color:#6a7789; font-size:12px; font-weight:800; letter-spacing:.01em; text-transform:uppercase; }
             .product-fps__status.is-visible { display:block; }
-            .product-about { display:grid; gap:24px; padding:14px 2px 0; }
+            .product-case-picker { display:grid; gap:14px; padding:18px 20px; border:1px solid rgba(164,177,202,.18); border-radius:24px; background:linear-gradient(180deg,rgba(18,26,40,.94),rgba(12,18,28,.98)); box-shadow:0 18px 36px rgba(2,8,18,.22); }
+            .product-case-picker__header { display:grid; gap:6px; }
+            .product-case-picker__eyebrow { color:#ad9cf2; font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+            .product-case-picker__title { margin:0; color:#edf2fb; font-size:17px; font-weight:800; line-height:1.4; }
+            .product-case-picker__options { display:flex; flex-wrap:wrap; gap:10px; }
+            .product-case-picker__option { display:inline-flex; align-items:center; gap:10px; min-height:48px; padding:0 16px; border:1px solid rgba(162,176,201,.2); border-radius:999px; background:rgba(255,255,255,.03); color:#cfd8e8; font-size:14px; font-weight:800; box-shadow:inset 0 1px 0 rgba(255,255,255,.04); transition:transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease, color .18s ease; }
+            .product-case-picker__option:hover { transform:translateY(-1px); border-color:rgba(175,149,245,.42); background:rgba(132,96,222,.12); color:#f4f6fb; box-shadow:0 14px 28px rgba(26,14,54,.22); }
+            .product-case-picker__option.is-active { border-color:rgba(176,152,245,.56); background:linear-gradient(180deg,rgba(134,102,224,.24),rgba(88,64,150,.22)); color:#ffffff; box-shadow:0 18px 34px rgba(48,28,92,.28); }
+            .product-case-picker__swatch { display:inline-flex; width:18px; height:18px; border:1px solid rgba(255,255,255,.18); border-radius:999px; box-shadow:inset 0 1px 1px rgba(255,255,255,.3); flex:none; }
+            .product-case-picker__swatch--black { background:linear-gradient(180deg,#1c2230,#0f131d); }
+            .product-case-picker__swatch--white { background:linear-gradient(180deg,#ffffff,#d8dfeb); }
+            .product-case-picker__meta { color:#95a3bb; font-size:13px; font-weight:700; line-height:1.55; }
+            .product-about { display:grid; gap:24px; padding:8px 0 0; border:0; background:transparent; box-shadow:none; }
             .product-about--mobile { display:none; }
-            .product-about__title { margin:0; font-family:'Space Grotesk',sans-serif; font-size:clamp(36px,4vw,54px); font-weight:700; letter-spacing:-.05em; color:#11151a; }
-            .product-about__lead { margin:0; color:#18202a; font-size:18px; line-height:1.55; font-weight:800; }
-            .product-about__note { margin:0; color:#18202a; font-size:18px; line-height:1.5; font-weight:800; }
+            .product-about__title { margin:0; font-family:'Space Grotesk',sans-serif; font-size:clamp(36px,4vw,54px); font-weight:700; letter-spacing:-.05em; color:#ecf1fb; }
+            .product-about__lead { margin:0; color:#d8e0ee; font-size:18px; line-height:1.6; font-weight:700; }
+            .product-about__note { margin:0; color:#c5d0e4; font-size:18px; line-height:1.6; font-weight:700; }
             .product-about__section { display:grid; gap:10px; }
-            .product-about__section-title { margin:0; color:#18202a; font-size:18px; font-weight:800; line-height:1.4; }
-            .product-about__list { margin:0; padding:0; list-style:none; display:grid; gap:6px; color:#18202a; font-size:17px; line-height:1.5; font-weight:700; }
+            .product-about__section-title { margin:0; color:#eef3fb; font-size:18px; font-weight:800; line-height:1.4; }
+            .product-about__list { margin:0; padding:0; list-style:none; display:grid; gap:6px; color:#d1dbea; font-size:17px; line-height:1.6; font-weight:700; }
             .product-about__list--dash li, .product-about__list--square li { position:relative; padding-left:18px; }
-            .product-about__list--dash li::before { content:'-'; position:absolute; left:0; top:0; color:#475160; }
-            .product-about__list--square li::before { content:''; position:absolute; left:2px; top:.66em; width:6px; height:6px; background:#566171; }
-            .product-about__steps { margin:0; padding-left:24px; display:grid; gap:4px; color:#18202a; font-size:17px; line-height:1.5; font-weight:700; }
+            .product-about__list--dash li::before { content:'-'; position:absolute; left:0; top:0; color:#9f8ae8; }
+            .product-about__list--square li::before { content:''; position:absolute; left:2px; top:.66em; width:6px; height:6px; background:#9f8ae8; border-radius:999px; }
+            .product-about__steps { margin:0; padding-left:24px; display:grid; gap:4px; color:#d1dbea; font-size:17px; line-height:1.6; font-weight:700; }
             .product-aside { display:grid; gap:22px; align-content:start; }
             .product-aside__title { margin:0; font-family:'Space Grotesk',sans-serif; font-size:clamp(38px,4vw,58px); line-height:.98; letter-spacing:-.05em; color:#11151a; }
             .product-aside__code { display:inline-flex; align-items:center; gap:8px; width:fit-content; padding:8px 12px; border:1px solid #dbe3ee; border-radius:999px; background:#f8fbff; color:#516072; font-size:13px; font-weight:800; letter-spacing:.02em; text-transform:uppercase; }
@@ -363,22 +375,22 @@
             .product-share-modal__meta { margin:0; color:#687385; font-size:14px; font-weight:700; }
             .product-share-modal__copy { display:inline-flex; align-items:center; justify-content:center; min-height:54px; padding:0 24px; border:0; border-radius:16px; background:linear-gradient(180deg,#8424f0,#6816cb); color:#fff; font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 16px 28px rgba(105,22,203,.22); transition:transform .18s ease, box-shadow .18s ease; }
             .product-share-modal__copy:hover { transform:translateY(-1px); box-shadow:0 18px 30px rgba(105,22,203,.26); }
-            .product-gear { display:grid; gap:16px; padding:18px; border:1px solid #dde4ee; border-radius:22px; background:linear-gradient(180deg,#fff,#f8fbff); box-shadow:0 12px 24px rgba(24,32,42,.05); }
+            .product-gear { display:grid; gap:18px; padding:22px; border:1px solid rgba(161,176,203,.16); border-radius:26px; background:linear-gradient(180deg,rgba(16,24,37,.96),rgba(11,18,29,.98)); box-shadow:0 20px 42px rgba(2,8,18,.24); }
             .product-gear__copy { display:grid; gap:6px; }
-            .product-gear__eyebrow { color:#6f10c9; font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-            .product-gear__title { color:#18202a; font-family:'Space Grotesk',sans-serif; font-size:28px; font-weight:700; line-height:1; letter-spacing:-.04em; }
-            .product-gear__text { margin:0; color:#5f6b79; font-size:14px; font-weight:700; line-height:1.5; }
-            .product-gear__grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; }
-            .product-gear__item { display:grid; gap:8px; align-content:start; min-height:100%; padding:14px 12px; border:1px solid #dbe3ee; border-radius:16px; background:#fff; box-shadow:0 8px 16px rgba(24,32,42,.04); transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease; cursor:pointer; text-align:left; appearance:none; }
-            .product-gear__item:hover { transform:translateY(-1px); border-color:#cbd6e4; background:#fbfcfe; box-shadow:0 14px 22px rgba(24,32,42,.08); }
-            .product-gear__item:focus-visible { outline:2px solid rgba(111,16,201,.28); outline-offset:2px; }
-            .product-gear__icon { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:12px; background:linear-gradient(180deg,#f3ebff,#efe6ff); color:#6f10c9; }
+            .product-gear__eyebrow { color:#aa98ed; font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+            .product-gear__title { color:#f1f5fb; font-family:'Space Grotesk',sans-serif; font-size:28px; font-weight:700; line-height:1; letter-spacing:-.04em; }
+            .product-gear__text { margin:0; color:#a7b4ca; font-size:14px; font-weight:700; line-height:1.55; }
+            .product-gear__grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; }
+            .product-gear__item { display:grid; gap:8px; align-content:start; min-height:100%; padding:16px 14px; border:1px solid rgba(164,178,204,.18); border-radius:18px; background:linear-gradient(180deg,rgba(47,33,86,.48),rgba(26,20,50,.42)); box-shadow:inset 0 1px 0 rgba(255,255,255,.03); transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease; cursor:pointer; text-align:left; appearance:none; }
+            .product-gear__item:hover { transform:translateY(-1px); border-color:rgba(177,153,244,.38); background:linear-gradient(180deg,rgba(64,45,112,.52),rgba(31,23,57,.5)); box-shadow:0 16px 28px rgba(9,10,24,.28); }
+            .product-gear__item:focus-visible { outline:2px solid rgba(167,146,235,.32); outline-offset:2px; }
+            .product-gear__icon { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:12px; background:linear-gradient(180deg,rgba(172,150,244,.16),rgba(137,112,210,.12)); color:#b7a7ef; }
             .product-gear__icon svg { width:18px; height:18px; }
-            .product-gear__label { color:#18202a; font-size:14px; font-weight:800; line-height:1.25; }
-            .product-gear__meta { color:#667282; font-size:12px; font-weight:700; line-height:1.4; }
-            .product-gear__selection { color:#6f10c9; font-size:12px; font-weight:900; line-height:1.45; }
-            .product-gear__item.is-selected { border-color:#cfaeff; background:linear-gradient(180deg,#fff,#faf6ff); box-shadow:0 16px 26px rgba(105,22,203,.1); }
-            .product-gear__count { display:inline-flex; align-items:center; width:fit-content; min-height:24px; padding:0 10px; border-radius:999px; background:#f4efff; color:#6f10c9; font-size:11px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+            .product-gear__label { color:#eef3fb; font-size:14px; font-weight:800; line-height:1.25; }
+            .product-gear__meta { color:#9dacc2; font-size:12px; font-weight:700; line-height:1.4; }
+            .product-gear__selection { color:#b8a7ef; font-size:12px; font-weight:800; line-height:1.45; }
+            .product-gear__item.is-selected { border-color:rgba(182,160,244,.5); background:linear-gradient(180deg,rgba(83,60,141,.58),rgba(41,30,74,.58)); box-shadow:0 18px 30px rgba(22,14,46,.34); }
+            .product-gear__count { display:inline-flex; align-items:center; width:fit-content; min-height:24px; padding:0 10px; border-radius:999px; background:rgba(163,137,236,.14); color:#c5b5f7; font-size:11px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
             .accessory-modal[hidden], .accessory-sheet[hidden] { display:none; }
             .accessory-modal, .accessory-sheet { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(15,23,42,.58); backdrop-filter:blur(8px); }
             .accessory-modal { z-index:130; }
@@ -399,6 +411,7 @@
             .accessory-card__name { margin:0; color:#18202a; font-size:24px; font-weight:900; line-height:1.08; letter-spacing:-.03em; }
             .accessory-card__summary { margin:0; color:#5f6b79; font-size:14px; font-weight:700; line-height:1.55; }
             .accessory-card__price { margin:0; color:#18202a; font-size:18px; font-weight:900; line-height:1.15; }
+            .accessory-card.is-selected { border-color:#cfaeff; box-shadow:0 18px 34px rgba(105,22,203,.12); }
             .accessory-card__actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:4px; }
             .accessory-card__button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 16px; border:1px solid #d7deea; border-radius:14px; background:#fff; color:#18202a; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 10px 18px rgba(24,32,42,.05); transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
             .accessory-card__button:hover { transform:translateY(-1px); border-color:#c8d2df; background:#fbfcfe; box-shadow:0 14px 22px rgba(24,32,42,.08); }
@@ -407,6 +420,14 @@
             .accessory-card__button--select { border-color:#18202a; background:#18202a; color:#fff; box-shadow:0 16px 24px rgba(24,32,42,.16); }
             .accessory-card__button--select:hover { border-color:#111723; background:#111723; }
             .accessory-card__button--select.is-selected { border-color:#0f8a48; background:linear-gradient(180deg,#12a150,#0f8a48); color:#fff; box-shadow:0 16px 24px rgba(15,138,72,.18); }
+            .accessory-card__selected-note { display:none; align-items:center; gap:8px; color:#6f10c9; font-size:12px; font-weight:900; line-height:1.4; letter-spacing:.06em; text-transform:uppercase; }
+            .accessory-card.is-selected .accessory-card__selected-note { display:inline-flex; }
+            .accessory-card__qty-controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; width:100%; }
+            .accessory-card__qty-controls[hidden] { display:none !important; }
+            .accessory-card__qty-button { width:44px; min-width:44px; padding:0; font-size:22px; line-height:1; }
+            .accessory-card__qty-value { min-width:74px; padding:0 12px; border:1px solid #d7deea; border-radius:14px; background:#f7f9fc; color:#18202a; font-size:14px; font-weight:900; line-height:44px; text-align:center; }
+            .accessory-card__button--danger { border-color:#f0bfd2; background:#fff5f9; color:#a21d56; box-shadow:none; }
+            .accessory-card__button--danger:hover { border-color:#e39bb9; background:#ffebf3; box-shadow:none; }
             .accessory-modal__empty { display:grid; gap:10px; padding:22px; border:1px dashed #d8e1ee; border-radius:24px; background:#fff; color:#5f6b79; font-size:15px; font-weight:700; line-height:1.55; }
             .accessory-modal__empty strong { color:#18202a; font-size:20px; }
             .accessory-sheet__rows { display:grid; gap:8px; }
@@ -1002,18 +1023,33 @@
                     continue;
                 }
 
-                $type = substr($selectionKey, strlen('accessory_'));
-                $slug = trim((string) $selectionValue);
+                $typeSlugKey = substr($selectionKey, strlen('accessory_'));
+                $type = '';
+                $slug = '';
+                $quantity = 1;
+
+                if (str_contains($typeSlugKey, '__')) {
+                    [$type, $slug] = array_pad(explode('__', $typeSlugKey, 2), 2, '');
+                    $quantity = max(1, min(99, (int) $selectionValue));
+                } else {
+                    $type = $typeSlugKey;
+                    $slug = trim((string) $selectionValue);
+                }
+
+                $type = trim((string) $type);
+                $slug = trim((string) $slug);
                 $item = $accessoryLookup[$slug] ?? null;
 
-                if ($type === '' || ! is_array($item)) {
+                if ($type === '' || $slug === '' || ! is_array($item)) {
                     continue;
                 }
 
-                $sharedAccessorySelections[$type] = [
+                $sharedAccessorySelections[$type] = $sharedAccessorySelections[$type] ?? [];
+                $sharedAccessorySelections[$type][$slug] = [
                     'slug' => $slug,
                     'name' => (string) ($item['name'] ?? ''),
                     'price' => (int) ($item['price_raw'] ?? 0),
+                    'quantity' => max(1, ($sharedAccessorySelections[$type][$slug]['quantity'] ?? 0) + $quantity),
                 ];
             }
         @endphp
@@ -1804,7 +1840,7 @@
                     @if ($accessoryGroup['items'] !== [])
                         <div class="accessory-modal__grid">
                             @foreach ($accessoryGroup['items'] as $accessory)
-                                <article class="accessory-card">
+                                <article class="accessory-card" data-accessory-card data-accessory-card-type="{{ $accessoryGroup['type'] }}" data-accessory-card-slug="{{ $accessory['slug'] }}">
                                     <button
                                         type="button"
                                         class="accessory-card__media"
@@ -1828,6 +1864,7 @@
                                         @endif
 
                                         <p class="accessory-card__price">{{ $priceFormatter((int) ($accessory['price_raw'] ?? 0)) }}</p>
+                                        <span class="accessory-card__selected-note" data-accessory-selected-note>У сетапі обрано</span>
 
                                         <div class="accessory-card__actions">
                                             <button
@@ -1842,7 +1879,16 @@
                                                 Обрати
                                             </button>
 
-                                            @if ($accessory['specs'] !== [])
+                                            <div class="accessory-card__qty-controls" data-accessory-qty-controls hidden>
+                                                <button type="button" class="accessory-card__button accessory-card__qty-button" data-accessory-qty-decrease="{{ $accessory['slug'] }}" data-accessory-type="{{ $accessoryGroup['type'] }}">−</button>
+                                                <span class="accessory-card__qty-value" data-accessory-qty-label>1 шт.</span>
+                                                <button type="button" class="accessory-card__button accessory-card__qty-button accessory-card__button--primary" data-accessory-qty-increase="{{ $accessory['slug'] }}" data-accessory-type="{{ $accessoryGroup['type'] }}">+</button>
+                                                <button type="button" class="accessory-card__button accessory-card__button--danger" data-accessory-remove="{{ $accessory['slug'] }}" data-accessory-type="{{ $accessoryGroup['type'] }}">Зняти</button>
+                                            </div>
+
+                                            @if (($accessory['product_url'] ?? '') !== '')
+                                                <a class="accessory-card__button accessory-card__button--primary" href="{{ $accessory['product_url'] }}">Інформація</a>
+                                            @elseif ($accessory['specs'] !== [])
                                                 <button type="button" class="accessory-card__button accessory-card__button--primary" data-accessory-sheet-open="{{ $accessory['slug'] }}:specs">
                                                     Інформація
                                                 </button>
@@ -2006,6 +2052,9 @@
                 const accessoryCategoryModals = Array.from(document.querySelectorAll('[data-accessory-category-modal]'));
                 const accessorySheetButtons = Array.from(document.querySelectorAll('[data-accessory-sheet-open]'));
                 const accessorySelectButtons = Array.from(document.querySelectorAll('[data-accessory-select]'));
+                const accessoryQtyDecreaseButtons = Array.from(document.querySelectorAll('[data-accessory-qty-decrease]'));
+                const accessoryQtyIncreaseButtons = Array.from(document.querySelectorAll('[data-accessory-qty-increase]'));
+                const accessoryRemoveButtons = Array.from(document.querySelectorAll('[data-accessory-remove]'));
                 const accessorySheets = Array.from(document.querySelectorAll('[data-accessory-sheet]'));
                 const accessoryModalCloseButtons = Array.from(document.querySelectorAll('[data-accessory-modal-close]'));
                 const accessorySheetCloseButtons = Array.from(document.querySelectorAll('[data-accessory-sheet-close]'));
@@ -2065,44 +2114,91 @@
                     }
                 };
 
-                const loadAccessorySelections = () => {
-                    const normalizeSelections = (source) => {
-                        if (!source || typeof source !== 'object' || Array.isArray(source)) {
-                            return {};
+                const normalizeAccessorySelections = (source) => {
+                    if (!source || typeof source !== 'object' || Array.isArray(source)) {
+                        return {};
+                    }
+
+                    return Object.entries(source).reduce((carry, [type, entry]) => {
+                        if (!type || !entry || typeof entry !== 'object' || Array.isArray(entry)) {
+                            return carry;
                         }
 
-                        return Object.entries(source).reduce((carry, [type, entry]) => {
-                            if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
-                                return carry;
+                        const normalizedItems = Object.values(entry).reduce((items, item) => {
+                            if (!item || typeof item !== 'object' || Array.isArray(item)) {
+                                return items;
                             }
 
-                            const slug = `${entry.slug ?? ''}`.trim();
-                            const name = `${entry.name ?? ''}`.trim();
+                            const slug = `${item.slug ?? ''}`.trim();
+                            const name = `${item.name ?? ''}`.trim();
+                            const quantity = clamp(Number.parseInt(`${item.quantity ?? 1}`, 10) || 1, 1, 99);
 
-                            if (!type || !slug || !name) {
-                                return carry;
+                            if (!slug || !name) {
+                                return items;
                             }
 
-                            carry[type] = {
+                            items[slug] = {
+                                slug,
+                                name,
+                                price: Math.max(0, Math.round(Number(item.price) || 0)),
+                                quantity,
+                            };
+
+                            return items;
+                        }, {});
+
+                        if (Object.keys(normalizedItems).length > 0) {
+                            carry[type] = normalizedItems;
+                            return carry;
+                        }
+
+                        const slug = `${entry.slug ?? ''}`.trim();
+                        const name = `${entry.name ?? ''}`.trim();
+
+                        if (!slug || !name) {
+                            return carry;
+                        }
+
+                        carry[type] = {
+                            [slug]: {
                                 slug,
                                 name,
                                 price: Math.max(0, Math.round(Number(entry.price) || 0)),
-                            };
+                                quantity: clamp(Number.parseInt(`${entry.quantity ?? 1}`, 10) || 1, 1, 99),
+                            },
+                        };
 
-                            return carry;
-                        }, {});
-                    };
+                        return carry;
+                    }, {});
+                };
 
+                const mergeAccessorySelections = (base, override) => {
+                    const merged = normalizeAccessorySelections(base);
+
+                    Object.entries(normalizeAccessorySelections(override)).forEach(([type, entries]) => {
+                        merged[type] = {
+                            ...(merged[type] ?? {}),
+                            ...entries,
+                        };
+                    });
+
+                    return merged;
+                };
+
+                const getAccessoryTypeEntries = (type) => Object.values(accessorySelections?.[type] ?? {});
+                const getAccessoryItemQuantity = (type, slug) => {
+                    const entry = accessorySelections?.[type]?.[slug] ?? null;
+                    return clamp(Number.parseInt(`${entry?.quantity ?? 0}`, 10) || 0, 0, 99);
+                };
+
+                const loadAccessorySelections = () => {
                     try {
                         const raw = window.localStorage.getItem(accessorySelectionStorageKey);
                         const parsed = raw ? JSON.parse(raw) : {};
 
-                        return {
-                            ...normalizeSelections(parsed),
-                            ...normalizeSelections(sharedAccessorySelections),
-                        };
+                        return mergeAccessorySelections(sharedAccessorySelections, parsed);
                     } catch (error) {
-                        return normalizeSelections(sharedAccessorySelections);
+                        return normalizeAccessorySelections(sharedAccessorySelections);
                     }
                 };
 
@@ -2118,13 +2214,14 @@
                     accessoryCategoryButtons.forEach((button) => {
                         const type = button.dataset.accessoryCategoryOpen ?? '';
                         const summary = button.querySelector('[data-accessory-category-summary]');
-                        const selection = type ? accessorySelections[type] ?? null : null;
+                        const selections = type ? getAccessoryTypeEntries(type) : [];
+                        const quantity = selections.reduce((sum, entry) => sum + clamp(Number(entry.quantity ?? 0), 0, 99), 0);
 
-                        button.classList.toggle('is-selected', Boolean(selection));
+                        button.classList.toggle('is-selected', quantity > 0);
 
                         if (summary) {
-                            summary.textContent = selection?.name
-                                ? `Обрано: ${selection.name}`
+                            summary.textContent = quantity > 0
+                                ? `Обрано ${selections.length} мод. / ${quantity} шт.`
                                 : 'Ще не обрано';
                         }
                     });
@@ -2132,12 +2229,24 @@
                     accessorySelectButtons.forEach((button) => {
                         const type = button.dataset.accessoryType ?? '';
                         const slug = button.dataset.accessorySelect ?? '';
-                        const selection = type ? accessorySelections[type] ?? null : null;
-                        const isSelected = Boolean(selection && selection.slug === slug);
+                        const quantity = getAccessoryItemQuantity(type, slug);
+                        const isSelected = quantity > 0;
+                        const card = button.closest('[data-accessory-card]');
+                        const qtyLabel = card?.querySelector('[data-accessory-qty-label]');
+                        const qtyControls = card?.querySelector('[data-accessory-qty-controls]');
 
+                        card?.classList.toggle('is-selected', isSelected);
                         button.classList.toggle('is-selected', isSelected);
                         button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
-                        button.textContent = isSelected ? 'Обрано' : 'Обрати';
+                        button.textContent = isSelected ? 'Додати ще' : 'Обрати';
+
+                        if (qtyLabel) {
+                            qtyLabel.textContent = `${quantity || 1} шт.`;
+                        }
+
+                        if (qtyControls) {
+                            qtyControls.hidden = !isSelected;
+                        }
                     });
                 };
 
@@ -2145,66 +2254,89 @@
                     accessoryCategoryButtons.forEach((button) => {
                         const type = button.dataset.accessoryCategoryOpen ?? '';
                         const summary = button.querySelector('[data-accessory-category-summary]');
-                        const selection = type ? accessorySelections[type] ?? null : null;
-
                         if (!summary) {
                             return;
                         }
 
-                        summary.textContent = selection?.name
-                            ? `Обрано: ${selection.name}${Number(selection.price ?? 0) > 0 ? ` + ${formatPrice(selection.price)}` : ''}`
-                            : 'Ще не обрано';
+                        const selections = type ? getAccessoryTypeEntries(type) : [];
+
+                        if (selections.length === 0) {
+                            summary.textContent = 'Ще не обрано';
+                            return;
+                        }
+
+                        const quantity = selections.reduce((sum, entry) => sum + clamp(Number(entry.quantity ?? 0), 0, 99), 0);
+                        const total = selections.reduce((sum, entry) => {
+                            const price = Math.max(0, Math.round(Number(entry.price) || 0));
+                            const itemQuantity = clamp(Number(entry.quantity ?? 0), 0, 99);
+                            return sum + (price * itemQuantity);
+                        }, 0);
+
+                        summary.textContent = `Обрано ${selections.length} мод. / ${quantity} шт.${total > 0 ? ` + ${formatPrice(total)}` : ''}`;
                     });
 
                     accessorySelectButtons.forEach((button) => {
                         const type = button.dataset.accessoryType ?? '';
                         const slug = button.dataset.accessorySelect ?? '';
-                        const selection = type ? accessorySelections[type] ?? null : null;
-                        const isSelected = Boolean(selection && selection.slug === slug);
+                        const quantity = getAccessoryItemQuantity(type, slug);
+                        const isSelected = quantity > 0;
 
-                        button.textContent = isSelected ? 'Обрано' : 'Обрати';
+                        button.textContent = isSelected ? 'Додати ще' : 'Обрати';
                     });
                 };
 
                 const getAccessorySelectionState = () => {
                     const selection = {};
                     const summary = [];
-                    const addons = Object.entries(accessorySelections).reduce((sum, [type, entry]) => {
-                        if (!entry || typeof entry !== 'object') {
+                    const addons = Object.entries(accessorySelections).reduce((sum, [type, entries]) => {
+                        if (!entries || typeof entries !== 'object') {
                             return sum;
                         }
 
-                        const slug = `${entry.slug ?? ''}`.trim();
-                        const name = `${entry.name ?? ''}`.trim();
-                        const price = Math.max(0, Math.round(Number(entry.price) || 0));
+                        return sum + Object.values(entries).reduce((typeSum, entry) => {
+                            if (!entry || typeof entry !== 'object') {
+                                return typeSum;
+                            }
 
-                        if (!slug || !name) {
-                            return sum;
-                        }
+                            const slug = `${entry.slug ?? ''}`.trim();
+                            const name = `${entry.name ?? ''}`.trim();
+                            const price = Math.max(0, Math.round(Number(entry.price) || 0));
+                            const quantity = clamp(Number.parseInt(`${entry.quantity ?? 0}`, 10) || 0, 0, 99);
 
-                        selection[`accessory_${type}`] = slug;
-                        summary.push(`Девайс (${type}): ${name}${price > 0 ? ` + ${formatPrice(price)}` : ''}`);
+                            if (!slug || !name || quantity < 1) {
+                                return typeSum;
+                            }
 
-                        return sum + price;
+                            selection[`accessory_${type}__${slug}`] = `${quantity}`;
+                            summary.push(`Девайс (${type}): ${name} x${quantity}${price > 0 ? ` + ${formatPrice(price * quantity)}` : ''}`);
+
+                            return typeSum + (price * quantity);
+                        }, 0);
                     }, 0);
 
                     return { selection, summary, addons };
                 };
 
-                const toggleAccessorySelection = (payload) => {
+                const setAccessoryQuantity = (payload, nextQuantity) => {
                     if (!payload.type || !payload.slug || !payload.name) {
                         return;
                     }
 
-                    const currentSelection = accessorySelections[payload.type] ?? null;
+                    const quantity = clamp(Number.parseInt(`${nextQuantity}`, 10) || 0, 0, 99);
+                    accessorySelections[payload.type] = accessorySelections[payload.type] ?? {};
 
-                    if (currentSelection && currentSelection.slug === payload.slug) {
-                        delete accessorySelections[payload.type];
+                    if (quantity <= 0) {
+                        delete accessorySelections[payload.type][payload.slug];
+
+                        if (Object.keys(accessorySelections[payload.type]).length === 0) {
+                            delete accessorySelections[payload.type];
+                        }
                     } else {
-                        accessorySelections[payload.type] = {
+                        accessorySelections[payload.type][payload.slug] = {
                             slug: payload.slug,
                             name: payload.name,
                             price: Math.max(0, Math.round(Number(payload.price) || 0)),
+                            quantity,
                         };
                     }
 
@@ -2212,7 +2344,11 @@
                     renderAccessorySelections();
                     syncAccessorySelectionLabels();
                     syncProductPricing();
-                    closeAccessoryCategoryModals();
+                };
+
+                const changeAccessoryQuantity = (payload, delta) => {
+                    const currentQuantity = getAccessoryItemQuantity(payload.type, payload.slug);
+                    setAccessoryQuantity(payload, currentQuantity + delta);
                 };
 
                 const syncHeaderState = () => {
@@ -3213,12 +3349,48 @@
 
                 accessorySelectButtons.forEach((button) => {
                     button.addEventListener('click', () => {
-                        toggleAccessorySelection({
+                        changeAccessoryQuantity({
                             type: button.dataset.accessoryType ?? '',
                             slug: button.dataset.accessorySelect ?? '',
                             name: button.dataset.accessoryName ?? '',
                             price: button.dataset.accessoryPrice ?? 0,
-                        });
+                        }, 1);
+                    });
+                });
+
+                accessoryQtyDecreaseButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const card = button.closest('[data-accessory-card]');
+                        changeAccessoryQuantity({
+                            type: button.dataset.accessoryType ?? '',
+                            slug: button.dataset.accessoryQtyDecrease ?? '',
+                            name: card?.querySelector('.accessory-card__name')?.textContent?.trim() ?? '',
+                            price: card?.querySelector('[data-accessory-select]')?.dataset.accessoryPrice ?? 0,
+                        }, -1);
+                    });
+                });
+
+                accessoryQtyIncreaseButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const card = button.closest('[data-accessory-card]');
+                        changeAccessoryQuantity({
+                            type: button.dataset.accessoryType ?? '',
+                            slug: button.dataset.accessoryQtyIncrease ?? '',
+                            name: card?.querySelector('.accessory-card__name')?.textContent?.trim() ?? '',
+                            price: card?.querySelector('[data-accessory-select]')?.dataset.accessoryPrice ?? 0,
+                        }, 1);
+                    });
+                });
+
+                accessoryRemoveButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const card = button.closest('[data-accessory-card]');
+                        setAccessoryQuantity({
+                            type: button.dataset.accessoryType ?? '',
+                            slug: button.dataset.accessoryRemove ?? '',
+                            name: card?.querySelector('.accessory-card__name')?.textContent?.trim() ?? '',
+                            price: card?.querySelector('[data-accessory-select]')?.dataset.accessoryPrice ?? 0,
+                        }, 0);
                     });
                 });
 

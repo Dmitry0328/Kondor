@@ -83,10 +83,15 @@ class ProductShareTest extends TestCase
         $payload = is_array($sharedBuild->payload) ? $sharedBuild->payload : [];
 
         $this->assertSame('upgrade-4060-ti', $payload['selection']['gpu'] ?? null);
-        $this->assertSame($keyboard->slug, $payload['selection']['accessory_keyboard'] ?? null);
+        $this->assertSame('1', $payload['selection']['accessory_keyboard__' . $keyboard->slug] ?? null);
         $this->assertSame(5550, $payload['additional_price'] ?? null);
         $this->assertSame(88540, $payload['total_price'] ?? null);
         $this->assertContains('Відеокарта: MSI GeForce RTX 4060 Ti Ventus 2X 16G', $payload['summary'] ?? []);
-        $this->assertContains('Клавіатури: Kondor Orion +5 550 грн', $payload['summary'] ?? []);
+        $this->assertTrue(
+            collect($payload['summary'] ?? [])->contains(
+                fn (string $line): bool => str_contains($line, 'Kondor Orion')
+                    && str_contains($line, '5 550')
+            )
+        );
     }
 }

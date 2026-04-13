@@ -73,6 +73,7 @@
         const cartKey = `${item.cartKey ?? item.cart_key ?? item.slug}`;
 
         return {
+            itemType: `${item.itemType ?? item.item_type ?? 'build'}`,
             slug: `${item.slug}`,
             cartKey: cartKey || `${item.slug}`,
             name: `${item.name ?? item.slug}`,
@@ -171,7 +172,11 @@
                     <span class="cart-preview__thumb cart-preview__thumb--${escapeHtml(item.tone)}" aria-hidden="true"></span>
                     <div class="cart-preview__copy">
                         <a href="${escapeHtml(item.url || '/cart')}">${escapeHtml(item.name)}</a>
-                        ${item.configurationSummary.length ? `<small>${escapeHtml(item.configurationSummary[0])}</small>` : ''}
+                        ${item.itemType === 'accessory'
+                            ? '<small>Девайс</small>'
+                            : item.configurationSummary.length
+                                ? `<small>${escapeHtml(item.configurationSummary[0])}</small>`
+                                : ''}
                         <span>${escapeHtml(formatPrice(item.price))} x ${escapeHtml(item.quantity)}</span>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Accessory;
 use App\Models\Build;
 use App\Models\Order;
 use App\Models\SharedCart;
@@ -48,6 +49,7 @@ class CartController extends Controller
         $validated = Validator::make($request->all(), [
             'items' => ['required', 'array', 'min:1'],
             'items.*.slug' => ['required', 'string', 'max:255'],
+            'items.*.itemType' => ['nullable', 'string', 'in:build,accessory'],
             'items.*.cartKey' => ['nullable', 'string', 'max:1024'],
             'items.*.name' => ['required', 'string', 'max:255'],
             'items.*.price' => ['required', 'integer', 'min:0'],
@@ -84,6 +86,7 @@ class CartController extends Controller
             'payment_method' => ['required', 'in:cash_on_delivery'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.slug' => ['required', 'string', 'max:255'],
+            'items.*.itemType' => ['nullable', 'string', 'in:build,accessory'],
             'items.*.cartKey' => ['nullable', 'string', 'max:1024'],
             'items.*.name' => ['required', 'string', 'max:255'],
             'items.*.price' => ['required', 'integer', 'min:0'],
@@ -129,6 +132,7 @@ class CartController extends Controller
                     'quantity' => $item['quantity'],
                     'line_total' => $item['line_total'],
                     'meta' => [
+                        'item_type' => $item['item_type'] ?? 'build',
                         'cart_key' => $item['cart_key'],
                         'configuration' => $item['configuration'],
                         'configuration_summary' => $item['configuration_summary'],
@@ -169,6 +173,9 @@ class CartController extends Controller
                 $quantity = max(1, min(99, (int) ($item['quantity'] ?? 1)));
 
                 return [
+                    'item_type' => in_array((string) ($item['itemType'] ?? $item['item_type'] ?? 'build'), ['build', 'accessory'], true)
+                        ? (string) ($item['itemType'] ?? $item['item_type'] ?? 'build')
+                        : 'build',
                     'slug' => (string) ($item['slug'] ?? ''),
                     'cart_key' => (string) ($item['cartKey'] ?? $item['cart_key'] ?? ''),
                     'name' => (string) ($item['name'] ?? ''),
@@ -181,14 +188,59 @@ class CartController extends Controller
             ->filter(fn (array $item): bool => $item['slug'] !== '')
             ->values();
 
+        $slugs = $normalizedItems->pluck('slug')->unique()->all();
+
         $builds = Build::query()
-            ->whereIn('slug', $normalizedItems->pluck('slug')->unique()->all())
+            ->whereIn('slug', $slugs)
+            ->where('is_active', true)
+            ->get()
+            ->keyBy('slug');
+
+        $accessories = Accessory::query()
+            ->whereIn('slug', $slugs)
             ->where('is_active', true)
             ->get()
             ->keyBy('slug');
 
         return $normalizedItems
-            ->map(function (array $item) use ($builds, $strict): ?array {
+            ->map(function (array $item) use ($accessories, $builds, $strict): ?array {
+                if (($item['item_type'] ?? 'build') === 'accessory') {
+                    /** @var Accessory|null $accessory */
+                    $accessory = $accessories->get($item['slug']);
+
+                    if (! $accessory) {
+                        if ($strict) {
+                            throw ValidationException::withMessages([
+                                'items' => ["Девайс {$item['slug']} не знайдено або він недоступний."],
+                            ]);
+                        }
+
+                        return null;
+                    }
+
+                    $price = max(0, (int) ($accessory->price ?? 0));
+                    $quantity = $item['quantity'];
+
+                    return [
+                        'item_type' => 'accessory',
+                        'slug' => (string) $accessory->slug,
+                        'cart_key' => $item['cart_key'] !== '' ? $item['cart_key'] : 'accessory:' . $accessory->slug,
+                        'name' => (string) $accessory->name,
+                        'price' => $price,
+                        'quantity' => $quantity,
+                        'line_total' => $price * $quantity,
+                        'url' => route('accessories.show', ['slug' => $accessory->slug]),
+                        'tone' => 'violet',
+                        'configuration' => [],
+                        'configuration_summary' => collect((array) ($accessory->specs ?? []))
+                            ->map(fn ($entry) => trim((string) ($entry['value'] ?? '')))
+                            ->filter()
+                            ->take(2)
+                            ->values()
+                            ->all(),
+                    ];
+                }
+
                 /** @var Build|null $build */
                 $build = $builds->get($item['slug']);
 
@@ -224,6 +276,7 @@ class CartController extends Controller
                 $quantity = $item['quantity'];
 
                 return [
+                    'item_type' => 'build',
                     'slug' => (string) $build->slug,
                     'cart_key' => $item['cart_key'] !== '' ? $item['cart_key'] : BuildConfigurator::cartKey((string) $build->slug, $selection),
                     'name' => (string) $build->name,

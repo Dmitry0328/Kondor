@@ -1,6 +1,13 @@
 @php
+    $accessorySlugs = \Illuminate\Support\Facades\Schema::hasTable('accessories')
+        ? \App\Models\Accessory::query()
+            ->active()
+            ->pluck('slug')
+        : collect();
+
     $cartValidSlugs = collect(\App\Support\StorefrontBuilds::all())
         ->pluck('slug')
+        ->merge($accessorySlugs)
         ->filter(fn ($slug): bool => is_string($slug) && trim($slug) !== '')
         ->values();
     $hideTrackingLink = (bool) ($hideTrackingLink ?? false);

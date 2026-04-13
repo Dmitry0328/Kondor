@@ -5184,39 +5184,39 @@ SVG;
 
             <?php
                 $accessoryShowcase = [
-                    [
-                        'title' => 'Аксесуари',
-                        'text' => 'Добірка девайсів Kondor Device для повного сетапу: клавіатури, миші та поверхні.',
-                        'price' => 'Від 499 ₴',
-                        'href' => 'https://www.kondordevice.com/',
-                        'label' => 'Дивитися',
-                        'art' => 'combo',
-                        'lead' => true,
-                    ],
-                    [
-                        'title' => 'Миші',
-                        'text' => 'Ігрові миші для шутерів і щоденного використання.',
-                        'price' => 'Від 1 699 ₴',
-                        'href' => 'https://www.kondordevice.com/',
-                        'art' => 'mouse',
-                        'lead' => false,
-                    ],
-                    [
-                        'title' => 'Клавіатури',
-                        'text' => 'Механічні та magnetic клавіатури серій Orion, Starlight і Moonlight.',
-                        'price' => 'Від 1 899 ₴',
-                        'href' => 'https://www.kondordevice.com/catalog/kondor-moonlight-pro21',
-                        'art' => 'keyboard',
-                        'lead' => false,
-                    ],
-                    [
-                        'title' => 'Ігрові поверхні',
-                        'text' => 'Великі килимки та surface-поверхні для завершеного сетапу.',
-                        'price' => 'Від 499 ₴',
-                        'href' => 'https://www.kondordevice.com/',
-                        'art' => 'pad',
-                        'lead' => false,
-                    ],
+                      [
+                          'title' => 'Аксесуари',
+                          'text' => 'Добірка девайсів Kondor Device для повного сетапу: клавіатури, миші та поверхні.',
+                          'price' => 'Від 499 ₴',
+                          'href' => route('accessories.index'),
+                          'label' => 'Дивитися',
+                          'art' => 'combo',
+                          'lead' => true,
+                      ],
+                      [
+                          'title' => 'Миші',
+                          'text' => 'Ігрові миші для шутерів і щоденного використання.',
+                          'price' => 'Від 1 699 ₴',
+                          'href' => route('accessories.index', ['type' => 'mouse']),
+                          'art' => 'mouse',
+                          'lead' => false,
+                      ],
+                      [
+                          'title' => 'Клавіатури',
+                          'text' => 'Механічні та magnetic клавіатури серій Orion, Starlight і Moonlight.',
+                          'price' => 'Від 1 899 ₴',
+                          'href' => route('accessories.index', ['type' => 'keyboard']),
+                          'art' => 'keyboard',
+                          'lead' => false,
+                      ],
+                      [
+                          'title' => 'Ігрові поверхні',
+                          'text' => 'Великі килимки та surface-поверхні для завершеного сетапу.',
+                          'price' => 'Від 499 ₴',
+                          'href' => route('accessories.index', ['type' => 'pad']),
+                          'art' => 'pad',
+                          'lead' => false,
+                      ],
                 ];
 
                 $serviceShowcase = [
@@ -5263,8 +5263,8 @@ SVG;
                 <div class="container">
                     <div class="showcase-section__head">
                         <h2 class="showcase-section__title">Аксесуари. <span>Збери весь комплект</span></h2>
-                        <a class="showcase-section__link" href="https://www.kondordevice.com/" target="_blank" rel="noreferrer">
-                            Перейти на Kondor Device
+                        <a class="showcase-section__link" href="{{ route('accessories.index') }}">
+                            Перейти до каталогу девайсів
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -5273,7 +5273,7 @@ SVG;
 
                     <div class="accessories-showcase">
                         <?php $__currentLoopData = $accessoryShowcase; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <a class="accessories-card<?php echo e(($card['lead'] ?? false) ? ' accessories-card--lead' : ''); ?>" href="<?php echo e($card['href']); ?>" target="_blank" rel="noreferrer">
+                            <a class="accessories-card<?php echo e(($card['lead'] ?? false) ? ' accessories-card--lead' : ''); ?>" href="<?php echo e($card['href']); ?>">
                                 <span class="accessories-card__kicker">Kondor Device</span>
                                 <h3 class="accessories-card__title"><?php echo e($card['title']); ?></h3>
                                 <p class="accessories-card__text"><?php echo e($card['text']); ?></p>

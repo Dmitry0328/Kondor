@@ -238,13 +238,13 @@ class AccessoryResource extends Resource
                     ->label('Фото')
                     ->view('filament.tables.columns.admin-image-preview')
                     ->viewData(fn (Accessory $record): array => [
-                        'imageUrl' => $record->hasUploadedImages() ? $record->primaryImageUrl() : null,
-                        'imageUrls' => $record->hasUploadedImages() ? $record->imageUrls() : [],
+                        'imageUrl' => $record->hasDisplayImages() ? $record->primaryImageUrl() : null,
+                        'imageUrls' => $record->hasDisplayImages() ? $record->imageUrls() : [],
                         'placeholderUrl' => $record->placeholderUrl(),
-                        'hasImage' => $record->hasUploadedImages(),
+                        'hasImage' => $record->hasDisplayImages(),
                         'caption' => (string) $record->name,
                         'alt' => (string) $record->name,
-                        'clickToOpen' => $record->hasUploadedImages(),
+                        'clickToOpen' => $record->hasDisplayImages(),
                     ]),
                 TextColumn::make('type')
                     ->label('Категорія')

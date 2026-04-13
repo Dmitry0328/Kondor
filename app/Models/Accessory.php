@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Support\AccessoryCatalog;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 class Accessory extends Model
@@ -13,26 +14,33 @@ class Accessory extends Model
         'type',
         'name',
         'slug',
+        'import_source',
+        'external_id',
+        'source_url',
         'vendor',
         'sku',
         'price',
         'summary',
         'gallery_paths',
+        'remote_image_urls',
         'specs',
         'package_items',
         'sort_order',
         'is_active',
+        'last_synced_at',
     ];
 
     protected function casts(): array
     {
         return [
             'gallery_paths' => 'array',
+            'remote_image_urls' => 'array',
             'specs' => 'array',
             'package_items' => 'array',
             'price' => 'integer',
             'sort_order' => 'integer',
             'is_active' => 'boolean',
+            'last_synced_at' => 'datetime',
         ];
     }
 
@@ -50,12 +58,27 @@ class Accessory extends Model
         }, (array) ($this->gallery_paths ?? []))));
     }
 
+    public function remoteImageUrls(): array
+    {
+        return array_values(array_filter(array_map(function ($url): ?string {
+            $url = trim((string) $url);
+
+            return filter_var($url, FILTER_VALIDATE_URL) ? $url : null;
+        }, (array) ($this->remote_image_urls ?? []))));
+    }
+
     public function imageUrls(): array
     {
         $urls = $this->uploadedImageUrls();
 
         if ($urls !== []) {
             return $urls;
+        }
+
+        $remoteUrls = $this->remoteImageUrls();
+
+        if ($remoteUrls !== []) {
+            return $remoteUrls;
         }
 
         return [$this->placeholderUrl()];
@@ -71,6 +94,16 @@ class Accessory extends Model
         return $this->uploadedImageUrls() !== [];
     }
 
+    public function hasRemoteImages(): bool
+    {
+        return $this->remoteImageUrls() !== [];
+    }
+
+    public function hasDisplayImages(): bool
+    {
+        return $this->hasUploadedImages() || $this->hasRemoteImages();
+    }
+
     public function placeholderUrl(): string
     {
         $name = e($this->name ?: AccessoryCatalog::typeLabel((string) $this->type));
@@ -79,6 +112,8 @@ class Accessory extends Model
             'keyboard' => '#7c3aed',
             'mouse' => '#2563eb',
             'pad' => '#d97706',
+            'keycap' => '#db2777',
+            'cable' => '#0891b2',
             default => '#6f10c9',
         };
 
@@ -124,6 +159,10 @@ SVG;
             'image_url' => $this->primaryImageUrl(),
             'image_urls' => $this->imageUrls(),
             'has_uploaded_images' => $this->hasUploadedImages(),
+            'has_remote_images' => $this->hasRemoteImages(),
+            'product_url' => Route::has('accessories.show')
+                ? route('accessories.show', ['slug' => $this->slug])
+                : '',
             'specs' => array_values(array_filter(array_map(function ($row): ?array {
                 if (! is_array($row)) {
                     return null;

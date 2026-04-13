@@ -50,6 +50,7 @@
 
     const normalizeItems = (items) => items
         .map((item) => ({
+            itemType: `${item.itemType ?? item.item_type ?? 'build'}`,
             slug: `${item.slug ?? ''}`,
             cartKey: `${item.cartKey ?? item.cart_key ?? item.slug ?? ''}`,
             name: `${item.name ?? ''}`,

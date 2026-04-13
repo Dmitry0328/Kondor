@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderTrackingController;
+use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteAdminNotificationController;
 use App\Http\Controllers\SiteImageController;
@@ -64,6 +65,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::view('/catalog', 'catalog')->name('catalog');
+Route::get('/devices', [AccessoryController::class, 'index'])->name('accessories.index');
+Route::get('/devices/{slug}', [AccessoryController::class, 'show'])->name('accessories.show');
 Route::get('/trade-in', [TradeInController::class, 'show'])->name('trade-in');
 Route::post('/trade-in', [TradeInController::class, 'store'])->name('trade-in.submit');
 

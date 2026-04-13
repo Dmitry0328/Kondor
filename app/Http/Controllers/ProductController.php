@@ -10,8 +10,8 @@ use App\Support\BuildConfigurator;
 use App\Support\BuildPreview;
 use App\Support\StorefrontBuilds;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -133,8 +133,7 @@ class ProductController extends Controller
         bool $isPreview = false,
         ?string $previewToken = null,
         ?string $requestedCaseVariant = null,
-    ): View
-    {
+    ): View {
         $sharedBuildSelection = [];
         $sharedBuildPayload = [];
         $caseVariants = is_array($build['case_variants'] ?? null) ? $build['case_variants'] : [];
@@ -185,18 +184,18 @@ class ProductController extends Controller
         $resolved = (bool) ($productConfigurator['enabled'] ?? false)
             ? BuildConfigurator::resolvePayloadSelection($productConfigurator, $configuratorSelection)
             : [
-            'enabled' => false,
-            'selection' => [],
-            'summary' => [],
-            'additional_price' => 0,
-            'total_price' => (int) ($build['price_raw'] ?? 0),
-            'compatibility' => [
-                'is_valid' => true,
-                'messages' => [],
-                'invalid_slots' => [],
-                'slot_messages' => [],
-            ],
-        ];
+                'enabled' => false,
+                'selection' => [],
+                'summary' => [],
+                'additional_price' => 0,
+                'total_price' => (int) ($build['price_raw'] ?? 0),
+                'compatibility' => [
+                    'is_valid' => true,
+                    'messages' => [],
+                    'invalid_slots' => [],
+                    'slot_messages' => [],
+                ],
+            ];
 
         $resolvedAccessories = $this->resolveAccessorySelection($accessorySelection);
         $additionalPrice = (int) ($resolved['additional_price'] ?? 0) + (int) ($resolvedAccessories['additional_price'] ?? 0);
@@ -245,19 +244,42 @@ class ProductController extends Controller
     protected function resolveAccessorySelection(array $selection): array
     {
         $definitions = AccessoryCatalog::typeDefinitions();
-        $requestedTypes = [];
+        $requestedItems = [];
 
-        foreach ($selection as $key => $slug) {
-            $type = Str::after((string) $key, 'accessory_');
+        foreach ($selection as $key => $value) {
+            $key = trim((string) $key);
 
-            if ($type === '' || ! array_key_exists($type, $definitions)) {
+            if ($key === '' || ! Str::startsWith($key, 'accessory_')) {
                 continue;
             }
 
-            $requestedTypes[$type] = trim((string) $slug);
+            $accessoryKey = Str::after($key, 'accessory_');
+
+            if (preg_match('/^(?<type>[a-z0-9_-]+)__(?<slug>[a-z0-9_-]+)$/i', $accessoryKey, $matches)) {
+                $type = trim((string) ($matches['type'] ?? ''));
+                $slug = trim((string) ($matches['slug'] ?? ''));
+                $quantity = max(0, min(99, (int) $value));
+
+                if ($type === '' || $slug === '' || $quantity < 1 || ! array_key_exists($type, $definitions)) {
+                    continue;
+                }
+
+                $requestedItems[$type][$slug] = $quantity;
+
+                continue;
+            }
+
+            $legacyType = trim((string) $accessoryKey);
+            $legacySlug = trim((string) $value);
+
+            if ($legacyType === '' || $legacySlug === '' || ! array_key_exists($legacyType, $definitions)) {
+                continue;
+            }
+
+            $requestedItems[$legacyType][$legacySlug] = 1;
         }
 
-        if ($requestedTypes === []) {
+        if ($requestedItems === []) {
             return [
                 'selection' => [],
                 'summary' => [],
@@ -268,7 +290,13 @@ class ProductController extends Controller
 
         $accessories = Accessory::query()
             ->active()
-            ->whereIn('slug', array_values($requestedTypes))
+            ->whereIn(
+                'slug',
+                collect($requestedItems)
+                    ->flatMap(fn (array $items): array => array_keys($items))
+                    ->unique()
+                    ->all(),
+            )
             ->get()
             ->keyBy('slug');
 
@@ -278,30 +306,30 @@ class ProductController extends Controller
         $additionalPrice = 0;
 
         foreach (array_keys($definitions) as $type) {
-            $slug = $requestedTypes[$type] ?? '';
+            foreach (($requestedItems[$type] ?? []) as $slug => $quantity) {
+                $accessory = $accessories->get($slug);
 
-            if ($slug === '') {
-                continue;
+                if (! $accessory instanceof Accessory) {
+                    continue;
+                }
+
+                $price = max(0, (int) ($accessory->price ?? 0));
+                $quantity = max(1, min(99, (int) $quantity));
+                $lineTotal = $price * $quantity;
+                $label = AccessoryCatalog::typeLabel($type);
+                $normalizedSelection['accessory_' . $type . '__' . $accessory->slug] = (string) $quantity;
+                $summary[] = $label . ': ' . (string) $accessory->name . ' x' . $quantity . ($lineTotal > 0 ? ' +' . number_format($lineTotal, 0, '.', ' ') . ' грн' : '');
+                $items[] = [
+                    'type' => $type,
+                    'label' => $label,
+                    'slug' => (string) $accessory->slug,
+                    'name' => (string) $accessory->name,
+                    'price' => $price,
+                    'quantity' => $quantity,
+                    'line_total' => $lineTotal,
+                ];
+                $additionalPrice += $lineTotal;
             }
-
-            $accessory = $accessories->get($slug);
-
-            if (! $accessory instanceof Accessory) {
-                continue;
-            }
-
-            $price = max(0, (int) ($accessory->price ?? 0));
-            $label = AccessoryCatalog::typeLabel($type);
-            $normalizedSelection['accessory_' . $type] = (string) $accessory->slug;
-            $summary[] = $label . ': ' . (string) $accessory->name . ($price > 0 ? ' +' . number_format($price, 0, '.', ' ') . ' грн' : '');
-            $items[] = [
-                'type' => $type,
-                'label' => $label,
-                'slug' => (string) $accessory->slug,
-                'name' => (string) $accessory->name,
-                'price' => $price,
-            ];
-            $additionalPrice += $price;
         }
 
         return [
