@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\BuildConfigurator;
 use App\Support\BuildImages;
+use App\Support\BuildResolutions;
 use App\Support\FpsCatalog;
 use App\Support\FpsProfiles;
 use App\Support\SiteImages;
@@ -30,6 +31,8 @@ class Build extends Model
         'about',
         'base_components',
         'configurator_groups',
+        'resolution_tags',
+        'case_variants',
         'sort_order',
         'is_active',
     ];
@@ -44,6 +47,8 @@ class Build extends Model
             'about' => 'array',
             'base_components' => 'array',
             'configurator_groups' => 'array',
+            'resolution_tags' => 'array',
+            'case_variants' => 'array',
             'sort_order' => 'integer',
             'is_active' => 'boolean',
         ];
@@ -105,6 +110,7 @@ class Build extends Model
 
         $galleryImages = BuildImages::urlsForSlug((string) $this->slug);
         $coverImageUrl = $galleryImages[0] ?? BuildImages::placeholderUrl((string) $this->name);
+        $caseVariants = static::normalizeCaseVariants((array) ($this->case_variants ?? []), (string) $this->slug);
 
         return [
             'slug' => $this->slug,
@@ -126,10 +132,92 @@ class Build extends Model
             'about' => $this->about ?: null,
             'base_components' => $baseComponentIds ?: null,
             'configurator_groups' => $this->configurator_groups ?: null,
+            'resolution_tags' => BuildResolutions::normalize((array) ($this->resolution_tags ?? [])),
+            'case_variants' => $caseVariants,
+            'default_case_variant' => static::defaultCaseVariant($caseVariants),
             'sort_order' => $this->sort_order,
             'is_active' => $this->is_active,
             'price_raw' => $this->price,
         ];
+    }
+
+    protected static function normalizeCaseVariants(array $variants, string $slug = ''): array
+    {
+        $definitions = [
+            'black' => 'Чорна збірка',
+            'white' => 'Біла збірка',
+        ];
+
+        $normalized = [];
+
+        foreach ($definitions as $key => $defaultLabel) {
+            $variant = is_array($variants[$key] ?? null) ? $variants[$key] : [];
+            $galleryPaths = BuildImages::normalizeUploadState($variant['gallery'] ?? []);
+            $imagePath = trim((string) ($variant['image'] ?? $variant['image_path'] ?? ''));
+            $galleryUrls = collect((array) ($variant['gallery_images'] ?? []))
+                ->map(static fn ($value): string => trim((string) $value))
+                ->filter()
+                ->values()
+                ->all();
+            $imageUrl = trim((string) ($variant['image_url'] ?? ''));
+            $siteImageKey = $slug !== '' ? 'build.' . trim($slug) . '.case.' . $key . '.cover' : null;
+            $inlineImageUrl = $siteImageKey ? SiteImages::url($siteImageKey) : null;
+
+            if ($imagePath === '' && $galleryPaths !== []) {
+                $imagePath = (string) ($galleryPaths[0] ?? '');
+            }
+
+            if ($imagePath !== '' && ! in_array($imagePath, $galleryPaths, true)) {
+                array_unshift($galleryPaths, $imagePath);
+            }
+
+            if (is_string($inlineImageUrl) && trim($inlineImageUrl) !== '') {
+                $imageUrl = trim($inlineImageUrl);
+            }
+
+            if ($imageUrl === '' && $imagePath !== '') {
+                $imageUrl = static::publicUploadUrl($imagePath);
+            }
+
+            if ($imageUrl === '' && $galleryUrls !== []) {
+                $imageUrl = (string) ($galleryUrls[0] ?? '');
+            }
+
+            if ($imageUrl !== '' && ! in_array($imageUrl, $galleryUrls, true)) {
+                array_unshift($galleryUrls, $imageUrl);
+            }
+
+            $enabled = (bool) ($variant['enabled'] ?? false) && ($imagePath !== '' || $galleryPaths !== [] || $imageUrl !== '' || $galleryUrls !== []);
+
+            $normalized[$key] = [
+                'key' => $key,
+                'enabled' => $enabled,
+                'label' => trim((string) ($variant['label'] ?? $defaultLabel)) ?: $defaultLabel,
+                'description' => trim((string) ($variant['description'] ?? '')),
+                'image_path' => $imagePath !== '' ? $imagePath : null,
+                'image_url' => $imageUrl,
+                'gallery_paths' => $galleryPaths,
+                'gallery_images' => $galleryUrls !== []
+                    ? $galleryUrls
+                    : array_values(array_filter(array_map(
+                        static fn (string $path): string => static::publicUploadUrl($path),
+                        $galleryPaths,
+                    ))),
+            ];
+        }
+
+        return $normalized;
+    }
+
+    protected static function defaultCaseVariant(array $variants): ?string
+    {
+        foreach (['black', 'white'] as $key) {
+            if ((bool) ($variants[$key]['enabled'] ?? false)) {
+                return $key;
+            }
+        }
+
+        return null;
     }
 
     protected static function renameSiteImages(string $oldSlug, string $newSlug): void
@@ -192,6 +280,26 @@ class Build extends Model
 
         return 'Відсутня інформація про комплектуючу';
     }
+    protected static function publicUploadUrl(string $path): string
+    {
+        $url = Storage::disk('public')->url($path);
+
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+            $parsed = parse_url($url);
+            $path = $parsed['path'] ?? '';
+
+            if ($path !== '') {
+                $url = $path;
+
+                if (! empty($parsed['query'])) {
+                    $url .= '?' . $parsed['query'];
+                }
+            }
+        }
+
+        return $url;
+    }
+
     protected function resolveProductCode(): string
     {
         $productCode = trim((string) ($this->product_code ?? ''));

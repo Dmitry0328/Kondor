@@ -535,9 +535,13 @@
             }
         </style>
     </head>
-    <body @class(['has-preview-dock' => $isPreview ?? false])>
+        <body @class(['has-preview-dock' => $isPreview ?? false])>
         @php
             $isPreview = (bool) ($isPreview ?? false);
+            $selectedCaseVariantKey = trim((string) ($selectedCaseVariantKey ?? ($build['default_case_variant'] ?? '')));
+            $selectedCaseVariant = is_array($selectedCaseVariant ?? null) ? $selectedCaseVariant : null;
+            $caseVariants = collect((array) ($build['case_variants'] ?? []))
+                ->filter(fn ($variant): bool => is_array($variant) && (bool) ($variant['enabled'] ?? false));
             $previewGalleryImages = collect((array) ($build['preview_gallery_images'] ?? []))
                 ->map(static fn ($value): string => trim((string) $value))
                 ->filter()
@@ -548,7 +552,23 @@
                 ->filter()
                 ->values()
                 ->all();
-            $buildGalleryImages = $previewGalleryImages !== [] ? $previewGalleryImages : $storedGalleryImages;
+            $selectedCaseGalleryImages = collect((array) ($selectedCaseVariant['gallery_images'] ?? []))
+                ->map(static fn ($value): string => trim((string) $value))
+                ->filter()
+                ->values()
+                ->all();
+            $selectedCaseImageUrl = trim((string) ($selectedCaseVariant['image_url'] ?? ''));
+            $buildGalleryImages = $previewGalleryImages !== []
+                ? $previewGalleryImages
+                : ($selectedCaseGalleryImages !== [] ? $selectedCaseGalleryImages : $storedGalleryImages);
+
+            if ($previewGalleryImages === [] && $selectedCaseImageUrl !== '') {
+                $buildGalleryImages = array_values(array_unique(array_filter([
+                    $selectedCaseImageUrl,
+                    ...$buildGalleryImages,
+                ])));
+            }
+
             $hasUploadedBuildGallery = $buildGalleryImages !== [];
             $storefrontBuilds = \App\Support\StorefrontBuilds::all();
             $headerBuilds = array_slice($storefrontBuilds, 0, 4);
@@ -573,7 +593,10 @@
             $boardBase = str_contains($build['cpu'], 'AMD') ? 'B650 Wi-Fi' : 'Z790 Wi-Fi';
             $powerBase = $basePrice >= 100000 ? '850W 80+ Gold' : '650W 80+ Bronze';
             $powerUpgrade = $basePrice >= 100000 ? '1000W 80+ Gold' : '850W 80+ Gold';
-            $appearanceHint = 'Зовнішній вигляд комп\'ютера залежить від обраних комплектуючих.';
+            $appearanceHint = $selectedCaseVariantKey !== ''
+                ? 'Зараз показано варіант: ' . mb_strtolower((string) ($selectedCaseVariant['label'] ?? 'обраний корпус')) . '.'
+                : 'Зовнішній вигляд комп\'ютера залежить від обраних комплектуючих.';
+            $selectedCaseDescription = trim((string) ($selectedCaseVariant['description'] ?? ''));
             $accessoryGroups = is_array($accessoryGroups ?? null) ? $accessoryGroups : \App\Support\AccessoryCatalog::storefrontGroups();
             /* Legacy device redirects removed from storefront.
             $deviceLinks = [
@@ -687,6 +710,44 @@
                     })
                     ->all();
             }
+
+            $resolveProductSlideImage = static function (array $slide) use ($build, $selectedCaseVariantKey): array {
+                $slug = trim((string) ($build['slug'] ?? ''));
+                $variant = trim((string) ($slide['variant'] ?? 'hero'));
+                $caseKey = trim((string) $selectedCaseVariantKey);
+                $imageUrl = trim((string) ($slide['image_url'] ?? ''));
+                $siteImageKey = null;
+                $fallbackKey = null;
+
+                if ($slug !== '' && $variant !== 'uploaded') {
+                    $siteImageKey = $variant === 'hero'
+                        ? 'build.' . $slug . '.cover'
+                        : 'build.' . $slug . '.gallery.' . $variant;
+
+                    if ($caseKey !== '') {
+                        $siteImageKey = $variant === 'hero'
+                            ? 'build.' . $slug . '.case.' . $caseKey . '.cover'
+                            : 'build.' . $slug . '.case.' . $caseKey . '.gallery.' . $variant;
+
+                        $fallbackKey = $variant === 'hero'
+                            ? 'build.' . $slug . '.cover'
+                            : 'build.' . $slug . '.gallery.' . $variant;
+                    }
+                }
+
+                if ($imageUrl === '' && $siteImageKey) {
+                    $imageUrl = trim((string) (\App\Support\SiteImages::url($siteImageKey) ?? ''));
+                }
+
+                if ($imageUrl === '' && $fallbackKey) {
+                    $imageUrl = trim((string) (\App\Support\SiteImages::url($fallbackKey) ?? ''));
+                }
+
+                return [
+                    'url' => $imageUrl,
+                    'key' => $siteImageKey,
+                ];
+            };
 
             /*
             $productFpsGames = [
@@ -928,109 +989,7 @@
                 </div>
             </div>
 
-            <header class="header">
-                <div class="container header__inner">
-                    <a class="brand" href="{{ url('/') }}">
-                        <div>
-                            <div class="brand__name">KondorPC</div>
-                            <span class="brand__sub">Твоя база геймінгу</span>
-                        </div>
-                    </a>
-                    <div class="header__actions">
-                        <a class="header-button header-button--primary" href="{{ route('orders.track') }}">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                            Статус замовлення
-                        </a>
-
-                        <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z" stroke="currentColor" stroke-width="2"/>
-                                <path d="M12 10V12L13.5 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Консультація
-                        </button>
-
-                        @auth
-                            @if (auth()->user()?->is_admin)
-                                <a class="header-button" href="{{ url('/admin') }}">Адмінка</a>
-                            @endif
-                        @endauth
-
-                        <div class="search-box" role="search">
-                            <input type="search" placeholder="Пошук збірок">
-                            <button type="button" aria-label="Пошук">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <a class="header-link--primary" href="{{ route('orders.track') }}">Статус замовлення</a>
-                        <a class="header-link" href="{{ url('/') }}">Головна</a>
-                        <a class="header-link" href="{{ route('orders.track') }}">Статус замовлення</a>
-                        <a class="header-cart" href="#contacts" aria-label="Кошик"><span>0 ₴</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="19" r="1.6" fill="currentColor"/><circle cx="17" cy="19" r="1.6" fill="currentColor"/><path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-                        @include('partials.header-cart', ['hideTrackingLink' => true])
-                        <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
-                    </div>
-                </div>
-                <div class="dropdown" id="builds-dropdown" data-dropdown-panel="builds">
-                    <div class="dropdown__columns">
-                        <div class="dropdown__group">
-                            <h3>Популярні збірки</h3>
-                            @foreach ($headerBuilds as $menuBuild)
-                                <a href="{{ route('product.show', ['slug' => $menuBuild['slug']]) }}">{{ $menuBuild['name'] }}</a>
-                            @endforeach
-                        </div>
-
-                        <div class="dropdown__group">
-                            <h3>Швидкі переходи</h3>
-                            <a href="{{ route('catalog') }}">Всі збірки</a>
-                            <a href="{{ url('/') }}">Головна</a>
-                            <a href="{{ url('/') }}#gallery">Наші роботи</a>
-                            <a href="{{ url('/') }}#faq">FAQ</a>
-                        </div>
-
-                        <div class="dropdown__group">
-                            <h3>Під замовлення</h3>
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Підбір під бюджет</a>
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Апгрейд конфігурації</a>
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Збірка для стріму</a>
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dropdown dropdown--consultation" id="consultation-dropdown" data-dropdown-panel="consultation">
-                    <div class="dropdown__columns">
-                        <div class="dropdown__group">
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Telegram</a>
-                            <a href="#contacts">Контактна форма</a>
-                            <a href="tel:+380633631066">+380 63 363 10 66</a>
-                            <a href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">Instagram</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
-                    <div class="container mobile-menu__inner">
-                        <a href="{{ url('/') }}">Головна</a>
-                        <a href="{{ route('orders.track') }}">Статус замовлення</a>
-                        <a href="{{ url('/') }}#about">Про нас</a>
-                        <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
-                        <a href="#contacts">Контакти</a>
-                        @auth
-                            @if (auth()->user()?->is_admin)
-                                <a href="{{ url('/admin') }}">Адмінка</a>
-                            @endif
-                        @endauth
-                        <a href="{{ url('/') }}#faq">FAQ</a>
-                    </div>
-                </div>
-            </header>
+            @include('partials.storefront-header', ['showSearch' => true])
 
             <main class="page">
                 <div class="product-wrap">
@@ -1074,15 +1033,9 @@
 
                                 @foreach ($productSlides as $slide)
                                     @php
-                                        $slideImageUrl = trim((string) ($slide['image_url'] ?? ''));
-                                        $slideImageKey = null;
-
-                                        if ($slideImageUrl === '') {
-                                            $slideImageKey = $slide['variant'] === 'hero'
-                                                ? 'build.' . $build['slug'] . '.cover'
-                                                : 'build.' . $build['slug'] . '.gallery.' . $slide['variant'];
-                                            $slideImageUrl = (string) (\App\Support\SiteImages::url($slideImageKey) ?? '');
-                                        }
+                                        $slideImage = $resolveProductSlideImage($slide);
+                                        $slideImageUrl = $slideImage['url'];
+                                        $slideImageKey = $slideImage['key'];
                                     @endphp
                                     <div
                                         class="product-gallery__slide product-gallery__slide--{{ $slide['variant'] }}{{ $loop->first ? ' is-active' : '' }} site-image-target{{ $slideImageUrl ? ' has-site-image' : '' }}"
@@ -1169,15 +1122,9 @@
                             <div class="product-gallery__thumbs">
                                 @foreach ($productSlides as $slide)
                                     @php
-                                        $slideImageUrl = trim((string) ($slide['image_url'] ?? ''));
-                                        $slideImageKey = null;
-
-                                        if ($slideImageUrl === '') {
-                                            $slideImageKey = $slide['variant'] === 'hero'
-                                                ? 'build.' . $build['slug'] . '.cover'
-                                                : 'build.' . $build['slug'] . '.gallery.' . $slide['variant'];
-                                            $slideImageUrl = (string) (\App\Support\SiteImages::url($slideImageKey) ?? '');
-                                        }
+                                        $slideImage = $resolveProductSlideImage($slide);
+                                        $slideImageUrl = $slideImage['url'];
+                                        $slideImageKey = $slideImage['key'];
                                     @endphp
                                     <button
                                         class="product-gallery__thumb{{ $loop->first ? ' is-active' : '' }}"
@@ -1200,6 +1147,33 @@
                                     </button>
                                 @endforeach
                             </div>
+
+                            @if ($caseVariants->count() > 1)
+                                <div class="product-case-picker" aria-label="Вибір кольору збірки">
+                                    <div class="product-case-picker__header">
+                                        <span class="product-case-picker__eyebrow">Варіант корпусу</span>
+                                        <p class="product-case-picker__title">Оберіть чорну або білу збірку</p>
+                                    </div>
+
+                                    <div class="product-case-picker__options">
+                                        @foreach ($caseVariants as $caseKey => $caseVariant)
+                                            <a
+                                                class="product-case-picker__option{{ $caseKey === $selectedCaseVariantKey ? ' is-active' : '' }}"
+                                                href="{{ request()->fullUrlWithQuery(['case' => $caseKey]) }}"
+                                                data-case-key="{{ $caseKey }}"
+                                                title="{{ $caseVariant['label'] ?? ($caseKey === 'white' ? 'Біла збірка' : 'Чорна збірка') }}"
+                                            >
+                                                <span class="product-case-picker__swatch product-case-picker__swatch--{{ $caseKey }}" aria-hidden="true"></span>
+                                                <span>{{ $caseVariant['label'] ?? ($caseKey === 'white' ? 'Біла збірка' : 'Чорна збірка') }}</span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+
+                                    <span class="product-case-picker__meta">
+                                        {{ $selectedCaseDescription !== '' ? $selectedCaseDescription : 'На сторінці товару відкривається саме обраний варіант корпусу.' }}
+                                    </span>
+                                </div>
+                            @endif
 
                             <section
                                 class="product-fps"
@@ -1985,9 +1959,11 @@
                 const productCartItem = {
                     slug: @json($build['slug']),
                     name: @json($build['name']),
-                    url: @json(route('product.show', ['slug' => $build['slug']])),
+                    url: window.location.href,
                     tone: @json($build['tone'] ?? 'violet'),
                 };
+                const currentCaseVariant = @json(($selectedCaseVariantKey ?? null));
+                const currentCaseVariantLabel = @json($selectedCaseVariant['label'] ?? null);
                 const accessorySelectionStorageKey = `kondor-accessory-selection:${productCartItem.slug}`;
                 const sharedAccessorySelections = @json($sharedAccessorySelections);
                 const productFpsConfig = @json($productFpsClientConfig);
@@ -3009,9 +2985,12 @@
                         window.KondorCart.addItem({
                             ...productCartItem,
                             price: total,
-                            cartKey: makeCartKey(productCartItem.slug, pricingState.selection ?? {}),
+                            cartKey: makeCartKey(productCartItem.slug, pricingState.selection ?? {}) + (currentCaseVariant ? `|case:${currentCaseVariant}` : ''),
                             configuration: pricingState.selection ?? {},
-                            configurationSummary: pricingState.summary ?? [],
+                            configurationSummary: [
+                                ...(pricingState.summary ?? []),
+                                ...(currentCaseVariantLabel ? [`Варіант корпусу: ${currentCaseVariantLabel}`] : []),
+                            ],
                         }, quantity);
                     } else {
                         cartTotal += lineTotal;

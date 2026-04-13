@@ -169,7 +169,7 @@
                 display: block;
                 margin-top: 2px;
                 color: var(--muted);
-                font-size: 12px;
+                font-size: 13px;
                 font-weight: 700;
             }
 
@@ -674,6 +674,53 @@
                 margin: 0 0 16px;
             }
 
+            .builds__filters {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin: 0 0 22px;
+            }
+
+            .builds__filter {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                gap: 4px;
+                min-height: 58px;
+                padding: 12px 16px;
+                border: 1px solid #d7dee8;
+                border-radius: 18px;
+                background: linear-gradient(180deg, #ffffff, #f6f8fc);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96), 0 10px 22px rgba(24, 32, 42, 0.06);
+                transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.18s ease, background-color 0.2s ease;
+            }
+
+            .builds__filter:hover {
+                border-color: rgba(132, 36, 240, 0.34);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96), 0 12px 24px rgba(105, 22, 203, 0.12);
+                transform: translateY(-1px);
+            }
+
+            .builds__filter.is-active {
+                border-color: #4b19a1;
+                background: linear-gradient(180deg, rgba(132, 36, 240, 0.12), rgba(104, 22, 203, 0.06));
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 14px 28px rgba(105, 22, 203, 0.14);
+            }
+
+            .builds__filter-label {
+                color: #f8fbff;
+                font-size: 14px;
+                font-weight: 800;
+                letter-spacing: 0.01em;
+            }
+
+            .builds__filter-meta {
+                color: #9fc3ff;
+                font-size: 12px;
+                font-weight: 700;
+            }
+
             .builds__sort-label {
                 flex: none;
                 color: #6c7482;
@@ -721,6 +768,13 @@
                 font-family: 'Space Grotesk', sans-serif;
                 font-size: clamp(32px, 3vw, 44px);
                 letter-spacing: -0.03em;
+                color: #f8fbff;
+            }
+
+            .builds__summary {
+                color: #9fc3ff;
+                font-size: 15px;
+                font-weight: 700;
             }
 
             .catalog-cta {
@@ -766,6 +820,17 @@
                 border-radius: 26px;
                 background: linear-gradient(180deg, #ffffff, #fbfbfd);
                 box-shadow: 0 18px 40px rgba(24, 32, 42, 0.08);
+            }
+
+            .builds__empty {
+                padding: 28px;
+                border: 1px solid #d7dee8;
+                border-radius: 24px;
+                background: linear-gradient(180deg, #ffffff, #f6f8fc);
+                color: #46515f;
+                font-size: 16px;
+                font-weight: 700;
+                box-shadow: 0 16px 32px rgba(24, 32, 42, 0.06);
             }
 
             .build-card[data-product-url] {
@@ -1255,6 +1320,117 @@
                 font-size: 13px;
                 font-weight: 700;
                 letter-spacing: -0.01em;
+            }
+
+            .build-card__case-picker {
+                display: grid;
+                gap: 12px;
+                margin-top: 16px;
+                justify-items: center;
+            }
+
+            .build-card__case-options {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                width: fit-content;
+                padding: 6px;
+                border: 1px solid rgba(66, 84, 106, 0.44);
+                border-radius: 999px;
+                background: linear-gradient(180deg, rgba(15, 22, 32, 0.98), rgba(10, 16, 25, 0.94));
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 22px rgba(0, 0, 0, 0.22);
+            }
+
+            .build-card__case-option {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 46px;
+                height: 46px;
+                padding: 0;
+                border: 1px solid transparent;
+                border-radius: 999px;
+                background: transparent;
+                color: #dce8f6;
+                font-size: 0;
+                text-align: center;
+                cursor: pointer;
+                box-shadow: none;
+                transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+            }
+
+            .build-card__case-option:hover {
+                transform: translateY(-1px);
+            }
+
+            .build-card__case-dot {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                border: 2px solid rgba(255, 255, 255, 0.86);
+                box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.1);
+                transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            }
+
+            .build-card__case-dot--black {
+                background: linear-gradient(180deg, #293445, #05070c);
+            }
+
+            .build-card__case-dot--white {
+                background: linear-gradient(180deg, #ffffff, #d9e4ef);
+            }
+
+            .build-card__case-option[data-build-case-key="black"].is-active {
+                background: linear-gradient(180deg, rgba(31, 41, 55, 0.96), rgba(15, 23, 42, 0.96));
+                box-shadow:
+                    0 0 0 1px rgba(120, 136, 157, 0.5),
+                    0 0 18px rgba(0, 0, 0, 0.54),
+                    0 0 30px rgba(17, 24, 39, 0.48);
+            }
+
+            .build-card__case-option[data-build-case-key="black"].is-active .build-card__case-dot {
+                transform: scale(1.08);
+                border-color: rgba(223, 232, 244, 0.88);
+                box-shadow:
+                    inset 0 0 0 1px rgba(15, 23, 42, 0.12),
+                    0 0 16px rgba(17, 24, 39, 0.38);
+            }
+
+            .build-card__case-option[data-build-case-key="white"].is-active {
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(233, 240, 247, 0.96));
+                box-shadow:
+                    0 0 0 1px rgba(236, 243, 250, 0.94),
+                    0 0 18px rgba(239, 245, 251, 0.94),
+                    0 0 34px rgba(190, 220, 255, 0.32);
+            }
+
+            .build-card__case-option[data-build-case-key="white"].is-active .build-card__case-dot {
+                transform: scale(1.08);
+                border-color: rgba(255, 255, 255, 0.98);
+                box-shadow:
+                    inset 0 0 0 1px rgba(15, 23, 42, 0.08),
+                    0 0 18px rgba(236, 243, 250, 0.96);
+            }
+
+            .build-card__case-option-label {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+
+            .build-card__case-description {
+                margin: 0;
+                color: #9db0c6;
+                font-size: 12px;
+                line-height: 1.5;
+                font-weight: 800;
+                text-align: center;
             }
 
             .build-card__action {
@@ -1748,6 +1924,15 @@
                     gap: 10px;
                 }
 
+                .builds__filters {
+                    gap: 10px;
+                }
+
+                .builds__filter {
+                    flex: 1 1 220px;
+                    min-width: min(220px, 100%);
+                }
+
                 .builds__sort-control {
                     width: 100%;
                     max-width: 100%;
@@ -1821,6 +2006,18 @@
                     min-height: 42px;
                     padding-inline: 14px 40px;
                     font-size: 14px;
+                }
+
+                .builds__filters {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                }
+
+                .builds__filter {
+                    width: 100%;
+                    min-height: 54px;
+                    padding: 12px 14px;
+                    border-radius: 16px;
                 }
 
                 .builds__grid {
@@ -1993,6 +2190,37 @@
             };
 
             $builds = \App\Support\StorefrontBuilds::all();
+            $catalogFilterDefinitions = \App\Support\BuildResolutions::catalogFilters();
+            $resolutionCounts = \App\Support\BuildResolutions::countByTag($builds);
+            $activeResolution = trim((string) request()->query('resolution', 'all'));
+            $allowedResolutionFilters = collect($catalogFilterDefinitions)
+                ->pluck('id')
+                ->filter(fn ($id) => is_string($id) && $id !== '')
+                ->all();
+
+            if (! in_array($activeResolution, $allowedResolutionFilters, true)) {
+                $activeResolution = 'all';
+            }
+
+            $catalogFilters = array_map(static function (array $filter) use ($resolutionCounts, $activeResolution): array {
+                $id = (string) ($filter['id'] ?? 'all');
+
+                return [
+                    ...$filter,
+                    'count' => (int) ($resolutionCounts[$id] ?? 0),
+                    'is_active' => $id === $activeResolution,
+                ];
+            }, $catalogFilterDefinitions);
+
+            $activeCatalogFilter = collect($catalogFilters)->firstWhere('is_active', true) ?? $catalogFilters[0] ?? null;
+
+            if ($activeResolution !== 'all') {
+                $builds = array_values(array_filter($builds, static function (array $build) use ($activeResolution): bool {
+                    $tags = \App\Support\BuildResolutions::normalize((array) ($build['resolution_tags'] ?? []));
+
+                    return in_array($activeResolution, $tags, true);
+                }));
+            }
 
             foreach ($builds as $index => $build) {
                 $fallbackFps = max(0, (int) ($build['fps_score'] ?? 0));
@@ -2067,130 +2295,7 @@
                 </div>
             </div>
 
-            <header class="header">
-                <div class="container header__inner">
-                    <a class="brand" href="{{ url('/') }}">
-                        <div>
-                            <div class="brand__name">KondorPC</div>
-                            <span class="brand__sub">Твоя база геймінгу</span>
-                        </div>
-                    </a>
-
-                    <div class="header__actions">
-                        <a class="header-button header-button--primary" href="#builds">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Наші збірки
-                        </a>
-
-                                                <a class="header-button" href="{{ route('orders.track') }}">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                            Статус замовлення
-                        </a>
-
-                        <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z" stroke="currentColor" stroke-width="2"/>
-                                <path d="M12 10V12L13.5 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Консультація
-                        </button>
-
-                        @auth
-                            @if (auth()->user()?->is_admin)
-                                <a class="header-button" href="{{ url('/admin') }}">Адмінка</a>
-                            @endif
-                        @endauth
-
-                        <div class="search-box" role="search">
-                            <input type="search" placeholder="Пошук збірок">
-                            <button type="button" aria-label="Пошук">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <a class="header-cart" href="#contacts" aria-label="Кошик">
-                            <span>0 ₴</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <circle cx="9" cy="19" r="1.6" fill="currentColor"/>
-                                <circle cx="17" cy="19" r="1.6" fill="currentColor"/>
-                                <path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-
-                        @include('partials.header-cart', ['hideTrackingLink' => true])
-
-                        <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="dropdown" id="builds-dropdown" data-dropdown-panel="builds">
-                    <div class="dropdown__columns">
-                        <div class="dropdown__group">
-                            <h3>Готові збірки</h3>
-                            <a href="#builds">1080p Start</a>
-                            <a href="#builds">1440p Core</a>
-                            <a href="#builds">4K / Creator</a>
-                            <a href="#builds">Streaming Build</a>
-                        </div>
-
-                        <div class="dropdown__group">
-                            <h3>Стиль збірки</h3>
-                            <a href="#builds">Black Edition</a>
-                            <a href="#builds">White Edition</a>
-                            <a href="#builds">RGB Showcase</a>
-                            <a href="#builds">Minimal Build</a>
-                        </div>
-
-                        <div class="dropdown__group">
-                            <h3>Під замовлення</h3>
-                            <a href="#contacts">Підбір під бюджет</a>
-                            <a href="#contacts">Апгрейд конфігурації</a>
-                            <a href="#contacts">Збірка для стриму</a>
-                            <a href="#contacts">Консультація</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dropdown dropdown--consultation" id="consultation-dropdown" data-dropdown-panel="consultation">
-                    <div class="dropdown__columns">
-                        <div class="dropdown__group">
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Telegram</a>
-                            <a href="#contacts">Контактна форма</a>
-                            <a href="tel:+380633631066">+380 63 363 10 66</a>
-                            <a href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">Instagram</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
-                    <div class="container mobile-menu__inner">
-                        <a href="{{ url('/') }}#about">Про нас</a>
-                        <a href="#builds">Наші збірки</a>
-                        <a href="#builds">Каталог збірок</a>
-                        <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
-                        <a href="#contacts">Контакти</a>
-                        @auth
-                            @if (auth()->user()?->is_admin)
-                                <a href="{{ url('/admin') }}">Адмінка</a>
-                            @endif
-                        @endauth
-                        <a href="{{ url('/') }}#faq">FAQ</a>
-                    </div>
-                </div>
-            </header>
+            @include('partials.storefront-header', ['showSearch' => true])
 
             <main class="page">
                 <div class="catalog-wrap">
@@ -2276,106 +2381,136 @@
                         </div>
 
                         <div class="builds__header">
-                            <h2>Каталог збірок KondorPC</h2>
+                            <div>
+                                <h2>{{ $activeCatalogFilter['title'] ?? 'Каталог збірок KondorPC' }}</h2>
+                                <span class="builds__summary">
+                                    {{ $activeCatalogFilter['count'] ?? count($builds) }} збірок
+                                    @if (($activeCatalogFilter['id'] ?? 'all') !== 'all')
+                                        у категорії {{ $activeCatalogFilter['label'] ?? '' }}
+                                    @else
+                                        у каталозі
+                                    @endif
+                                </span>
+                            </div>
                         </div>
 
-                        <div class="builds__grid" data-build-grid>
-                            @foreach ($builds as $build)
-                                <article
-                                    class="build-card build-card--{{ $build['tone'] }} is-fps-{{ $build['fps_state'] }}"
-                                    data-fps-card
-                                    data-product-url="{{ route('product.show', ['slug' => $build['slug']]) }}"
-                                    role="link"
-                                    tabindex="0"
-                                    data-fps-map='@json($build['fps_lookup'] ?? [])'
-                                    data-fps-fallback="{{ $build['fps_score'] }}"
-                                    data-sort-index="{{ $build['sort_index'] }}"
-                                    data-sort-price="{{ $build['price_value'] }}"
-                                    data-build-slug="{{ $build['slug'] }}"
-                                    data-build-name="{{ $build['name'] }}"
-                                    data-build-price="{{ $build['price_value'] }}"
-                                    data-build-tone="{{ $build['tone'] }}"
-                                    data-current-fps="{{ $build['fps_value'] }}"
-                                    style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
+                        <div class="builds__filters" aria-label="Категорії збірок">
+                            @foreach ($catalogFilters as $filter)
+                                <a
+                                    class="builds__filter{{ $filter['is_active'] ? ' is-active' : '' }}"
+                                    href="{{ route('catalog', ($filter['id'] ?? 'all') === 'all' ? [] : ['resolution' => $filter['id']]) }}"
+                                    aria-current="{{ $filter['is_active'] ? 'page' : 'false' }}"
                                 >
-                                    @include('partials.build-card-media', ['build' => $build])
-
-                                    <div class="build-card__body">
-                                        <h2 class="build-card__title">{{ $build['name'] }}</h2>
-
-                                        <div class="build-card__content">
-                                            <div class="build-card__info">
-                                                <div class="build-card__copy-wrap" data-build-copy-wrap>
-                                                    <ul class="build-card__specs" data-build-copy>
-                                                        <li>
-                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                                <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                                <path d="M9 3V6M15 3V6M9 18V21M15 18V21M3 9H6M18 9H21M3 15H6M18 15H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                            </svg>
-                                                            <span>{{ $build['gpu'] }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                                <path d="M12 3L19 8V16L12 21L5 16V8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                                                <path d="M12 9V15M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                            </svg>
-                                                            <span>{{ $build['cpu'] }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                                <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                                <path d="M8 10H10M14 10H16M8 14H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                            </svg>
-                                                            <span>{{ $build['ram'] }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                                <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                                                                <path d="M7 12H17M7 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                            </svg>
-                                                            <span>{{ $build['storage'] }}</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                                <button class="build-card__copy-toggle" type="button" data-build-copy-toggle aria-expanded="false" aria-label="Показати характеристики" hidden>
-                                                    <span class="build-card__copy-toggle-label" data-build-copy-toggle-label>Показати характеристики</span>
-                                                    <svg class="build-card__copy-toggle-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                                                        <path d="M2.25 4.5L6 8.25L9.75 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    </svg>
-                                                </button>
-                                            </div>
-
-                                            <div class="build-card__fps-side">
-                                                <div class="build-card__fps" aria-label="Поточний FPS">
-                                                    <span class="build-card__fps-value{{ $build['fps_value'] > 0 ? '' : ' is-empty' }}" data-fps-value>{{ $build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній' }}</span>
-                                                    <span class="build-card__fps-scale" aria-hidden="true">
-                                                        <span class="build-card__fps-fill"></span>
-                                                    </span>
-                                                    <span class="build-card__fps-label" data-fps-label>FPS</span>
-                                                </div>
-
-                                                <button class="build-card__fps-more" type="button" data-fps-mobile-open aria-label="Переглянути більше FPS даних">
-                                                    Більше FPS
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <span class="build-card__price-label">Ціна за збірку</span>
-                                        <span class="build-card__price">{{ $build['price'] }}</span>
-                                        <div class="build-card__meta">
-                                            <span class="build-card__code">Код: {{ $build['product_code'] ?? '—' }}</span>
-                                        </div>
-                                        <div class="build-card__actions">
-                                            <button class="catalog-cta build-card__action build-card__action--cart" type="button" data-build-add>
-                                                Додати в кошик
-                                            </button>
-                                            <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}">Детальніше</a>
-                                        </div>
-                                    </div>
-                                </article>
+                                    <span class="builds__filter-label">{{ $filter['label'] }}</span>
+                                    <span class="builds__filter-meta">{{ $filter['count'] }} збірок</span>
+                                </a>
                             @endforeach
                         </div>
+
+                        @if ($builds === [])
+                            <div class="builds__empty">
+                                Для цієї категорії збірок поки що немає. Оберіть іншу категорію або поверніться до всіх збірок.
+                            </div>
+                        @else
+                            <div class="builds__grid" data-build-grid>
+                                @foreach ($builds as $build)
+                                    <article
+                                        class="build-card build-card--{{ $build['tone'] }} is-fps-{{ $build['fps_state'] }}"
+                                        data-fps-card
+                                        data-product-url="{{ route('product.show', ['slug' => $build['slug']]) }}"
+                                        role="link"
+                                        tabindex="0"
+                                        data-fps-map='@json($build['fps_lookup'] ?? [])'
+                                        data-fps-fallback="{{ $build['fps_score'] }}"
+                                        data-sort-index="{{ $build['sort_index'] }}"
+                                        data-sort-price="{{ $build['price_value'] }}"
+                                        data-build-slug="{{ $build['slug'] }}"
+                                        data-build-name="{{ $build['name'] }}"
+                                        data-build-price="{{ $build['price_value'] }}"
+                                        data-build-tone="{{ $build['tone'] }}"
+                                        data-current-fps="{{ $build['fps_value'] }}"
+                                        style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
+                                    >
+                                        @include('partials.build-card-media', ['build' => $build])
+
+                                        <div class="build-card__body">
+                                            <h2 class="build-card__title">{{ $build['name'] }}</h2>
+
+                                            <div class="build-card__content">
+                                                <div class="build-card__info">
+                                                    <div class="build-card__copy-wrap" data-build-copy-wrap>
+                                                        <ul class="build-card__specs" data-build-copy>
+                                                            <li>
+                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                    <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                                    <path d="M9 3V6M15 3V6M9 18V21M15 18V21M3 9H6M18 9H21M3 15H6M18 15H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                                </svg>
+                                                                <span>{{ $build['gpu'] }}</span>
+                                                            </li>
+                                                            <li>
+                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                    <path d="M12 3L19 8V16L12 21L5 16V8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                                    <path d="M12 9V15M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                                </svg>
+                                                                <span>{{ $build['cpu'] }}</span>
+                                                            </li>
+                                                            <li>
+                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                    <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                                    <path d="M8 10H10M14 10H16M8 14H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                                </svg>
+                                                                <span>{{ $build['ram'] }}</span>
+                                                            </li>
+                                                            <li>
+                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                    <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                                                                    <path d="M7 12H17M7 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                                </svg>
+                                                                <span>{{ $build['storage'] }}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <button class="build-card__copy-toggle" type="button" data-build-copy-toggle aria-expanded="false" aria-label="Показати характеристики" hidden>
+                                                        <span class="build-card__copy-toggle-label" data-build-copy-toggle-label>Показати характеристики</span>
+                                                        <svg class="build-card__copy-toggle-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                                                            <path d="M2.25 4.5L6 8.25L9.75 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
+                                                <div class="build-card__fps-side">
+                                                    <div class="build-card__fps" aria-label="Поточний FPS">
+                                                        <span class="build-card__fps-value{{ $build['fps_value'] > 0 ? '' : ' is-empty' }}" data-fps-value>{{ $build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній' }}</span>
+                                                        <span class="build-card__fps-scale" aria-hidden="true">
+                                                            <span class="build-card__fps-fill"></span>
+                                                        </span>
+                                                        <span class="build-card__fps-label" data-fps-label>FPS</span>
+                                                    </div>
+
+                                                    <button class="build-card__fps-more" type="button" data-fps-mobile-open aria-label="Переглянути більше FPS даних">
+                                                        Більше FPS
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <span class="build-card__price-label">Ціна за збірку</span>
+                                            <span class="build-card__price">{{ $build['price'] }}</span>
+                                            <div class="build-card__meta">
+                                                <span class="build-card__code">Код: {{ $build['product_code'] ?? '—' }}</span>
+                                            </div>
+                                            @include('partials.build-card-case-picker', ['build' => $build])
+                                            <div class="build-card__actions">
+                                                <button class="catalog-cta build-card__action build-card__action--cart" type="button" data-build-add>
+                                                    Додати в кошик
+                                                </button>
+                                                <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}" data-build-detail-link>Детальніше</a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                @endforeach
+                            </div>
+                        @endif
                     </section>
                 </div>
             </main>
@@ -2477,6 +2612,13 @@
 
                 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
                 const mobileBuildCopyLimit = 176;
+                const escapeHtml = (value) => String(value ?? '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+                const escapeCssUrl = (value) => String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
                 const resolveFpsState = (fps) => {
                     if (fps <= 0) {
@@ -2679,6 +2821,101 @@
                 const stepBuildGallery = (gallery, direction) => {
                     const currentIndex = Number(gallery.dataset.galleryIndex ?? 0);
                     syncBuildGallery(gallery, currentIndex + direction);
+                };
+
+                const parseBuildCaseGallery = (option) => {
+                    try {
+                        const parsed = JSON.parse(option.dataset.buildCaseGallery ?? '[]');
+
+                        return Array.isArray(parsed)
+                            ? parsed.map((item) => String(item ?? '').trim()).filter(Boolean)
+                            : [];
+                    } catch (error) {
+                        return [];
+                    }
+                };
+
+                const buildGallerySlidesMarkup = (images, buildName) => images.map((image, index) => `
+                    <div class="build-card__gallery-slide${index === 0 ? ' is-active' : ''}" data-build-gallery-slide>
+                        <img src="${escapeHtml(image)}" alt="${escapeHtml(buildName)} - фото ${index + 1}" loading="lazy" decoding="async">
+                    </div>
+                `).join('');
+
+                const buildGalleryControlsMarkup = (images) => {
+                    if (images.length <= 1) {
+                        return '';
+                    }
+
+                    const dots = images.map((image, index) => `
+                        <button
+                            class="build-card__gallery-dot${index === 0 ? ' is-active' : ''}"
+                            type="button"
+                            data-build-gallery-dot
+                            data-build-gallery-index="${index}"
+                            aria-label="Фото ${index + 1}"
+                        ></button>
+                    `).join('');
+
+                    return `
+                        <button class="build-card__gallery-button" type="button" data-build-gallery-prev aria-label="Попереднє фото">
+                            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                                <path d="M7.5 2.25L3.75 6L7.5 9.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="build-card__gallery-dots">${dots}</div>
+                        <button class="build-card__gallery-button" type="button" data-build-gallery-next aria-label="Наступне фото">
+                            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                                <path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    `;
+                };
+
+                const syncBuildCaseVariant = (card, option) => {
+                    if (!card || !option) {
+                        return;
+                    }
+
+                    const media = card.querySelector('[data-build-media]');
+                    const detailLink = card.querySelector('[data-build-detail-link]');
+                    const description = card.querySelector('[data-build-case-description]');
+                    const buttons = Array.from(card.querySelectorAll('[data-build-case-option]'));
+                    const caseUrl = option.dataset.buildCaseUrl?.trim() ?? '';
+                    const caseImageKey = option.dataset.buildCaseImageKey?.trim() ?? '';
+                    const caseImage = option.dataset.buildCaseImage?.trim() ?? '';
+
+                    buttons.forEach((button) => {
+                        const isActive = button === option;
+                        button.classList.toggle('is-active', isActive);
+                        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                    });
+
+                    if (description) {
+                        description.textContent = 'Обери свій колір корпусу.';
+                    }
+
+                    if (caseUrl !== '') {
+                        card.dataset.productUrl = caseUrl;
+
+                        if (detailLink) {
+                            detailLink.href = caseUrl;
+                        }
+                    }
+
+                    if (!media) {
+                        return;
+                    }
+
+                    if (caseImageKey !== '') {
+                        media.dataset.siteImageKey = caseImageKey;
+                    }
+
+                    if (caseImage !== '') {
+                        media.style.setProperty('--site-image-url', `url('${escapeCssUrl(caseImage)}')`);
+                        media.classList.add('has-site-image');
+                    } else {
+                        media.style.removeProperty('--site-image-url');
+                    }
                 };
 
                 const collapsedBuildCopyLabel = 'Показати характеристики';
@@ -2899,7 +3136,6 @@
 
                 buildGalleries.forEach((gallery) => {
                     const slides = Array.from(gallery.querySelectorAll('[data-build-gallery-slide]'));
-                    const dots = Array.from(gallery.querySelectorAll('[data-build-gallery-dot]'));
 
                     if (slides.length <= 1) {
                         return;
@@ -2908,26 +3144,6 @@
                     let touchStartX = null;
 
                     syncBuildGallery(gallery, Number(gallery.dataset.galleryIndex ?? 0));
-
-                    gallery.querySelector('[data-build-gallery-prev]')?.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        stepBuildGallery(gallery, -1);
-                    });
-
-                    gallery.querySelector('[data-build-gallery-next]')?.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        stepBuildGallery(gallery, 1);
-                    });
-
-                    dots.forEach((dot) => {
-                        dot.addEventListener('click', (event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            syncBuildGallery(gallery, Number(dot.dataset.buildGalleryIndex ?? 0));
-                        });
-                    });
 
                     gallery.addEventListener('touchstart', (event) => {
                         touchStartX = event.touches[0]?.clientX ?? null;
@@ -2991,14 +3207,18 @@
                 });
 
                 fpsCards.forEach((card) => {
-                    const productUrl = card.dataset.productUrl;
-
-                    if (!productUrl) {
+                    if (!card.dataset.productUrl) {
                         return;
                     }
 
                     card.addEventListener('click', (event) => {
+                        const productUrl = card.dataset.productUrl;
+
                         if (event.target.closest('a, button, input, select, textarea, summary, label')) {
+                            return;
+                        }
+
+                        if (!productUrl) {
                             return;
                         }
 
@@ -3006,11 +3226,17 @@
                     });
 
                     card.addEventListener('keydown', (event) => {
+                        const productUrl = card.dataset.productUrl;
+
                         if (event.target !== card) {
                             return;
                         }
 
                         if (event.key !== 'Enter' && event.key !== ' ') {
+                            return;
+                        }
+
+                        if (!productUrl) {
                             return;
                         }
 
@@ -3034,6 +3260,42 @@
                 });
 
                 document.addEventListener('click', (event) => {
+                    const caseOption = event.target.closest('[data-build-case-option]');
+
+                    if (caseOption) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        syncBuildCaseVariant(caseOption.closest('[data-fps-card]'), caseOption);
+                        return;
+                    }
+
+                    const galleryPrevButton = event.target.closest('[data-build-gallery-prev]');
+
+                    if (galleryPrevButton) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        stepBuildGallery(galleryPrevButton.closest('[data-build-gallery]'), -1);
+                        return;
+                    }
+
+                    const galleryNextButton = event.target.closest('[data-build-gallery-next]');
+
+                    if (galleryNextButton) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        stepBuildGallery(galleryNextButton.closest('[data-build-gallery]'), 1);
+                        return;
+                    }
+
+                    const galleryDot = event.target.closest('[data-build-gallery-dot]');
+
+                    if (galleryDot) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        syncBuildGallery(galleryDot.closest('[data-build-gallery]'), Number(galleryDot.dataset.buildGalleryIndex ?? 0));
+                        return;
+                    }
+
                     if (!event.target.closest('[data-dropdown-trigger]') && !event.target.closest('[data-dropdown-panel]')) {
                         closeAllDropdowns();
                     }
@@ -3078,6 +3340,9 @@
                 syncFpsCards(true);
                 applyBuildSort(buildSortSelect?.value ?? 'popular');
                 syncBuildCopyToggles();
+                document.querySelectorAll('[data-build-case-option].is-active').forEach((option) => {
+                    syncBuildCaseVariant(option.closest('[data-fps-card]'), option);
+                });
                 if (window.KondorCart) {
                     window.KondorCart.renderPreviews();
                 }

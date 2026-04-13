@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SiteImage;
 use App\Support\SiteImages;
+use App\Support\StorefrontBuilds;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -36,6 +37,7 @@ class SiteImageController extends Controller
         );
 
         SiteImages::flush();
+        StorefrontBuilds::flush();
 
         return response()->json([
             'key' => $siteImage->key,

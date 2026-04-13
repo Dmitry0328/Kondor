@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
     <head>
         <meta charset="utf-8">
@@ -6,9 +6,9 @@
         <title>KindorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
-        <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
-        @include('partials.theme-head')
+        <link rel="stylesheet" href="<?php echo e(asset('css/storefront-cart.css')); ?>">
+        <link rel="stylesheet" href="<?php echo e(asset('css/admin-inline-images.css')); ?>">
+        <?php echo $__env->make('partials.theme-head', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
         <style>
             :root {
                 --bg: #ffffff;
@@ -76,17 +76,6 @@
                 margin: 0 auto;
             }
 
-            .topbar {
-                background: #2b272b;
-                color: #ffffff;
-                font-size: 14px;
-            }
-
-            .topbar__inner,
-            .topbar__links,
-            .topbar__meta,
-            .topbar__contacts,
-            .topbar__socials,
             .header__inner,
             .header__actions,
             .header-cart,
@@ -99,41 +88,6 @@
                 align-items: center;
             }
 
-            .topbar__inner {
-                justify-content: space-between;
-                min-height: 38px;
-                gap: 22px;
-            }
-
-            .topbar__links {
-                gap: 26px;
-            }
-
-            .topbar__meta {
-                margin-left: auto;
-                gap: 30px;
-            }
-
-            .topbar__contacts {
-                gap: 20px;
-            }
-
-            .topbar__socials {
-                gap: 16px;
-            }
-
-            .topbar a {
-                font-weight: 700;
-                opacity: 0.96;
-                line-height: 1;
-            }
-
-            .topbar__social-link {
-                justify-content: center;
-                width: 18px;
-                height: 18px;
-            }
-
             .header {
                 position: sticky;
                 top: 0;
@@ -142,6 +96,10 @@
                 z-index: 80;
                 box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
                 transition: background-color 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, backdrop-filter 0.22s ease;
+            }
+
+            .topbar {
+                display: none !important;
             }
 
             .header.is-stuck {
@@ -173,7 +131,7 @@
                 display: block;
                 margin-top: 2px;
                 color: var(--muted);
-                font-size: 12px;
+                font-size: 13px;
                 font-weight: 700;
             }
 
@@ -647,6 +605,256 @@
 
             .builds {
                 padding: 10px 0 76px;
+            }
+
+            .resolution-chooser {
+                margin-bottom: 32px;
+                padding: 28px;
+                border: 1px solid #e1e8f0;
+                border-radius: 34px;
+                background:
+                    radial-gradient(circle at top left, rgba(132, 36, 240, 0.09), transparent 28%),
+                    radial-gradient(circle at right center, rgba(48, 215, 255, 0.08), transparent 26%),
+                    linear-gradient(135deg, #ffffff 0%, #f5f8fc 56%, #eef3f8 100%);
+                box-shadow: 0 18px 42px rgba(24, 32, 42, 0.08);
+            }
+
+            .resolution-chooser__head {
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+                gap: 18px;
+                margin-bottom: 24px;
+            }
+
+            .resolution-chooser__eyebrow {
+                display: inline-flex;
+                margin-bottom: 10px;
+                color: #6b7584;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+
+            .resolution-chooser__title {
+                margin: 0;
+                max-width: 16ch;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(30px, 3vw, 48px);
+                line-height: 0.94;
+                letter-spacing: -0.05em;
+            }
+
+            .resolution-chooser__text {
+                max-width: 440px;
+                margin: 0;
+                color: #5f6875;
+                font-size: 16px;
+                line-height: 1.65;
+            }
+
+            .resolution-chooser__grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 18px;
+            }
+
+            .resolution-card {
+                --resolution-accent: #7b42ff;
+                --resolution-accent-soft: rgba(123, 66, 255, 0.16);
+                position: relative;
+                display: grid;
+                min-height: 360px;
+                padding: 22px;
+                border: 1px solid #dde5ef;
+                border-radius: 28px;
+                overflow: hidden;
+                background:
+                    radial-gradient(circle at 50% 0%, var(--resolution-accent-soft), transparent 42%),
+                    linear-gradient(180deg, #ffffff 0%, #f5f8fd 100%);
+                box-shadow: 0 22px 46px rgba(15, 23, 42, 0.08);
+                transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            }
+
+            .resolution-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(123, 66, 255, 0.34);
+                box-shadow: 0 28px 56px rgba(15, 23, 42, 0.14);
+            }
+
+            .resolution-card__label,
+            .resolution-card__meta,
+            .resolution-card__art,
+            .resolution-card__action {
+                position: relative;
+                z-index: 1;
+            }
+
+            .resolution-card__label {
+                display: inline-flex;
+                width: fit-content;
+                min-height: 32px;
+                padding: 0 14px;
+                align-items: center;
+                border: 1px solid rgba(24, 32, 42, 0.08);
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.82);
+                color: #1c2430;
+                font-size: 11px;
+                font-weight: 800;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+
+            .resolution-card__art {
+                position: relative;
+                align-self: center;
+                justify-self: center;
+                width: min(100%, 220px);
+                aspect-ratio: 0.86;
+                margin: 16px 0 12px;
+                border-radius: 26px;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(240, 245, 252, 0.98)),
+                    rgba(244, 247, 252, 0.98);
+                border: 1px solid rgba(24, 32, 42, 0.08);
+                box-shadow:
+                    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                    0 18px 30px rgba(24, 32, 42, 0.12);
+                overflow: hidden;
+            }
+
+            .resolution-card__art.has-resolution-image {
+                background-image: var(--resolution-image-url);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .resolution-card__art.has-resolution-image .resolution-card__tower,
+            .resolution-card__art.has-resolution-image .resolution-card__glass,
+            .resolution-card__art.has-resolution-image .resolution-card__fan,
+            .resolution-card__art.has-resolution-image .resolution-card__line {
+                display: none;
+            }
+
+            .resolution-card__tower {
+                position: absolute;
+                inset: 18% 14% 10%;
+                border-radius: 18px;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 22%),
+                    linear-gradient(180deg, #eef3f9, #dfe7f0);
+                border: 1px solid rgba(24, 32, 42, 0.08);
+            }
+
+            .resolution-card__glass {
+                position: absolute;
+                inset: 12% 24% 16% 10%;
+                border-radius: 16px;
+                border: 1px solid rgba(160, 176, 196, 0.36);
+                background:
+                    linear-gradient(145deg, rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0.08)),
+                    rgba(238, 244, 250, 0.78);
+            }
+
+            .resolution-card__fan {
+                position: absolute;
+                right: 14%;
+                width: 18%;
+                aspect-ratio: 1;
+                border-radius: 50%;
+                border: 3px solid var(--resolution-accent);
+                box-shadow: 0 0 18px color-mix(in srgb, var(--resolution-accent) 44%, transparent);
+            }
+
+            .resolution-card__fan--one {
+                top: 24%;
+            }
+
+            .resolution-card__fan--two {
+                top: 45%;
+            }
+
+            .resolution-card__fan--three {
+                top: 66%;
+            }
+
+            .resolution-card__line {
+                position: absolute;
+                left: 18%;
+                right: 30%;
+                height: 4px;
+                border-radius: 999px;
+                background: linear-gradient(90deg, var(--resolution-accent), rgba(255, 255, 255, 0.22));
+            }
+
+            .resolution-card__line--top {
+                top: 22%;
+            }
+
+            .resolution-card__line--bottom {
+                bottom: 18%;
+            }
+
+            .resolution-card__meta {
+                display: grid;
+                gap: 8px;
+                align-self: end;
+            }
+
+            .resolution-card__eyebrow {
+                color: color-mix(in srgb, var(--resolution-accent) 78%, white);
+                font-size: 11px;
+                font-weight: 800;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+
+            .resolution-card__title {
+                margin: 0;
+                color: #111827;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(26px, 2.3vw, 36px);
+                line-height: 0.94;
+                letter-spacing: -0.04em;
+            }
+
+            .resolution-card__description {
+                margin: 0;
+                color: #5f6875;
+                font-size: 14px;
+                line-height: 1.55;
+            }
+
+            .resolution-card__action {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: fit-content;
+                min-height: 44px;
+                margin-top: 16px;
+                padding: 0 18px;
+                border: 1px solid rgba(24, 32, 42, 0.12);
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.82);
+                color: #1c2430;
+                font-size: 14px;
+                font-weight: 800;
+                transition: background-color 0.2s ease, border-color 0.2s ease;
+            }
+
+            .resolution-card__action:hover {
+                border-color: color-mix(in srgb, var(--resolution-accent) 56%, white);
+                background: color-mix(in srgb, var(--resolution-accent) 12%, white);
+            }
+
+            .resolution-card__count {
+                color: #6b7280;
+                font-size: 12px;
+                font-weight: 700;
             }
 
             .fps-lab {
@@ -1508,6 +1716,117 @@
                 letter-spacing: -0.01em;
             }
 
+            .build-card__case-picker {
+                display: grid;
+                gap: 12px;
+                margin-top: 16px;
+                justify-items: center;
+            }
+
+            .build-card__case-options {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                width: fit-content;
+                padding: 6px;
+                border: 1px solid rgba(66, 84, 106, 0.44);
+                border-radius: 999px;
+                background: linear-gradient(180deg, rgba(15, 22, 32, 0.98), rgba(10, 16, 25, 0.94));
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 22px rgba(0, 0, 0, 0.22);
+            }
+
+            .build-card__case-option {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 46px;
+                height: 46px;
+                padding: 0;
+                border: 1px solid transparent;
+                border-radius: 999px;
+                background: transparent;
+                color: #dce8f6;
+                font-size: 0;
+                text-align: center;
+                cursor: pointer;
+                box-shadow: none;
+                transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+            }
+
+            .build-card__case-option:hover {
+                transform: translateY(-1px);
+            }
+
+            .build-card__case-dot {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                border: 2px solid rgba(255, 255, 255, 0.86);
+                box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.1);
+                transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            }
+
+            .build-card__case-dot--black {
+                background: linear-gradient(180deg, #293445, #05070c);
+            }
+
+            .build-card__case-dot--white {
+                background: linear-gradient(180deg, #ffffff, #d9e4ef);
+            }
+
+            .build-card__case-option[data-build-case-key="black"].is-active {
+                background: linear-gradient(180deg, rgba(31, 41, 55, 0.96), rgba(15, 23, 42, 0.96));
+                box-shadow:
+                    0 0 0 1px rgba(120, 136, 157, 0.5),
+                    0 0 18px rgba(0, 0, 0, 0.54),
+                    0 0 30px rgba(17, 24, 39, 0.48);
+            }
+
+            .build-card__case-option[data-build-case-key="black"].is-active .build-card__case-dot {
+                transform: scale(1.08);
+                border-color: rgba(223, 232, 244, 0.88);
+                box-shadow:
+                    inset 0 0 0 1px rgba(15, 23, 42, 0.12),
+                    0 0 16px rgba(17, 24, 39, 0.38);
+            }
+
+            .build-card__case-option[data-build-case-key="white"].is-active {
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(233, 240, 247, 0.96));
+                box-shadow:
+                    0 0 0 1px rgba(236, 243, 250, 0.94),
+                    0 0 18px rgba(239, 245, 251, 0.94),
+                    0 0 34px rgba(190, 220, 255, 0.32);
+            }
+
+            .build-card__case-option[data-build-case-key="white"].is-active .build-card__case-dot {
+                transform: scale(1.08);
+                border-color: rgba(255, 255, 255, 0.98);
+                box-shadow:
+                    inset 0 0 0 1px rgba(15, 23, 42, 0.08),
+                    0 0 18px rgba(236, 243, 250, 0.96);
+            }
+
+            .build-card__case-option-label {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+
+            .build-card__case-description {
+                margin: 0;
+                color: #9db0c6;
+                font-size: 12px;
+                line-height: 1.5;
+                font-weight: 800;
+                text-align: center;
+            }
+
             .build-card__action {
                 width: 100%;
                 margin-top: 0;
@@ -2200,6 +2519,10 @@
                     grid-template-columns: repeat(4, minmax(0, 1fr));
                 }
 
+                .resolution-chooser__grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
                 .gallery {
                     --gallery-group-width: min(1320px, calc(100vw - 48px));
                     --gallery-row-height: clamp(210px, 20vw, 320px);
@@ -2250,6 +2573,11 @@
 
                 .builds__grid {
                     grid-template-columns: repeat(3, minmax(0, 1fr));
+                }
+
+                .resolution-chooser__head {
+                    flex-direction: column;
+                    align-items: flex-start;
                 }
 
                 .advantages__grid {
@@ -2487,6 +2815,15 @@
                     padding-bottom: 54px;
                 }
 
+                .resolution-chooser {
+                    padding: 22px;
+                    border-radius: 28px;
+                }
+
+                .resolution-chooser__grid {
+                    grid-template-columns: 1fr;
+                }
+
                 .builds__header {
                     flex-direction: column;
                     align-items: flex-start;
@@ -2697,6 +3034,17 @@
                     grid-template-columns: 1fr;
                 }
 
+                .resolution-card {
+                    min-height: 328px;
+                    padding: 18px;
+                    border-radius: 24px;
+                }
+
+                .resolution-card__art {
+                    width: min(100%, 196px);
+                    margin-block: 12px 8px;
+                }
+
                 .builds__mobile-more {
                     min-height: 42px;
                 }
@@ -2823,163 +3171,7 @@
     </head>
     <body>
         <div class="page-shell">
-            <div class="topbar">
-                <div class="container topbar__inner">
-                    <div class="topbar__links">
-                        <a href="#about">Про нас</a>
-                        <a href="#contacts">Контакти</a>
-                        <a href="#faq">FAQ</a>
-                    </div>
-
-                    <div class="topbar__meta">
-                        <div class="topbar__contacts">
-                            <a href="tel:+380633631066">+380633631066</a>
-                        </div>
-
-                        <div class="topbar__socials" aria-label="Соціальні мережі">
-                            <a class="topbar__social-link" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer" aria-label="Instagram">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="2"/>
-                                    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-                                    <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/>
-                                </svg>
-                            </a>
-
-                            <a class="topbar__social-link" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer" aria-label="Telegram">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M21 4L3 11.2L10.2 13.8L12.8 21L21 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M10.2 13.8L14.2 9.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <header class="header">
-                <div class="container header__inner">
-                    <a class="brand" href="/">
-                        <div>
-                            <div class="brand__name">KindorPC</div>
-                            <span class="brand__sub">Твоя база геймінгу</span>
-                        </div>
-                    </a>
-
-                    <div class="header__actions">
-                        <a class="header-button header-button--primary" href="#builds">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Наші збірки
-                        </a>
-
-                                                <a class="header-button" href="{{ route('orders.track') }}">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                            Статус замовлення
-                        </a>
-
-                        <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z" stroke="currentColor" stroke-width="2"/>
-                                <path d="M12 10V12L13.5 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Консультація
-                        </button>
-
-                        @auth
-                            @if (auth()->user()?->is_admin)
-                                <a class="header-button" href="{{ url('/admin') }}">Адмінка</a>
-                            @endif
-                        @endauth
-
-                        <div class="search-box" role="search">
-                            <input type="search" placeholder="Пошук збірок">
-                            <button type="button" aria-label="Пошук">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <a class="header-cart" href="#cart" aria-label="Кошик">
-                            <span>0 ₴</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <circle cx="9" cy="19" r="1.6" fill="currentColor"/>
-                                <circle cx="17" cy="19" r="1.6" fill="currentColor"/>
-                                <path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-
-                        @include('partials.header-cart', ['hideTrackingLink' => true])
-
-                        <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="dropdown" id="builds-dropdown" data-dropdown-panel="builds">
-                    <div class="dropdown__columns">
-                        <div class="dropdown__group">
-                            <h3>Готові збірки</h3>
-                            <a href="#builds">1080p Start</a>
-                            <a href="#builds">1440p Core</a>
-                            <a href="#builds">4K / Creator</a>
-                            <a href="#builds">Streaming Build</a>
-                        </div>
-
-                        <div class="dropdown__group">
-                            <h3>Стиль збірки</h3>
-                            <a href="#builds">Black Edition</a>
-                            <a href="#builds">White Edition</a>
-                            <a href="#builds">RGB Showcase</a>
-                            <a href="#builds">Minimal Build</a>
-                        </div>
-
-                        <div class="dropdown__group">
-                            <h3>Під замовлення</h3>
-                            <a href="#contacts">Підбір під бюджет</a>
-                            <a href="#contacts">Апгрейд конфігурації</a>
-                            <a href="#contacts">Збірка для стриму</a>
-                            <a href="#contacts">Консультація</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dropdown dropdown--consultation" id="consultation-dropdown" data-dropdown-panel="consultation">
-                    <div class="dropdown__columns">
-                        <div class="dropdown__group">
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Telegram</a>
-                            <a href="#contacts">Контактна форма</a>
-                            <a href="tel:+380633631066">+380 63 363 10 66</a>
-                            <a href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">Instagram</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
-                    <div class="container mobile-menu__inner">
-                        <a href="#about">Про нас</a>
-                        <a href="#builds">Наші збірки</a>
-                        <a href="{{ route('orders.track') }}">Статус замовлення</a>
-                        <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
-                        <a href="#contacts">Контакти</a>
-                        @auth
-                            @if (auth()->user()?->is_admin)
-                                <a href="{{ url('/admin') }}">Адмінка</a>
-                            @endif
-                        @endauth
-                        <a href="#faq">FAQ</a>
-                    </div>
-                </div>
-            </header>
+            @include('partials.storefront-header', ['showSearch' => true])
 
             <section class="hero" id="about">
                 <div class="container hero__layout">
@@ -2999,15 +3191,15 @@
                         </div>
                     </div>
 
-                    @php
+                    <?php
                         $heroVisualImageUrl = \App\Support\SiteImages::url('home.hero.visual');
-                    @endphp
+                    ?>
                     <div
-                        class="hero__visual site-image-target{{ $heroVisualImageUrl ? ' has-site-image' : '' }}"
+                        class="hero__visual site-image-target<?php echo e($heroVisualImageUrl ? ' has-site-image' : ''); ?>"
                         data-site-image-key="home.hero.visual"
-                        @if ($heroVisualImageUrl)
-                            style="--site-image-url: url('{{ $heroVisualImageUrl }}');"
-                        @endif
+                        <?php if($heroVisualImageUrl): ?>
+                            style="--site-image-url: url('<?php echo e($heroVisualImageUrl); ?>');"
+                        <?php endif; ?>
                         aria-hidden="true"
                     >
                         <div class="rig">
@@ -3036,7 +3228,7 @@
                 </div>
             </section>
 
-            @php
+            <?php
                 /*
                 $fpsGames = [
                     ['id' => 'cyberpunk-2077', 'name' => 'Cyberpunk 2077', 'difficulty' => 0.72, 'accent' => '#f4dc39', 'from' => '#0f182f', 'to' => '#2b1211', 'badge' => 'Night City benchmark'],
@@ -3134,7 +3326,14 @@
                     return 'high';
                 };
 
-                $featuredBuilds = \App\Support\StorefrontBuilds::all();
+                $allStorefrontBuilds = \App\Support\StorefrontBuilds::all();
+                $topTaggedBuilds = array_values(array_filter(
+                    $allStorefrontBuilds,
+                    fn (array $build): bool => in_array('top5', (array) ($build['resolution_tags'] ?? []), true),
+                ));
+                $featuredBuilds = $topTaggedBuilds !== []
+                    ? array_slice($topTaggedBuilds, 0, 5)
+                    : array_slice($allStorefrontBuilds, 0, 5);
 
                 foreach ($featuredBuilds as $index => $build) {
                     $fallbackFps = max(0, (int) ($build['fps_score'] ?? 0));
@@ -3161,6 +3360,9 @@
                     $featuredBuilds[$index]['fps_size'] = $getFpsSize($initialFps);
                     $featuredBuilds[$index]['fps_state'] = $getFpsState($initialFps);
                 }
+
+                $resolutionCounts = \App\Support\BuildResolutions::countByTag($featuredBuilds);
+                $resolutionCards = \App\Support\ResolutionCards::forStorefront($resolutionCounts);
 
                 $fpsClientConfig = [
                     'defaults' => [
@@ -3317,20 +3519,75 @@ SVG;
 
                 $galleryPattern = ['pattern-a', 'pattern-b', 'pattern-c', 'pattern-d', 'pattern-e', 'pattern-f'];
                 $galleryGroups = array_chunk($galleryItems, 6);
-            @endphp
+            ?>
 
             <section class="builds" id="builds">
                 <div class="container">
+                    <section class="resolution-chooser" aria-labelledby="resolution-chooser-title">
+                        <div class="resolution-chooser__head">
+                            <div>
+                                <span class="resolution-chooser__eyebrow">Швидкий підбір</span>
+                                <h2 class="resolution-chooser__title" id="resolution-chooser-title">Оберіть збірку під свій монітор</h2>
+                            </div>
+
+                            <p class="resolution-chooser__text">
+                                Логіка як у референсі, але в стилі KondorPC: клієнт одразу переходить у каталог з уже вибраною добіркою під потрібну роздільну здатність.
+                            </p>
+                        </div>
+
+                        <div class="resolution-chooser__grid">
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $resolutionCards; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $resolutionCard): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                <?php
+                                    $resolutionId = (string) ($resolutionCard['id'] ?? '');
+                                    $resolutionAccent = (string) ($resolutionCard['accent_color'] ?? '#7b42ff');
+                                    $resolutionCount = (int) ($resolutionCard['count'] ?? 0);
+                                    $resolutionImageUrl = trim((string) ($resolutionCard['image_url'] ?? ''));
+                                ?>
+                                <a
+                                    class="resolution-card"
+                                    href="<?php echo e(route('catalog', ['resolution' => $resolutionId])); ?>"
+                                    style="--resolution-accent: <?php echo e($resolutionAccent); ?>; --resolution-accent-soft: color-mix(in srgb, <?php echo e($resolutionAccent); ?> 18%, transparent);"
+                                >
+                                    <span class="resolution-card__label"><?php echo e($resolutionCard['label']); ?></span>
+
+                                    <div
+                                        class="resolution-card__art<?php echo e($resolutionImageUrl !== '' ? ' has-resolution-image' : ''); ?>"
+                                        <?php if($resolutionImageUrl !== ''): ?>
+                                            style="--resolution-image-url: url('<?php echo e($resolutionImageUrl); ?>');"
+                                        <?php endif; ?>
+                                        aria-hidden="true"
+                                    >
+                                        <div class="resolution-card__tower"></div>
+                                        <div class="resolution-card__glass"></div>
+                                        <span class="resolution-card__fan resolution-card__fan--one"></span>
+                                        <span class="resolution-card__fan resolution-card__fan--two"></span>
+                                        <span class="resolution-card__fan resolution-card__fan--three"></span>
+                                        <span class="resolution-card__line resolution-card__line--top"></span>
+                                        <span class="resolution-card__line resolution-card__line--bottom"></span>
+                                    </div>
+
+                                    <div class="resolution-card__meta">
+                                        <span class="resolution-card__eyebrow"><?php echo e($resolutionCard['eyebrow']); ?></span>
+                                        <h3 class="resolution-card__title"><?php echo e($resolutionCard['label']); ?></h3>
+                                        <p class="resolution-card__description"><?php echo e($resolutionCard['description']); ?></p>
+                                        <span class="resolution-card__count"><?php echo e($resolutionCount); ?> збірок у цій добірці</span>
+                                        <span class="resolution-card__action"><?php echo e($resolutionCard['button_label'] ?? 'Дивитися збірки'); ?></span>
+                                    </div>
+                                </a>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                        </div>
+                    </section>
+
                     <div
                         class="fps-lab fps-lab--single"
                         data-fps-lab
-                        style="--scene-from: {{ $fpsGameMap[$defaultFpsGame]['from'] }}; --scene-to: {{ $fpsGameMap[$defaultFpsGame]['to'] }}; --scene-accent: {{ $fpsGameMap[$defaultFpsGame]['accent'] }};"
+                        style="--scene-from: <?php echo e($fpsGameMap[$defaultFpsGame]['from']); ?>; --scene-to: <?php echo e($fpsGameMap[$defaultFpsGame]['to']); ?>; --scene-accent: <?php echo e($fpsGameMap[$defaultFpsGame]['accent']); ?>;"
                     >
                         <div class="fps-lab__mobile-summary">
                             <div class="fps-lab__mobile-copy">
                                 <span class="fps-lab__mobile-kicker">FPS для збірок</span>
-                                <strong class="fps-lab__mobile-title" data-fps-mobile-title>{{ $fpsGameMap[$defaultFpsGame]['name'] }}</strong>
-                                <span class="fps-lab__mobile-meta" data-fps-mobile-meta>{{ $fpsDisplayMap[$defaultFpsDisplay]['mobile_name'] ?? $fpsDisplayMap[$defaultFpsDisplay]['name'] }} · {{ $fpsPresetMap[$defaultFpsPreset]['name'] }}</span>
+                                <strong class="fps-lab__mobile-title" data-fps-mobile-title><?php echo e($fpsGameMap[$defaultFpsGame]['name']); ?></strong>
+                                <span class="fps-lab__mobile-meta" data-fps-mobile-meta><?php echo e($fpsDisplayMap[$defaultFpsDisplay]['mobile_name'] ?? $fpsDisplayMap[$defaultFpsDisplay]['name']); ?> · <?php echo e($fpsPresetMap[$defaultFpsPreset]['name']); ?></span>
                             </div>
 
                             <button class="fps-lab__mobile-open" type="button" data-fps-mobile-open>Змінити</button>
@@ -3359,27 +3616,27 @@ SVG;
                                     <label class="fps-lab__field fps-lab__field--game">
                                         <span>Гра</span>
                                         <select data-fps-game>
-                                            @foreach ($fpsGames as $game)
-                                                <option value="{{ $game['id'] }}" @selected($game['id'] === $defaultFpsGame)>{{ $game['name'] }}</option>
-                                            @endforeach
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsGames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $game): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                                <option value="<?php echo e($game['id']); ?>" <?php if($game['id'] === $defaultFpsGame): echo 'selected'; endif; ?>><?php echo e($game['name']); ?></option>
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                         </select>
                                     </label>
 
                                     <label class="fps-lab__field">
                                         <span>Монітор / роздільна здатність</span>
                                         <select data-fps-display>
-                                            @foreach ($fpsDisplays as $display)
-                                                <option value="{{ $display['id'] }}" @selected($display['id'] === $defaultFpsDisplay)>{{ $display['name'] }}</option>
-                                            @endforeach
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsDisplays; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $display): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                                <option value="<?php echo e($display['id']); ?>" <?php if($display['id'] === $defaultFpsDisplay): echo 'selected'; endif; ?>><?php echo e($display['name']); ?></option>
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                         </select>
                                     </label>
 
                                     <label class="fps-lab__field">
                                         <span>Графіка</span>
                                         <select data-fps-preset>
-                                            @foreach ($fpsPresets as $preset)
-                                                <option value="{{ $preset['id'] }}" @selected($preset['id'] === $defaultFpsPreset)>{{ $preset['name'] }}</option>
-                                            @endforeach
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsPresets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $preset): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                                <option value="<?php echo e($preset['id']); ?>" <?php if($preset['id'] === $defaultFpsPreset): echo 'selected'; endif; ?>><?php echo e($preset['name']); ?></option>
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                         </select>
                                     </label>
                                 </div>
@@ -3391,31 +3648,31 @@ SVG;
                     </div>
 
                     <div class="builds__header">
-                        <h2>Обрані комп'ютерні збірки</h2>
-                        <a class="catalog-cta builds__button" href="{{ url('/catalog') }}">Всі збірки</a>
+                        <h2>Топ 5 збірок</h2>
+                        <a class="catalog-cta builds__button" href="<?php echo e(url('/catalog')); ?>">Всі збірки</a>
                     </div>
 
                     <div class="builds__grid">
-                        @foreach ($featuredBuilds as $build)
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $featuredBuilds; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $build): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                             <article
-                                class="build-card build-card--{{ $build['tone'] }} is-fps-{{ $build['fps_state'] }}"
+                                class="build-card build-card--<?php echo e($build['tone']); ?> is-fps-<?php echo e($build['fps_state']); ?>"
                                 data-fps-card
-                                data-product-url="{{ route('product.show', ['slug' => $build['slug']]) }}"
+                                data-product-url="<?php echo e(route('product.show', ['slug' => $build['slug']])); ?>"
                                 role="link"
                                 tabindex="0"
-                                data-fps-map='@json($build['fps_lookup'] ?? [])'
-                                data-fps-fallback="{{ $build['fps_score'] }}"
-                                data-build-slug="{{ $build['slug'] }}"
-                                data-build-name="{{ $build['name'] }}"
-                                data-build-price="{{ $build['price_value'] }}"
-                                data-build-tone="{{ $build['tone'] }}"
-                                data-current-fps="{{ $build['fps_value'] }}"
-                                style="--fps-ratio: {{ number_format($build['fps_ratio'], 4, '.', '') }}; --fps-size: {{ $build['fps_size'] }}px;"
+                                data-fps-map='<?php echo json_encode($build['fps_lookup'] ?? [], 15, 512) ?>'
+                                data-fps-fallback="<?php echo e($build['fps_score']); ?>"
+                                data-build-slug="<?php echo e($build['slug']); ?>"
+                                data-build-name="<?php echo e($build['name']); ?>"
+                                data-build-price="<?php echo e($build['price_value']); ?>"
+                                data-build-tone="<?php echo e($build['tone']); ?>"
+                                data-current-fps="<?php echo e($build['fps_value']); ?>"
+                                style="--fps-ratio: <?php echo e(number_format($build['fps_ratio'], 4, '.', '')); ?>; --fps-size: <?php echo e($build['fps_size']); ?>px;"
                             >
-                                @include('partials.build-card-media', ['build' => $build])
+                                <?php echo $__env->make('partials.build-card-media', ['build' => $build], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
                                 <div class="build-card__body">
-                                    <h3 class="build-card__title">{{ $build['name'] }}</h3>
+                                    <h3 class="build-card__title"><?php echo e($build['name']); ?></h3>
 
                                     <div class="build-card__content">
                                         <div class="build-card__info">
@@ -3426,28 +3683,28 @@ SVG;
                                                             <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
                                                             <path d="M9 3V6M15 3V6M9 18V21M15 18V21M3 9H6M18 9H21M3 15H6M18 15H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                                         </svg>
-                                                        <span>{{ $build['gpu'] }}</span>
+                                                        <span><?php echo e($build['gpu']); ?></span>
                                                     </li>
                                                     <li>
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                                             <path d="M12 3L19 8V16L12 21L5 16V8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                                                             <path d="M12 9V15M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                                         </svg>
-                                                        <span>{{ $build['cpu'] }}</span>
+                                                        <span><?php echo e($build['cpu']); ?></span>
                                                     </li>
                                                     <li>
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                                             <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
                                                             <path d="M8 10H10M14 10H16M8 14H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                                         </svg>
-                                                        <span>{{ $build['ram'] }}</span>
+                                                        <span><?php echo e($build['ram']); ?></span>
                                                     </li>
                                                     <li>
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                                             <rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
                                                             <path d="M7 12H17M7 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                                         </svg>
-                                                        <span>{{ $build['storage'] }}</span>
+                                                        <span><?php echo e($build['storage']); ?></span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -3462,7 +3719,7 @@ SVG;
 
                                         <div class="build-card__fps-side">
                                             <div class="build-card__fps" aria-label="Поточний FPS">
-                                                <span class="build-card__fps-value{{ $build['fps_value'] > 0 ? '' : ' is-empty' }}" data-fps-value>{{ $build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній' }}</span>
+                                                <span class="build-card__fps-value<?php echo e($build['fps_value'] > 0 ? '' : ' is-empty'); ?>" data-fps-value><?php echo e($build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній'); ?></span>
                                                 <span class="build-card__fps-scale" aria-hidden="true">
                                                     <span class="build-card__fps-fill"></span>
                                                 </span>
@@ -3476,22 +3733,23 @@ SVG;
                                     </div>
 
                                     <span class="build-card__price-label">Ціна за збірку</span>
-                                    <span class="build-card__price">{{ $build['price'] }}</span>
-                                    <div class="build-card__meta">
-                                        <span class="build-card__code">Код: {{ $build['product_code'] ?? '—' }}</span>
-                                    </div>
-                                    <div class="build-card__actions">
-                                        <button class="catalog-cta build-card__action build-card__action--cart" type="button" data-build-add>
-                                            Додати в кошик
-                                        </button>
-                                        <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}">Детальніше</a>
+                                        <span class="build-card__price"><?php echo e($build['price']); ?></span>
+                                        <div class="build-card__meta">
+                                            <span class="build-card__code">Код: <?php echo e($build['product_code'] ?? '—'); ?></span>
+                                        </div>
+                                        <?php echo $__env->make('partials.build-card-case-picker', ['build' => $build], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <div class="build-card__actions">
+                                            <button class="catalog-cta build-card__action build-card__action--cart" type="button" data-build-add>
+                                                Додати в кошик
+                                            </button>
+                                        <a class="catalog-cta build-card__action" href="<?php echo e(route('product.show', ['slug' => $build['slug']])); ?>" data-build-detail-link>Детальніше</a>
                                     </div>
                                 </div>
                             </article>
-                        @endforeach
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                     </div>
 
-                    <a class="catalog-cta builds__mobile-more" href="{{ url('/catalog') }}">Більше збірок</a>
+                    <a class="catalog-cta builds__mobile-more" href="<?php echo e(url('/catalog')); ?>">Більше збірок</a>
                 </div>
             </section>
 
@@ -3564,41 +3822,41 @@ SVG;
 
                     <div class="gallery__viewport" data-gallery-viewport>
                         <div class="gallery__track">
-                            @foreach ($galleryGroups as $groupIndex => $group)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $galleryGroups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupIndex => $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                                 <div class="gallery__group">
-                                    @foreach ($group as $patternIndex => $item)
-                                        @php
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $group; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $patternIndex => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                        <?php
                                             $absoluteIndex = ($groupIndex * 6) + $patternIndex;
-                                        @endphp
+                                        ?>
                                         <button
-                                            class="gallery-card gallery-card--{{ $galleryPattern[$patternIndex] }}"
+                                            class="gallery-card gallery-card--<?php echo e($galleryPattern[$patternIndex]); ?>"
                                             type="button"
                                             data-gallery-item
-                                            data-gallery-index="{{ $absoluteIndex }}"
-                                            data-gallery-title="{{ $item['title'] }}"
-                                            aria-label="Відкрити {{ $item['title'] }}"
+                                            data-gallery-index="<?php echo e($absoluteIndex); ?>"
+                                            data-gallery-title="<?php echo e($item['title']); ?>"
+                                            aria-label="Відкрити <?php echo e($item['title']); ?>"
                                         >
-                                            @php
+                                            <?php
                                                 $galleryImageKey = 'home.gallery.' . $absoluteIndex;
                                                 $galleryImageUrl = \App\Support\SiteImages::url($galleryImageKey);
-                                            @endphp
+                                            ?>
                                             <span
-                                                class="gallery-card__art site-image-target{{ $galleryImageUrl ? ' has-site-image' : '' }}"
-                                                data-site-image-key="{{ $galleryImageKey }}"
-                                                @if ($galleryImageUrl)
-                                                    style="--site-image-url: url('{{ $galleryImageUrl }}');"
-                                                @endif
-                                            >{!! $item['art'] !!}</span>
-                                            <span class="gallery-card__badge">{{ $item['badge'] }}</span>
+                                                class="gallery-card__art site-image-target<?php echo e($galleryImageUrl ? ' has-site-image' : ''); ?>"
+                                                data-site-image-key="<?php echo e($galleryImageKey); ?>"
+                                                <?php if($galleryImageUrl): ?>
+                                                    style="--site-image-url: url('<?php echo e($galleryImageUrl); ?>');"
+                                                <?php endif; ?>
+                                            ><?php echo $item['art']; ?></span>
+                                            <span class="gallery-card__badge"><?php echo e($item['badge']); ?></span>
                                             <span class="gallery-card__zoom" aria-hidden="true">
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                                                     <path d="M10 4H4V10M14 4H20V10M20 14V20H14M10 20H4V14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
                                         </button>
-                                    @endforeach
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                 </div>
-                            @endforeach
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                         </div>
                     </div>
 
@@ -3692,7 +3950,7 @@ SVG;
 
                 <div class="footer__bottom">
                     <div class="container footer__bottom-inner">
-                        {{ date('Y') }} KondorPC | Всі права захищені
+                        <?php echo e(date('Y')); ?> KondorPC | Всі права захищені
                     </div>
                 </div>
             </footer>
@@ -3728,18 +3986,18 @@ SVG;
 
                     <aside class="gallery-modal__aside">
                         <div class="gallery-modal__thumbs">
-                            @foreach ($galleryItems as $index => $item)
-                                <button class="gallery-modal__thumb" type="button" data-gallery-thumb="{{ $index }}" aria-label="Відкрити {{ $item['title'] }}">
-                                    <span class="gallery-modal__thumb-art">{!! $item['art'] !!}</span>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $galleryItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                <button class="gallery-modal__thumb" type="button" data-gallery-thumb="<?php echo e($index); ?>" aria-label="Відкрити <?php echo e($item['title']); ?>">
+                                    <span class="gallery-modal__thumb-art"><?php echo $item['art']; ?></span>
                                 </button>
-                            @endforeach
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                         </div>
                     </aside>
                 </div>
             </div>
         </div>
 
-        <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
+        <script src="<?php echo e(asset('js/storefront-cart.js')); ?>?v=<?php echo e(filemtime(public_path('js/storefront-cart.js'))); ?>"></script>
         <script>
             (() => {
                 const header = document.querySelector('.header');
@@ -3775,7 +4033,7 @@ SVG;
                 const buildGalleries = Array.from(document.querySelectorAll('[data-build-gallery]'));
                 const addToCartButtons = Array.from(document.querySelectorAll('[data-build-add]'));
                 const headerCartValue = document.querySelector('.header-cart span');
-                const fpsConfig = @json($fpsClientConfig);
+                const fpsConfig = <?php echo json_encode($fpsClientConfig, 15, 512) ?>;
                 const fpsGames = Object.fromEntries((fpsConfig.games ?? []).map((game) => [game.id, game]));
                 const fpsDisplays = Object.fromEntries((fpsConfig.displays ?? []).map((display) => [display.id, display]));
                 const fpsPresets = Object.fromEntries((fpsConfig.presets ?? []).map((preset) => [preset.id, preset]));
@@ -3787,6 +4045,13 @@ SVG;
                 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
                 const mobileBuildCopyLimit = 176;
                 const formatPrice = (value) => `${new Intl.NumberFormat('uk-UA').format(Math.round(value)).replace(/\u00a0/g, ' ')} ₴`;
+                const escapeHtml = (value) => String(value ?? '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+                const escapeCssUrl = (value) => String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
                 const loadCart = () => {
                     try {
@@ -4011,6 +4276,101 @@ SVG;
                     syncBuildGallery(gallery, currentIndex + direction);
                 };
 
+                const parseBuildCaseGallery = (option) => {
+                    try {
+                        const parsed = JSON.parse(option.dataset.buildCaseGallery ?? '[]');
+
+                        return Array.isArray(parsed)
+                            ? parsed.map((item) => String(item ?? '').trim()).filter(Boolean)
+                            : [];
+                    } catch (error) {
+                        return [];
+                    }
+                };
+
+                const buildGallerySlidesMarkup = (images, buildName) => images.map((image, index) => `
+                    <div class="build-card__gallery-slide${index === 0 ? ' is-active' : ''}" data-build-gallery-slide>
+                        <img src="${escapeHtml(image)}" alt="${escapeHtml(buildName)} - фото ${index + 1}" loading="lazy" decoding="async">
+                    </div>
+                `).join('');
+
+                const buildGalleryControlsMarkup = (images) => {
+                    if (images.length <= 1) {
+                        return '';
+                    }
+
+                    const dots = images.map((image, index) => `
+                        <button
+                            class="build-card__gallery-dot${index === 0 ? ' is-active' : ''}"
+                            type="button"
+                            data-build-gallery-dot
+                            data-build-gallery-index="${index}"
+                            aria-label="Фото ${index + 1}"
+                        ></button>
+                    `).join('');
+
+                    return `
+                        <button class="build-card__gallery-button" type="button" data-build-gallery-prev aria-label="Попереднє фото">
+                            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                                <path d="M7.5 2.25L3.75 6L7.5 9.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="build-card__gallery-dots">${dots}</div>
+                        <button class="build-card__gallery-button" type="button" data-build-gallery-next aria-label="Наступне фото">
+                            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                                <path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    `;
+                };
+
+                const syncBuildCaseVariant = (card, option) => {
+                    if (!card || !option) {
+                        return;
+                    }
+
+                    const media = card.querySelector('[data-build-media]');
+                    const detailLink = card.querySelector('[data-build-detail-link]');
+                    const description = card.querySelector('[data-build-case-description]');
+                    const buttons = Array.from(card.querySelectorAll('[data-build-case-option]'));
+                    const caseUrl = option.dataset.buildCaseUrl?.trim() ?? '';
+                    const caseImageKey = option.dataset.buildCaseImageKey?.trim() ?? '';
+                    const caseImage = option.dataset.buildCaseImage?.trim() ?? '';
+
+                    buttons.forEach((button) => {
+                        const isActive = button === option;
+                        button.classList.toggle('is-active', isActive);
+                        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                    });
+
+                    if (description) {
+                        description.textContent = 'Обери свій колір корпусу.';
+                    }
+
+                    if (caseUrl !== '') {
+                        card.dataset.productUrl = caseUrl;
+
+                        if (detailLink) {
+                            detailLink.href = caseUrl;
+                        }
+                    }
+
+                    if (!media) {
+                        return;
+                    }
+
+                    if (caseImageKey !== '') {
+                        media.dataset.siteImageKey = caseImageKey;
+                    }
+
+                    if (caseImage !== '') {
+                        media.style.setProperty('--site-image-url', `url('${escapeCssUrl(caseImage)}')`);
+                        media.classList.add('has-site-image');
+                    } else {
+                        media.style.removeProperty('--site-image-url');
+                    }
+                };
+
                 const collapsedBuildCopyLabel = 'Показати характеристики';
                 const expandedBuildCopyLabel = 'Сховати характеристики';
 
@@ -4194,6 +4554,42 @@ SVG;
                 });
 
                 document.addEventListener('click', (event) => {
+                    const caseOption = event.target.closest('[data-build-case-option]');
+
+                    if (caseOption) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        syncBuildCaseVariant(caseOption.closest('[data-fps-card]'), caseOption);
+                        return;
+                    }
+
+                    const galleryPrevButton = event.target.closest('[data-build-gallery-prev]');
+
+                    if (galleryPrevButton) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        stepBuildGallery(galleryPrevButton.closest('[data-build-gallery]'), -1);
+                        return;
+                    }
+
+                    const galleryNextButton = event.target.closest('[data-build-gallery-next]');
+
+                    if (galleryNextButton) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        stepBuildGallery(galleryNextButton.closest('[data-build-gallery]'), 1);
+                        return;
+                    }
+
+                    const galleryDot = event.target.closest('[data-build-gallery-dot]');
+
+                    if (galleryDot) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        syncBuildGallery(galleryDot.closest('[data-build-gallery]'), Number(galleryDot.dataset.buildGalleryIndex ?? 0));
+                        return;
+                    }
+
                     if (!event.target.closest('[data-dropdown-trigger]') && !event.target.closest('[data-dropdown-panel]')) {
                         closeAllDropdowns();
                     }
@@ -4252,7 +4648,6 @@ SVG;
 
                 buildGalleries.forEach((gallery) => {
                     const slides = Array.from(gallery.querySelectorAll('[data-build-gallery-slide]'));
-                    const dots = Array.from(gallery.querySelectorAll('[data-build-gallery-dot]'));
 
                     if (slides.length <= 1) {
                         return;
@@ -4261,26 +4656,6 @@ SVG;
                     let touchStartX = null;
 
                     syncBuildGallery(gallery, Number(gallery.dataset.galleryIndex ?? 0));
-
-                    gallery.querySelector('[data-build-gallery-prev]')?.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        stepBuildGallery(gallery, -1);
-                    });
-
-                    gallery.querySelector('[data-build-gallery-next]')?.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        stepBuildGallery(gallery, 1);
-                    });
-
-                    dots.forEach((dot) => {
-                        dot.addEventListener('click', (event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            syncBuildGallery(gallery, Number(dot.dataset.buildGalleryIndex ?? 0));
-                        });
-                    });
 
                     gallery.addEventListener('touchstart', (event) => {
                         touchStartX = event.touches[0]?.clientX ?? null;
@@ -4358,14 +4733,18 @@ SVG;
                 });
 
                 fpsCards.forEach((card) => {
-                    const productUrl = card.dataset.productUrl;
-
-                    if (!productUrl) {
+                    if (!card.dataset.productUrl) {
                         return;
                     }
 
                     card.addEventListener('click', (event) => {
+                        const productUrl = card.dataset.productUrl;
+
                         if (event.target.closest('a, button, input, select, textarea, summary, label')) {
+                            return;
+                        }
+
+                        if (!productUrl) {
                             return;
                         }
 
@@ -4373,11 +4752,17 @@ SVG;
                     });
 
                     card.addEventListener('keydown', (event) => {
+                        const productUrl = card.dataset.productUrl;
+
                         if (event.target !== card) {
                             return;
                         }
 
                         if (event.key !== 'Enter' && event.key !== ' ') {
+                            return;
+                        }
+
+                        if (!productUrl) {
                             return;
                         }
 
@@ -4398,6 +4783,9 @@ SVG;
                 syncHeaderState();
                 syncFpsCards(true);
                 syncBuildCopyToggles();
+                document.querySelectorAll('[data-build-case-option].is-active').forEach((option) => {
+                    syncBuildCaseVariant(option.closest('[data-fps-card]'), option);
+                });
                 if (window.KondorCart) {
                     window.KondorCart.renderPreviews(loadCart());
                 } else {
@@ -4505,8 +4893,9 @@ SVG;
                 });
             })();
         </script>
-        @include('partials.theme-toggle')
-        @include('partials.admin-site-notifications')
-        @include('partials.admin-inline-images')
+        <?php echo $__env->make('partials.theme-toggle', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('partials.admin-site-notifications', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('partials.admin-inline-images', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </body>
 </html>
+<?php /**PATH D:\OSPanel\home\kondor\resources\views/welcome.blade.php ENDPATH**/ ?>

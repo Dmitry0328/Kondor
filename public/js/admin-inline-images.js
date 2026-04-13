@@ -15,6 +15,8 @@
         return;
     }
 
+    const isCompactTarget = (element) => element.matches('[data-build-case-option], .product-case-picker__option');
+
     const setLoading = (elements, isLoading) => {
         elements.forEach((element) => {
             element.classList.toggle('is-site-image-uploading', isLoading);
@@ -22,7 +24,7 @@
             const badgeLabel = element.querySelector('[data-site-image-edit-label]');
 
             if (badgeLabel) {
-                badgeLabel.textContent = isLoading ? 'Завантаження...' : 'Змінити фото';
+                badgeLabel.textContent = isLoading ? '...' : (isCompactTarget(element) ? 'Фото' : 'Змінити фото');
             }
         });
     };
@@ -62,6 +64,41 @@
         document.querySelectorAll(`[data-site-image-key="${key}"]`).forEach((element) => {
             const handledByGallery = updateBuildCardGallery(element, url);
 
+            if (element.matches('[data-build-media]')) {
+                const card = element.closest('[data-fps-card]');
+                const caseOption = card?.querySelector(`[data-build-case-image-key="${key}"]`);
+
+                if (caseOption) {
+                    caseOption.dataset.buildCaseImage = url;
+
+                    let gallery = [];
+
+                    try {
+                        gallery = JSON.parse(caseOption.dataset.buildCaseGallery ?? '[]');
+                    } catch (error) {
+                        gallery = [];
+                    }
+
+                    if (!Array.isArray(gallery)) {
+                        gallery = [];
+                    }
+
+                    if (!gallery.includes(url)) {
+                        gallery.unshift(url);
+                    }
+
+                    caseOption.dataset.buildCaseGallery = JSON.stringify(gallery.filter(Boolean));
+                }
+            }
+
+            if (element.matches('[data-build-case-option]')) {
+                element.dataset.buildCaseImage = url;
+
+                if (element.classList.contains('is-active')) {
+                    window.setTimeout(() => element.click(), 0);
+                }
+            }
+
             if (!handledByGallery) {
                 element.classList.add('has-site-image');
                 element.style.setProperty('--site-image-url', `url("${url}")`);
@@ -98,7 +135,7 @@
             badge.type = 'button';
             badge.className = 'site-image-edit-badge';
             badge.setAttribute('aria-label', 'Змінити фото');
-            badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h2.1l1.1-1.4A2 2 0 0 1 11.3 3h1.4a2 2 0 0 1 1.6.6L15.4 5h2.1A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.7"/></svg><span data-site-image-edit-label>Змінити фото</span>';
+            badge.innerHTML = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h2.1l1.1-1.4A2 2 0 0 1 11.3 3h1.4a2 2 0 0 1 1.6.6L15.4 5h2.1A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.7"/></svg><span data-site-image-edit-label>${isCompactTarget(element) ? 'Фото' : 'Змінити фото'}</span>`;
             element.appendChild(badge);
         }
 
