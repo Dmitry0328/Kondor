@@ -101,6 +101,8 @@
             .page-shell {
                 width: 100%;
                 margin: 0;
+                display: flex;
+                flex-direction: column;
                 background: var(--bg);
                 border: 0;
                 min-height: 100vh;
@@ -367,10 +369,566 @@
                 padding: 12px 0 42px;
             }
 
+            .hero--slider {
+                padding-top: 24px;
+            }
+
             .hero__layout {
                 align-items: stretch;
                 gap: 26px;
                 min-height: calc(100vh - 120px);
+            }
+
+            .hero--slider .hero__layout {
+                display: block;
+                min-height: 0;
+            }
+
+            .hero-slider {
+                --hero-accent: #ffe81a;
+                --hero-accent-soft: rgba(255, 232, 26, 0.34);
+                --hero-accent-strong: rgba(255, 232, 26, 0.92);
+                position: relative;
+                overflow: hidden;
+                min-height: min(72vh, 760px);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 36px;
+                background:
+                    radial-gradient(circle at 78% 22%, rgba(255, 232, 26, 0.26), transparent 20%),
+                    radial-gradient(circle at 82% 56%, rgba(255, 232, 26, 0.12), transparent 32%),
+                    linear-gradient(135deg, #121212 0%, #181818 47%, #111111 100%);
+                box-shadow:
+                    0 30px 90px rgba(0, 0, 0, 0.26),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                isolation: isolate;
+            }
+
+            .hero-slider::before,
+            .hero-slider::after {
+                content: '';
+                position: absolute;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .hero-slider::before {
+                inset: 26% 34% 12% 8%;
+                background:
+                    radial-gradient(circle at 18% 24%, rgba(255, 255, 255, 0.06), transparent 24%),
+                    linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.02));
+                filter: blur(18px);
+                opacity: 0.65;
+            }
+
+            .hero-slider::after {
+                left: 34%;
+                right: 8%;
+                bottom: 11%;
+                height: 160px;
+                border-radius: 999px;
+                background: radial-gradient(circle at center, var(--hero-accent-soft), transparent 70%);
+                filter: blur(42px);
+                opacity: 0.85;
+            }
+
+            .hero-slider__track {
+                position: relative;
+                min-height: inherit;
+            }
+
+            .hero-slide {
+                position: absolute;
+                inset: 0;
+                display: grid;
+                grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.15fr);
+                align-items: center;
+                gap: 28px;
+                padding: 62px 62px 92px;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transform: scale(1.015);
+                transition:
+                    opacity 0.7s ease,
+                    transform 0.7s ease,
+                    visibility 0s linear 0.7s;
+                z-index: 1;
+            }
+
+            .hero-slide.is-active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: scale(1);
+                transition-delay: 0s;
+            }
+
+            .hero-slide__copy,
+            .hero-slide__visual {
+                position: relative;
+                z-index: 1;
+            }
+
+            .hero-slide__copy {
+                max-width: 540px;
+            }
+
+            .hero-slide__eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 18px;
+                color: rgba(255, 255, 255, 0.74);
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+            }
+
+            .hero-slide__eyebrow::before {
+                content: '';
+                width: 30px;
+                height: 2px;
+                border-radius: 999px;
+                background: var(--hero-accent);
+                box-shadow: 0 0 14px var(--hero-accent-strong);
+            }
+
+            .hero-slide__title {
+                margin: 0 0 20px;
+                color: #ffffff;
+                font-family: 'Space Grotesk', sans-serif;
+                max-width: 680px;
+                font-size: clamp(38px, 5vw, 68px);
+                font-weight: 700;
+                line-height: 0.96;
+                letter-spacing: -0.05em;
+                text-transform: uppercase;
+                text-wrap: balance;
+            }
+
+            .hero-slide__text {
+                max-width: 470px;
+                margin: 0;
+                color: rgba(255, 255, 255, 0.6);
+                font-size: clamp(19px, 2vw, 24px);
+                line-height: 1.55;
+            }
+
+            .hero-slide__actions {
+                margin-top: 34px;
+            }
+
+            .hero-slide__button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 210px;
+                min-height: 68px;
+                padding: 0 34px;
+                border-radius: 999px;
+                background: var(--hero-accent);
+                color: #101010;
+                font-size: 24px;
+                font-weight: 700;
+                text-decoration: none;
+                box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+                transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+            }
+
+            .hero-slide__button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 24px 54px rgba(0, 0, 0, 0.34);
+                filter: brightness(1.03);
+            }
+
+            .hero-slide__visual {
+                min-height: 560px;
+            }
+
+            .hero-slide__glow {
+                position: absolute;
+                inset: 9% -6% 8% 20%;
+                background:
+                    radial-gradient(circle at 34% 48%, var(--hero-accent-soft), transparent 28%),
+                    radial-gradient(circle at 72% 24%, rgba(255, 255, 255, 0.16), transparent 18%),
+                    radial-gradient(circle at 84% 18%, rgba(255, 255, 255, 0.08), transparent 14%);
+                filter: blur(8px);
+                opacity: 0.96;
+            }
+
+            .hero-slide__wave,
+            .hero-slide__wave::before,
+            .hero-slide__wave::after {
+                position: absolute;
+                left: -2%;
+                right: 22%;
+                height: 16px;
+                border-radius: 999px;
+                background: linear-gradient(90deg, transparent 0%, var(--hero-accent-soft) 42%, transparent 100%);
+                opacity: 0.68;
+            }
+
+            .hero-slide__wave {
+                bottom: 30%;
+                transform: rotate(-6deg);
+            }
+
+            .hero-slide__wave::before,
+            .hero-slide__wave::after {
+                content: '';
+            }
+
+            .hero-slide__wave::before {
+                bottom: -42px;
+                left: 8%;
+                right: 12%;
+                opacity: 0.5;
+            }
+
+            .hero-slide__wave::after {
+                bottom: -84px;
+                left: 14%;
+                right: 5%;
+                opacity: 0.34;
+            }
+
+            .hero-showcase {
+                position: absolute;
+                right: 6%;
+                bottom: 8%;
+                width: min(720px, 94%);
+                height: 78%;
+                pointer-events: none;
+            }
+
+            .hero-showcase__tower,
+            .hero-showcase__screen {
+                position: absolute;
+                bottom: 0;
+                border: 3px solid rgba(232, 236, 240, 0.26);
+                border-radius: 10px;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.01)),
+                    linear-gradient(180deg, #0e1012, #14171a);
+                box-shadow:
+                    0 34px 56px rgba(0, 0, 0, 0.34),
+                    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+                    0 0 36px var(--hero-accent-soft);
+            }
+
+            .hero-showcase__tower::before,
+            .hero-showcase__screen::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 36%);
+                opacity: 0.65;
+            }
+
+            .hero-showcase__tower {
+                right: 22%;
+                width: 52%;
+                height: 86%;
+            }
+
+            .hero-showcase__screen {
+                right: 0;
+                width: 48%;
+                height: 62%;
+                transform: translateY(1.5%);
+            }
+
+            .hero-showcase__inner {
+                position: absolute;
+                inset: 7% 6% 8%;
+                overflow: hidden;
+                border-radius: 4px;
+                background:
+                    radial-gradient(circle at 26% 34%, var(--hero-accent-soft), transparent 24%),
+                    linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 44%),
+                    #0b0d10;
+            }
+
+            .hero-showcase__tower .hero-showcase__inner {
+                inset-right: 22%;
+            }
+
+            .hero-showcase__screen .hero-showcase__inner {
+                inset: 10% 7% 8%;
+            }
+
+            .hero-showcase__fan,
+            .hero-showcase__bar,
+            .hero-showcase__gpu,
+            .hero-showcase__plate {
+                position: absolute;
+            }
+
+            .hero-showcase__fan {
+                width: 96px;
+                aspect-ratio: 1;
+                border-radius: 50%;
+                border: 3px solid rgba(255, 255, 255, 0.12);
+                background:
+                    radial-gradient(circle at center, rgba(0, 0, 0, 0.7) 0 24%, transparent 26%),
+                    radial-gradient(circle at center, var(--hero-accent-strong) 0 34%, rgba(0, 0, 0, 0.86) 62%);
+                box-shadow:
+                    inset 0 0 12px rgba(255, 255, 255, 0.06),
+                    0 0 24px var(--hero-accent-soft);
+                animation: hero-spin 7s linear infinite;
+            }
+
+            .hero-showcase__fan--rear {
+                top: 16%;
+                left: 11%;
+                width: 90px;
+            }
+
+            .hero-showcase__fan--front-top {
+                top: 12%;
+                right: 10%;
+            }
+
+            .hero-showcase__fan--front-middle {
+                top: 39%;
+                right: 10%;
+            }
+
+            .hero-showcase__fan--front-bottom {
+                top: 66%;
+                right: 10%;
+            }
+
+            .hero-showcase__fan--top-1,
+            .hero-showcase__fan--top-2,
+            .hero-showcase__fan--top-3 {
+                top: 6%;
+                width: 82px;
+            }
+
+            .hero-showcase__fan--top-1 {
+                left: 18%;
+            }
+
+            .hero-showcase__fan--top-2 {
+                left: 40%;
+            }
+
+            .hero-showcase__fan--top-3 {
+                left: 62%;
+            }
+
+            .hero-showcase__bar {
+                height: 10px;
+                border-radius: 999px;
+                background: var(--hero-accent);
+                box-shadow: 0 0 22px var(--hero-accent-soft);
+            }
+
+            .hero-showcase__bar--top {
+                top: 8%;
+                left: 13%;
+                right: 9%;
+            }
+
+            .hero-showcase__bar--middle {
+                top: 50%;
+                left: 18%;
+                right: 18%;
+                opacity: 0.8;
+            }
+
+            .hero-showcase__bar--bottom {
+                bottom: 12%;
+                left: 14%;
+                right: 9%;
+                opacity: 0.88;
+            }
+
+            .hero-showcase__gpu {
+                left: 18%;
+                right: 24%;
+                bottom: 24%;
+                height: 84px;
+                border-radius: 18px;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0)),
+                    linear-gradient(135deg, #0f1114, #1a1d21);
+                box-shadow:
+                    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+                    0 0 28px rgba(0, 0, 0, 0.26);
+            }
+
+            .hero-showcase__gpu::before,
+            .hero-showcase__gpu::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+                transform: translateY(-50%);
+                background:
+                    radial-gradient(circle at center, rgba(0, 0, 0, 0.7) 0 24%, transparent 26%),
+                    radial-gradient(circle at center, var(--hero-accent-strong) 0 34%, rgba(0, 0, 0, 0.86) 62%);
+                box-shadow: 0 0 18px var(--hero-accent-soft);
+            }
+
+            .hero-showcase__gpu::before {
+                left: 14px;
+            }
+
+            .hero-showcase__gpu::after {
+                right: 14px;
+            }
+
+            .hero-showcase__plate {
+                right: 12%;
+                bottom: 16%;
+                width: 18%;
+                height: 26%;
+                border-radius: 16px;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent),
+                    rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 0 24px rgba(0, 0, 0, 0.18);
+            }
+
+            .hero-showcase__badge {
+                position: absolute;
+                top: 11%;
+                right: 6%;
+                color: var(--hero-accent);
+                font-size: clamp(48px, 8vw, 92px);
+                line-height: 1;
+                text-shadow: 0 0 26px var(--hero-accent-soft);
+                opacity: 0.95;
+            }
+
+            .hero-showcase__label {
+                position: absolute;
+                left: 50%;
+                bottom: 8%;
+                padding: 8px 16px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.05);
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                transform: translateX(-50%);
+                white-space: nowrap;
+            }
+
+            .hero-slider__controls {
+                position: absolute;
+                right: 34px;
+                bottom: 28px;
+                left: 34px;
+                z-index: 4;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+            }
+
+            .hero-slider__arrows,
+            .hero-slider__dots {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .hero-slider__arrow {
+                width: 52px;
+                height: 52px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.04);
+                color: rgba(255, 255, 255, 0.86);
+                cursor: pointer;
+                transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+            }
+
+            .hero-slider__arrow:hover {
+                transform: translateY(-2px);
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.16);
+            }
+
+            .hero-slider__dot {
+                width: 14px;
+                height: 14px;
+                padding: 0;
+                border: 0;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.14);
+                cursor: pointer;
+                transition: width 0.26s ease, background 0.26s ease, transform 0.26s ease;
+            }
+
+            .hero-slider__dot.is-active {
+                width: 42px;
+                background: var(--hero-accent);
+                transform: translateZ(0);
+            }
+
+            .hero-slide.is-active .hero-slide__eyebrow,
+            .hero-slide.is-active .hero-slide__title,
+            .hero-slide.is-active .hero-slide__text,
+            .hero-slide.is-active .hero-slide__actions,
+            .hero-slide.is-active .hero-slide__visual > * {
+                animation: hero-rise 0.82s cubic-bezier(0.22, 1, 0.36, 1) both;
+            }
+
+            .hero-slide.is-active .hero-slide__title {
+                animation-delay: 0.08s;
+            }
+
+            .hero-slide.is-active .hero-slide__text {
+                animation-delay: 0.14s;
+            }
+
+            .hero-slide.is-active .hero-slide__actions {
+                animation-delay: 0.2s;
+            }
+
+            .hero-slide.is-active .hero-slide__glow {
+                animation-delay: 0.1s;
+            }
+
+            .hero-slide.is-active .hero-showcase {
+                animation-delay: 0.18s;
+            }
+
+            .hero-slide.is-active .hero-showcase__badge {
+                animation-delay: 0.26s;
+            }
+
+            @keyframes hero-rise {
+                from {
+                    opacity: 0;
+                    transform: translate3d(0, 22px, 0) scale(0.985);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translate3d(0, 0, 0) scale(1);
+                }
+            }
+
+            @keyframes hero-spin {
+                from {
+                    transform: rotate(0deg);
+                }
+
+                to {
+                    transform: rotate(360deg);
+                }
             }
 
             .hero__copy {
@@ -1945,6 +2503,414 @@
                 line-height: 1.68;
             }
 
+            .showcase-section {
+                --showcase-accent: #8b5cf6;
+                --showcase-accent-strong: #a855f7;
+                --showcase-accent-soft: rgba(139, 92, 246, 0.26);
+                padding: 42px 0 18px;
+            }
+
+            .showcase-section__head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 18px;
+                margin-bottom: 34px;
+            }
+
+            .showcase-section__title {
+                margin: 0;
+                color: #141821;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(34px, 4.6vw, 66px);
+                line-height: 0.98;
+                letter-spacing: -0.05em;
+                text-transform: uppercase;
+            }
+
+            .showcase-section__title span {
+                color: rgba(20, 24, 33, 0.26);
+            }
+
+            .showcase-section__subhead {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 18px;
+                margin: 58px 0 24px;
+            }
+
+            .showcase-section__subhead .showcase-section__title {
+                font-size: clamp(28px, 3.6vw, 50px);
+            }
+
+            .showcase-section__link {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                color: #5b6474;
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                text-decoration: none;
+            }
+
+            .showcase-section__link:hover {
+                color: #141821;
+            }
+
+            .accessories-showcase {
+                display: grid;
+                grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(220px, 1fr));
+                gap: 18px;
+            }
+
+            .accessories-card,
+            .services-card,
+            .video-card {
+                position: relative;
+                overflow: hidden;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 32px;
+                background: linear-gradient(180deg, rgba(25, 25, 27, 0.96), rgba(16, 16, 18, 0.98));
+                box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+                transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+            }
+
+            .accessories-card:hover,
+            .services-card:hover,
+            .video-card:hover {
+                transform: translateY(-6px);
+                border-color: rgba(139, 92, 246, 0.42);
+                box-shadow:
+                    0 30px 68px rgba(0, 0, 0, 0.3),
+                    0 0 0 1px rgba(139, 92, 246, 0.16) inset;
+            }
+
+            .accessories-card {
+                min-height: 460px;
+                padding: 34px 30px 28px;
+                text-decoration: none;
+                color: #fff;
+            }
+
+            .accessories-card__kicker {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                color: rgba(255, 255, 255, 0.46);
+                font-size: 11px;
+                font-weight: 800;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+            }
+
+            .accessories-card__kicker::before {
+                content: '';
+                width: 28px;
+                height: 2px;
+                border-radius: 999px;
+                background: currentColor;
+            }
+
+            .accessories-card__title {
+                margin: 18px 0 8px;
+                font-size: clamp(26px, 3vw, 46px);
+                line-height: 1;
+                letter-spacing: -0.05em;
+            }
+
+            .accessories-card__text {
+                max-width: 320px;
+                margin: 0;
+                color: rgba(255, 255, 255, 0.54);
+                font-size: 18px;
+                line-height: 1.6;
+            }
+
+            .accessories-card__price {
+                display: inline-flex;
+                margin-top: 14px;
+                color: var(--showcase-accent-strong);
+                font-size: 15px;
+                font-weight: 700;
+            }
+
+            .accessories-card__cta {
+                position: relative;
+                z-index: 2;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 176px;
+                min-height: 60px;
+                margin-top: 28px;
+                padding: 0 28px;
+                border: 2px solid rgba(139, 92, 246, 0.86);
+                border-radius: 999px;
+                background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(168, 85, 247, 0.08));
+                color: #f7f4ff;
+                font-size: 18px;
+                font-weight: 700;
+                box-shadow: 0 14px 34px rgba(139, 92, 246, 0.22);
+                transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease, border-color 0.24s ease;
+            }
+
+            .accessories-card:hover .accessories-card__cta {
+                transform: translateY(-2px) scale(1.02);
+                border-color: rgba(168, 85, 247, 1);
+                background: linear-gradient(135deg, rgba(139, 92, 246, 0.34), rgba(168, 85, 247, 0.16));
+                box-shadow: 0 18px 42px rgba(139, 92, 246, 0.3);
+            }
+
+            .accessories-card__external {
+                position: absolute;
+                top: 24px;
+                right: 24px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 46px;
+                height: 46px;
+                border: 2px solid rgba(139, 92, 246, 0.86);
+                border-radius: 14px;
+                color: #c7b3ff;
+                background: rgba(139, 92, 246, 0.08);
+                transition: transform 0.24s ease, background 0.24s ease, color 0.24s ease, border-color 0.24s ease;
+            }
+
+            .accessories-card:hover .accessories-card__external {
+                transform: translateY(-2px) rotate(4deg);
+                background: rgba(139, 92, 246, 0.16);
+                color: #f0eaff;
+                border-color: rgba(168, 85, 247, 1);
+            }
+
+            .accessories-card__art {
+                position: absolute;
+                right: 16px;
+                bottom: 14px;
+                width: min(360px, 58%);
+                aspect-ratio: 1;
+                pointer-events: none;
+            }
+
+            .accessories-card__art--combo::before,
+            .accessories-card__art--combo::after,
+            .accessories-card__art--mouse::before,
+            .accessories-card__art--keyboard::before,
+            .accessories-card__art--pad::before {
+                content: '';
+                position: absolute;
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02));
+                box-shadow:
+                    0 14px 30px rgba(0, 0, 0, 0.36),
+                    0 0 22px rgba(139, 92, 246, 0.12);
+            }
+
+            .accessories-card__art--combo::before {
+                left: 0;
+                bottom: 16%;
+                width: 78%;
+                height: 24%;
+                border-radius: 22px;
+                transform: rotate(-12deg);
+            }
+
+            .accessories-card__art--combo::after {
+                right: 2%;
+                bottom: 26%;
+                width: 28%;
+                height: 42%;
+                border-radius: 46% 46% 42% 42%;
+            }
+
+            .accessories-card__art--combo span,
+            .accessories-card__art--mouse span,
+            .accessories-card__art--keyboard span,
+            .accessories-card__art--pad span {
+                position: absolute;
+                display: block;
+            }
+
+            .accessories-card__art--combo span {
+                left: 24%;
+                bottom: 0;
+                width: 44%;
+                height: 56%;
+                border: 14px solid rgba(255, 255, 255, 0.12);
+                border-radius: 46% 46% 40% 40%;
+                box-shadow: 0 0 18px rgba(139, 92, 246, 0.18);
+            }
+
+            .accessories-card__art--mouse::before {
+                inset: 16% 22% 6%;
+                border-radius: 48% 48% 42% 42%;
+            }
+
+            .accessories-card__art--mouse span {
+                top: 20%;
+                left: 49%;
+                width: 6px;
+                height: 28%;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.82);
+                transform: translateX(-50%);
+                box-shadow: 0 0 16px rgba(255, 255, 255, 0.48);
+            }
+
+            .accessories-card__art--keyboard::before {
+                inset: 28% 8% 22%;
+                border-radius: 22px;
+            }
+
+            .accessories-card__art--keyboard span {
+                inset: 36% 16% 30%;
+                border-radius: 14px;
+                background:
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 8%, transparent 8% 10%, rgba(255, 255, 255, 0.12) 10% 18%, transparent 18% 20%, rgba(255, 255, 255, 0.12) 20% 28%, transparent 28% 30%, rgba(255, 255, 255, 0.12) 30% 38%, transparent 38% 40%, rgba(255, 255, 255, 0.12) 40% 48%, transparent 48% 50%, rgba(255, 255, 255, 0.12) 50% 58%, transparent 58% 60%, rgba(255, 255, 255, 0.12) 60% 68%, transparent 68% 70%, rgba(255, 255, 255, 0.12) 70% 78%, transparent 78% 80%, rgba(255, 255, 255, 0.12) 80% 88%, transparent 88% 90%, rgba(255, 255, 255, 0.12) 90% 98%);
+            }
+
+            .accessories-card__art--pad::before {
+                inset: 18% 6% 14%;
+                border-radius: 24px;
+            }
+
+            .accessories-card__art--pad span {
+                inset: 28% 14% 22%;
+                border: 2px solid rgba(139, 92, 246, 0.46);
+                border-radius: 18px;
+            }
+
+            .services-showcase {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 18px;
+            }
+
+            .services-card {
+                min-height: 480px;
+                padding: 34px 34px 28px;
+            }
+
+            .services-card__title {
+                margin: 0 0 16px;
+                color: #fff;
+                font-size: clamp(32px, 3vw, 48px);
+                line-height: 1.05;
+                letter-spacing: -0.05em;
+            }
+
+            .services-card__text {
+                max-width: 360px;
+                margin: 0;
+                color: rgba(255, 255, 255, 0.54);
+                font-size: 20px;
+                line-height: 1.6;
+            }
+
+            .services-card__icon {
+                position: absolute;
+                inset: auto 30px 116px auto;
+                width: min(250px, 54%);
+                aspect-ratio: 1;
+                filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.32));
+            }
+
+            .services-card__button {
+                position: absolute;
+                left: 34px;
+                bottom: 32px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 210px;
+                min-height: 60px;
+                padding: 0 28px;
+                border: 2px solid rgba(139, 92, 246, 0.86);
+                border-radius: 999px;
+                background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(168, 85, 247, 0.08));
+                color: #f7f4ff;
+                font-size: 18px;
+                font-weight: 700;
+                text-decoration: none;
+                box-shadow: 0 14px 34px rgba(139, 92, 246, 0.22);
+                transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease, border-color 0.24s ease;
+            }
+
+            .services-card:hover .services-card__button {
+                transform: translateY(-2px) scale(1.02);
+                border-color: rgba(168, 85, 247, 1);
+                background: linear-gradient(135deg, rgba(139, 92, 246, 0.34), rgba(168, 85, 247, 0.16));
+                box-shadow: 0 18px 42px rgba(139, 92, 246, 0.3);
+            }
+
+            .videos-showcase {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 18px;
+            }
+
+            .video-card {
+                display: grid;
+                gap: 18px;
+                padding: 24px;
+                text-decoration: none;
+                color: #fff;
+            }
+
+            .video-card__thumb {
+                position: relative;
+                overflow: hidden;
+                aspect-ratio: 16 / 9;
+                border-radius: 22px;
+                background:
+                    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.24), transparent 36%),
+                    linear-gradient(135deg, #1f2024, #121316);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                transition: transform 0.28s ease, border-color 0.28s ease;
+            }
+
+            .video-card:hover .video-card__thumb {
+                transform: scale(1.02);
+                border-color: rgba(139, 92, 246, 0.34);
+            }
+
+            .video-card__play {
+                position: absolute;
+                inset: 50% auto auto 50%;
+                display: grid;
+                place-items: center;
+                width: 76px;
+                height: 76px;
+                border-radius: 50%;
+                background: rgba(139, 92, 246, 0.18);
+                color: #fff;
+                transform: translate(-50%, -50%);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 16px 36px rgba(139, 92, 246, 0.26);
+                transition: transform 0.24s ease, background 0.24s ease;
+            }
+
+            .video-card:hover .video-card__play {
+                transform: translate(-50%, -50%) scale(1.08);
+                background: rgba(139, 92, 246, 0.3);
+            }
+
+            .video-card__title {
+                margin: 0;
+                font-size: 24px;
+                line-height: 1.2;
+                letter-spacing: -0.04em;
+            }
+
+            .video-card__meta {
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
             .gallery {
                 --gallery-group-width: min(1460px, calc(100vw - 88px));
                 --gallery-row-height: clamp(220px, 19vw, 352px);
@@ -2352,6 +3318,7 @@
 
             .footer {
                 position: relative;
+                margin-top: auto;
                 padding: 84px 0 0;
                 background:
                     radial-gradient(circle at 12% 22%, rgba(132, 36, 240, 0.08), transparent 22%),
@@ -2542,6 +3509,15 @@
                     min-height: 620px;
                 }
 
+                .hero-slide {
+                    grid-template-columns: minmax(0, 0.92fr) minmax(300px, 1.08fr);
+                    padding: 52px 48px 88px;
+                }
+
+                .hero-slide__visual {
+                    min-height: 500px;
+                }
+
                 .fps-lab__inner {
                     grid-template-columns: minmax(0, 1fr) 290px;
                 }
@@ -2555,6 +3531,15 @@
                 }
 
                 .resolution-chooser__grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .accessories-showcase {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .services-showcase,
+                .videos-showcase {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
 
@@ -2579,6 +3564,52 @@
                     min-height: unset;
                 }
 
+                .hero--slider .hero__layout {
+                    flex-direction: initial;
+                }
+
+                .hero-slider {
+                    min-height: 0;
+                    border-radius: 30px;
+                }
+
+                .hero-slide {
+                    position: relative;
+                    grid-template-columns: 1fr;
+                    gap: 14px;
+                    min-height: 0;
+                    padding: 34px 28px 98px;
+                }
+
+                .hero-slide:not(.is-active) {
+                    display: none;
+                }
+
+                .hero-slide__copy {
+                    max-width: none;
+                }
+
+                .hero-slide__title {
+                    font-size: clamp(38px, 8vw, 58px);
+                }
+
+                .hero-slide__text {
+                    max-width: none;
+                    font-size: 19px;
+                }
+
+                .hero-slide__visual {
+                    min-height: 410px;
+                }
+
+                .hero-showcase {
+                    position: relative;
+                    right: auto;
+                    bottom: auto;
+                    width: 100%;
+                    height: 410px;
+                }
+
                 .hero__copy,
                 .hero__visual {
                     flex: unset;
@@ -2592,6 +3623,27 @@
 
                 .hero__copy-inner {
                     max-width: 620px;
+                }
+
+                .showcase-section__head {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .accessories-showcase,
+                .services-showcase,
+                .videos-showcase {
+                    grid-template-columns: 1fr;
+                }
+
+                .accessories-card,
+                .services-card {
+                    min-height: 380px;
+                }
+
+                .services-card__icon {
+                    width: 180px;
+                    bottom: 104px;
                 }
 
                 .fps-lab__inner {
@@ -2679,6 +3731,36 @@
                     font-size: 11px;
                 }
 
+                .accessories-card {
+                    min-height: 340px;
+                    padding: 24px 22px 24px;
+                }
+
+                .accessories-card__title,
+                .services-card__title {
+                    font-size: clamp(28px, 7vw, 38px);
+                }
+
+                .accessories-card__text,
+                .services-card__text {
+                    font-size: 17px;
+                }
+
+                .services-card {
+                    min-height: 380px;
+                    padding: 24px 22px;
+                }
+
+                .services-card__button {
+                    left: 22px;
+                    bottom: 22px;
+                    min-width: 176px;
+                }
+
+                .video-card {
+                    padding: 18px;
+                }
+
                 .header-cart-shell {
                     grid-column: 3;
                     grid-row: 1;
@@ -2745,6 +3827,88 @@
 
                 .hero__layout {
                     flex-direction: column-reverse;
+                }
+
+                .hero--slider .hero__layout {
+                    flex-direction: initial;
+                }
+
+                .hero-slide {
+                    padding: 28px 22px 88px;
+                }
+
+                .hero-slide__eyebrow {
+                    margin-bottom: 14px;
+                    font-size: 11px;
+                }
+
+                .hero-slide__title {
+                    margin-bottom: 16px;
+                    font-size: clamp(34px, 11vw, 48px);
+                }
+
+                .hero-slide__text {
+                    font-size: 17px;
+                    line-height: 1.62;
+                }
+
+                .hero-slide__actions {
+                    margin-top: 24px;
+                }
+
+                .hero-slide__button {
+                    width: 100%;
+                    min-height: 58px;
+                    font-size: 20px;
+                }
+
+                .hero-slide__visual {
+                    min-height: 316px;
+                }
+
+                .hero-showcase {
+                    height: 316px;
+                }
+
+                .hero-showcase__fan {
+                    width: 68px;
+                    border-width: 2px;
+                }
+
+                .hero-showcase__fan--rear {
+                    width: 64px;
+                }
+
+                .hero-showcase__fan--top-1,
+                .hero-showcase__fan--top-2,
+                .hero-showcase__fan--top-3 {
+                    width: 56px;
+                }
+
+                .hero-showcase__gpu {
+                    bottom: 23%;
+                    height: 62px;
+                }
+
+                .hero-showcase__gpu::before,
+                .hero-showcase__gpu::after {
+                    width: 34px;
+                    height: 34px;
+                }
+
+                .hero-showcase__badge {
+                    font-size: 52px;
+                }
+
+                .hero-slider__controls {
+                    right: 22px;
+                    bottom: 20px;
+                    left: 22px;
+                }
+
+                .hero-slider__arrow {
+                    width: 44px;
+                    height: 44px;
                 }
 
                 .hero__visual {
@@ -3041,6 +4205,37 @@
             }
 
             @media (max-width: 560px) {
+                .hero-slider {
+                    border-radius: 24px;
+                }
+
+                .hero-slider__controls {
+                    justify-content: center;
+                }
+
+                .hero-slider__arrows {
+                    display: none;
+                }
+
+                .hero-slider__dot {
+                    width: 12px;
+                    height: 12px;
+                }
+
+                .hero-slider__dot.is-active {
+                    width: 34px;
+                }
+
+                .accessories-card__cta,
+                .services-card__button {
+                    width: 100%;
+                    min-width: 0;
+                }
+
+                .video-card__title {
+                    font-size: 20px;
+                }
+
                 .hero__actions {
                     flex-direction: column;
                     align-items: stretch;
@@ -3208,58 +4403,213 @@
         <div class="page-shell">
             @include('partials.storefront-header', ['showSearch' => true])
 
-            <section class="hero" id="about">
+            <?php
+                $heroMode = \App\Support\SiteSettings::string('home.hero.mode', 'slider');
+                $heroVisualImageUrl = \App\Support\SiteImages::url('home.hero.visual');
+                $heroSlides = [
+                    [
+                        'eyebrow' => 'KondorPC showcase',
+                        'title' => 'НАШІ ЗБІРКИ',
+                        'text' => 'Готові ігрові ПК з акцентом на продуктивність, охайну збірку та сильну візуальну подачу.',
+                        'button' => 'Наші збірки',
+                        'href' => '#builds',
+                        'accent' => '#fff000',
+                        'soft' => 'rgba(255, 240, 0, 0.34)',
+                        'badge' => 'K',
+                        'label' => 'performance line',
+                    ],
+                    [
+                        'eyebrow' => 'KondorPC accessories',
+                        'title' => 'АКСЕСУАРИ',
+                        'text' => 'Периферія та доповнення до сетапу: мишки, клавіатури, гарнітури та все, що завершує ігрове місце.',
+                        'button' => 'Аксесуари',
+                        'href' => '#accessories',
+                        'accent' => '#ff8a3d',
+                        'soft' => 'rgba(255, 138, 61, 0.30)',
+                        'badge' => 'A',
+                        'label' => 'gear & setup',
+                    ],
+                    [
+                        'eyebrow' => 'KondorPC warranty',
+                        'title' => 'ГАРАНТІЯ',
+                        'text' => 'Підтримка, допомога з підбором і гарантійний супровід, щоб збірка відчувалась впевнено з першого дня.',
+                        'button' => 'Гарантія',
+                        'href' => '#faq',
+                        'accent' => '#7cff65',
+                        'soft' => 'rgba(124, 255, 101, 0.32)',
+                        'badge' => 'G',
+                        'label' => 'care & support',
+                    ],
+                    [
+                        'eyebrow' => 'KondorPC trade-in',
+                        'title' => 'ТРЕЙД ІН',
+                        'text' => 'Оцінимо вашу стару систему та допоможемо перейти на нову збірку з вигідною доплатою й зрозумілим процесом.',
+                        'button' => 'Трейд ін',
+                        'href' => '/trade-in',
+                        'accent' => '#4de3ff',
+                        'soft' => 'rgba(77, 227, 255, 0.3)',
+                        'badge' => 'T',
+                        'label' => 'upgrade path',
+                    ],
+                    [
+                        'eyebrow' => 'KondorPC custom',
+                        'title' => 'УНІКАЛЬНІ ЗБІРКИ',
+                        'text' => 'Підберемо збірку під бюджет, стиль корпусу і формат використання, від Full HD до важких 2K та 4K сценаріїв.',
+                        'button' => 'Написати в Telegram',
+                        'href' => 'https://t.me/kondor_channeI',
+                        'accent' => '#d96bff',
+                        'soft' => 'rgba(217, 107, 255, 0.30)',
+                        'badge' => 'S',
+                        'label' => 'custom projects',
+                    ],
+                    [
+                        'eyebrow' => 'KondorPC reviews',
+                        'title' => 'ВІДГУКИ КЛІЄНТІВ',
+                        'text' => 'Реальні враження клієнтів про збірки, сервіс, упаковку та підтримку після покупки.',
+                        'button' => 'Відгуки',
+                        'href' => '#reviews',
+                        'accent' => '#ffffff',
+                        'soft' => 'rgba(255, 255, 255, 0.24)',
+                        'badge' => 'R',
+                        'label' => 'client stories',
+                    ],
+                ];
+            ?>
+            <section class="hero <?php echo e($heroMode === 'slider' ? 'hero--slider' : 'hero--legacy'); ?>" id="about">
                 <div class="container hero__layout">
-                    <div class="hero__copy">
-                        <div class="hero__copy-inner">
-                            <h1>Твоя база геймінгу</h1>
-                            <p>
-                                Ласкаво просимо до KindorPC. Тут будуть тільки готові збірки ПК та конфігурації під замовлення.
-                                Ми робимо акцент на продуктивність, чисту збірку й ефектний зовнішній вигляд.
-                            </p>
+                    <?php if($heroMode === 'slider'): ?>
+                        <div class="hero-slider" data-hero-slider>
+                            <div class="hero-slider__track">
+                                <?php $__currentLoopData = $heroSlides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <article
+                                        class="hero-slide<?php echo e($index === 0 ? ' is-active' : ''); ?>"
+                                        data-hero-slide
+                                        style="--hero-accent: <?php echo e($slide['accent']); ?>; --hero-accent-soft: <?php echo e($slide['soft']); ?>; --hero-accent-strong: <?php echo e($slide['soft']); ?>;"
+                                        aria-hidden="<?php echo e($index === 0 ? 'false' : 'true'); ?>"
+                                    >
+                                        <div class="hero-slide__copy">
+                                            <span class="hero-slide__eyebrow"><?php echo e($slide['eyebrow']); ?></span>
+                                            <h1 class="hero-slide__title"><?php echo $slide['title']; ?></h1>
+                                            <p class="hero-slide__text"><?php echo e($slide['text']); ?></p>
 
-                            <div class="hero__actions">
-                                <a class="header-button header-button--primary" href="#builds">Наші збірки</a>
-                                <a class="header-button" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Написати в Telegram</a>
+                                            <div class="hero-slide__actions">
+                                                <a
+                                                    class="hero-slide__button"
+                                                    href="<?php echo e($slide['href']); ?>"
+                                                    <?php if(str_starts_with($slide['href'], 'http')): ?> target="_blank" rel="noreferrer" <?php endif; ?>
+                                                >
+                                                    <?php echo e($slide['button']); ?>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="hero-slide__visual" aria-hidden="true">
+                                            <div class="hero-slide__glow"></div>
+                                            <div class="hero-slide__wave"></div>
+                                            <div class="hero-showcase">
+                                                <div class="hero-showcase__tower">
+                                                    <div class="hero-showcase__inner">
+                                                        <div class="hero-showcase__fan hero-showcase__fan--rear"></div>
+                                                        <div class="hero-showcase__fan hero-showcase__fan--front-top"></div>
+                                                        <div class="hero-showcase__fan hero-showcase__fan--front-middle"></div>
+                                                        <div class="hero-showcase__fan hero-showcase__fan--front-bottom"></div>
+                                                        <div class="hero-showcase__fan hero-showcase__fan--top-1"></div>
+                                                        <div class="hero-showcase__fan hero-showcase__fan--top-2"></div>
+                                                        <div class="hero-showcase__fan hero-showcase__fan--top-3"></div>
+                                                        <div class="hero-showcase__bar hero-showcase__bar--top"></div>
+                                                        <div class="hero-showcase__bar hero-showcase__bar--middle"></div>
+                                                        <div class="hero-showcase__bar hero-showcase__bar--bottom"></div>
+                                                        <div class="hero-showcase__gpu"></div>
+                                                        <div class="hero-showcase__plate"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="hero-showcase__screen">
+                                                    <div class="hero-showcase__inner"></div>
+                                                </div>
+                                                <div class="hero-showcase__badge"><?php echo e($slide['badge']); ?></div>
+                                                <div class="hero-showcase__label"><?php echo e($slide['label']); ?></div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
 
-                        </div>
-                    </div>
+                            <div class="hero-slider__controls">
+                                <div class="hero-slider__arrows">
+                                    <button class="hero-slider__arrow" type="button" data-hero-prev aria-label="Попередній слайд">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                            <path d="M11.5 4.5L6 10L11.5 15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                    <button class="hero-slider__arrow" type="button" data-hero-next aria-label="Наступний слайд">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                            <path d="M8.5 4.5L14 10L8.5 15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                </div>
 
-                    <?php
-                        $heroVisualImageUrl = \App\Support\SiteImages::url('home.hero.visual');
-                    ?>
-                    <div
-                        class="hero__visual site-image-target<?php echo e($heroVisualImageUrl ? ' has-site-image' : ''); ?>"
-                        data-site-image-key="home.hero.visual"
-                        <?php if($heroVisualImageUrl): ?>
-                            style="--site-image-url: url('<?php echo e($heroVisualImageUrl); ?>');"
-                        <?php endif; ?>
-                        aria-hidden="true"
-                    >
-                        <div class="rig">
-                            <div class="rig__shadow"></div>
-                            <div class="rig__case"></div>
-                            <div class="rig__glass"></div>
-                            <div class="rig__frame rig__frame--top"></div>
-                            <div class="rig__frame rig__frame--bottom"></div>
-                            <div class="rig__frame rig__frame--gpu">
-                                <span class="rig__gpu-text">GEFORCE RTX</span>
-                                <span class="rig__gpu-badge">RGB</span>
+                                <div class="hero-slider__dots" role="tablist" aria-label="Навiгацiя слайдера">
+                                    <?php $__currentLoopData = $heroSlides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <button
+                                            class="hero-slider__dot<?php echo e($index === 0 ? ' is-active' : ''); ?>"
+                                            type="button"
+                                            data-hero-dot="<?php echo e($index); ?>"
+                                            aria-label="Слайд <?php echo e($index + 1); ?>"
+                                            aria-selected="<?php echo e($index === 0 ? 'true' : 'false'); ?>"
+                                        ></button>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </div>
                             </div>
-                            <div class="rig__cooler"></div>
-                            <div class="rig__fan rig__fan--rear"></div>
-                            <div class="rig__fan rig__fan--front-top"></div>
-                            <div class="rig__fan rig__fan--front-middle"></div>
-                            <div class="rig__fan rig__fan--front-bottom"></div>
-                            <div class="rig__fan rig__fan--top-1"></div>
-                            <div class="rig__fan rig__fan--top-2"></div>
-                            <div class="rig__fan rig__fan--top-3"></div>
-                            <div class="rig__strip rig__strip--top"></div>
-                            <div class="rig__strip rig__strip--side"></div>
-                            <div class="rig__strip rig__strip--bottom"></div>
                         </div>
-                    </div>
+                    <?php else: ?>
+                        <div class="hero__copy">
+                            <div class="hero__copy-inner">
+                                <h1>Твоя база геймінгу</h1>
+                                <p>
+                                    Ласкаво просимо до KindorPC. Тут будуть тільки готові збірки ПК та конфігурації під замовлення.
+                                    Ми робимо акцент на продуктивність, чисту збірку й ефектний зовнішній вигляд.
+                                </p>
+
+                                <div class="hero__actions">
+                                    <a class="header-button header-button--primary" href="#builds">Наші збірки</a>
+                                    <a class="header-button" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Написати в Telegram</a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div
+                            class="hero__visual site-image-target<?php echo e($heroVisualImageUrl ? ' has-site-image' : ''); ?>"
+                            data-site-image-key="home.hero.visual"
+                            <?php if($heroVisualImageUrl): ?>
+                                style="--site-image-url: url('<?php echo e($heroVisualImageUrl); ?>');"
+                            <?php endif; ?>
+                            aria-hidden="true"
+                        >
+                            <div class="rig">
+                                <div class="rig__shadow"></div>
+                                <div class="rig__case"></div>
+                                <div class="rig__glass"></div>
+                                <div class="rig__frame rig__frame--top"></div>
+                                <div class="rig__frame rig__frame--bottom"></div>
+                                <div class="rig__frame rig__frame--gpu">
+                                    <span class="rig__gpu-text">GEFORCE RTX</span>
+                                    <span class="rig__gpu-badge">RGB</span>
+                                </div>
+                                <div class="rig__cooler"></div>
+                                <div class="rig__fan rig__fan--rear"></div>
+                                <div class="rig__fan rig__fan--front-top"></div>
+                                <div class="rig__fan rig__fan--front-middle"></div>
+                                <div class="rig__fan rig__fan--front-bottom"></div>
+                                <div class="rig__fan rig__fan--top-1"></div>
+                                <div class="rig__fan rig__fan--top-2"></div>
+                                <div class="rig__fan rig__fan--top-3"></div>
+                                <div class="rig__strip rig__strip--top"></div>
+                                <div class="rig__strip rig__strip--side"></div>
+                                <div class="rig__strip rig__strip--bottom"></div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </section>
 
@@ -3832,6 +5182,179 @@ SVG;
                 </div>
             </section>
 
+            <?php
+                $accessoryShowcase = [
+                    [
+                        'title' => 'Аксесуари',
+                        'text' => 'Добірка девайсів Kondor Device для повного сетапу: клавіатури, миші та поверхні.',
+                        'price' => 'Від 499 ₴',
+                        'href' => 'https://www.kondordevice.com/',
+                        'label' => 'Дивитися',
+                        'art' => 'combo',
+                        'lead' => true,
+                    ],
+                    [
+                        'title' => 'Миші',
+                        'text' => 'Ігрові миші для шутерів і щоденного використання.',
+                        'price' => 'Від 1 699 ₴',
+                        'href' => 'https://www.kondordevice.com/',
+                        'art' => 'mouse',
+                        'lead' => false,
+                    ],
+                    [
+                        'title' => 'Клавіатури',
+                        'text' => 'Механічні та magnetic клавіатури серій Orion, Starlight і Moonlight.',
+                        'price' => 'Від 1 899 ₴',
+                        'href' => 'https://www.kondordevice.com/catalog/kondor-moonlight-pro21',
+                        'art' => 'keyboard',
+                        'lead' => false,
+                    ],
+                    [
+                        'title' => 'Ігрові поверхні',
+                        'text' => 'Великі килимки та surface-поверхні для завершеного сетапу.',
+                        'price' => 'Від 499 ₴',
+                        'href' => 'https://www.kondordevice.com/',
+                        'art' => 'pad',
+                        'lead' => false,
+                    ],
+                ];
+
+                $serviceShowcase = [
+                    [
+                        'title' => 'Розстрочка і кредит',
+                        'text' => 'Зручна оплата частинами або в кредит, щоб перейти на нову збірку без зайвого навантаження.',
+                        'href' => '#contacts',
+                        'icon' => 'card',
+                    ],
+                    [
+                        'title' => 'Апгрейд ПК',
+                        'text' => 'Підберемо оновлення, встановимо комплектуючі та підкажемо оптимальний сценарій апгрейду.',
+                        'href' => 'https://t.me/kondor_channeI',
+                        'icon' => 'gear',
+                    ],
+                    [
+                        'title' => 'Trade-In програма',
+                        'text' => 'Оцінимо старий ПК і допоможемо обміняти його на нову збірку з вигідною доплатою.',
+                        'href' => route('trade-in'),
+                        'icon' => 'trade',
+                    ],
+                ];
+
+                $youtubeVideos = [
+                    [
+                        'title' => 'Нове відео на YouTube 01',
+                        'meta' => 'Тимчасове посилання. Заміню на точний URL вашого відео.',
+                        'href' => 'https://www.youtube.com/results?search_query=Kondor+PC',
+                    ],
+                    [
+                        'title' => 'Нове відео на YouTube 02',
+                        'meta' => 'Тимчасове посилання. Заміню на точний URL вашого відео.',
+                        'href' => 'https://www.youtube.com/results?search_query=Kondor+Device',
+                    ],
+                    [
+                        'title' => 'Нове відео на YouTube 03',
+                        'meta' => 'Тимчасове посилання. Заміню на точний URL вашого відео.',
+                        'href' => 'https://www.youtube.com/results?search_query=Kondor+gaming+pc',
+                    ],
+                ];
+            ?>
+
+            <section class="showcase-section" id="accessories">
+                <div class="container">
+                    <div class="showcase-section__head">
+                        <h2 class="showcase-section__title">Аксесуари. <span>Збери весь комплект</span></h2>
+                        <a class="showcase-section__link" href="https://www.kondordevice.com/" target="_blank" rel="noreferrer">
+                            Перейти на Kondor Device
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="accessories-showcase">
+                        <?php $__currentLoopData = $accessoryShowcase; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <a class="accessories-card<?php echo e(($card['lead'] ?? false) ? ' accessories-card--lead' : ''); ?>" href="<?php echo e($card['href']); ?>" target="_blank" rel="noreferrer">
+                                <span class="accessories-card__kicker">Kondor Device</span>
+                                <h3 class="accessories-card__title"><?php echo e($card['title']); ?></h3>
+                                <p class="accessories-card__text"><?php echo e($card['text']); ?></p>
+                                <span class="accessories-card__price"><?php echo e($card['price']); ?></span>
+
+                                <?php if($card['lead'] ?? false): ?>
+                                    <span class="accessories-card__external" aria-hidden="true">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="accessories-card__external" aria-hidden="true">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                <?php endif; ?>
+
+                                <span class="accessories-card__art accessories-card__art--<?php echo e($card['art']); ?>" aria-hidden="true"><span></span></span>
+                            </a>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </div>
+
+                    <div class="showcase-section__subhead">
+                        <h2 class="showcase-section__title">Наші послуги</h2>
+                    </div>
+
+                    <div class="services-showcase" id="services">
+                        <?php $__currentLoopData = $serviceShowcase; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <article class="services-card">
+                                <h3 class="services-card__title"><?php echo e($service['title']); ?></h3>
+                                <p class="services-card__text"><?php echo e($service['text']); ?></p>
+
+                                <svg class="services-card__icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+                                    <?php if($service['icon'] === 'card'): ?>
+                                        <rect x="26" y="72" width="150" height="94" rx="18" fill="#f7ff1a"/>
+                                        <rect x="86" y="92" width="126" height="94" rx="18" fill="#18191b" stroke="#3d3f45" stroke-width="4"/>
+                                        <rect x="102" y="116" width="68" height="12" rx="6" fill="#f7ff1a"/>
+                                        <rect x="102" y="140" width="92" height="10" rx="5" fill="#f7ff1a" opacity=".88"/>
+                                    <?php elseif($service['icon'] === 'gear'): ?>
+                                        <circle cx="124" cy="126" r="54" fill="#f7ff1a"/>
+                                        <circle cx="124" cy="126" r="18" fill="#18191b"/>
+                                        <path d="M124 36V62M124 190V216M36 126H62M186 126H212M59 61L77 79M171 173L189 191M59 191L77 173M171 79L189 61" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round"/>
+                                    <?php else: ?>
+                                        <path d="M120 42C78 42 44 76 44 118C44 160 78 194 120 194C162 194 196 160 196 118" stroke="#f7ff1a" stroke-width="24" stroke-linecap="round"/>
+                                        <path d="M120 198C162 198 196 164 196 122C196 80 162 46 120 46" stroke="#f7ff1a" stroke-width="24" stroke-linecap="round"/>
+                                        <path d="M63 66L42 42L66 42" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M177 174L198 198L174 198" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <?php endif; ?>
+                                </svg>
+
+                                <a class="services-card__button" href="<?php echo e($service['href']); ?>" <?php if(str_starts_with($service['href'], 'http')): ?> target="_blank" rel="noreferrer" <?php endif; ?>>
+                                    Детальніше
+                                </a>
+                            </article>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </div>
+
+                    <div class="showcase-section__subhead">
+                        <h2 class="showcase-section__title">YouTube</h2>
+                    </div>
+
+                    <div class="videos-showcase" id="videos">
+                        <?php $__currentLoopData = $youtubeVideos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $video): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <a class="video-card" href="<?php echo e($video['href']); ?>" target="_blank" rel="noreferrer">
+                                <span class="video-card__thumb">
+                                    <span class="video-card__play">
+                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                            <path d="M8 6.5V17.5L18 12L8 6.5Z"/>
+                                        </svg>
+                                    </span>
+                                </span>
+                                <h3 class="video-card__title"><?php echo e($video['title']); ?></h3>
+                                <span class="video-card__meta"><?php echo e($video['meta']); ?></span>
+                            </a>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </div>
+                </div>
+            </section>
+
             <section class="gallery" id="gallery">
                 <div class="container">
                     <div class="gallery__header">
@@ -4040,6 +5563,11 @@ SVG;
                 const panels = Array.from(document.querySelectorAll('[data-dropdown-panel]'));
                 const mobileToggle = document.querySelector('[data-mobile-toggle]');
                 const mobileMenu = document.querySelector('[data-mobile-menu]');
+                const heroSlider = document.querySelector('[data-hero-slider]');
+                const heroSlides = Array.from(document.querySelectorAll('[data-hero-slide]'));
+                const heroPrev = document.querySelector('[data-hero-prev]');
+                const heroNext = document.querySelector('[data-hero-next]');
+                const heroDots = Array.from(document.querySelectorAll('[data-hero-dot]'));
                 const galleryItems = Array.from(document.querySelectorAll('[data-gallery-item]'));
                 const galleryModal = document.querySelector('[data-gallery-modal]');
                 const galleryMain = document.querySelector('[data-gallery-main]');
@@ -4076,6 +5604,8 @@ SVG;
                 const cartStorageKey = 'kondor-cart-v1';
                 let closeTimer;
                 let activeGalleryIndex = 0;
+                let activeHeroIndex = heroSlides.findIndex((slide) => slide.classList.contains('is-active'));
+                let heroAutoplayTimer;
 
                 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
                 const mobileBuildCopyLimit = 176;
@@ -4087,6 +5617,51 @@ SVG;
                     .replace(/"/g, '&quot;')
                     .replace(/'/g, '&#39;');
                 const escapeCssUrl = (value) => String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
+                const showHeroSlide = (index) => {
+                    if (!heroSlides.length) {
+                        return;
+                    }
+
+                    activeHeroIndex = (index + heroSlides.length) % heroSlides.length;
+
+                    heroSlides.forEach((slide, slideIndex) => {
+                        const isActive = slideIndex === activeHeroIndex;
+                        slide.classList.toggle('is-active', isActive);
+                        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+
+                        if (isActive && heroSlider) {
+                            const styles = window.getComputedStyle(slide);
+                            heroSlider.style.setProperty('--hero-accent', styles.getPropertyValue('--hero-accent').trim());
+                            heroSlider.style.setProperty('--hero-accent-soft', styles.getPropertyValue('--hero-accent-soft').trim());
+                            heroSlider.style.setProperty('--hero-accent-strong', styles.getPropertyValue('--hero-accent-strong').trim());
+                        }
+                    });
+
+                    heroDots.forEach((dot, dotIndex) => {
+                        const isActive = dotIndex === activeHeroIndex;
+                        dot.classList.toggle('is-active', isActive);
+                        dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    });
+                };
+
+                const stopHeroAutoplay = () => {
+                    if (heroAutoplayTimer) {
+                        window.clearInterval(heroAutoplayTimer);
+                        heroAutoplayTimer = undefined;
+                    }
+                };
+
+                const startHeroAutoplay = () => {
+                    if (!heroSlider || heroSlides.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        return;
+                    }
+
+                    stopHeroAutoplay();
+                    heroAutoplayTimer = window.setInterval(() => {
+                        showHeroSlide(activeHeroIndex + 1);
+                    }, 5600);
+                };
 
                 const loadCart = () => {
                     try {
@@ -4146,6 +5721,38 @@ SVG;
                 const resolveFpsRatio = (fps) => fps > 0 ? clamp(fps / 220, 0.18, 1) : 0;
                 const resolveFpsSize = (fps) => fps > 0 ? Math.round(22 + (clamp((fps - 40) / 170, 0, 1) * 10)) : 22;
                 const toStateKey = (state) => `${state.game ?? ''}|${state.display ?? ''}|${state.preset ?? ''}`;
+
+                if (heroSlider && heroSlides.length) {
+                    if (activeHeroIndex < 0) {
+                        activeHeroIndex = 0;
+                    }
+
+                    showHeroSlide(activeHeroIndex);
+                    startHeroAutoplay();
+
+                    heroPrev?.addEventListener('click', () => {
+                        showHeroSlide(activeHeroIndex - 1);
+                        startHeroAutoplay();
+                    });
+
+                    heroNext?.addEventListener('click', () => {
+                        showHeroSlide(activeHeroIndex + 1);
+                        startHeroAutoplay();
+                    });
+
+                    heroDots.forEach((dot, index) => {
+                        dot.addEventListener('click', () => {
+                            showHeroSlide(index);
+                            startHeroAutoplay();
+                        });
+                    });
+
+                    heroSlider.addEventListener('mouseenter', stopHeroAutoplay);
+                    heroSlider.addEventListener('mouseleave', startHeroAutoplay);
+                    heroSlider.addEventListener('focusin', stopHeroAutoplay);
+                    heroSlider.addEventListener('focusout', startHeroAutoplay);
+                }
+
                 const parseCardFpsMap = (card) => {
                     if (card.__fpsMap !== undefined) {
                         return card.__fpsMap;

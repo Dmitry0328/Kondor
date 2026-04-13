@@ -90,7 +90,7 @@
 }
 
 .header-nav__link--admin {
-    color: #f2f7fe;
+    color: #5b6474;
 }
 
 .header-meta {
@@ -318,6 +318,7 @@ html[data-theme="dark"] .footer__brand-name,
 html[data-theme="dark"] .footer__title,
 html[data-theme="dark"] .builds__header h2,
 html[data-theme="dark"] .advantages__title,
+html[data-theme="dark"] .showcase-section__title,
 html[data-theme="dark"] .gallery__title,
 html[data-theme="dark"] .hero__copy h1,
 html[data-theme="dark"] .cart-hero__title,
@@ -341,6 +342,8 @@ html[data-theme="dark"] .brand__sub,
 html[data-theme="dark"] .footer__brand-sub,
 html[data-theme="dark"] .footer__contacts a,
 html[data-theme="dark"] .footer__nav a,
+html[data-theme="dark"] .showcase-section__link,
+html[data-theme="dark"] .showcase-section__title span,
 html[data-theme="dark"] .hero__copy p,
 html[data-theme="dark"] .catalog-hero p,
 html[data-theme="dark"] .advantages__card p,

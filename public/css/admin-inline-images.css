@@ -116,7 +116,7 @@ html[data-admin-edit-mode='off'] .site-image-edit-badge {
 }
 
 body.has-admin-edit-mode-toggle {
-    padding-bottom: 76px;
+    padding-bottom: 0;
 }
 
 .hero__visual.has-site-image {
@@ -212,7 +212,7 @@ body.has-admin-edit-mode-toggle {
     }
 
     body.has-admin-edit-mode-toggle {
-        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 82px);
+        padding-bottom: 0;
     }
 
     .build-card__media.has-site-image {
