@@ -12,6 +12,7 @@ use App\Support\AdminSlug;
 use App\Support\BuildAbout;
 use App\Support\BuildConfigurator;
 use App\Support\BuildImages;
+use App\Support\BuildResolutions;
 use App\Support\FpsCatalog;
 use App\Support\FpsProfiles;
 use BackedEnum;
@@ -87,6 +88,7 @@ class BuildResource extends Resource
                 Group::make([
                     static::basicFormSection(),
                     static::cardFormSection(),
+                    static::caseVariantsFormSection(),
                     static::configuratorFormSection(),
                     static::productSpecsFormSection(),
                     static::aboutFormSection(),
@@ -155,6 +157,14 @@ class BuildResource extends Resource
                         'emerald' => 'Emerald',
                     ])
                     ->default('violet'),
+                Select::make('resolution_tags')
+                    ->label('Теги добірок')
+                    ->multiple()
+                    ->options(BuildResolutions::options())
+                    ->searchable()
+                    ->native(false)
+                    ->helperText('Теги роздільної здатності керують каталогом, а `TOP5` виводить збірку в блоці Топ 5 збірок на головній.')
+                    ->columnSpanFull(),
                 TextInput::make('price')
                     ->label('Ціна, ₴')
                     ->numeric()
@@ -305,6 +315,67 @@ class BuildResource extends Resource
                     })
                     ->afterStateUpdated(fn ($state, callable $get, callable $set) => static::applyLegacyCardComponentSelection('storage', (int) $state, $get, $set))
                     ->helperText('Підтягує накопичувачі з бібліотеки комплектуючих.'),
+            ])
+            ->columns(2);
+    }
+
+    protected static function caseVariantsFormSection(): Section
+    {
+        return Section::make('Чорна / біла збірка')
+            ->description('Окремі фото для чорного та білого виконання. Якщо варіант увімкнений, покупець зможе вибрати його на вітрині.')
+            ->schema([
+                Grid::make([
+                    'default' => 1,
+                    'xl' => 2,
+                ])->schema([
+                    static::caseVariantGroup('black', 'Чорна збірка'),
+                    static::caseVariantGroup('white', 'Біла збірка'),
+                ]),
+            ])
+            ->columnSpanFull();
+    }
+
+    protected static function caseVariantGroup(string $key, string $label): Section
+    {
+        return Section::make($label)
+            ->schema([
+                Toggle::make("case_variants.{$key}.enabled")
+                    ->label('Увімкнути варіант')
+                    ->default($key === 'black'),
+                TextInput::make("case_variants.{$key}.label")
+                    ->label('Назва варіанту')
+                    ->default($label)
+                    ->maxLength(255),
+                Textarea::make("case_variants.{$key}.description")
+                    ->label('Опис варіанту')
+                    ->rows(3)
+                    ->maxLength(500)
+                    ->helperText('Короткий текст для перемикача на картці та сторінці збірки. Наприклад: "Біла версія для світлого сетапу".')
+                    ->columnSpanFull(),
+                FileUpload::make("case_variants.{$key}.image")
+                    ->label('Головне фото')
+                    ->image()
+                    ->disk('public')
+                    ->directory('site-images/build-variants')
+                    ->visibility('public')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(10240)
+                    ->imagePreviewHeight('180')
+                    ->helperText('Показується в картці товару та стає першим фото на сторінці збірки.'),
+                FileUpload::make("case_variants.{$key}.gallery")
+                    ->label('Додаткові фото')
+                    ->image()
+                    ->multiple()
+                    ->reorderable()
+                    ->appendFiles()
+                    ->disk('public')
+                    ->directory('site-images/build-variants')
+                    ->visibility('public')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(10240)
+                    ->imagePreviewHeight('140')
+                    ->helperText('Необов’язково. Якщо додати галерею, саме вона буде відкриватись на сторінці товару для цього варіанту.')
+                    ->columnSpanFull(),
             ])
             ->columns(2);
     }

@@ -58,9 +58,7 @@ textarea {
 }
 
 .topbar {
-    background: #2b272b;
-    color: #fff;
-    font-size: 14px;
+    display: none !important;
 }
 
 .topbar__inner,

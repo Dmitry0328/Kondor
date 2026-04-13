@@ -21,18 +21,7 @@
     hidden
 ></div>
 
-@unless ($hideTrackingLink)
-    <a class="header-button" href="{{ route('orders.track') }}">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        {{ $trackingLabel }}
-    </a>
-@endunless
-
-<div class="header-utility-shell">
+<div class="header-theme-shell">
     <button class="theme-toggle-button" type="button" data-theme-toggle aria-label="{{ $themeToggleLabel }}">
         <span class="theme-toggle-button__icon theme-toggle-button__icon--sun" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -47,36 +36,36 @@
         </span>
         <span class="sr-only" data-theme-toggle-label>{{ $themeToggleText }}</span>
     </button>
+</div>
 
-    <div class="header-cart-shell" data-cart-shell>
-        <a class="header-cart" href="{{ route('cart') }}" aria-label="{{ $cartLabel }}">
-            <span data-cart-amount>{{ $emptyPriceLabel }}</span>
-            <span class="header-cart__badge" data-cart-count hidden>0</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="9" cy="19" r="1.6" fill="currentColor"/>
-                <circle cx="17" cy="19" r="1.6" fill="currentColor"/>
-                <path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </a>
+<div class="header-cart-shell" data-cart-shell>
+    <a class="header-cart" href="{{ route('cart') }}" aria-label="{{ $cartLabel }}">
+        <span data-cart-amount>{{ $emptyPriceLabel }}</span>
+        <span class="header-cart__badge" data-cart-count hidden>0</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="9" cy="19" r="1.6" fill="currentColor"/>
+            <circle cx="17" cy="19" r="1.6" fill="currentColor"/>
+            <path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
 
-        <div class="cart-preview" data-cart-preview>
-            <div class="cart-preview__empty" data-cart-empty>
-                <p>{{ $cartEmptyText }}</p>
-                <a class="cart-preview__button" href="{{ route('catalog') }}">{{ $toCatalogLabel }}</a>
+    <div class="cart-preview" data-cart-preview>
+        <div class="cart-preview__empty" data-cart-empty>
+            <p>{{ $cartEmptyText }}</p>
+            <a class="cart-preview__button" href="{{ route('catalog') }}">{{ $toCatalogLabel }}</a>
+        </div>
+
+        <div class="cart-preview__content" data-cart-content hidden>
+            <div class="cart-preview__items" data-cart-items></div>
+
+            <div class="cart-preview__summary">
+                <span>{{ $totalLabel }}</span>
+                <strong data-cart-total>{{ $emptyPriceLabel }}</strong>
             </div>
 
-            <div class="cart-preview__content" data-cart-content hidden>
-                <div class="cart-preview__items" data-cart-items></div>
-
-                <div class="cart-preview__summary">
-                    <span>{{ $totalLabel }}</span>
-                    <strong data-cart-total>{{ $emptyPriceLabel }}</strong>
-                </div>
-
-                <a class="cart-preview__button cart-preview__button--primary" href="{{ route('cart') }}">
-                    {{ $toCartLabel }}
-                </a>
-            </div>
+            <a class="cart-preview__button cart-preview__button--primary" href="{{ route('cart') }}">
+                {{ $toCartLabel }}
+            </a>
         </div>
     </div>
 </div>

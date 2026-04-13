@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
     <head>
         <meta charset="utf-8">
@@ -585,99 +585,7 @@
                 </div>
             </div>
 
-            <header class="header">
-                <div class="container header__inner">
-                    <a class="brand" href="{{ url('/') }}">
-                        <div>
-                            <div class="brand__name">KondorPC</div>
-                            <span class="brand__sub">Твоя база геймінгу</span>
-                        </div>
-                    </a>
-
-                    <div class="header__actions">
-                        <a class="header-button header-button--primary" href="{{ route('orders.track') }}">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M9 17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                            Статус замовлення
-                        </a>
-
-                        <button class="header-button" type="button" data-dropdown-trigger="consultation" aria-expanded="false" aria-controls="consultation-dropdown" aria-haspopup="true">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z" stroke="currentColor" stroke-width="2"/>
-                                <path d="M12 10V12L13.5 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Консультація
-                        </button>
-
-                        @auth
-                            @if (auth()->user()?->is_admin)
-                                <a class="header-button" href="{{ url('/admin') }}">Адмінка</a>
-                            @endif
-                        @endauth
-
-                        @include('partials.header-cart', ['hideTrackingLink' => true])
-                        <button class="menu-toggle" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
-                    </div>
-                </div>
-
-                <div class="dropdown" id="builds-dropdown" data-dropdown-panel="builds">
-                    <div class="dropdown__columns">
-                        <div class="dropdown__group">
-                            <h3>Популярні збірки</h3>
-                            @foreach ($headerBuilds as $menuBuild)
-                                <a href="{{ route('product.show', ['slug' => $menuBuild['slug']]) }}">{{ $menuBuild['name'] }}</a>
-                            @endforeach
-                        </div>
-
-                        <div class="dropdown__group">
-                            <h3>Швидкі переходи</h3>
-                            <a href="{{ route('catalog') }}">Всі збірки</a>
-                            <a href="{{ url('/') }}">Головна</a>
-                            <a href="{{ url('/') }}#gallery">Наші роботи</a>
-                            <a href="{{ url('/') }}#faq">FAQ</a>
-                        </div>
-
-                        <div class="dropdown__group">
-                            <h3>Під замовлення</h3>
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Підбір під бюджет</a>
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Апгрейд конфігурації</a>
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Збірка для стріму</a>
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dropdown dropdown--consultation" id="consultation-dropdown" data-dropdown-panel="consultation">
-                    <div class="dropdown__columns">
-                        <div class="dropdown__group">
-                            <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Telegram</a>
-                            <a href="#contacts">Контактна форма</a>
-                            <a href="tel:+380633631066">+380 63 363 10 66</a>
-                            <a href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">Instagram</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
-                    <div class="container mobile-menu__inner">
-                        <a href="{{ url('/') }}">Головна</a>
-                        <a href="{{ route('orders.track') }}">Статус замовлення</a>
-                        <a href="{{ url('/') }}#about">Про нас</a>
-                        <a href="{{ route('trade-in') }}">Трейд-ін</a>
-                        <a href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">Консультація</a>
-                        <a href="#contacts">Контакти</a>
-                        @auth
-                            @if (auth()->user()?->is_admin)
-                                <a href="{{ url('/admin') }}">Адмінка</a>
-                            @endif
-                        @endauth
-                        <a href="{{ url('/') }}#faq">FAQ</a>
-                    </div>
-                </div>
-            </header>
+            @include('partials.storefront-header')
 
             <main class="tradein-page" data-tradein-main>
                 <section class="tradein-hero tradein-hero--live">

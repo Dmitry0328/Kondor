@@ -8,10 +8,10 @@ use App\Models\SharedBuildLink;
 use App\Support\AccessoryCatalog;
 use App\Support\BuildConfigurator;
 use App\Support\BuildPreview;
-use Illuminate\Http\RedirectResponse;
 use App\Support\StorefrontBuilds;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -20,16 +20,19 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function show(string $slug): View
+    public function show(Request $request, string $slug): View
     {
         $build = StorefrontBuilds::findBySlug($slug);
 
         abort_unless($build, 404);
 
-        return $this->renderProductPage($build);
+        return $this->renderProductPage(
+            $build,
+            requestedCaseVariant: $this->normalizeRequestedCaseVariant($request->query('case')),
+        );
     }
 
-    public function showShared(string $token): View
+    public function showShared(Request $request, string $token): View
     {
         $sharedBuildLink = SharedBuildLink::query()
             ->active()
@@ -40,16 +43,25 @@ class ProductController extends Controller
 
         abort_unless($build, 404);
 
-        return $this->renderProductPage($build, $sharedBuildLink);
+        return $this->renderProductPage(
+            $build,
+            $sharedBuildLink,
+            requestedCaseVariant: $this->normalizeRequestedCaseVariant($request->query('case')),
+        );
     }
 
-    public function showPreview(string $token): View
+    public function showPreview(Request $request, string $token): View
     {
         $build = BuildPreview::find($token);
 
         abort_unless($build, 404);
 
-        return $this->renderProductPage($build, isPreview: true, previewToken: $token);
+        return $this->renderProductPage(
+            $build,
+            isPreview: true,
+            previewToken: $token,
+            requestedCaseVariant: $this->normalizeRequestedCaseVariant($request->query('case')),
+        );
     }
 
     public function persistPreview(Request $request, string $token): RedirectResponse
@@ -120,10 +132,25 @@ class ProductController extends Controller
         ?SharedBuildLink $sharedBuildLink = null,
         bool $isPreview = false,
         ?string $previewToken = null,
+        ?string $requestedCaseVariant = null,
     ): View
     {
         $sharedBuildSelection = [];
         $sharedBuildPayload = [];
+        $caseVariants = is_array($build['case_variants'] ?? null) ? $build['case_variants'] : [];
+        $selectedCaseVariantKey = $requestedCaseVariant;
+
+        if (
+            $selectedCaseVariantKey === null
+            || ! is_array($caseVariants[$selectedCaseVariantKey] ?? null)
+            || ! ($caseVariants[$selectedCaseVariantKey]['enabled'] ?? false)
+        ) {
+            $selectedCaseVariantKey = (string) ($build['default_case_variant'] ?? '');
+        }
+
+        $selectedCaseVariant = $selectedCaseVariantKey !== '' && is_array($caseVariants[$selectedCaseVariantKey] ?? null)
+            ? $caseVariants[$selectedCaseVariantKey]
+            : null;
 
         if ($sharedBuildLink) {
             $sharedBuildPayload = is_array($sharedBuildLink->payload) ? $sharedBuildLink->payload : [];
@@ -138,7 +165,16 @@ class ProductController extends Controller
             'sharedBuildSelection' => $sharedBuildSelection,
             'isPreview' => $isPreview,
             'previewToken' => $previewToken,
+            'selectedCaseVariantKey' => $selectedCaseVariantKey !== '' ? $selectedCaseVariantKey : null,
+            'selectedCaseVariant' => $selectedCaseVariant,
         ]);
+    }
+
+    protected function normalizeRequestedCaseVariant(mixed $value): ?string
+    {
+        $value = trim((string) $value);
+
+        return in_array($value, ['black', 'white'], true) ? $value : null;
     }
 
     protected function resolveSelection(array $build, array $selection): array

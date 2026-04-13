@@ -92,6 +92,7 @@ class StorefrontBuilds
 
         $build['sort_order'] = $build['sort_order'] ?? ($index + 1);
         $build['is_active'] = $build['is_active'] ?? true;
+        $build['resolution_tags'] = BuildResolutions::normalize((array) ($build['resolution_tags'] ?? []));
 
         return $build;
     }

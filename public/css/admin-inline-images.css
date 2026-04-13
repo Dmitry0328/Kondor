@@ -75,6 +75,26 @@
     text-align: left;
 }
 
+.build-card__case-option.site-image-target .site-image-edit-badge,
+.product-case-picker__option.site-image-target .site-image-edit-badge {
+    top: 8px;
+    right: 8px;
+    min-height: 26px;
+    padding: 0 8px;
+    font-size: 10px;
+    gap: 6px;
+    border-radius: 999px;
+}
+
+.build-card__case-option.site-image-target .site-image-edit-badge svg,
+.product-case-picker__option.site-image-target .site-image-edit-badge svg {
+    width: 11px !important;
+    height: 11px !important;
+    max-width: 11px !important;
+    max-height: 11px !important;
+    flex-basis: 11px;
+}
+
 .site-image-edit-badge svg {
     width: 14px !important;
     height: 14px !important;
