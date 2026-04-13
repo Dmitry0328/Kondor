@@ -232,18 +232,6 @@ HTML,
             column-gap: 1rem;
             row-gap: 1rem;
         }
-        body.admin-build-preview-layout .admin-preview-form-stack .fi-section,
-        .admin-preview-form-stack .fi-section {
-            margin-right: -390px;
-        }
-        body.admin-build-preview-layout .admin-build-live-preview-shell {
-            position: sticky;
-            top: 5.75rem;
-            align-self: start;
-            min-width: 0;
-            margin-right: -750px;
-            margin-left: 420px;
-        }
         body.admin-build-preview-layout.admin-build-sidebar-open .admin-build-live-preview-shell {
             opacity: 1;
             pointer-events: auto;
@@ -368,7 +356,42 @@ HTML,
         overflow: auto;
     }
 }
+@media (min-width: 1024px) {
+    body.admin-build-preview-layout .admin-build-editor-grid {
+        column-gap: 1rem;
+        row-gap: 1rem;
+    }
 
+    /* розтягуємо саму ліву колонку, а не всі вкладені секції */
+    body.admin-build-preview-layout .admin-preview-form-stack {
+        margin-right: -260px;
+        min-width: 0;
+    }
+
+    /* всередині нічого не тягнемо */
+    body.admin-build-preview-layout .admin-preview-form-stack .fi-section {
+        margin-right: 0;
+        max-width: 100%;
+    }
+
+    body.admin-build-preview-layout .admin-build-live-preview-shell {
+        position: sticky;
+        top: 5.75rem;
+        align-self: start;
+        min-width: 0;
+        margin-left: 300px;
+        margin-right: -520px;
+    }
+
+    body.admin-build-preview-layout .admin-build-live-preview-shell > .fi-section {
+        max-height: calc(100vh - 7rem);
+        overflow: auto;
+    }
+
+    body.admin-build-preview-layout .admin-build-variants-section {
+        overflow-x: hidden;
+    }
+}
 </style>
 <div class="admin-site-toast-stack" data-admin-site-notifications data-feed-url="{$feedUrl}"></div>
 <script src="{$scriptUrl}"></script>

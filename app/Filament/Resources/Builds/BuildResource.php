@@ -324,13 +324,10 @@ class BuildResource extends Resource
         return Section::make('Чорна / біла збірка')
             ->description('Окремі фото для чорного та білого виконання. Якщо варіант увімкнений, покупець зможе вибрати його на вітрині.')
             ->schema([
-                Grid::make([
-                    'default' => 1,
-                    'xl' => 2,
-                ])->schema([
-                    static::caseVariantGroup('black', 'Чорна збірка'),
-                    static::caseVariantGroup('white', 'Біла збірка'),
-                ]),
+                    Grid::make(1)->schema([
+                        static::caseVariantGroup('black', 'Чорна збірка'),
+                        static::caseVariantGroup('white', 'Біла збірка'),
+                    ]),
             ])
             ->columnSpanFull();
     }
@@ -338,6 +335,7 @@ class BuildResource extends Resource
     protected static function caseVariantGroup(string $key, string $label): Section
     {
         return Section::make($label)
+            ->extraAttributes(['class' => 'admin-build-case-variant-section admin-build-nested-section'])
             ->schema([
                 Toggle::make("case_variants.{$key}.enabled")
                     ->label('Увімкнути варіант')
