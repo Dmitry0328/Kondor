@@ -14,10 +14,12 @@
         <style>
             body { margin: 0; font-family: 'Manrope', sans-serif; background: #f6f8fc; color: #18202a; }
             a { color: inherit; text-decoration: none; }
-            .page { min-height: 100vh; background: radial-gradient(circle at top center, rgba(119, 45, 255, 0.12), transparent 34%), linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%); }
-            .hero { padding: 42px 0 30px; }
-            .hero__eyebrow { display: inline-block; margin-bottom: 12px; color: #a78bfa; font-size: 12px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; }
+            .page { min-height: 100vh; background: linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%); }
+            .accessories-page__hero { padding: 42px 0 30px; }
+            .accessories-page__eyebrow { display: inline-block; margin-bottom: 12px; color: #a78bfa; font-size: 12px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; }
+            .accessories-page__title,
             .hero__title { margin: 0; font-size: clamp(42px, 8vw, 84px); line-height: 0.95; letter-spacing: -0.05em; }
+            .accessories-page__text,
             .hero__text { max-width: 780px; margin: 18px 0 0; color: #627184; font-size: 18px; line-height: 1.7; }
             .filters { display: flex; flex-wrap: wrap; gap: 14px; margin: 34px 0 22px; }
             .filter { padding: 16px 18px; border-radius: 22px; border: 1px solid #d8e1ee; background: rgba(255, 255, 255, 0.92); min-width: 190px; box-shadow: 0 12px 24px rgba(24, 32, 42, 0.06); transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
@@ -40,7 +42,8 @@
             .button--primary { color: #fff; }
             .empty { padding: 36px 0 72px; color: #627184; font-size: 18px; }
             html[data-theme="dark"] body { background: #09111d; color: #f5f7fb; }
-            html[data-theme="dark"] .page { background: radial-gradient(circle at top center, rgba(119, 45, 255, 0.18), transparent 36%), linear-gradient(180deg, #0c1624 0%, #070d16 100%); }
+            html[data-theme="dark"] .page { background: linear-gradient(180deg, #0b1219 0%, #0f1720 46%, #091018 100%); }
+            html[data-theme="dark"] .accessories-page__text,
             html[data-theme="dark"] .hero__text,
             html[data-theme="dark"] .card__summary,
             html[data-theme="dark"] .empty { color: #9aa6bd; }
@@ -50,6 +53,19 @@
             html[data-theme="dark"] .card { background: linear-gradient(180deg, rgba(22, 28, 39, 0.96), rgba(12, 18, 29, 0.98)); border-color: rgba(145, 158, 185, 0.14); box-shadow: 0 24px 50px rgba(2, 8, 18, 0.38); }
             html[data-theme="dark"] .button { background: rgba(255, 255, 255, 0.03); color: #fff; border-color: rgba(124, 58, 237, 0.34); }
             @media (max-width: 900px) { .grid { gap: 22px; } }
+            @media (max-width: 760px) {
+                .accessories-page__hero { padding: 28px 0 22px; }
+                .accessories-page__title,
+                .hero__title { font-size: clamp(34px, 14vw, 58px); }
+                .accessories-page__text,
+                .hero__text { font-size: 16px; line-height: 1.65; }
+                .filters { margin: 26px 0 18px; }
+                .filter { min-width: 0; width: 100%; }
+                .grid { grid-template-columns: 1fr; gap: 18px; padding-bottom: 48px; }
+                .card { padding: 16px; border-radius: 24px; }
+                .card__title { font-size: 20px; }
+                .card__price { font-size: 28px; }
+            }
         </style>
     </head>
     <body>
@@ -90,8 +106,8 @@
 
             <main class="page">
                 <div class="container">
-                    <section class="hero">
-                        <span class="hero__eyebrow">Kondor Device</span>
+                    <section class="accessories-page__hero">
+                        <span class="accessories-page__eyebrow">Kondor Device</span>
                         <h1 class="hero__title">Девайси. Збери весь комплект</h1>
                         <p class="hero__text">Обирайте клавіатури, миші, килимки, кейкапи й кабелі всередині вашого сайту. Кожен товар можна відкрити, переглянути характеристики, змінити кількість і додати в кошик.</p>
                     </section>

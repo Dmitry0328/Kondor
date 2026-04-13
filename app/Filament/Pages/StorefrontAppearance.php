@@ -5,12 +5,12 @@ namespace App\Filament\Pages;
 use App\Support\SiteSettings;
 use BackedEnum;
 use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 
@@ -37,10 +37,10 @@ class StorefrontAppearance extends Page implements HasForms
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make('Головний блок')
                     ->description('Оберіть, який варіант першого екрана показувати на головній сторінці.')
                     ->schema([

@@ -1327,6 +1327,11 @@ html[data-theme="dark"] .resolution-card__action {
     font-weight: 800;
 }
 
+.product-case-picker__option[data-case-key="black"] > span:last-child::after,
+.product-case-picker__option[data-case-key="white"] > span:last-child::after {
+    content: none !important;
+}
+
 html[data-theme="dark"] .product-case-picker__eyebrow {
     color: #a560ff;
 }
@@ -1366,6 +1371,13 @@ html[data-theme="dark"] .product-case-picker__option[data-case-key="white"].is-a
 html[data-theme="dark"] .build-card__case-description,
 html[data-theme="dark"] .product-case-picker__meta {
     color: #9eb0c5;
+}
+
+html[data-theme="dark"] .build-card__case-options,
+html[data-theme="dark"] .product-case-picker__options {
+    border-color: rgba(60, 78, 102, 0.72);
+    background: linear-gradient(180deg, rgba(18, 27, 38, 0.98), rgba(11, 18, 28, 0.98));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 30px rgba(0, 0, 0, 0.24);
 }
 
 html[data-theme="dark"] .accessory-card {

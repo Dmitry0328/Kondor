@@ -14,8 +14,8 @@
         <style>
             body { margin: 0; font-family: 'Manrope', sans-serif; background: #f6f8fc; color: #18202a; }
             a { color: inherit; text-decoration: none; }
-            .page { min-height: 100vh; background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.12), transparent 28%), linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%); }
-            .hero { padding: 8px 0 12px; }
+            .page { min-height: 100vh; background: linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%); }
+            .device-page__hero { padding: 8px 0 12px; }
             .back { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 999px; border: 1px solid #d8e1ee; background: rgba(255, 255, 255, 0.92); color: #364255; box-shadow: 0 12px 24px rgba(24, 32, 42, 0.06); }
             .layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); gap: 28px; padding: 0 0 70px; }
             .gallery, .panel, .section { border-radius: 30px; border: 1px solid #dce4ef; background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 253, 0.98)); box-shadow: 0 22px 46px rgba(24, 32, 42, 0.08); }
@@ -46,7 +46,7 @@
             .package { display: grid; gap: 12px; }
             .package div { padding: 14px 16px; border-radius: 18px; background: #f6f9fd; border: 1px solid #e1e8f2; }
             html[data-theme="dark"] body { background: #08111c; color: #f5f7fb; }
-            html[data-theme="dark"] .page { background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.2), transparent 28%), linear-gradient(180deg, #0d1726 0%, #070c14 100%); }
+            html[data-theme="dark"] .page { background: linear-gradient(180deg, #0b1219 0%, #0f1720 46%, #091018 100%); }
             html[data-theme="dark"] .back { border-color: transparent; background: rgba(255, 255, 255, 0.04); color: #dce3f2; box-shadow: none; }
             html[data-theme="dark"] .gallery,
             html[data-theme="dark"] .panel,
@@ -61,6 +61,18 @@
             html[data-theme="dark"] .package div { background: rgba(255, 255, 255, 0.04); border-color: transparent; }
             html[data-theme="dark"] .spec strong { color: #b7c3db; }
             @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
+            @media (max-width: 760px) {
+                .device-page__hero { padding: 4px 0 10px; }
+                .layout { gap: 20px; padding-bottom: 42px; }
+                .gallery, .panel, .section { border-radius: 24px; }
+                .gallery, .panel, .section { padding: 18px; }
+                .panel__title { font-size: clamp(30px, 12vw, 42px); }
+                .panel__summary { font-size: 15px; line-height: 1.65; }
+                .panel__price { margin: 18px 0; font-size: 38px; }
+                .buy { gap: 10px; }
+                .buy__button { width: 100%; }
+                .thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            }
         </style>
     </head>
     <body>
@@ -100,7 +112,7 @@
 
             <main class="page">
                 <div class="container">
-                    <section class="hero">
+                    <section class="device-page__hero">
                         <a class="back" href="{{ route('accessories.index', ['type' => $accessory['type']]) }}">← Назад до категорії</a>
                     </section>
 

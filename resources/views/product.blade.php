@@ -225,19 +225,21 @@
             .product-fps__value.is-empty { min-width:40px; color:#6a7789; font-size:30px; text-align:center; }
             .product-fps__status { display:none; margin-top:2px; color:#6a7789; font-size:12px; font-weight:800; letter-spacing:.01em; text-transform:uppercase; }
             .product-fps__status.is-visible { display:block; }
-            .product-case-picker { display:grid; gap:14px; padding:18px 20px; border:1px solid rgba(164,177,202,.18); border-radius:24px; background:linear-gradient(180deg,rgba(18,26,40,.94),rgba(12,18,28,.98)); box-shadow:0 18px 36px rgba(2,8,18,.22); }
+            .product-case-picker { display:grid; gap:12px; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
             .product-case-picker__header { display:grid; gap:6px; }
-            .product-case-picker__eyebrow { color:#ad9cf2; font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+            .product-case-picker__eyebrow { color:#8c5de8; font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
             .product-case-picker__title { margin:0; color:#edf2fb; font-size:17px; font-weight:800; line-height:1.4; }
-            .product-case-picker__options { display:flex; flex-wrap:wrap; gap:10px; }
-            .product-case-picker__option { display:inline-flex; align-items:center; gap:10px; min-height:48px; padding:0 16px; border:1px solid rgba(162,176,201,.2); border-radius:999px; background:rgba(255,255,255,.03); color:#cfd8e8; font-size:14px; font-weight:800; box-shadow:inset 0 1px 0 rgba(255,255,255,.04); transition:transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease, color .18s ease; }
-            .product-case-picker__option:hover { transform:translateY(-1px); border-color:rgba(175,149,245,.42); background:rgba(132,96,222,.12); color:#f4f6fb; box-shadow:0 14px 28px rgba(26,14,54,.22); }
-            .product-case-picker__option.is-active { border-color:rgba(176,152,245,.56); background:linear-gradient(180deg,rgba(134,102,224,.24),rgba(88,64,150,.22)); color:#ffffff; box-shadow:0 18px 34px rgba(48,28,92,.28); }
-            .product-case-picker__swatch { display:inline-flex; width:18px; height:18px; border:1px solid rgba(255,255,255,.18); border-radius:999px; box-shadow:inset 0 1px 1px rgba(255,255,255,.3); flex:none; }
+            .product-case-picker__options { display:flex; align-items:center; gap:6px; width:fit-content; padding:6px; border:1px solid rgba(60,78,102,.72); border-radius:999px; background:linear-gradient(180deg,rgba(18,27,38,.98),rgba(11,18,28,.98)); box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 18px 30px rgba(0,0,0,.24); }
+            .product-case-picker__option { display:inline-flex; align-items:center; justify-content:center; width:46px; height:46px; padding:0; border:1px solid transparent; border-radius:999px; background:transparent; color:#dce8f6; font-size:0; font-weight:800; box-shadow:none; transition:transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease, color .18s ease; }
+            .product-case-picker__option:hover { transform:translateY(-1px); }
+            .product-case-picker__option.is-active { color:#ffffff; }
+            .product-case-picker__swatch { display:inline-flex; width:28px; height:28px; border:2px solid rgba(255,255,255,.86); border-radius:999px; box-shadow:inset 0 0 0 1px rgba(15,23,42,.1); flex:none; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
             .product-case-picker__swatch--black { background:linear-gradient(180deg,#1c2230,#0f131d); }
             .product-case-picker__swatch--white { background:linear-gradient(180deg,#ffffff,#d8dfeb); }
             .product-case-picker__meta { color:#95a3bb; font-size:13px; font-weight:700; line-height:1.55; }
             .product-about { display:grid; gap:24px; padding:8px 0 0; border:0; background:transparent; box-shadow:none; }
+            .product-about,
+            .product-about * { background:transparent !important; box-shadow:none !important; }
             .product-about--mobile { display:none; }
             .product-about__title { margin:0; font-family:'Space Grotesk',sans-serif; font-size:clamp(36px,4vw,54px); font-weight:700; letter-spacing:-.05em; color:#ecf1fb; }
             .product-about__lead { margin:0; color:#d8e0ee; font-size:18px; line-height:1.6; font-weight:700; }
