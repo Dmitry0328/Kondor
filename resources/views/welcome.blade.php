@@ -1,9 +1,44 @@
 ﻿<!DOCTYPE html>
 <html lang="uk">
     <head>
+        @php
+            $seoImage = collect(\App\Support\StorefrontBuilds::all())
+                ->pluck('image_url')
+                ->filter(static fn ($url) => is_string($url) && trim($url) !== '')
+                ->first() ?: asset('images/kondor-mark-black.svg');
+            $seoJsonLd = [
+                [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'WebSite',
+                    'name' => 'KondorPC',
+                    'alternateName' => ['Kondor PC', 'Кондор ПК'],
+                    'url' => route('home'),
+                    'inLanguage' => 'uk-UA',
+                ],
+                [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Organization',
+                    'name' => 'KondorPC',
+                    'url' => route('home'),
+                    'logo' => asset('images/kondor-mark-black.svg'),
+                    'sameAs' => [
+                        'https://www.instagram.com/kondor_pc/',
+                        'https://t.me/kondor_channeI',
+                    ],
+                ],
+            ];
+        @endphp
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>KindorPC</title>
+        <title>KondorPC - ігрові ПК та збірки під замовлення</title>
+        @include('partials.seo', [
+            'title' => 'KondorPC - ігрові ПК та збірки під замовлення',
+            'description' => 'KondorPC - готові ігрові ПК та конфігурації під замовлення в Україні. Допоможемо підібрати збірку під ігри, стрімінг, роботу та бюджет.',
+            'canonical' => route('home'),
+            'image' => $seoImage,
+            'type' => 'website',
+            'jsonLd' => $seoJsonLd,
+        ])
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="<?php echo e(asset('css/storefront-cart.css')); ?>">

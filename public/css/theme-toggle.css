@@ -143,16 +143,16 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 50px;
-    padding: 0 22px;
+    min-height: 44px;
+    padding: 0 18px;
     border: 1px solid #7b2fff;
     border-radius: 999px;
     background: linear-gradient(180deg, #8f2fff 0%, #6f21d5 100%);
     color: #ffffff;
-    font-size: 25px;
+    font-size: 18px;
     font-weight: 900;
     line-height: 1;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.02em;
     white-space: nowrap;
     box-shadow: 0 18px 34px rgba(111, 33, 213, 0.28);
     transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
@@ -1582,8 +1582,8 @@ html[data-theme="dark"] .gallery-card__zoom {
     }
 
     .header-phone {
-        padding: 0 18px;
-        font-size: 21px;
+        padding: 0 16px;
+        font-size: 16px;
     }
 }
 
@@ -1597,6 +1597,6 @@ html[data-theme="dark"] .gallery-card__zoom {
 @media (max-width: 767px) {
     .mobile-menu__phone {
         width: 100%;
-        font-size: 22px;
+        font-size: 18px;
     }
 }

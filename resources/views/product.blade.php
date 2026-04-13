@@ -1,9 +1,71 @@
 <!DOCTYPE html>
 <html lang="uk">
     <head>
+        @php
+            $seoProductName = trim((string) ($build['name'] ?? 'Ігровий ПК'));
+            $seoProductUrl = route('product.show', ['slug' => $build['slug']]);
+            $seoProductImage = trim((string) (($selectedCaseVariant['image_url'] ?? null) ?: ($build['image_url'] ?? asset('images/kondor-mark-black.svg'))));
+            $seoProductDescriptionRaw = collect([
+                $seoProductName,
+                trim((string) ($build['gpu'] ?? '')),
+                trim((string) ($build['cpu'] ?? '')),
+                trim((string) ($build['ram'] ?? '')),
+                trim((string) ($build['storage'] ?? '')),
+                isset($build['price']) ? 'Ціна: ' . trim((string) $build['price']) : null,
+                'Готова ігрова збірка від KondorPC з доставкою по Україні.',
+            ])->filter()->implode(' · ');
+            $seoProductDescription = \Illuminate\Support\Str::limit(preg_replace('/\s+/u', ' ', $seoProductDescriptionRaw), 220, '');
+            $seoProductImages = collect([
+                $seoProductImage,
+                ...((array) ($selectedCaseVariant['gallery_images'] ?? [])),
+                ...((array) ($build['gallery_images'] ?? [])),
+            ])->filter(static fn ($url) => is_string($url) && trim($url) !== '')->values()->all();
+            $seoProductRobots = ($isPreview ?? false) || $sharedBuildLink
+                ? 'noindex,nofollow,noarchive'
+                : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
+            $seoProductSchemas = [
+                [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'BreadcrumbList',
+                    'itemListElement' => [
+                        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Головна', 'item' => route('home')],
+                        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Каталог', 'item' => route('catalog')],
+                        ['@type' => 'ListItem', 'position' => 3, 'name' => $seoProductName, 'item' => $seoProductUrl],
+                    ],
+                ],
+                [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Product',
+                    'name' => $seoProductName,
+                    'sku' => (string) ($build['product_code'] ?? ''),
+                    'image' => $seoProductImages,
+                    'description' => $seoProductDescription,
+                    'brand' => ['@type' => 'Brand', 'name' => 'KondorPC'],
+                    'category' => 'Gaming PC',
+                    'url' => $seoProductUrl,
+                    'offers' => ((int) ($build['price_raw'] ?? 0)) > 0 ? [
+                        '@type' => 'Offer',
+                        'priceCurrency' => 'UAH',
+                        'price' => (string) ((int) ($build['price_raw'] ?? 0)),
+                        'availability' => 'https://schema.org/InStock',
+                        'itemCondition' => 'https://schema.org/NewCondition',
+                        'url' => $seoProductUrl,
+                    ] : null,
+                ],
+            ];
+        @endphp
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ $build['name'] }} | KondorPC</title>
+        @include('partials.seo', [
+            'title' => $seoProductName . ' | KondorPC',
+            'description' => $seoProductDescription,
+            'canonical' => $seoProductUrl,
+            'image' => $seoProductImage,
+            'type' => 'product',
+            'robots' => $seoProductRobots,
+            'jsonLd' => $seoProductSchemas,
+        ])
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">

@@ -21,4 +21,7 @@
         root.dataset.theme = theme;
     })();
 </script>
+<link rel="icon" type="image/svg+xml" href="{{ asset('images/kondor-mark-black.svg') }}">
+<link rel="shortcut icon" href="{{ asset('images/kondor-mark-black.svg') }}">
+<link rel="apple-touch-icon" href="{{ asset('images/kondor-mark-black.svg') }}">
 <link rel="stylesheet" href="{{ asset('css/theme-toggle.css') }}?v={{ $themeCssVersion }}">

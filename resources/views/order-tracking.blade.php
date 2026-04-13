@@ -3,6 +3,14 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php echo $__env->make('partials.seo', [
+            'title' => 'Відстеження замовлення | KondorPC',
+            'description' => 'Сторінка перевірки статусу замовлення KondorPC.',
+            'canonical' => route('orders.track'),
+            'robots' => 'noindex,nofollow,noarchive',
+            'image' => asset('images/kondor-mark-black.svg'),
+            'type' => 'website',
+        ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
         <title>Відстеження замовлення | KondorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />

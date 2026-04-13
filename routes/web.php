@@ -6,10 +6,47 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteAdminNotificationController;
 use App\Http\Controllers\SiteImageController;
 use App\Http\Controllers\TradeInController;
+use App\Support\StorefrontBuilds;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('home');
+
+Route::get('/sitemap.xml', function () {
+    $urls = [
+        ['loc' => route('home')],
+        ['loc' => route('catalog')],
+        ['loc' => route('trade-in')],
+    ];
+
+    foreach (StorefrontBuilds::all() as $build) {
+        $slug = trim((string) ($build['slug'] ?? ''));
+
+        if ($slug === '') {
+            continue;
+        }
+
+        $urls[] = ['loc' => route('product.show', ['slug' => $slug])];
+    }
+
+    return response()
+        ->view('sitemap', ['urls' => $urls])
+        ->header('Content-Type', 'application/xml; charset=UTF-8');
+})->name('sitemap');
+
+Route::get('/robots.txt', function () {
+    $content = implode("\n", [
+        'User-agent: *',
+        'Allow: /',
+        'Disallow: /admin',
+        'Disallow: /login',
+        '',
+        'Sitemap: ' . route('sitemap'),
+        '',
+    ]);
+
+    return response($content, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
 });
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart');

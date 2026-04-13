@@ -3,6 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        @include('partials.seo', [
+            'title' => 'Трейд-ін ПК | KondorPC',
+            'description' => 'Трейд-ін від KondorPC: оцінимо ваш ПК або комплектуючі та допоможемо перейти на нову ігрову збірку.',
+            'canonical' => route('trade-in'),
+            'image' => asset('images/kondor-mark-black.svg'),
+            'type' => 'website',
+        ])
         <title>Трейд-ін | KondorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />

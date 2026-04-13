@@ -3,6 +3,39 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        @php
+            $seoCatalogBuilds = \App\Support\StorefrontBuilds::all();
+            $seoCatalogImage = collect($seoCatalogBuilds)
+                ->pluck('image_url')
+                ->filter(static fn ($url) => is_string($url) && trim($url) !== '')
+                ->first() ?: asset('images/kondor-mark-black.svg');
+            $seoCatalogItems = collect($seoCatalogBuilds)
+                ->values()
+                ->map(static function (array $build, int $index): array {
+                    return [
+                        '@type' => 'ListItem',
+                        'position' => $index + 1,
+                        'name' => (string) ($build['name'] ?? 'Ігровий ПК'),
+                        'url' => route('product.show', ['slug' => $build['slug']]),
+                    ];
+                })
+                ->all();
+        @endphp
+        @include('partials.seo', [
+            'title' => 'Каталог ігрових ПК | KondorPC',
+            'description' => 'Каталог готових ігрових ПК від KondorPC. Підбір збірок для Full HD, 2K та 4K, сучасні комплектуючі, консультація та доставка по Україні.',
+            'canonical' => route('catalog'),
+            'image' => $seoCatalogImage,
+            'type' => 'website',
+            'jsonLd' => [[
+                '@context' => 'https://schema.org',
+                '@type' => 'ItemList',
+                'name' => 'Каталог ігрових ПК KondorPC',
+                'url' => route('catalog'),
+                'numberOfItems' => count($seoCatalogItems),
+                'itemListElement' => $seoCatalogItems,
+            ]],
+        ])
         <title>Каталог збірок | KondorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />

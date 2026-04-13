@@ -4,6 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        @include('partials.seo', [
+            'title' => 'Кошик | KondorPC',
+            'description' => 'Кошик замовлення KondorPC.',
+            'canonical' => route('cart'),
+            'robots' => 'noindex,nofollow,noarchive',
+            'image' => asset('images/kondor-mark-black.svg'),
+            'type' => 'website',
+        ])
         <title>Кошик | KondorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
