@@ -260,7 +260,9 @@
 
         @include('partials.admin-site-notifications')
         @include('partials.admin-inline-images')
+        @include('partials.online-visitors-tracker')
         @include('partials.theme-toggle')
+        @include('partials.cookie-consent')
         <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
         <script src="{{ asset('js/cart-page.js') }}"></script>
     </body>

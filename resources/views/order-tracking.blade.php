@@ -322,6 +322,8 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                 });
             });
         </script>
+        <?php echo $__env->make('partials.cookie-consent', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('partials.online-visitors-tracker', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </body>
 </html>
 <?php /**PATH D:\OSPanel\home\kondor\resources\views/order-tracking.blade.php ENDPATH**/ ?>

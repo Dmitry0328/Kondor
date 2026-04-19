@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use App\Filament\Resources\Builds\Pages\ListBuilds;
+use App\Support\OnlineVisitors;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Navigation\NavigationItem;
@@ -58,7 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 PanelsRenderHook::BODY_END,
-                fn (): string => $this->renderAdminSiteNotifications(),
+                fn (): string => $this->renderAdminSiteOverlays(),
             )
             ->renderHook(
                 TablesRenderHook::SELECTION_INDICATOR_ACTIONS_BEFORE,
@@ -115,7 +116,7 @@ HTML,
             ]);
     }
 
-    protected function renderAdminSiteNotifications(): string
+    protected function renderAdminSiteOverlays(): string
     {
         $user = auth()->user();
 
@@ -125,9 +126,16 @@ HTML,
 
         $feedUrl = e(route('admin.notifications.feed'));
         $scriptUrl = e(asset('js/admin-site-notifications.js'));
+        $onlineVisitorsScriptUrl = e(asset('js/online-visitors.js'));
+        $onlineVisitorsEndpoint = e(route('online-visitors.ping'));
+        $csrfToken = e(csrf_token());
+        $activeCount = OnlineVisitors::activeCount();
 
         return <<<HTML
 <style>
+    .admin-panel-online-counter { position: fixed; top: 78px; right: 18px; z-index: 10045; display: grid; gap: 4px; min-width: 150px; padding: 12px 14px; border: 1px solid rgba(87, 99, 120, .18); border-radius: 18px; background: rgba(17, 22, 30, .94); color: #f6f8fb; box-shadow: 0 18px 42px rgba(10, 14, 22, .24); backdrop-filter: blur(14px); }
+    .admin-panel-online-counter__eyebrow { color: #b7c1d0; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .admin-panel-online-counter__value { color: #fff; font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -.04em; }
     .admin-site-toast-stack { position: fixed; left: 18px; bottom: max(18px, env(safe-area-inset-bottom, 0px) + 12px); z-index: 10050; display: grid; gap: 12px; width: min(372px, calc(100vw - 28px)); max-height: calc(100vh - 28px); overflow-y: auto; pointer-events: none; }
     .admin-site-toast { pointer-events: auto; display: grid; gap: 10px; padding: 14px 16px 14px; border: 1px solid rgba(87, 99, 120, .18); border-radius: 18px; background: rgba(17, 22, 30, .94); color: #f6f8fb; box-shadow: 0 18px 42px rgba(10, 14, 22, .34); backdrop-filter: blur(14px); }
     .admin-site-toast__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
@@ -276,6 +284,8 @@ HTML,
         }
     }
     @media (max-width: 640px) {
+        .admin-panel-online-counter { top: auto; right: 12px; bottom: max(12px, env(safe-area-inset-bottom, 0px) + 8px); min-width: 132px; padding: 10px 12px; }
+        .admin-panel-online-counter__value { font-size: 24px; }
         .admin-site-toast-stack { left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom, 0px) + 8px); width: auto; max-height: calc(100vh - 20px); }
         .admin-site-toast { gap: 9px; padding: 13px 14px; border-radius: 16px; }
         .admin-site-toast__title { font-size: 16px; }
@@ -393,8 +403,25 @@ HTML,
     }
 }
 </style>
+<div
+    class="admin-panel-online-counter"
+    data-online-visitors-display
+    data-online-visitors-label-template="Онлайн: :count"
+    aria-live="polite"
+>
+    <span class="admin-panel-online-counter__eyebrow">Зараз на сайті</span>
+    <strong class="admin-panel-online-counter__value" data-online-visitors-count>{$activeCount}</strong>
+</div>
+<div
+    data-online-visitors-tracker
+    data-endpoint="{$onlineVisitorsEndpoint}"
+    data-csrf-token="{$csrfToken}"
+    data-context="admin"
+    hidden
+></div>
 <div class="admin-site-toast-stack" data-admin-site-notifications data-feed-url="{$feedUrl}"></div>
 <script src="{$scriptUrl}"></script>
+<script src="{$onlineVisitorsScriptUrl}"></script>
 <script>
     window.addEventListener('open-admin-build-preview', (event) => {
         const url = event.detail?.url;
@@ -499,3 +526,4 @@ HTML,
 HTML;
     }
 }
+

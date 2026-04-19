@@ -815,8 +815,6 @@
             </footer>
         </div>
 
-        @include('partials.admin-site-notifications')
-        @include('partials.admin-inline-images')
         <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
         <script>
             (() => {
@@ -1015,5 +1013,9 @@
             })();
         </script>
         @include('partials.theme-toggle')
+        @include('partials.cookie-consent')
+        @include('partials.admin-site-notifications')
+        @include('partials.admin-inline-images')
+        @include('partials.online-visitors-tracker')
     </body>
 </html>

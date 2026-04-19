@@ -1,9 +1,34 @@
 (function () {
+    const consentCookieName = 'kondor_cookie_consent';
     const storageKey = 'kondor-theme';
     const root = document.documentElement;
     const mediaQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
+    const preferencesAllowed = () => {
+        if (window.KondorCookieConsent && typeof window.KondorCookieConsent.hasConsent === 'function') {
+            return window.KondorCookieConsent.hasConsent('preferences');
+        }
+
+        try {
+            const match = document.cookie.match(new RegExp('(?:^|; )' + consentCookieName + '=([^;]*)'));
+
+            if (!match) {
+                return false;
+            }
+
+            const consent = JSON.parse(decodeURIComponent(match[1]));
+
+            return Boolean(consent?.preferences);
+        } catch (error) {
+            return false;
+        }
+    };
+
     const getStoredTheme = () => {
+        if (!preferencesAllowed()) {
+            return null;
+        }
+
         try {
             const theme = window.localStorage.getItem(storageKey);
             return theme === 'light' || theme === 'dark' ? theme : null;
@@ -23,6 +48,10 @@
     const getActiveTheme = () => root.dataset.theme === 'dark' ? 'dark' : 'light';
 
     const persistTheme = (theme) => {
+        if (!preferencesAllowed()) {
+            return;
+        }
+
         try {
             window.localStorage.setItem(storageKey, theme);
         } catch (error) {
@@ -77,6 +106,20 @@
             mediaQuery.addListener(handleChange);
         }
     }
+
+    document.addEventListener('kondor:cookie-consent-change', (event) => {
+        const consent = event.detail?.consent ?? null;
+
+        if (!consent?.preferences) {
+            try {
+                window.localStorage.removeItem(storageKey);
+            } catch (error) {
+                // Ignore storage cleanup issues.
+            }
+        }
+
+        applyTheme(getStoredTheme() ?? getPreferredTheme());
+    });
 
     applyTheme(getStoredTheme() ?? getPreferredTheme());
 })();

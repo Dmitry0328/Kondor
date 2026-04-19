@@ -368,7 +368,7 @@
             .preview-dock__button--primary:hover { background:linear-gradient(180deg,#8f2fff,#7420d3); border-color:#6517c9; }
             body.has-preview-dock { padding-bottom:120px; }
             body.has-preview-dock.has-admin-edit-mode-toggle { padding-bottom:168px; }
-            body.has-preview-dock .admin-edit-mode-toggle { bottom:calc(env(safe-area-inset-bottom, 0px) + 94px); }
+            body.has-preview-dock .admin-tools-stack { bottom:calc(env(safe-area-inset-bottom, 0px) + 94px); }
             .product-share-modal[hidden] { display:none; }
             .product-share-modal { position:fixed; inset:0; z-index:150; }
             .product-share-modal__backdrop { position:absolute; inset:0; background:rgba(15,22,34,.52); backdrop-filter:blur(6px); }
@@ -586,7 +586,7 @@
                 .preview-dock__button { width:100%; }
                 body.has-preview-dock { padding-bottom:232px; }
                 body.has-preview-dock.has-admin-edit-mode-toggle { padding-bottom:284px; }
-                body.has-preview-dock .admin-edit-mode-toggle { bottom:calc(env(safe-area-inset-bottom, 0px) + 196px); }
+                body.has-preview-dock .admin-tools-stack { bottom:calc(env(safe-area-inset-bottom, 0px) + 196px); }
             }
             @media (max-width:560px) {
                 .product-fps { gap:12px; padding:14px; }
@@ -796,10 +796,10 @@
 
                         return [
                             'id' => 'photo-' . $photoNumber,
-                            'thumb' => $index === 0 ? 'Р“РѕР»РѕРІРЅРµ С„РѕС‚Рѕ' : 'Р¤РѕС‚Рѕ ' . $photoNumber,
-                            'eyebrow' => $index === 0 ? 'РћСЃРЅРѕРІРЅРёР№ СЂР°РєСѓСЂСЃ' : 'Р Р°РєСѓСЂСЃ ' . $photoNumber,
+                            'thumb' => $index === 0 ? 'Головне фото' : 'Фото ' . $photoNumber,
+                            'eyebrow' => $index === 0 ? 'Основний ракурс' : 'Ракурс ' . $photoNumber,
                             'title' => (string) ($build['name'] ?? ''),
-                            'meta' => 'Р РµР°Р»СЊРЅРµ С„РѕС‚Рѕ Р·Р±С–СЂРєРё',
+                            'meta' => 'Реальне фото збірки',
                             'variant' => 'uploaded',
                             'image_url' => $imageUrl,
                         ];
@@ -3540,7 +3540,9 @@
             })();
         </script>
         @include('partials.theme-toggle')
+        @include('partials.cookie-consent')
         @include('partials.admin-site-notifications')
         @include('partials.admin-inline-images')
+        @include('partials.online-visitors-tracker')
     </body>
 </html>

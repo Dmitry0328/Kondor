@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
     <head>
         @php
@@ -4490,62 +4490,62 @@
                 $heroVisualImageUrl = \App\Support\SiteImages::url('home.hero.visual');
                 $heroSlides = [
                     [
-                        'eyebrow' => 'KondorPC showcase',
+                        'eyebrow' => 'Готові збірки',
                         'title' => 'НАШІ ЗБІРКИ',
-                        'text' => 'Готові ігрові ПК з акцентом на продуктивність, охайну збірку та сильну візуальну подачу.',
+                        'text' => 'Готові ПК для ігор, стрімів і роботи. Без зайвого, просто зрозумілі збірки під різні задачі.',
                         'button' => 'Наші збірки',
                         'href' => '#builds',
                         'accent' => '#fff000',
                         'soft' => 'rgba(255, 240, 0, 0.34)',
                         'badge' => 'K',
-                        'label' => 'performance line',
+                        'label' => 'готові збірки',
                     ],
                     [
-                        'eyebrow' => 'KondorPC accessories',
+                        'eyebrow' => 'Периферія',
                         'title' => 'АКСЕСУАРИ',
-                        'text' => 'Периферія та доповнення до сетапу: мишки, клавіатури, гарнітури та все, що завершує ігрове місце.',
+                        'text' => 'Мишки, клавіатури, килимки та інші речі, які доповнять сетап.',
                         'button' => 'Аксесуари',
                         'href' => '#accessories',
                         'accent' => '#ff8a3d',
                         'soft' => 'rgba(255, 138, 61, 0.30)',
                         'badge' => 'A',
-                        'label' => 'gear & setup',
+                        'label' => 'периферія',
                     ],
                     [
-                        'eyebrow' => 'KondorPC warranty',
+                        'eyebrow' => 'Підтримка',
                         'title' => 'ГАРАНТІЯ',
-                        'text' => 'Підтримка, допомога з підбором і гарантійний супровід, щоб збірка відчувалась впевнено з першого дня.',
+                        'text' => 'Пояснимо, підкажемо й допоможемо після покупки, якщо буде потрібно.',
                         'button' => 'Гарантія',
                         'href' => '#faq',
                         'accent' => '#7cff65',
                         'soft' => 'rgba(124, 255, 101, 0.32)',
                         'badge' => 'G',
-                        'label' => 'care & support',
+                        'label' => 'підтримка',
                     ],
                     [
-                        'eyebrow' => 'KondorPC trade-in',
+                        'eyebrow' => 'Обмін техніки',
                         'title' => 'ТРЕЙД ІН',
-                        'text' => 'Оцінимо вашу стару систему та допоможемо перейти на нову збірку з вигідною доплатою й зрозумілим процесом.',
+                        'text' => 'Оцінимо старий ПК і підкажемо, як зручніше перейти на нову збірку.',
                         'button' => 'Трейд ін',
                         'href' => '/trade-in',
                         'accent' => '#4de3ff',
                         'soft' => 'rgba(77, 227, 255, 0.3)',
                         'badge' => 'T',
-                        'label' => 'upgrade path',
+                        'label' => 'обмін',
                     ],
                     [
-                        'eyebrow' => 'KondorPC custom',
+                        'eyebrow' => 'Підбір під тебе',
                         'title' => 'УНІКАЛЬНІ ЗБІРКИ',
-                        'text' => 'Підберемо збірку під бюджет, стиль корпусу і формат використання, від Full HD до важких 2K та 4K сценаріїв.',
+                        'text' => 'Підберемо конфігурацію під бюджет, ігри та побажання по корпусу.',
                         'button' => 'Написати в Telegram',
                         'href' => 'https://t.me/kondor_channeI',
                         'accent' => '#d96bff',
                         'soft' => 'rgba(217, 107, 255, 0.30)',
                         'badge' => 'S',
-                        'label' => 'custom projects',
+                        'label' => 'підбір',
                     ],
                     [
-                        'eyebrow' => 'KondorPC reviews',
+                        'eyebrow' => 'Відгуки',
                         'title' => 'ВІДГУКИ КЛІЄНТІВ',
                         'text' => 'Реальні враження клієнтів про збірки, сервіс, упаковку та підтримку після покупки.',
                         'button' => 'Відгуки',
@@ -4553,7 +4553,7 @@
                         'accent' => '#ffffff',
                         'soft' => 'rgba(255, 255, 255, 0.24)',
                         'badge' => 'R',
-                        'label' => 'client stories',
+                        'label' => 'відгуки',
                     ],
                 ];
             ?>
@@ -4998,7 +4998,7 @@ SVG;
                             </div>
 
                             <p class="resolution-chooser__text">
-                                Логіка як у референсі, але в стилі KondorPC: клієнт одразу переходить у каталог з уже вибраною добіркою під потрібну роздільну здатність.
+                                Вибери роздільну здатність, і ми одразу покажемо збірки під твій монітор.
                             </p>
                         </div>
 
@@ -6626,8 +6626,11 @@ SVG;
             })();
         </script>
         <?php echo $__env->make('partials.theme-toggle', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('partials.cookie-consent', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
         <?php echo $__env->make('partials.admin-site-notifications', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
         <?php echo $__env->make('partials.admin-inline-images', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('partials.online-visitors-tracker', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </body>
 </html>
 <?php /**PATH D:\OSPanel\home\kondor\resources\views/welcome.blade.php ENDPATH**/ ?>
+

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OnlineVisitorsController;
 use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\CompareController;
@@ -55,6 +56,7 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::get('/cart/shared/{token}', [CartController::class, 'showShared'])->name('cart.shared');
 Route::post('/cart/share', [CartController::class, 'share'])->name('cart.share');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/online-visitors/ping', [OnlineVisitorsController::class, 'ping'])->name('online-visitors.ping');
 Route::get('/order-tracking', [OrderTrackingController::class, 'show'])->name('orders.track');
 Route::post('/order-tracking', [OrderTrackingController::class, 'lookup'])->name('orders.track.lookup');
 

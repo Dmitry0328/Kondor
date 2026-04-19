@@ -1124,7 +1124,9 @@
             })();
         </script>
         @include('partials.theme-toggle')
+        @include('partials.cookie-consent')
         @include('partials.admin-site-notifications')
         @include('partials.admin-inline-images')
+        @include('partials.online-visitors-tracker')
     </body>
 </html>

@@ -34,8 +34,8 @@
 
             if (label) {
                 label.textContent = enabled
-                    ? (toggle.dataset.adminEditModeOnLabel || 'Edit mode: ON')
-                    : (toggle.dataset.adminEditModeOffLabel || 'Edit mode: OFF');
+                    ? (toggle.dataset.adminEditModeOnLabel || 'Редагування: увімкнено')
+                    : (toggle.dataset.adminEditModeOffLabel || 'Редагування: вимкнено');
             }
         });
     };

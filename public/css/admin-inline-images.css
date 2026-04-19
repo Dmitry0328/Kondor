@@ -2,11 +2,61 @@
     position: relative;
 }
 
-.admin-edit-mode-toggle {
+.admin-tools-stack {
     position: fixed;
     right: clamp(14px, 2.2vw, 28px);
     bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
     z-index: 2200;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.admin-online-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 172px;
+    padding: 12px 14px;
+    border: 1px solid rgba(173, 187, 209, 0.42);
+    border-radius: 18px;
+    background: rgba(9, 16, 33, 0.9);
+    color: #f4f7ff;
+    box-shadow: 0 12px 28px rgba(10, 18, 34, 0.24);
+    backdrop-filter: blur(8px);
+}
+
+.admin-online-counter__eyebrow {
+    color: rgba(207, 221, 245, 0.82);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    max-width: 84px;
+}
+
+.admin-online-counter__value {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.admin-online-counter__label {
+    color: rgba(244, 247, 255, 0.92);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.admin-edit-mode-toggle {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    z-index: auto;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -201,11 +251,32 @@ body.has-admin-edit-mode-toggle {
     pointer-events: none;
 }
 
+html[data-theme='light'] .hero__visual.has-site-image,
+html[data-theme='light'] .gallery-card__art.has-site-image,
+html[data-theme='light'] .gallery-modal__viewer .gallery-card__art.has-site-image,
+html[data-theme='light'] .product-gallery__slide.has-site-image,
+html[data-theme='light'] .product-gallery__thumb-preview.has-site-image {
+    background-color: #f3f6fb;
+}
+
 @media (max-width: 760px) {
-    .admin-edit-mode-toggle {
+    .admin-tools-stack {
         right: auto;
         left: 10px;
         bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+        align-items: flex-start;
+    }
+
+    .admin-online-counter {
+        min-width: 150px;
+        padding: 10px 12px;
+    }
+
+    .admin-online-counter__value {
+        font-size: 22px;
+    }
+
+    .admin-edit-mode-toggle {
         min-height: 42px;
         padding: 0 14px;
         font-size: 12px;

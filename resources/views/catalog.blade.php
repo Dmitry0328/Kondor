@@ -2358,8 +2358,8 @@
                         <span class="catalog-hero__eyebrow">Каталог</span>
                         <h1>Більше збірок KondorPC</h1>
                         <p>
-                            Тут зібрані готові ігрові ПК та конфігурації для різних бюджетів. Далі ми можемо розширити цю сторінку
-                            фільтрами, категоріями, окремими сторінками товару та реальною базою даних.
+                            Тут зібрані готові ПК під різні бюджети та задачі. Можна швидко відсіяти зайве й перейти до потрібної збірки.
+
                         </p>
                     </section>
 
@@ -2370,7 +2370,6 @@
                             style="--scene-from: {{ $fpsGameMap[$defaultFpsGame]['from'] }}; --scene-to: {{ $fpsGameMap[$defaultFpsGame]['to'] }}; --scene-accent: {{ $fpsGameMap[$defaultFpsGame]['accent'] }};"
                         >
                             <button class="fps-lab__mobile-overlay" type="button" data-fps-mobile-close aria-label="Закрити налаштування FPS"></button>
-
                             <div class="fps-lab__inner">
                                 <div class="fps-lab__mobile-sheet-head">
                                     <div class="fps-lab__mobile-sheet-copy">
@@ -3425,7 +3424,9 @@
             })();
         </script>
         @include('partials.theme-toggle')
+        @include('partials.cookie-consent')
         @include('partials.admin-site-notifications')
         @include('partials.admin-inline-images')
+        @include('partials.online-visitors-tracker')
     </body>
 </html>
