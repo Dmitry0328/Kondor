@@ -158,12 +158,71 @@
     transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
 }
 
+.header-compare {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 48px;
+    min-width: 48px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid #d8e0ea;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff, #f5f8fc);
+    color: #243040;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    box-shadow: 0 12px 24px rgba(24, 32, 42, 0.08);
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    order: 4;
+}
+
+.header-compare:hover,
+.header-compare:focus-visible {
+    transform: translateY(-2px);
+    border-color: #c9d5e4;
+    background: linear-gradient(180deg, #ffffff, #eef3fb);
+    color: #18202a;
+    box-shadow: 0 14px 30px rgba(24, 32, 42, 0.12);
+}
+
+.header-compare.is-disabled {
+    opacity: 0.78;
+}
+
+.header-compare__count,
+.mobile-menu__compare-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #8f2fff 0%, #6f21d5 100%);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: 0 8px 18px rgba(111, 33, 213, 0.22);
+}
+
 .header-phone {
     order: 3;
 }
 
 .header-cart-shell {
-    order: 4;
+    order: 5;
+}
+
+.header-compare__count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
 }
 
 .brand__mark {
@@ -199,6 +258,119 @@
     display: grid;
     gap: 14px;
     padding-top: 8px;
+}
+
+.mobile-menu__compare {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.compare-dock[hidden] {
+    display: none;
+}
+
+.compare-dock {
+    position: fixed;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+    z-index: 2050;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    width: min(calc(100vw - 28px), 920px);
+    padding: 14px 16px;
+    border: 1px solid rgba(203, 214, 229, 0.92);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 22px 44px rgba(15, 23, 42, 0.16);
+    backdrop-filter: blur(18px);
+    transform: translateX(-50%);
+}
+
+.compare-dock__meta {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+.compare-dock__eyebrow {
+    color: #687385;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.compare-dock__title {
+    color: #17202b;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.compare-dock__text {
+    color: #5f6d80;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.compare-dock__feedback {
+    color: #0f7a43;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.compare-dock__feedback--error {
+    color: #b42318;
+}
+
+.compare-dock__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.compare-dock__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid #d7e1ee;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #1a2330;
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: 0 10px 18px rgba(24, 32, 42, 0.06);
+    cursor: pointer;
+}
+
+.compare-dock__button:hover {
+    background: #fbfcfe;
+    border-color: #cbd7e6;
+}
+
+.compare-dock__button--primary {
+    border-color: #6f10c9;
+    background: linear-gradient(180deg, #8424f0, #6816cb);
+    color: #ffffff;
+    box-shadow: 0 14px 28px rgba(104, 22, 203, 0.24);
+}
+
+.compare-dock__button--primary:hover {
+    background: linear-gradient(180deg, #8f2fff, #7420d3);
+    border-color: #6517c9;
+}
+
+body.has-compare-dock {
+    padding-bottom: 116px;
 }
 
 .mobile-menu__socials {
@@ -495,6 +667,41 @@ html[data-theme="dark"] .mobile-menu__phone {
     background: linear-gradient(180deg, #8f2fff 0%, #6f21d5 100%);
     color: #ffffff;
     box-shadow: 0 18px 34px rgba(111, 33, 213, 0.28);
+}
+
+html[data-theme="dark"] .header-compare {
+    border-color: rgba(148, 163, 184, 0.24);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.96));
+    color: #e5eefc;
+    box-shadow: 0 12px 24px rgba(2, 6, 23, 0.32);
+}
+
+html[data-theme="dark"] .header-compare:hover,
+html[data-theme="dark"] .header-compare:focus-visible {
+    border-color: rgba(143, 81, 255, 0.5);
+    background: linear-gradient(180deg, rgba(40, 51, 72, 0.96), rgba(19, 28, 43, 0.98));
+    color: #ffffff;
+}
+
+html[data-theme="dark"] .compare-dock {
+    border-color: rgba(148, 163, 184, 0.2);
+    background: rgba(15, 23, 42, 0.92);
+    box-shadow: 0 22px 44px rgba(2, 6, 23, 0.42);
+}
+
+html[data-theme="dark"] .compare-dock__title {
+    color: #eff6ff;
+}
+
+html[data-theme="dark"] .compare-dock__text,
+html[data-theme="dark"] .compare-dock__eyebrow {
+    color: #c0ccdc;
+}
+
+html[data-theme="dark"] .compare-dock__button {
+    border-color: rgba(148, 163, 184, 0.22);
+    background: rgba(30, 41, 59, 0.92);
+    color: #eff6ff;
 }
 
 html[data-theme="dark"] .header-button--primary,
@@ -1027,6 +1234,25 @@ html[data-theme="dark"] .tradein-alert {
     .header-theme-shell + .header-socials + .header-phone,
     .header-theme-shell + .header-socials + .header-phone + .header-cart-shell {
         display: none;
+    }
+
+    .compare-dock {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        width: min(calc(100vw - 20px), 720px);
+    }
+
+    .compare-dock__actions {
+        justify-content: stretch;
+    }
+
+    .compare-dock__button {
+        width: 100%;
+    }
+
+    body.has-compare-dock {
+        padding-bottom: 168px;
     }
 
     .header-cart-shell {

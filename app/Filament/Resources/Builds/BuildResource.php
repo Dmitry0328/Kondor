@@ -434,6 +434,21 @@ class BuildResource extends Resource
                     ->label('Вступні абзаци')
                     ->rows(6)
                     ->live(debounce: 300),
+                Toggle::make('youtube_enabled')
+                    ->label('Показувати YouTube-блок')
+                    ->helperText('Якщо увімкнено, збірку не вийде зберегти без валідного YouTube-посилання.')
+                    ->live()
+                    ->default(false)
+                    ->columnSpanFull(),
+                TextInput::make('youtube_url')
+                    ->label('YouTube-відео')
+                    ->required(fn (callable $get): bool => (bool) $get('youtube_enabled'))
+                    ->url()
+                    ->maxLength(2048)
+                    ->placeholder('https://www.youtube.com/watch?v=...')
+                    ->helperText('Можна вставити watch, youtu.be, shorts або embed посилання.')
+                    ->visible(fn (callable $get): bool => (bool) $get('youtube_enabled'))
+                    ->columnSpanFull(),
                 Textarea::make('about_notes_text')
                     ->label('Короткі примітки')
                     ->rows(5)
@@ -627,6 +642,9 @@ class BuildResource extends Resource
             'tone' => (string) ($get('tone') ?: $record?->tone ?: 'violet'),
             'price' => AdminFormPreview::formatPrice($get('price') ?? $record?->price ?? 0, '₴'),
             'image_urls' => $galleryUrls !== [] ? $galleryUrls : [BuildImages::placeholderUrl($name)],
+            'youtube_embed_url' => ((bool) (($get('youtube_enabled') ?? $record?->youtube_enabled) ?? false))
+                ? \App\Support\YoutubeVideo::embedUrl($get('youtube_url') ?: $record?->youtube_url)
+                : null,
             'gpu' => static::previewTextValue($get('gpu') ?: $record?->gpu, 'Відеокарта'),
             'cpu' => static::previewTextValue($get('cpu') ?: $record?->cpu, 'Процесор'),
             'ram' => static::previewTextValue($get('ram') ?: $record?->ram, "Оперативна памʼять"),

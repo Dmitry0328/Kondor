@@ -15,9 +15,6 @@
     const panels = Array.from(document.querySelectorAll('[data-dropdown-panel]'));
     const mobileToggle = document.querySelector('[data-mobile-toggle]');
     const mobileMenu = document.querySelector('[data-mobile-menu]');
-    const orderAccessStorageKey = 'kondor-latest-order-access-v1';
-    const orderAccessStorageLifetimeMs = 1000 * 60 * 60 * 12;
-    const emptyOrderAccessValue = '\u2014';
     let closeTimer;
 
     const parseItems = (value) => {
@@ -82,13 +79,6 @@
     const importButton = page.querySelector('[data-cart-import]');
     const checkoutForm = page.querySelector('[data-checkout-form]');
     const checkoutFeedback = page.querySelector('[data-checkout-feedback]');
-    const orderAccess = page.querySelector('[data-order-access]');
-    const orderAccessCards = Array.from(page.querySelectorAll('[data-order-access-copy]'));
-    const orderAccessNumber = page.querySelector('[data-order-access-number-value]');
-    const orderAccessPhone = page.querySelector('[data-order-access-phone-value]');
-    const orderAccessPassword = page.querySelector('[data-order-access-password-value]');
-    const orderAccessLink = page.querySelector('[data-order-access-link]');
-    const orderAccessMeta = page.querySelector('[data-order-access-meta]');
     const shareModal = document.querySelector('[data-share-modal]');
     const shareLinkInput = shareModal?.querySelector('[data-share-link]');
     const shareMeta = shareModal?.querySelector('[data-share-meta]');
@@ -108,143 +98,13 @@
         }
     };
 
-    const buildOrderAccessState = (data, payload = {}) => {
-        const orderNumber = `${data.order_number ?? data.orderNumber ?? ''}`.trim();
-        const phone = `${payload.phone ?? data.phone ?? ''}`.trim();
-        const trackingPassword = `${data.tracking_password ?? data.trackingPassword ?? ''}`.trim();
-        const trackingUrl = `${data.tracking_url ?? data.trackingUrl ?? ''}`.trim();
+    const setOrderAccessCardValue = () => {};
 
-        return {
-            order_number: orderNumber,
-            phone,
-            tracking_password: trackingPassword,
-            tracking_url: trackingUrl,
-            email_sent: Boolean(data.email_sent ?? data.emailSent),
-        };
-    };
+    const persistOrderAccess = () => {};
 
-    const setOrderAccessCardValue = (type, value, copiedLabel = '') => {
-        const card = orderAccessCards.find((item) => item.dataset.orderAccessCopy === type);
+    const loadOrderAccess = () => null;
 
-        if (!card) {
-            return;
-        }
-
-        card.dataset.copyValue = value;
-        card.classList.remove('is-copied');
-
-        const hint = card.querySelector('small');
-
-        if (hint) {
-            hint.textContent = copiedLabel || 'Натисни, щоб скопіювати';
-        }
-    };
-
-    const persistOrderAccess = (data, payload) => {
-        if (!window.sessionStorage) {
-            return;
-        }
-
-        const normalized = buildOrderAccessState(data, payload);
-        const orderNumber = normalized.order_number;
-        const phone = normalized.phone;
-        const trackingPassword = normalized.tracking_password;
-
-        if (!orderNumber || !phone || !trackingPassword) {
-            window.sessionStorage.removeItem(orderAccessStorageKey);
-
-            return;
-        }
-
-        try {
-            window.sessionStorage.setItem(orderAccessStorageKey, JSON.stringify({
-                order_number: orderNumber,
-                phone,
-                tracking_password: trackingPassword,
-                tracking_url: normalized.tracking_url,
-                email_sent: normalized.email_sent,
-                expires_at: Date.now() + orderAccessStorageLifetimeMs,
-            }));
-        } catch (error) {
-            // Ignore storage errors and keep the checkout flow working.
-        }
-    };
-
-    const loadOrderAccess = () => {
-        if (!window.sessionStorage) {
-            return null;
-        }
-
-        try {
-            const rawValue = window.sessionStorage.getItem(orderAccessStorageKey);
-
-            if (!rawValue) {
-                return null;
-            }
-
-            const parsed = JSON.parse(rawValue);
-
-            if (!parsed || typeof parsed !== 'object') {
-                window.sessionStorage.removeItem(orderAccessStorageKey);
-
-                return null;
-            }
-
-            if (Number(parsed.expires_at) < Date.now()) {
-                window.sessionStorage.removeItem(orderAccessStorageKey);
-
-                return null;
-            }
-
-            if (!`${parsed.order_number ?? ''}`.trim() || !`${parsed.phone ?? ''}`.trim() || !`${parsed.tracking_password ?? ''}`.trim()) {
-                window.sessionStorage.removeItem(orderAccessStorageKey);
-
-                return null;
-            }
-
-            return parsed;
-        } catch (error) {
-            window.sessionStorage.removeItem(orderAccessStorageKey);
-
-            return null;
-        }
-    };
-
-    const showOrderAccess = (data, payload) => {
-        if (!orderAccess) {
-            return;
-        }
-
-        const normalized = buildOrderAccessState(data, payload);
-
-        if (orderAccessNumber) {
-            orderAccessNumber.textContent = normalized.order_number || emptyOrderAccessValue;
-        }
-
-        if (orderAccessPhone) {
-            orderAccessPhone.textContent = normalized.phone || emptyOrderAccessValue;
-        }
-
-        if (orderAccessPassword) {
-            orderAccessPassword.textContent = normalized.tracking_password || emptyOrderAccessValue;
-        }
-
-        setOrderAccessCardValue('number', normalized.order_number);
-        setOrderAccessCardValue('phone', normalized.phone);
-        setOrderAccessCardValue('password', normalized.tracking_password);
-
-        if (orderAccessLink && normalized.tracking_url) {
-            orderAccessLink.href = normalized.tracking_url;
-        }
-
-        if (orderAccessMeta) {
-            orderAccessMeta.textContent = normalized.email_sent
-                ? '\u041c\u0438 \u0442\u0430\u043a\u043e\u0436 \u043d\u0430\u0434\u0456\u0441\u043b\u0430\u043b\u0438 \u0446\u0456 \u0434\u0430\u043d\u0456 \u043d\u0430 \u0432\u043a\u0430\u0437\u0430\u043d\u0438\u0439 email. \u0412\u043e\u043d\u0438 \u0442\u0438\u043c\u0447\u0430\u0441\u043e\u0432\u043e \u0437\u0431\u0435\u0440\u0435\u0436\u0435\u043d\u0456 \u0442\u0456\u043b\u044c\u043a\u0438 \u0432 \u0446\u044c\u043e\u043c\u0443 \u0432\u0456\u043a\u043d\u0456 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.'
-                : '\u0411\u0435\u0437 \u043d\u043e\u043c\u0435\u0440\u0430 \u0437\u0430\u043c\u043e\u0432\u043b\u0435\u043d\u043d\u044f, \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0443 \u0442\u0430 \u043f\u0430\u0440\u043e\u043b\u044f \u0441\u0442\u043e\u0440\u0456\u043d\u043a\u0430 \u0441\u0442\u0430\u0442\u0443\u0441\u0443 \u043d\u0435 \u0432\u0456\u0434\u043a\u0440\u0438\u0454\u0442\u044c\u0441\u044f. \u0414\u0430\u043d\u0456 \u0442\u0438\u043c\u0447\u0430\u0441\u043e\u0432\u043e \u0437\u0431\u0435\u0440\u0435\u0436\u0435\u043d\u0456 \u0442\u0456\u043b\u044c\u043a\u0438 \u0432 \u0446\u044c\u043e\u043c\u0443 \u0432\u0456\u043a\u043d\u0456 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.';
-        }
-
-        orderAccess.hidden = false;
-    };
+    const showOrderAccess = () => {};
 
     const syncHeaderState = () => {
         if (!header) {
@@ -596,43 +456,6 @@
         }
     });
 
-    orderAccessCards.forEach((card) => {
-        card.addEventListener('click', async () => {
-            const value = `${card.dataset.copyValue ?? ''}`.trim();
-
-            if (!value || value === emptyOrderAccessValue) {
-                return;
-            }
-
-            try {
-                await navigator.clipboard.writeText(value);
-            } catch (error) {
-                const input = document.createElement('input');
-                input.value = value;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-            }
-
-            const hint = card.querySelector('small');
-
-            card.classList.add('is-copied');
-
-            if (hint) {
-                hint.textContent = 'Скопійовано';
-            }
-
-            window.setTimeout(() => {
-                card.classList.remove('is-copied');
-
-                if (hint) {
-                    hint.textContent = 'Натисни, щоб скопіювати';
-                }
-            }, 1600);
-        });
-    });
-
     window.addEventListener('scroll', syncHeaderState, { passive: true });
     window.addEventListener('resize', () => {
         syncHeaderState();
@@ -690,9 +513,7 @@
                 throw new Error(message);
             }
 
-            showOrderAccess(data, payload);
-            persistOrderAccess(data, payload);
-            setFeedback(`Замовлення ${data.order_number ?? ''} оформлено. Дані для відстеження збережено нижче.`, 'success');
+            setFeedback(`Замовлення ${data.order_number ?? ''} оформлено. Менеджер зв'яжеться з клієнтом вручну.`, 'success');
             checkoutForm.reset();
 
             window.dispatchEvent(new CustomEvent('kondor-admin-notifications-refresh'));
@@ -719,12 +540,6 @@
         });
     } else {
         render();
-    }
-
-    const savedOrderAccess = loadOrderAccess();
-
-    if (savedOrderAccess) {
-        showOrderAccess(savedOrderAccess, savedOrderAccess);
     }
 
     syncHeaderState();

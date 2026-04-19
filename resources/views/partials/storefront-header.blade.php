@@ -8,7 +8,8 @@
 
     $routeName = request()->route()?->getName();
     $isHome = $routeName === 'home' || request()->url() === url('/');
-    $isCatalog = request()->routeIs('catalog');
+    $isCatalog = request()->routeIs('catalog') || request()->routeIs('catalog.compare');
+    $showBuildCompare = \App\Support\SiteSettings::bool('build.compare.enabled', true);
 @endphp
 
 <header class="header">
@@ -56,6 +57,17 @@
 
                 <a class="header-phone" href="{{ $phoneHref }}">{{ $phoneLabel }}</a>
 
+                @if ($showBuildCompare)
+                    <a class="header-compare" href="{{ route('catalog.compare') }}" data-compare-link aria-label="Порівняння збірок" title="Порівняння збірок">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M9 5H5A2 2 0 0 0 3 7V19A2 2 0 0 0 5 21H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M15 5H19A2 2 0 0 1 21 7V19A2 2 0 0 1 19 21H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 8H16M8 12H16M8 16H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span class="header-compare__count" data-compare-count hidden>0</span>
+                    </a>
+                @endif
+
                 @include('partials.header-cart', ['hideTrackingLink' => true])
             </div>
 
@@ -71,6 +83,12 @@
         <div class="container mobile-menu__inner">
             <a href="{{ url('/') }}">Головна</a>
             <a href="{{ route('catalog') }}">Каталог</a>
+            @if ($showBuildCompare)
+                <a class="mobile-menu__compare" href="{{ route('catalog.compare') }}" data-compare-link>
+                    <span>Порівняння</span>
+                    <span class="mobile-menu__compare-count" data-compare-count hidden>0</span>
+                </a>
+            @endif
             <a href="{{ url('/') }}#about">Про нас</a>
             <a href="{{ url('/') }}#faq">FAQ</a>
             @auth

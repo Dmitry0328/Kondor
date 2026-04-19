@@ -93,6 +93,13 @@ class StorefrontBuilds
         $build['sort_order'] = $build['sort_order'] ?? ($index + 1);
         $build['is_active'] = $build['is_active'] ?? true;
         $build['resolution_tags'] = BuildResolutions::normalize((array) ($build['resolution_tags'] ?? []));
+        $build['youtube_enabled'] = (bool) ($build['youtube_enabled'] ?? false);
+        $build['youtube_url'] = $build['youtube_enabled']
+            ? YoutubeVideo::sanitize($build['youtube_url'] ?? null)
+            : null;
+        $build['youtube_embed_url'] = $build['youtube_enabled']
+            ? YoutubeVideo::embedUrl($build['youtube_url'])
+            : null;
 
         return $build;
     }

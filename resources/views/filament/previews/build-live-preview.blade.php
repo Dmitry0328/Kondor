@@ -79,6 +79,18 @@
 
         <div style="display:grid;gap:12px;padding:16px;border:1px solid #e2e8f0;border-radius:20px;background:#fff;">
             <h4 style="margin:0;font-size:17px;color:#111827;">Блок “Про збірку”</h4>
+            @if (!empty($preview['youtube_embed_url']))
+                <div style="overflow:hidden;border:1px solid #dbe4ef;border-radius:18px;background:#0f172a;aspect-ratio:16 / 9;">
+                    <iframe
+                        src="{{ $preview['youtube_embed_url'] }}"
+                        title="Build video preview"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        style="display:block;width:100%;height:100%;border:0;"
+                    ></iframe>
+                </div>
+            @endif
             @foreach ((array) ($about['intro'] ?? []) as $paragraph)
                 <p style="margin:0;color:#334155;font-size:14px;line-height:1.65;font-weight:800;">{{ $paragraph }}</p>
             @endforeach

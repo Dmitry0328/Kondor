@@ -10,6 +10,17 @@ class SiteSettings
 {
     protected static ?Collection $records = null;
 
+    public static function bool(string $key, bool $default = false): bool
+    {
+        $value = static::records()->get($key);
+
+        if ($value === null || $value === '') {
+            return $default;
+        }
+
+        return in_array(strtolower((string) $value), ['1', 'true', 'yes', 'on'], true);
+    }
+
     public static function string(string $key, string $default = ''): string
     {
         $value = static::records()->get($key);

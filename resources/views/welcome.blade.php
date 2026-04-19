@@ -4483,6 +4483,10 @@
 
             <?php
                 $heroMode = \App\Support\SiteSettings::string('home.hero.mode', 'slider');
+                $showHomeGallery = \App\Support\SiteSettings::bool('home.gallery.enabled', true);
+                $showHomeFpsLab = \App\Support\SiteSettings::bool('home.fps_lab.enabled', true);
+                $showBuildCardFps = \App\Support\SiteSettings::bool('build.cards.fps.enabled', true);
+                $showHomeBuildCardFps = $showHomeFpsLab && $showBuildCardFps;
                 $heroVisualImageUrl = \App\Support\SiteImages::url('home.hero.visual');
                 $heroSlides = [
                     [
@@ -5041,74 +5045,76 @@ SVG;
                         </div>
                     </section>
 
-                    <div
-                        class="fps-lab fps-lab--single"
-                        data-fps-lab
-                        style="--scene-from: <?php echo e($fpsGameMap[$defaultFpsGame]['from']); ?>; --scene-to: <?php echo e($fpsGameMap[$defaultFpsGame]['to']); ?>; --scene-accent: <?php echo e($fpsGameMap[$defaultFpsGame]['accent']); ?>;"
-                    >
-                        <div class="fps-lab__mobile-summary">
-                            <div class="fps-lab__mobile-copy">
-                                <span class="fps-lab__mobile-kicker">FPS для збірок</span>
-                                <strong class="fps-lab__mobile-title" data-fps-mobile-title><?php echo e($fpsGameMap[$defaultFpsGame]['name']); ?></strong>
-                                <span class="fps-lab__mobile-meta" data-fps-mobile-meta><?php echo e($fpsDisplayMap[$defaultFpsDisplay]['mobile_name'] ?? $fpsDisplayMap[$defaultFpsDisplay]['name']); ?> · <?php echo e($fpsPresetMap[$defaultFpsPreset]['name']); ?></span>
-                            </div>
-
-                            <button class="fps-lab__mobile-open" type="button" data-fps-mobile-open>Змінити</button>
-                        </div>
-
-                        <button class="fps-lab__mobile-overlay" type="button" data-fps-mobile-close aria-label="Закрити налаштування FPS"></button>
-
-                        <div class="fps-lab__inner">
-                            <div class="fps-lab__mobile-sheet-head">
-                                <div class="fps-lab__mobile-sheet-copy">
-                                    <span class="fps-lab__mobile-sheet-label">Мобільний FPS-тест</span>
-                                    <strong class="fps-lab__mobile-sheet-title">Оберіть гру та параметри</strong>
+                    <?php if($showHomeFpsLab): ?>
+                        <div
+                            class="fps-lab fps-lab--single"
+                            data-fps-lab
+                            style="--scene-from: <?php echo e($fpsGameMap[$defaultFpsGame]['from']); ?>; --scene-to: <?php echo e($fpsGameMap[$defaultFpsGame]['to']); ?>; --scene-accent: <?php echo e($fpsGameMap[$defaultFpsGame]['accent']); ?>;"
+                        >
+                            <div class="fps-lab__mobile-summary">
+                                <div class="fps-lab__mobile-copy">
+                                    <span class="fps-lab__mobile-kicker">FPS для збірок</span>
+                                    <strong class="fps-lab__mobile-title" data-fps-mobile-title><?php echo e($fpsGameMap[$defaultFpsGame]['name']); ?></strong>
+                                    <span class="fps-lab__mobile-meta" data-fps-mobile-meta><?php echo e($fpsDisplayMap[$defaultFpsDisplay]['mobile_name'] ?? $fpsDisplayMap[$defaultFpsDisplay]['name']); ?> · <?php echo e($fpsPresetMap[$defaultFpsPreset]['name']); ?></span>
                                 </div>
 
-                                <button class="fps-lab__mobile-close" type="button" data-fps-mobile-close aria-label="Закрити налаштування FPS">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                    </svg>
-                                </button>
+                                <button class="fps-lab__mobile-open" type="button" data-fps-mobile-open>Змінити</button>
                             </div>
 
-                            <div class="fps-lab__controls">
-                                <div class="fps-lab__eyebrow">Виберіть гру і налаштування</div>
+                            <button class="fps-lab__mobile-overlay" type="button" data-fps-mobile-close aria-label="Закрити налаштування FPS"></button>
 
-                                <div class="fps-lab__fields">
-                                    <label class="fps-lab__field fps-lab__field--game">
-                                        <span>Гра</span>
-                                        <select data-fps-game>
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsGames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $game): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
-                                                <option value="<?php echo e($game['id']); ?>" <?php if($game['id'] === $defaultFpsGame): echo 'selected'; endif; ?>><?php echo e($game['name']); ?></option>
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-                                        </select>
-                                    </label>
+                            <div class="fps-lab__inner">
+                                <div class="fps-lab__mobile-sheet-head">
+                                    <div class="fps-lab__mobile-sheet-copy">
+                                        <span class="fps-lab__mobile-sheet-label">Мобільний FPS-тест</span>
+                                        <strong class="fps-lab__mobile-sheet-title">Оберіть гру та параметри</strong>
+                                    </div>
 
-                                    <label class="fps-lab__field">
-                                        <span>Монітор / роздільна здатність</span>
-                                        <select data-fps-display>
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsDisplays; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $display): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
-                                                <option value="<?php echo e($display['id']); ?>" <?php if($display['id'] === $defaultFpsDisplay): echo 'selected'; endif; ?>><?php echo e($display['name']); ?></option>
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-                                        </select>
-                                    </label>
-
-                                    <label class="fps-lab__field">
-                                        <span>Графіка</span>
-                                        <select data-fps-preset>
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsPresets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $preset): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
-                                                <option value="<?php echo e($preset['id']); ?>" <?php if($preset['id'] === $defaultFpsPreset): echo 'selected'; endif; ?>><?php echo e($preset['name']); ?></option>
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-                                        </select>
-                                    </label>
+                                    <button class="fps-lab__mobile-close" type="button" data-fps-mobile-close aria-label="Закрити налаштування FPS">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
                                 </div>
 
-                                <p class="fps-lab__note">*Показники FPS є усередненими і служать для демонстрації відносної продуктивності систем.</p>
-                            </div>
+                                <div class="fps-lab__controls">
+                                    <div class="fps-lab__eyebrow">Виберіть гру і налаштування</div>
 
+                                    <div class="fps-lab__fields">
+                                        <label class="fps-lab__field fps-lab__field--game">
+                                            <span>Гра</span>
+                                            <select data-fps-game>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsGames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $game): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                                    <option value="<?php echo e($game['id']); ?>" <?php if($game['id'] === $defaultFpsGame): echo 'selected'; endif; ?>><?php echo e($game['name']); ?></option>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                                            </select>
+                                        </label>
+
+                                        <label class="fps-lab__field">
+                                            <span>Монітор / роздільна здатність</span>
+                                            <select data-fps-display>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsDisplays; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $display): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                                    <option value="<?php echo e($display['id']); ?>" <?php if($display['id'] === $defaultFpsDisplay): echo 'selected'; endif; ?>><?php echo e($display['name']); ?></option>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                                            </select>
+                                        </label>
+
+                                        <label class="fps-lab__field">
+                                            <span>Графіка</span>
+                                            <select data-fps-preset>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $fpsPresets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $preset): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                                    <option value="<?php echo e($preset['id']); ?>" <?php if($preset['id'] === $defaultFpsPreset): echo 'selected'; endif; ?>><?php echo e($preset['name']); ?></option>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                                            </select>
+                                        </label>
+                                    </div>
+
+                                    <p class="fps-lab__note">*Показники FPS є усередненими і служать для демонстрації відносної продуктивності систем.</p>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
 
                     <div class="builds__header">
                         <h2>Топ 5 збірок</h2>
@@ -5180,19 +5186,21 @@ SVG;
                                             </button>
                                         </div>
 
-                                        <div class="build-card__fps-side">
-                                            <div class="build-card__fps" aria-label="Поточний FPS">
-                                                <span class="build-card__fps-value<?php echo e($build['fps_value'] > 0 ? '' : ' is-empty'); ?>" data-fps-value><?php echo e($build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній'); ?></span>
-                                                <span class="build-card__fps-scale" aria-hidden="true">
-                                                    <span class="build-card__fps-fill"></span>
-                                                </span>
-                                                <span class="build-card__fps-label" data-fps-label>FPS</span>
-                                            </div>
+                                        <?php if($showHomeBuildCardFps): ?>
+                                            <div class="build-card__fps-side">
+                                                <div class="build-card__fps" aria-label="Поточний FPS">
+                                                    <span class="build-card__fps-value<?php echo e($build['fps_value'] > 0 ? '' : ' is-empty'); ?>" data-fps-value><?php echo e($build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній'); ?></span>
+                                                    <span class="build-card__fps-scale" aria-hidden="true">
+                                                        <span class="build-card__fps-fill"></span>
+                                                    </span>
+                                                    <span class="build-card__fps-label" data-fps-label>FPS</span>
+                                                </div>
 
-                                            <button class="build-card__fps-more" type="button" data-fps-mobile-open aria-label="Переглянути більше FPS даних">
-                                                Більше FPS
-                                            </button>
-                                        </div>
+                                                <button class="build-card__fps-more" type="button" data-fps-mobile-open aria-label="Переглянути більше FPS даних">
+                                                    Більше FPS
+                                                </button>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
 
                                     <span class="build-card__price-label">Ціна за збірку</span>
@@ -5433,99 +5441,101 @@ SVG;
                 </div>
             </section>
 
-            <section class="gallery" id="gallery">
-                <div class="container">
-                    <div class="gallery__header">
-                        <div class="gallery__title-wrap">
-                            <h2 class="gallery__title">Наші роботи</h2>
-                            <span class="gallery__line"></span>
+            <?php if($showHomeGallery): ?>
+                <section class="gallery" id="gallery">
+                    <div class="container">
+                        <div class="gallery__header">
+                            <div class="gallery__title-wrap">
+                                <h2 class="gallery__title">Наші роботи</h2>
+                                <span class="gallery__line"></span>
+                            </div>
+
+                            <div class="gallery__controls">
+                                <button class="gallery__control" type="button" data-gallery-scroll-prev aria-label="Прокрутити галерею вліво">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+
+                                <button class="gallery__control" type="button" data-gallery-scroll-next aria-label="Прокрутити галерею вправо">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="gallery__controls">
-                            <button class="gallery__control" type="button" data-gallery-scroll-prev aria-label="Прокрутити галерею вліво">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-
-                            <button class="gallery__control" type="button" data-gallery-scroll-next aria-label="Прокрутити галерею вправо">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="gallery__viewport" data-gallery-viewport>
-                        <div class="gallery__track">
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $galleryGroups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupIndex => $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
-                                <div class="gallery__group">
-                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $group; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $patternIndex => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
-                                        <?php
-                                            $absoluteIndex = ($groupIndex * 6) + $patternIndex;
-                                        ?>
-                                        <button
-                                            class="gallery-card gallery-card--<?php echo e($galleryPattern[$patternIndex]); ?>"
-                                            type="button"
-                                            data-gallery-item
-                                            data-gallery-index="<?php echo e($absoluteIndex); ?>"
-                                            data-gallery-title="<?php echo e($item['title']); ?>"
-                                            aria-label="Відкрити <?php echo e($item['title']); ?>"
-                                        >
+                        <div class="gallery__viewport" data-gallery-viewport>
+                            <div class="gallery__track">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $galleryGroups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupIndex => $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                    <div class="gallery__group">
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $group; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $patternIndex => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                                             <?php
-                                                $galleryImageKey = 'home.gallery.' . $absoluteIndex;
-                                                $galleryImageUrl = \App\Support\SiteImages::url($galleryImageKey);
+                                                $absoluteIndex = ($groupIndex * 6) + $patternIndex;
                                             ?>
-                                            <span
-                                                class="gallery-card__art site-image-target<?php echo e($galleryImageUrl ? ' has-site-image' : ''); ?>"
-                                                data-site-image-key="<?php echo e($galleryImageKey); ?>"
-                                                <?php if($galleryImageUrl): ?>
-                                                    style="--site-image-url: url('<?php echo e($galleryImageUrl); ?>');"
-                                                <?php endif; ?>
-                                            ><?php echo $item['art']; ?></span>
-                                            <span class="gallery-card__badge"><?php echo e($item['badge']); ?></span>
-                                            <span class="gallery-card__zoom" aria-hidden="true">
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M10 4H4V10M14 4H20V10M20 14V20H14M10 20H4V14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                            </span>
-                                        </button>
-                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-                                </div>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                                            <button
+                                                class="gallery-card gallery-card--<?php echo e($galleryPattern[$patternIndex]); ?>"
+                                                type="button"
+                                                data-gallery-item
+                                                data-gallery-index="<?php echo e($absoluteIndex); ?>"
+                                                data-gallery-title="<?php echo e($item['title']); ?>"
+                                                aria-label="Відкрити <?php echo e($item['title']); ?>"
+                                            >
+                                                <?php
+                                                    $galleryImageKey = 'home.gallery.' . $absoluteIndex;
+                                                    $galleryImageUrl = \App\Support\SiteImages::url($galleryImageKey);
+                                                ?>
+                                                <span
+                                                    class="gallery-card__art site-image-target<?php echo e($galleryImageUrl ? ' has-site-image' : ''); ?>"
+                                                    data-site-image-key="<?php echo e($galleryImageKey); ?>"
+                                                    <?php if($galleryImageUrl): ?>
+                                                        style="--site-image-url: url('<?php echo e($galleryImageUrl); ?>');"
+                                                    <?php endif; ?>
+                                                ><?php echo $item['art']; ?></span>
+                                                <span class="gallery-card__badge"><?php echo e($item['badge']); ?></span>
+                                                <span class="gallery-card__zoom" aria-hidden="true">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                                        <path d="M10 4H4V10M14 4H20V10M20 14V20H14M10 20H4V14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                                    </div>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                            </div>
+                        </div>
+
+                        <div class="gallery__footer">
+                            <div class="gallery__socials">
+                                <a class="gallery__social" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="12" fill="#7E2DF1"/>
+                                        <path d="M17.8 7.4L6.5 11.8L10.1 13.1L11.4 16.9L17.8 7.4Z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+                                        <path d="M10.1 13.1L13.8 9.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+                                    </svg>
+                                    <span>Наш Telegram</span>
+                                </a>
+
+                                <a class="gallery__social" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="url(#gallery-instagram-fill)" stroke="rgba(255,255,255,0.3)"/>
+                                        <circle cx="12" cy="12" r="4.2" stroke="#fff" stroke-width="1.8"/>
+                                        <circle cx="17.4" cy="6.7" r="1.1" fill="#fff"/>
+                                        <defs>
+                                            <linearGradient id="gallery-instagram-fill" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#8424f0"/>
+                                                <stop offset="0.55" stop-color="#ff4f92"/>
+                                                <stop offset="1" stop-color="#ffb347"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <span>Наш Instagram</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="gallery__footer">
-                        <div class="gallery__socials">
-                            <a class="gallery__social" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <circle cx="12" cy="12" r="12" fill="#7E2DF1"/>
-                                    <path d="M17.8 7.4L6.5 11.8L10.1 13.1L11.4 16.9L17.8 7.4Z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
-                                    <path d="M10.1 13.1L13.8 9.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
-                                </svg>
-                                <span>Наш Telegram</span>
-                            </a>
-
-                            <a class="gallery__social" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="url(#gallery-instagram-fill)" stroke="rgba(255,255,255,0.3)"/>
-                                    <circle cx="12" cy="12" r="4.2" stroke="#fff" stroke-width="1.8"/>
-                                    <circle cx="17.4" cy="6.7" r="1.1" fill="#fff"/>
-                                    <defs>
-                                        <linearGradient id="gallery-instagram-fill" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#8424f0"/>
-                                            <stop offset="0.55" stop-color="#ff4f92"/>
-                                            <stop offset="1" stop-color="#ffb347"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                                <span>Наш Instagram</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                </section>
+            <?php endif; ?>
 
             <footer class="footer" id="contacts">
                 <div class="container">
@@ -5591,46 +5601,48 @@ SVG;
                 </div>
             </footer>
 
-            <div class="gallery-modal" data-gallery-modal aria-hidden="true">
-                <div class="gallery-modal__dialog">
-                    <div class="gallery-modal__stage">
-                        <button class="gallery-modal__close" type="button" data-gallery-close aria-label="Закрити галерею">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </button>
+            <?php if($showHomeGallery): ?>
+                <div class="gallery-modal" data-gallery-modal aria-hidden="true">
+                    <div class="gallery-modal__dialog">
+                        <div class="gallery-modal__stage">
+                            <button class="gallery-modal__close" type="button" data-gallery-close aria-label="Закрити галерею">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
 
-                        <button class="gallery-modal__nav gallery-modal__nav--prev" type="button" data-gallery-prev aria-label="Попереднє фото">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
+                            <button class="gallery-modal__nav gallery-modal__nav--prev" type="button" data-gallery-prev aria-label="Попереднє фото">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
 
-                        <div class="gallery-modal__viewer" data-gallery-main></div>
+                            <div class="gallery-modal__viewer" data-gallery-main></div>
 
-                        <button class="gallery-modal__nav gallery-modal__nav--next" type="button" data-gallery-next aria-label="Наступне фото">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
+                            <button class="gallery-modal__nav gallery-modal__nav--next" type="button" data-gallery-next aria-label="Наступне фото">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
 
-                        <div class="gallery-modal__meta">
-                            <span class="gallery-modal__caption" data-gallery-caption></span>
-                            <span class="gallery-modal__counter" data-gallery-counter></span>
+                            <div class="gallery-modal__meta">
+                                <span class="gallery-modal__caption" data-gallery-caption></span>
+                                <span class="gallery-modal__counter" data-gallery-counter></span>
+                            </div>
                         </div>
+
+                        <aside class="gallery-modal__aside">
+                            <div class="gallery-modal__thumbs">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $galleryItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                    <button class="gallery-modal__thumb" type="button" data-gallery-thumb="<?php echo e($index); ?>" aria-label="Відкрити <?php echo e($item['title']); ?>">
+                                        <span class="gallery-modal__thumb-art"><?php echo $item['art']; ?></span>
+                                    </button>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                            </div>
+                        </aside>
                     </div>
-
-                    <aside class="gallery-modal__aside">
-                        <div class="gallery-modal__thumbs">
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $galleryItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
-                                <button class="gallery-modal__thumb" type="button" data-gallery-thumb="<?php echo e($index); ?>" aria-label="Відкрити <?php echo e($item['title']); ?>">
-                                    <span class="gallery-modal__thumb-art"><?php echo $item['art']; ?></span>
-                                </button>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-                        </div>
-                    </aside>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
 
         <script src="<?php echo e(asset('js/storefront-cart.js')); ?>?v=<?php echo e(filemtime(public_path('js/storefront-cart.js'))); ?>"></script>

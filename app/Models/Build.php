@@ -9,6 +9,7 @@ use App\Support\FpsCatalog;
 use App\Support\FpsProfiles;
 use App\Support\SiteImages;
 use App\Support\StorefrontBuilds;
+use App\Support\YoutubeVideo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,8 @@ class Build extends Model
         'fps_profiles',
         'product_specs',
         'about',
+        'youtube_enabled',
+        'youtube_url',
         'base_components',
         'configurator_groups',
         'resolution_tags',
@@ -45,6 +48,7 @@ class Build extends Model
             'fps_profiles' => 'array',
             'product_specs' => 'array',
             'about' => 'array',
+            'youtube_enabled' => 'boolean',
             'base_components' => 'array',
             'configurator_groups' => 'array',
             'resolution_tags' => 'array',
@@ -111,6 +115,9 @@ class Build extends Model
         $galleryImages = BuildImages::urlsForSlug((string) $this->slug);
         $coverImageUrl = $galleryImages[0] ?? BuildImages::placeholderUrl((string) $this->name);
         $caseVariants = static::normalizeCaseVariants((array) ($this->case_variants ?? []), (string) $this->slug);
+        $youtubeEnabled = (bool) ($this->youtube_enabled ?? false);
+        $youtubeUrl = $youtubeEnabled ? YoutubeVideo::sanitize($this->youtube_url) : null;
+        $youtubeEmbedUrl = $youtubeEnabled ? YoutubeVideo::embedUrl($youtubeUrl) : null;
 
         return [
             'slug' => $this->slug,
@@ -130,6 +137,9 @@ class Build extends Model
             'fps_defaults' => $fpsDefaults,
             'product_specs' => $this->product_specs ?: null,
             'about' => $this->about ?: null,
+            'youtube_enabled' => $youtubeEnabled,
+            'youtube_url' => $youtubeUrl,
+            'youtube_embed_url' => $youtubeEmbedUrl,
             'base_components' => $baseComponentIds ?: null,
             'configurator_groups' => $this->configurator_groups ?: null,
             'resolution_tags' => BuildResolutions::normalize((array) ($this->resolution_tags ?? [])),

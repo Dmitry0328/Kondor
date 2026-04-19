@@ -251,6 +251,10 @@
             .product-about__list--dash li::before { content:'-'; position:absolute; left:0; top:0; color:#9f8ae8; }
             .product-about__list--square li::before { content:''; position:absolute; left:2px; top:.66em; width:6px; height:6px; background:#9f8ae8; border-radius:999px; }
             .product-about__steps { margin:0; padding-left:24px; display:grid; gap:4px; color:#d1dbea; font-size:17px; line-height:1.6; font-weight:700; }
+            .product-about__video { overflow:hidden; border:1px solid rgba(177,196,228,.22); border-radius:26px; background:linear-gradient(180deg,rgba(13,18,29,.96),rgba(7,10,18,.96)) !important; box-shadow:0 24px 50px rgba(5,10,18,.22) !important; }
+            .product-about__video-title { margin:0 0 14px; font-family:'Space Grotesk',sans-serif; font-size:clamp(24px,2.2vw,34px); line-height:1.02; letter-spacing:-.04em; color:#f3f7ff; }
+            .product-about__video-frame { aspect-ratio:16/9; }
+            .product-about__video-frame iframe { display:block; width:100%; height:100%; border:0; }
             .product-aside { display:grid; gap:22px; align-content:start; }
             .product-aside__title { margin:0; font-family:'Space Grotesk',sans-serif; font-size:clamp(38px,4vw,58px); line-height:.98; letter-spacing:-.05em; color:#11151a; }
             .product-aside__code { display:inline-flex; align-items:center; gap:8px; width:fit-content; padding:8px 12px; border:1px solid #dbe3ee; border-radius:999px; background:#f8fbff; color:#516072; font-size:13px; font-weight:800; letter-spacing:.02em; text-transform:uppercase; }
@@ -335,10 +339,12 @@
             .product-actions__button.is-added { background:linear-gradient(180deg,#2fbf75,#159658); box-shadow:0 16px 28px rgba(21,150,88,.22); }
             .product-actions__feedback { min-height:20px; color:#687385; font-size:14px; }
             .product-actions__feedback.is-error { color:#a12626; font-weight:800; }
-            .product-actions__share { display:flex; justify-content:flex-end; padding-top:2px; }
+            .product-actions__share { display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; padding-top:2px; }
             .product-actions__share-button { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-width:260px; min-height:52px; padding:0 20px; border:1px solid #d8e0eb; border-radius:16px; background:#fff; color:#18202a; font-size:15px; font-weight:800; box-shadow:0 10px 18px rgba(24,32,42,.05); cursor:pointer; transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease, background-color .18s ease; }
             .product-actions__share-button svg { color:#5f6b79; }
             .product-actions__share-button:hover { transform:translateY(-1px); border-color:#c8d2df; background:#fbfcfe; box-shadow:0 14px 24px rgba(24,32,42,.08); }
+            .product-actions__share-button--compare.is-active { border-color:#178f57; background:linear-gradient(180deg,#2fbe75,#169659); color:#fff; box-shadow:0 14px 24px rgba(21,150,88,.18); }
+            .product-actions__share-button--compare.is-active svg { color:#fff; }
             .product-shared-pill { display:inline-flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:12px; padding:12px 16px; border:1px solid #dbe5f1; border-radius:16px; background:linear-gradient(180deg,#fff,#f8fbff); color:#415065; box-shadow:0 10px 22px rgba(24,32,42,.05); }
             .product-shared-pill strong { color:#18202a; font-size:14px; font-weight:800; }
             .product-shared-pill span { color:#687385; font-size:13px; font-weight:700; }
@@ -756,6 +762,11 @@
                 ...$build,
                 'about' => $productAbout,
             ]);
+            $productYoutubeEmbedUrl = (bool) ($build['youtube_enabled'] ?? false)
+                ? ($build['youtube_embed_url'] ?? \App\Support\YoutubeVideo::embedUrl($build['youtube_url'] ?? null))
+                : null;
+            $showProductFps = \App\Support\SiteSettings::bool('build.product.fps.enabled', true);
+            $showBuildCompare = \App\Support\SiteSettings::bool('build.compare.enabled', true);
             $relatedBuilds = [];
             foreach ($storefrontBuilds as $candidateBuild) {
                 if (($candidateBuild['slug'] ?? null) === ($build['slug'] ?? null)) {
@@ -1275,58 +1286,76 @@
                                 </div>
                             @endif
 
-                            <section
-                                class="product-fps"
-                                data-product-fps
-                                data-product-fps-map='@json($productFpsLookup)'
-                                data-product-fps-fallback="0"
-                                style="--product-fps-ratio: {{ number_format($resolveProductFpsRatio($initialProductFps), 4, '.', '') }};"
-                            >
-                                <p class="product-fps__note">*Показники FPS є усередненими і служать для демонстрації відносної продуктивності системи.</p>
+                            @if ($showProductFps)
+                                <section
+                                    class="product-fps"
+                                    data-product-fps
+                                    data-product-fps-map='@json($productFpsLookup)'
+                                    data-product-fps-fallback="0"
+                                    style="--product-fps-ratio: {{ number_format($resolveProductFpsRatio($initialProductFps), 4, '.', '') }};"
+                                >
+                                    <p class="product-fps__note">*Показники FPS є усередненими і служать для демонстрації відносної продуктивності системи.</p>
 
-                                <div class="product-fps__row">
-                                    <label class="product-fps__field">
-                                        <span>Гра</span>
-                                        <select data-product-fps-game aria-label="Оберіть гру для FPS">
-                                            @foreach ($productFpsGames as $game)
-                                                <option value="{{ $game['id'] }}" @selected($game['id'] === $defaultProductFpsGame)>{{ $game['name'] }}</option>
-                                            @endforeach
-                                        </select>
-                                    </label>
+                                    <div class="product-fps__row">
+                                        <label class="product-fps__field">
+                                            <span>Гра</span>
+                                            <select data-product-fps-game aria-label="Оберіть гру для FPS">
+                                                @foreach ($productFpsGames as $game)
+                                                    <option value="{{ $game['id'] }}" @selected($game['id'] === $defaultProductFpsGame)>{{ $game['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </label>
 
-                                    <label class="product-fps__field">
-                                        <span>Монітор / Роздільна здатність</span>
-                                        <select data-product-fps-display aria-label="Оберіть монітор для FPS">
-                                            @foreach ($productFpsDisplays as $display)
-                                                <option value="{{ $display['id'] }}" @selected($display['id'] === $defaultProductFpsDisplay)>{{ $display['name'] }}</option>
-                                            @endforeach
-                                        </select>
-                                    </label>
+                                        <label class="product-fps__field">
+                                            <span>Монітор / Роздільна здатність</span>
+                                            <select data-product-fps-display aria-label="Оберіть монітор для FPS">
+                                                @foreach ($productFpsDisplays as $display)
+                                                    <option value="{{ $display['id'] }}" @selected($display['id'] === $defaultProductFpsDisplay)>{{ $display['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </label>
 
-                                    <label class="product-fps__field">
-                                        <span>Графіка</span>
-                                        <select data-product-fps-preset aria-label="Оберіть налаштування графіки для FPS">
-                                            @foreach ($productFpsPresets as $preset)
-                                                <option value="{{ $preset['id'] }}" @selected($preset['id'] === $defaultProductFpsPreset)>{{ $preset['name'] }}</option>
-                                            @endforeach
-                                        </select>
-                                    </label>
+                                        <label class="product-fps__field">
+                                            <span>Графіка</span>
+                                            <select data-product-fps-preset aria-label="Оберіть налаштування графіки для FPS">
+                                                @foreach ($productFpsPresets as $preset)
+                                                    <option value="{{ $preset['id'] }}" @selected($preset['id'] === $defaultProductFpsPreset)>{{ $preset['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </label>
 
-                                    <div class="product-fps__meter-wrap">
-                                        <span class="product-fps__meter-kicker">Поточний FPS</span>
-                                        <div class="product-fps__meter" aria-label="Поточний FPS">
-                                            <span class="product-fps__meter-label">FPS</span>
-                                            <span class="product-fps__meter-track" aria-hidden="true">
-                                                <span class="product-fps__meter-fill" data-product-fps-fill></span>
-                                            </span>
-                                            <strong class="product-fps__value{{ $initialProductFps > 0 ? '' : ' is-empty' }}" data-product-fps-value>{{ $initialProductFps > 0 ? $initialProductFps : '—' }}</strong>
+                                        <div class="product-fps__meter-wrap">
+                                            <span class="product-fps__meter-kicker">Поточний FPS</span>
+                                            <div class="product-fps__meter" aria-label="Поточний FPS">
+                                                <span class="product-fps__meter-label">FPS</span>
+                                                <span class="product-fps__meter-track" aria-hidden="true">
+                                                    <span class="product-fps__meter-fill" data-product-fps-fill></span>
+                                                </span>
+                                                <strong class="product-fps__value{{ $initialProductFps > 0 ? '' : ' is-empty' }}" data-product-fps-value>{{ $initialProductFps > 0 ? $initialProductFps : '—' }}</strong>
+                                            </div>
+                                            <span class="product-fps__status{{ $initialProductFps > 0 ? '' : ' is-visible' }}" data-product-fps-status>{{ $initialProductFps > 0 ? '' : 'FPS тест відсутній' }}</span>
                                         </div>
-                                        <span class="product-fps__status{{ $initialProductFps > 0 ? '' : ' is-visible' }}" data-product-fps-status>{{ $initialProductFps > 0 ? '' : 'FPS тест відсутній' }}</span>
                                     </div>
-                                </div>
-                            </section>
+                                </section>
+                            @endif
 
                             <section class="product-about product-about--desktop" aria-labelledby="product-about-title">
+                                @if ($productYoutubeEmbedUrl)
+                                    <div>
+                                        <h2 class="product-about__video-title">Відео тести збірки</h2>
+                                        <div class="product-about__video">
+                                            <div class="product-about__video-frame">
+                                                <iframe
+                                                    src="{{ $productYoutubeEmbedUrl }}"
+                                                    title="YouTube video about {{ $build['name'] }}"
+                                                    loading="lazy"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                    allowfullscreen
+                                                ></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                                 <h2 class="product-about__title" id="product-about-title">Про збірку</h2>
 
                                 @foreach ($productAbout['intro'] as $paragraph)
@@ -1452,6 +1481,22 @@
                             </div>
 
                             <section class="product-about product-about--mobile" aria-labelledby="product-about-title-mobile">
+                                @if ($productYoutubeEmbedUrl)
+                                    <div>
+                                        <h2 class="product-about__video-title">Відео тести збірки</h2>
+                                        <div class="product-about__video">
+                                            <div class="product-about__video-frame">
+                                                <iframe
+                                                    src="{{ $productYoutubeEmbedUrl }}"
+                                                    title="YouTube video about {{ $build['name'] }}"
+                                                    loading="lazy"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                    allowfullscreen
+                                                ></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                                 <h2 class="product-about__title" id="product-about-title-mobile">Про збірку</h2>
 
                                 @foreach ($productAbout['intro'] as $paragraph)
@@ -1595,6 +1640,24 @@
                                             </svg>
                                             <span>Скопіювати посилання</span>
                                         </button>
+                                        @if ($showBuildCompare)
+                                            <button
+                                                class="product-actions__share-button product-actions__share-button--compare"
+                                                type="button"
+                                                data-compare-toggle
+                                                data-compare-slug="{{ $build['slug'] }}"
+                                                data-compare-label-default="Порівняти збірку"
+                                                data-compare-label-active="У порівнянні"
+                                                aria-pressed="false"
+                                            >
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M9 5H5A2 2 0 0 0 3 7V19A2 2 0 0 0 5 21H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M15 5H19A2 2 0 0 1 21 7V19A2 2 0 0 1 19 21H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M8 8H16M8 12H16M8 16H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                                <span data-compare-label>Порівняти збірку</span>
+                                            </button>
+                                        @endif
                                     </div>
                                 @endunless
                             </div>
@@ -2010,6 +2073,10 @@
         @endforeach
 
         <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
+        @if ($showBuildCompare)
+            @include('partials.storefront-compare-tools')
+            <script src="{{ asset('js/storefront-compare.js') }}?v={{ filemtime(public_path('js/storefront-compare.js')) }}"></script>
+        @endif
         <script>
             (() => {
                 const header = document.querySelector('.header');

@@ -1489,6 +1489,26 @@
                 margin-top: 18px;
             }
 
+            .build-card__action--compare {
+                border-color: #d6deea;
+                background: linear-gradient(180deg, #ffffff, #f7faff);
+                color: #1d2430;
+                box-shadow: 0 8px 18px rgba(24, 32, 42, 0.08);
+            }
+
+            .build-card__action--compare:hover {
+                border-color: #c6d3e4;
+                background: linear-gradient(180deg, #ffffff, #f1f6ff);
+                box-shadow: 0 10px 22px rgba(24, 32, 42, 0.1);
+            }
+
+            .build-card__action--compare.is-active {
+                border-color: #178f57;
+                background: linear-gradient(180deg, #2fbe75, #169659);
+                color: #ffffff;
+                box-shadow: 0 12px 24px rgba(21, 150, 88, 0.18);
+            }
+
             .build-card__action--cart {
                 border-color: #d6deea;
                 background: linear-gradient(180deg, #ffffff, #f7faff);
@@ -2222,6 +2242,8 @@
                 return 'high';
             };
 
+            $showBuildCardFps = \App\Support\SiteSettings::bool('build.cards.fps.enabled', true);
+            $showBuildCompare = \App\Support\SiteSettings::bool('build.compare.enabled', true);
             $builds = \App\Support\StorefrontBuilds::all();
             $catalogFilterDefinitions = \App\Support\BuildResolutions::catalogFilters();
             $resolutionCounts = \App\Support\BuildResolutions::countByTag($builds);
@@ -2512,19 +2534,21 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="build-card__fps-side">
-                                                    <div class="build-card__fps" aria-label="Поточний FPS">
-                                                        <span class="build-card__fps-value{{ $build['fps_value'] > 0 ? '' : ' is-empty' }}" data-fps-value>{{ $build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній' }}</span>
-                                                        <span class="build-card__fps-scale" aria-hidden="true">
-                                                            <span class="build-card__fps-fill"></span>
-                                                        </span>
-                                                        <span class="build-card__fps-label" data-fps-label>FPS</span>
-                                                    </div>
+                                                @if ($showBuildCardFps)
+                                                    <div class="build-card__fps-side">
+                                                        <div class="build-card__fps" aria-label="Поточний FPS">
+                                                            <span class="build-card__fps-value{{ $build['fps_value'] > 0 ? '' : ' is-empty' }}" data-fps-value>{{ $build['fps_value'] > 0 ? $build['fps_value'] : 'FPS тест відсутній' }}</span>
+                                                            <span class="build-card__fps-scale" aria-hidden="true">
+                                                                <span class="build-card__fps-fill"></span>
+                                                            </span>
+                                                            <span class="build-card__fps-label" data-fps-label>FPS</span>
+                                                        </div>
 
-                                                    <button class="build-card__fps-more" type="button" data-fps-mobile-open aria-label="Переглянути більше FPS даних">
-                                                        Більше FPS
-                                                    </button>
-                                                </div>
+                                                        <button class="build-card__fps-more" type="button" data-fps-mobile-open aria-label="Переглянути більше FPS даних">
+                                                            Більше FPS
+                                                        </button>
+                                                    </div>
+                                                @endif
                                             </div>
 
                                             <span class="build-card__price-label">Ціна за збірку</span>
@@ -2537,6 +2561,19 @@
                                                 <button class="catalog-cta build-card__action build-card__action--cart" type="button" data-build-add>
                                                     Додати в кошик
                                                 </button>
+                                                @if ($showBuildCompare)
+                                                    <button
+                                                        class="catalog-cta build-card__action build-card__action--compare"
+                                                        type="button"
+                                                        data-compare-toggle
+                                                        data-compare-slug="{{ $build['slug'] }}"
+                                                        data-compare-label-default="Порівняти"
+                                                        data-compare-label-active="У порівнянні"
+                                                        aria-pressed="false"
+                                                    >
+                                                        <span data-compare-label>Порівняти</span>
+                                                    </button>
+                                                @endif
                                                 <a class="catalog-cta build-card__action" href="{{ route('product.show', ['slug' => $build['slug']]) }}" data-build-detail-link>Детальніше</a>
                                             </div>
                                         </div>
@@ -2614,6 +2651,10 @@
         </div>
 
         <script src="{{ asset('js/storefront-cart.js') }}?v={{ filemtime(public_path('js/storefront-cart.js')) }}"></script>
+        @if ($showBuildCompare)
+            @include('partials.storefront-compare-tools')
+            <script src="{{ asset('js/storefront-compare.js') }}?v={{ filemtime(public_path('js/storefront-compare.js')) }}"></script>
+        @endif
         <script>
             (() => {
                 const header = document.querySelector('.header');

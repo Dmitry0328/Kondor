@@ -186,33 +186,6 @@
 
                             <button class="cart-primary-button" type="submit">Оформити замовлення</button>
 
-                            <section class="cart-order-access" data-order-access hidden>
-                                <div class="cart-order-access__eyebrow">Відстеження замовлення</div>
-                                <h3>Збережи дані для перегляду статусу</h3>
-
-                                <div class="cart-order-access__grid">
-                                    <button class="cart-order-access__item" type="button" data-order-access-copy="number" data-copy-value="">
-                                        <span>Номер замовлення</span>
-                                        <strong data-order-access-number-value>—</strong>
-                                        <small>Натисни, щоб скопіювати</small>
-                                    </button>
-
-                                    <button class="cart-order-access__item" type="button" data-order-access-copy="phone" data-copy-value="">
-                                        <span>Телефон</span>
-                                        <strong data-order-access-phone-value>—</strong>
-                                        <small>Натисни, щоб скопіювати</small>
-                                    </button>
-
-                                    <button class="cart-order-access__item" type="button" data-order-access-copy="password" data-copy-value="">
-                                        <span>Пароль</span>
-                                        <strong data-order-access-password-value>—</strong>
-                                        <small>Натисни, щоб скопіювати</small>
-                                    </button>
-                                </div>
-
-                                <p class="cart-order-access__meta" data-order-access-meta></p>
-                            </section>
-
                             <p class="cart-feedback" data-checkout-feedback></p>
                         </form>
                     </aside>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\AccessoryController;
+use App\Http\Controllers\CompareController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteAdminNotificationController;
 use App\Http\Controllers\SiteImageController;
@@ -65,6 +66,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::view('/catalog', 'catalog')->name('catalog');
+Route::get('/catalog/compare', [CompareController::class, 'show'])->name('catalog.compare');
 Route::get('/devices', [AccessoryController::class, 'index'])->name('accessories.index');
 Route::get('/devices/{slug}', [AccessoryController::class, 'show'])->name('accessories.show');
 Route::get('/trade-in', [TradeInController::class, 'show'])->name('trade-in');
