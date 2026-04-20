@@ -3,21 +3,29 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ $accessory['name'] }} | KondorPC</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        @include('partials.seo', [
+            'title' => $accessory['name'] . ' | KondorPC',
+            'description' => $accessory['summary'] !== '' ? $accessory['summary'] : ($accessory['name'] . ' від Kondor Device.'),
+            'canonical' => $accessory['product_url'],
+            'image' => $accessory['image_url'],
+            'type' => 'product',
+        ])
+        <title>{{ $accessory['name'] }} | KondorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <link rel="stylesheet" href="{{ asset('css/cart-page.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/theme-toggle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
         @include('partials.theme-head')
         <style>
-            body { margin: 0; font-family: 'Manrope', sans-serif; background: #f6f8fc; color: #18202a; }
+            body { margin: 0; min-width: 320px; font-family: 'Manrope', sans-serif; background: #f6f8fc; color: #18202a; overflow-x: clip; }
             a { color: inherit; text-decoration: none; }
             .page { min-height: 100vh; background: linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%); }
-            .device-page__hero { padding: 8px 0 12px; }
+            .device-page__hero { padding: 10px 0 16px; }
             .back { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 999px; border: 1px solid #d8e1ee; background: rgba(255, 255, 255, 0.92); color: #364255; box-shadow: 0 12px 24px rgba(24, 32, 42, 0.06); }
-            .layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); gap: 28px; padding: 0 0 70px; }
+            .layout { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(340px, 0.98fr); gap: 28px; padding: 0 0 70px; }
             .gallery, .panel, .section { border-radius: 30px; border: 1px solid #dce4ef; background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 253, 0.98)); box-shadow: 0 22px 46px rgba(24, 32, 42, 0.08); }
             .gallery { padding: 26px; }
             .gallery__main { display: grid; place-items: center; aspect-ratio: 1 / 1; border-radius: 24px; background: #fff; padding: 28px; }
@@ -39,18 +47,18 @@
             .feedback { margin-top: 14px; color: #627184; min-height: 24px; }
             .section { padding: 28px; }
             .section h2 { margin: 0 0 18px; font-size: 28px; }
-            .specs { display: grid; gap: 12px; }
-            .spec { display: grid; gap: 6px; padding: 14px 16px; border-radius: 18px; background: #f6f9fd; border: 1px solid #e1e8f2; }
+            .specs, .package { display: grid; gap: 12px; }
+            .spec, .package div { display: grid; gap: 6px; padding: 14px 16px; border-radius: 18px; background: #f6f9fd; border: 1px solid #e1e8f2; }
             .spec strong { font-size: 15px; color: #627184; }
             .spec span { font-size: 18px; font-weight: 700; }
-            .package { display: grid; gap: 12px; }
-            .package div { padding: 14px 16px; border-radius: 18px; background: #f6f9fd; border: 1px solid #e1e8f2; }
             html[data-theme="dark"] body { background: #08111c; color: #f5f7fb; }
             html[data-theme="dark"] .page { background: linear-gradient(180deg, #0b1219 0%, #0f1720 46%, #091018 100%); }
             html[data-theme="dark"] .back { border-color: transparent; background: rgba(255, 255, 255, 0.04); color: #dce3f2; box-shadow: none; }
             html[data-theme="dark"] .gallery,
             html[data-theme="dark"] .panel,
             html[data-theme="dark"] .section { border-color: rgba(145, 158, 185, 0.16); background: linear-gradient(180deg, rgba(18, 24, 35, 0.98), rgba(10, 15, 24, 0.98)); box-shadow: 0 24px 52px rgba(2, 8, 18, 0.36); }
+            html[data-theme="dark"] .gallery__main,
+            html[data-theme="dark"] .thumbs img { background: rgba(255, 255, 255, 0.04); }
             html[data-theme="dark"] .thumbs button { border-color: rgba(145, 158, 185, 0.18); background: rgba(255, 255, 255, 0.04); box-shadow: none; }
             html[data-theme="dark"] .panel__summary,
             html[data-theme="dark"] .feedback { color: #98a5be; }
@@ -62,52 +70,29 @@
             html[data-theme="dark"] .spec strong { color: #b7c3db; }
             @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
             @media (max-width: 760px) {
-                .device-page__hero { padding: 4px 0 10px; }
-                .layout { gap: 20px; padding-bottom: 42px; }
-                .gallery, .panel, .section { border-radius: 24px; }
-                .gallery, .panel, .section { padding: 18px; }
+                .device-page__hero { padding: 6px 0 12px; }
+                .layout { gap: 18px; padding-bottom: 42px; }
+                .gallery, .panel, .section { padding: 18px; border-radius: 24px; }
+                .gallery__main { padding: 18px; }
                 .panel__title { font-size: clamp(30px, 12vw, 42px); }
                 .panel__summary { font-size: 15px; line-height: 1.65; }
                 .panel__price { margin: 18px 0; font-size: 38px; }
-                .buy { gap: 10px; }
-                .buy__button { width: 100%; }
+                .buy { display: grid; grid-template-columns: 1fr; gap: 12px; }
+                .qty { width: 100%; justify-content: space-between; }
+                .qty input { flex: 1; width: auto; }
+                .buy__button { width: 100%; min-height: 54px; }
                 .thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+                .thumbs img { height: 72px; }
+                .section h2 { font-size: 24px; }
+            }
+            @media (max-width: 560px) {
+                .thumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+                .back { width: 100%; justify-content: center; }
             }
         </style>
     </head>
     <body>
         <div class="cart-site-shell">
-            <div class="topbar">
-                <div class="container topbar__inner">
-                    <div class="topbar__links">
-                        <a href="{{ url('/') }}#about">Про нас</a>
-                        <a href="#contacts">Контакти</a>
-                        <a href="{{ url('/') }}#faq">FAQ</a>
-                    </div>
-                    <div class="topbar__meta">
-                        <div class="topbar__contacts">
-                            <a href="tel:+380633631066">+380633631066</a>
-                        </div>
-
-                        <div class="topbar__socials" aria-label="Соціальні мережі">
-                            <a class="topbar__social-link" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer" aria-label="Instagram">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="2"/>
-                                    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-                                    <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/>
-                                </svg>
-                            </a>
-                            <a class="topbar__social-link" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer" aria-label="Telegram">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M21 4L3 11.2L10.2 13.8L12.8 21L21 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M10.2 13.8L14.2 9.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             @include('partials.storefront-header')
 
             <main class="page">

@@ -3,31 +3,37 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Девайси | KondorPC</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        @include('partials.seo', [
+            'title' => 'Девайси | KondorPC',
+            'description' => 'Клавіатури, миші, килимки, кейкапи та кабелі Kondor Device в одному каталозі.',
+            'canonical' => route('accessories.index'),
+            'image' => asset('images/kondor-mark-black.svg'),
+            'type' => 'website',
+        ])
+        <title>Девайси | KondorPC</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=manrope:400,500,700,800|space-grotesk:500,700" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/storefront-cart.css') }}">
         <link rel="stylesheet" href="{{ asset('css/cart-page.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/theme-toggle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/admin-inline-images.css') }}">
         @include('partials.theme-head')
         <style>
-            body { margin: 0; font-family: 'Manrope', sans-serif; background: #f6f8fc; color: #18202a; }
+            body { margin: 0; min-width: 320px; font-family: 'Manrope', sans-serif; background: #f6f8fc; color: #18202a; overflow-x: clip; }
             a { color: inherit; text-decoration: none; }
             .page { min-height: 100vh; background: linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%); }
-            .accessories-page__hero { padding: 42px 0 30px; }
+            .accessories-page__hero { padding: 36px 0 28px; }
             .accessories-page__eyebrow { display: inline-block; margin-bottom: 12px; color: #a78bfa; font-size: 12px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; }
-            .accessories-page__title,
-            .hero__title { margin: 0; font-size: clamp(42px, 8vw, 84px); line-height: 0.95; letter-spacing: -0.05em; }
-            .accessories-page__text,
-            .hero__text { max-width: 780px; margin: 18px 0 0; color: #627184; font-size: 18px; line-height: 1.7; }
-            .filters { display: flex; flex-wrap: wrap; gap: 14px; margin: 34px 0 22px; }
-            .filter { padding: 16px 18px; border-radius: 22px; border: 1px solid #d8e1ee; background: rgba(255, 255, 255, 0.92); min-width: 190px; box-shadow: 0 12px 24px rgba(24, 32, 42, 0.06); transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+            .hero__title { margin: 0; font-size: clamp(42px, 8vw, 80px); line-height: 0.95; letter-spacing: -0.05em; }
+            .hero__text { max-width: 760px; margin: 18px 0 0; color: #627184; font-size: 18px; line-height: 1.7; }
+            .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 30px 0 24px; }
+            .filter { padding: 18px; border-radius: 22px; border: 1px solid #d8e1ee; background: rgba(255, 255, 255, 0.94); box-shadow: 0 12px 24px rgba(24, 32, 42, 0.06); transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
             .filter:hover, .filter.is-active { transform: translateY(-2px); border-color: rgba(124, 58, 237, 0.35); box-shadow: 0 18px 32px rgba(76, 29, 149, 0.12); }
             .filter__label { display: block; font-size: 18px; font-weight: 800; }
             .filter__meta { display: block; margin-top: 8px; color: #6b788b; font-size: 13px; line-height: 1.5; }
             .filter__count { display: inline-flex; margin-top: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(124, 58, 237, 0.12); color: #6f21d5; font-size: 12px; font-weight: 800; }
-            .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px 28px; padding: 18px 0 72px; align-items: start; }
+            .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding: 10px 0 72px; align-items: start; }
             .card { display: flex; flex-direction: column; min-height: 100%; padding: 18px; border-radius: 28px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 253, 0.98)); border: 1px solid #dce4ef; box-shadow: 0 22px 44px rgba(24, 32, 42, 0.08); }
             .card__media { display: block; aspect-ratio: 1 / 1; padding: 18px; border-radius: 22px; background: #fff; }
             .card__media img { width: 100%; height: 100%; object-fit: contain; }
@@ -38,12 +44,10 @@
             .card__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
             .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 18px; border-radius: 16px; border: 1px solid rgba(124, 58, 237, 0.24); background: #ffffff; color: #18202a; font-weight: 800; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
             .button:hover { transform: translateY(-1px); box-shadow: 0 16px 26px rgba(109, 40, 217, 0.26); }
-            .button--primary { background: linear-gradient(135deg, #7c3aed, #9f67ff); box-shadow: 0 14px 28px rgba(124, 58, 237, 0.28); }
-            .button--primary { color: #fff; }
+            .button--primary { background: linear-gradient(135deg, #7c3aed, #9f67ff); color: #fff; box-shadow: 0 14px 28px rgba(124, 58, 237, 0.28); }
             .empty { padding: 36px 0 72px; color: #627184; font-size: 18px; }
             html[data-theme="dark"] body { background: #09111d; color: #f5f7fb; }
             html[data-theme="dark"] .page { background: linear-gradient(180deg, #0b1219 0%, #0f1720 46%, #091018 100%); }
-            html[data-theme="dark"] .accessories-page__text,
             html[data-theme="dark"] .hero__text,
             html[data-theme="dark"] .card__summary,
             html[data-theme="dark"] .empty { color: #9aa6bd; }
@@ -51,57 +55,29 @@
             html[data-theme="dark"] .filter__meta { color: #8f9cb7; }
             html[data-theme="dark"] .filter__count { background: rgba(124, 58, 237, 0.18); color: #e9ddff; }
             html[data-theme="dark"] .card { background: linear-gradient(180deg, rgba(22, 28, 39, 0.96), rgba(12, 18, 29, 0.98)); border-color: rgba(145, 158, 185, 0.14); box-shadow: 0 24px 50px rgba(2, 8, 18, 0.38); }
+            html[data-theme="dark"] .card__media { background: rgba(255, 255, 255, 0.04); }
             html[data-theme="dark"] .button { background: rgba(255, 255, 255, 0.03); color: #fff; border-color: rgba(124, 58, 237, 0.34); }
-            @media (max-width: 900px) { .grid { gap: 22px; } }
+            html[data-theme="dark"] .button--primary { color: #fff; }
+            @media (max-width: 1400px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+            @media (max-width: 1080px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
             @media (max-width: 760px) {
-                .accessories-page__hero { padding: 28px 0 22px; }
-                .accessories-page__title,
-                .hero__title { font-size: clamp(34px, 14vw, 58px); }
-                .accessories-page__text,
-                .hero__text { font-size: 16px; line-height: 1.65; }
-                .filters { margin: 26px 0 18px; }
+                .accessories-page__hero { padding: 24px 0 18px; text-align: center; }
+                .hero__title { font-size: clamp(34px, 14vw, 56px); }
+                .hero__text { margin-top: 14px; font-size: 16px; line-height: 1.65; }
+                .filters { grid-template-columns: 1fr; gap: 12px; margin: 22px 0 18px; }
                 .filter { min-width: 0; width: 100%; }
                 .grid { grid-template-columns: 1fr; gap: 18px; padding-bottom: 48px; }
                 .card { padding: 16px; border-radius: 24px; }
+                .card__media { padding: 14px; }
                 .card__title { font-size: 20px; }
                 .card__price { font-size: 28px; }
+                .card__actions { display: grid; grid-template-columns: 1fr; }
+                .button { width: 100%; }
             }
         </style>
     </head>
     <body>
         <div class="cart-site-shell">
-            <div class="topbar">
-                <div class="container topbar__inner">
-                    <div class="topbar__links">
-                        <a href="{{ url('/') }}#about">Про нас</a>
-                        <a href="#contacts">Контакти</a>
-                        <a href="{{ url('/') }}#faq">FAQ</a>
-                    </div>
-                    <div class="topbar__meta">
-                        <div class="topbar__contacts">
-                            <a href="tel:+380633631066">+380633631066</a>
-                        </div>
-
-                        <div class="topbar__socials" aria-label="Соціальні мережі">
-                            <a class="topbar__social-link" href="https://www.instagram.com/kondor_pc/" target="_blank" rel="noreferrer" aria-label="Instagram">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="2"/>
-                                    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-                                    <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/>
-                                </svg>
-                            </a>
-
-                            <a class="topbar__social-link" href="https://t.me/kondor_channeI" target="_blank" rel="noreferrer" aria-label="Telegram">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M21 4L3 11.2L10.2 13.8L12.8 21L21 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M10.2 13.8L14.2 9.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             @include('partials.storefront-header')
 
             <main class="page">
@@ -109,7 +85,7 @@
                     <section class="accessories-page__hero">
                         <span class="accessories-page__eyebrow">Kondor Device</span>
                         <h1 class="hero__title">Девайси. Збери весь комплект</h1>
-                        <p class="hero__text">Обирайте клавіатури, миші, килимки, кейкапи й кабелі всередині вашого сайту. Кожен товар можна відкрити, переглянути характеристики, змінити кількість і додати в кошик.</p>
+                        <p class="hero__text">Клавіатури, миші, килимки, кейкапи та кабелі в одному каталозі. Відкривай товар, дивись характеристики й додавай у кошик прямо зі сторінки.</p>
                     </section>
 
                     <section class="filters" aria-label="Категорії девайсів">
@@ -148,9 +124,9 @@
                                             data-accessory-price="{{ $accessory['price_raw'] }}"
                                             data-accessory-url="{{ $accessory['product_url'] }}"
                                         >
-                                            Обрати
+                                            Додати
                                         </button>
-                                        <a class="button button--primary" href="{{ $accessory['product_url'] }}">Інформація</a>
+                                        <a class="button button--primary" href="{{ $accessory['product_url'] }}">Детальніше</a>
                                     </div>
                                 </article>
                             @endforeach
@@ -241,7 +217,7 @@
                     button.classList.add('button--primary');
 
                     window.setTimeout(() => {
-                        button.textContent = 'Обрати';
+                        button.textContent = 'Додати';
                         button.classList.remove('button--primary');
                     }, 1200);
                 });

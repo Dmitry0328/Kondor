@@ -119,3 +119,5 @@
         </div>
     </div>
 </header>
+
+@include('partials.storefront-disclaimer')

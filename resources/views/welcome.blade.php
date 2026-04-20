@@ -4585,7 +4585,18 @@
                                             </div>
                                         </div>
 
-                                        <div class="hero-slide__visual" aria-hidden="true">
+                                        <?php
+                                            $heroSlideImageKey = 'home.hero.slide.' . ($loop->iteration) . '.visual';
+                                            $heroSlideImageUrl = \App\Support\SiteImages::url($heroSlideImageKey);
+                                        ?>
+                                        <div
+                                            class="hero-slide__visual site-image-target<?php echo e($heroSlideImageUrl ? ' has-site-image' : ''); ?>"
+                                            data-site-image-key="<?php echo e($heroSlideImageKey); ?>"
+                                            <?php if($heroSlideImageUrl): ?>
+                                                style="--site-image-url: url('<?php echo e($heroSlideImageUrl); ?>');"
+                                            <?php endif; ?>
+                                            aria-hidden="true"
+                                        >
                                             <div class="hero-slide__glow"></div>
                                             <div class="hero-slide__wave"></div>
                                             <div class="hero-showcase">
@@ -5008,7 +5019,8 @@ SVG;
                                     $resolutionId = (string) ($resolutionCard['id'] ?? '');
                                     $resolutionAccent = (string) ($resolutionCard['accent_color'] ?? '#7b42ff');
                                     $resolutionCount = (int) ($resolutionCard['count'] ?? 0);
-                                    $resolutionImageUrl = trim((string) ($resolutionCard['image_url'] ?? ''));
+                                    $resolutionImageKey = 'home.resolution.' . $resolutionId . '.image';
+                                    $resolutionImageUrl = trim((string) (\App\Support\SiteImages::url($resolutionImageKey) ?: ($resolutionCard['image_url'] ?? '')));
                                 ?>
                                 <a
                                     class="resolution-card"
@@ -5018,9 +5030,10 @@ SVG;
                                     <span class="resolution-card__label"><?php echo e($resolutionCard['label']); ?></span>
 
                                     <div
-                                        class="resolution-card__art<?php echo e($resolutionImageUrl !== '' ? ' has-resolution-image' : ''); ?>"
+                                        class="resolution-card__art site-image-target<?php echo e($resolutionImageUrl !== '' ? ' has-resolution-image has-site-image' : ''); ?>"
+                                        data-site-image-key="<?php echo e($resolutionImageKey); ?>"
                                         <?php if($resolutionImageUrl !== ''): ?>
-                                            style="--resolution-image-url: url('<?php echo e($resolutionImageUrl); ?>');"
+                                            style="--resolution-image-url: url('<?php echo e($resolutionImageUrl); ?>'); --site-image-url: url('<?php echo e($resolutionImageUrl); ?>');"
                                         <?php endif; ?>
                                         aria-hidden="true"
                                     >
@@ -5329,17 +5342,17 @@ SVG;
                 $youtubeVideos = [
                     [
                         'title' => 'Нове відео на YouTube 01',
-                        'meta' => 'Тимчасове посилання. Заміню на точний URL вашого відео.',
+                        'meta' => 'Тимчасове посилання',
                         'href' => 'https://www.youtube.com/results?search_query=Kondor+PC',
                     ],
                     [
                         'title' => 'Нове відео на YouTube 02',
-                        'meta' => 'Тимчасове посилання. Заміню на точний URL вашого відео.',
+                        'meta' => 'Тимчасове посилання',
                         'href' => 'https://www.youtube.com/results?search_query=Kondor+Device',
                     ],
                     [
                         'title' => 'Нове відео на YouTube 03',
-                        'meta' => 'Тимчасове посилання. Заміню на точний URL вашого відео.',
+                        'meta' => 'Тимчасове посилання',
                         'href' => 'https://www.youtube.com/results?search_query=Kondor+gaming+pc',
                     ],
                 ];
@@ -5359,6 +5372,10 @@ SVG;
 
                     <div class="accessories-showcase">
                         <?php $__currentLoopData = $accessoryShowcase; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php
+                                $accessoryImageKey = 'home.accessory-showcase.' . ($card['art'] ?? $loop->iteration) . '.image';
+                                $accessoryImageUrl = \App\Support\SiteImages::url($accessoryImageKey);
+                            ?>
                             <a class="accessories-card<?php echo e(($card['lead'] ?? false) ? ' accessories-card--lead' : ''); ?>" href="<?php echo e($card['href']); ?>">
                                 <span class="accessories-card__kicker">Kondor Device</span>
                                 <h3 class="accessories-card__title"><?php echo e($card['title']); ?></h3>
@@ -5379,7 +5396,14 @@ SVG;
                                     </span>
                                 <?php endif; ?>
 
-                                <span class="accessories-card__art accessories-card__art--<?php echo e($card['art']); ?>" aria-hidden="true"><span></span></span>
+                                <span
+                                    class="accessories-card__art accessories-card__art--<?php echo e($card['art']); ?> site-image-target<?php echo e($accessoryImageUrl ? ' has-site-image' : ''); ?>"
+                                    data-site-image-key="<?php echo e($accessoryImageKey); ?>"
+                                    <?php if($accessoryImageUrl): ?>
+                                        style="--site-image-url: url('<?php echo e($accessoryImageUrl); ?>');"
+                                    <?php endif; ?>
+                                    aria-hidden="true"
+                                ><span></span></span>
                             </a>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
@@ -5390,27 +5414,39 @@ SVG;
 
                     <div class="services-showcase" id="services">
                         <?php $__currentLoopData = $serviceShowcase; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php
+                                $serviceImageKey = 'home.service-showcase.' . ($service['icon'] ?? $loop->iteration) . '.image';
+                                $serviceImageUrl = \App\Support\SiteImages::url($serviceImageKey);
+                            ?>
                             <article class="services-card">
                                 <h3 class="services-card__title"><?php echo e($service['title']); ?></h3>
                                 <p class="services-card__text"><?php echo e($service['text']); ?></p>
 
-                                <svg class="services-card__icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
-                                    <?php if($service['icon'] === 'card'): ?>
-                                        <rect x="26" y="72" width="150" height="94" rx="18" fill="#f7ff1a"/>
-                                        <rect x="86" y="92" width="126" height="94" rx="18" fill="#18191b" stroke="#3d3f45" stroke-width="4"/>
-                                        <rect x="102" y="116" width="68" height="12" rx="6" fill="#f7ff1a"/>
-                                        <rect x="102" y="140" width="92" height="10" rx="5" fill="#f7ff1a" opacity=".88"/>
-                                    <?php elseif($service['icon'] === 'gear'): ?>
-                                        <circle cx="124" cy="126" r="54" fill="#f7ff1a"/>
-                                        <circle cx="124" cy="126" r="18" fill="#18191b"/>
-                                        <path d="M124 36V62M124 190V216M36 126H62M186 126H212M59 61L77 79M171 173L189 191M59 191L77 173M171 79L189 61" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round"/>
-                                    <?php else: ?>
-                                        <path d="M120 42C78 42 44 76 44 118C44 160 78 194 120 194C162 194 196 160 196 118" stroke="#f7ff1a" stroke-width="24" stroke-linecap="round"/>
-                                        <path d="M120 198C162 198 196 164 196 122C196 80 162 46 120 46" stroke="#f7ff1a" stroke-width="24" stroke-linecap="round"/>
-                                        <path d="M63 66L42 42L66 42" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M177 174L198 198L174 198" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                                <div
+                                    class="services-card__media site-image-target<?php echo e($serviceImageUrl ? ' has-site-image' : ''); ?>"
+                                    data-site-image-key="<?php echo e($serviceImageKey); ?>"
+                                    <?php if($serviceImageUrl): ?>
+                                        style="--site-image-url: url('<?php echo e($serviceImageUrl); ?>');"
                                     <?php endif; ?>
-                                </svg>
+                                >
+                                    <svg class="services-card__icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+                                        <?php if($service['icon'] === 'card'): ?>
+                                            <rect x="26" y="72" width="150" height="94" rx="18" fill="#f7ff1a"/>
+                                            <rect x="86" y="92" width="126" height="94" rx="18" fill="#18191b" stroke="#3d3f45" stroke-width="4"/>
+                                            <rect x="102" y="116" width="68" height="12" rx="6" fill="#f7ff1a"/>
+                                            <rect x="102" y="140" width="92" height="10" rx="5" fill="#f7ff1a" opacity=".88"/>
+                                        <?php elseif($service['icon'] === 'gear'): ?>
+                                            <circle cx="124" cy="126" r="54" fill="#f7ff1a"/>
+                                            <circle cx="124" cy="126" r="18" fill="#18191b"/>
+                                            <path d="M124 36V62M124 190V216M36 126H62M186 126H212M59 61L77 79M171 173L189 191M59 191L77 173M171 79L189 61" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round"/>
+                                        <?php else: ?>
+                                            <path d="M120 42C78 42 44 76 44 118C44 160 78 194 120 194C162 194 196 160 196 118" stroke="#f7ff1a" stroke-width="24" stroke-linecap="round"/>
+                                            <path d="M120 198C162 198 196 164 196 122C196 80 162 46 120 46" stroke="#f7ff1a" stroke-width="24" stroke-linecap="round"/>
+                                            <path d="M63 66L42 42L66 42" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M177 174L198 198L174 198" stroke="#f7ff1a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <?php endif; ?>
+                                    </svg>
+                                </div>
 
                                 <a class="services-card__button" href="<?php echo e($service['href']); ?>" <?php if(str_starts_with($service['href'], 'http')): ?> target="_blank" rel="noreferrer" <?php endif; ?>>
                                     Детальніше

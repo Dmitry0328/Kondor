@@ -177,8 +177,23 @@ body.has-admin-edit-mode-toggle {
     background-size: cover;
 }
 
+.hero-slide__visual.has-site-image {
+    background-color: #0d121a;
+    background-image: var(--site-image-url) !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .hero__visual.has-site-image::after,
 .hero__visual.has-site-image .rig {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hero-slide__visual.has-site-image .hero-slide__glow,
+.hero-slide__visual.has-site-image .hero-slide__wave,
+.hero-slide__visual.has-site-image .hero-showcase {
     opacity: 0;
     pointer-events: none;
 }
@@ -205,7 +220,10 @@ body.has-admin-edit-mode-toggle {
 .gallery-card__art.has-site-image,
 .gallery-modal__viewer .gallery-card__art.has-site-image,
 .product-gallery__slide.has-site-image,
-.product-gallery__thumb-preview.has-site-image {
+.product-gallery__thumb-preview.has-site-image,
+.accessories-card__art.has-site-image,
+.services-card__media.has-site-image,
+.resolution-card__art.has-site-image {
     background-color: #0d121a;
     background-image: var(--site-image-url) !important;
     background-position: center;
@@ -216,6 +234,39 @@ body.has-admin-edit-mode-toggle {
 .product-gallery__slide.has-site-image,
 .product-gallery__thumb-preview.has-site-image {
     background-size: cover;
+}
+
+.accessories-card__art.has-site-image,
+.services-card__media.has-site-image,
+.resolution-card__art.has-site-image {
+    background-size: contain;
+}
+
+.accessories-card,
+.services-card {
+    overflow: hidden;
+}
+
+.accessories-card__kicker,
+.accessories-card__title,
+.accessories-card__text,
+.accessories-card__price,
+.accessories-card__cta,
+.accessories-card__external,
+.services-card__title,
+.services-card__text,
+.services-card__button {
+    position: relative;
+    z-index: 1;
+}
+
+.accessories-card__art.has-site-image {
+    right: 16px;
+    bottom: 14px;
+    width: min(240px, 42%);
+    aspect-ratio: 1;
+    z-index: 0;
+    background-position: center bottom;
 }
 
 .gallery-modal__viewer .gallery-card__art.has-site-image {
@@ -251,11 +302,40 @@ body.has-admin-edit-mode-toggle {
     pointer-events: none;
 }
 
+.accessories-card__art.has-site-image::before,
+.accessories-card__art.has-site-image::after,
+.accessories-card__art.has-site-image span,
+.services-card__media.has-site-image .services-card__icon,
+.resolution-card__art.has-site-image .resolution-card__tower,
+.resolution-card__art.has-site-image .resolution-card__glass,
+.resolution-card__art.has-site-image .resolution-card__fan,
+.resolution-card__art.has-site-image .resolution-card__line {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.services-card__media {
+    position: absolute;
+    inset: auto 30px 116px auto;
+    width: min(220px, 40%);
+    aspect-ratio: 1;
+    filter: drop-shadow(0 32px 42px rgba(0, 0, 0, 0.2));
+    z-index: 0;
+}
+
+.services-card__media.has-site-image {
+    background-position: center bottom;
+}
+
 html[data-theme='light'] .hero__visual.has-site-image,
+html[data-theme='light'] .hero-slide__visual.has-site-image,
 html[data-theme='light'] .gallery-card__art.has-site-image,
 html[data-theme='light'] .gallery-modal__viewer .gallery-card__art.has-site-image,
 html[data-theme='light'] .product-gallery__slide.has-site-image,
-html[data-theme='light'] .product-gallery__thumb-preview.has-site-image {
+html[data-theme='light'] .product-gallery__thumb-preview.has-site-image,
+html[data-theme='light'] .accessories-card__art.has-site-image,
+html[data-theme='light'] .services-card__media.has-site-image,
+html[data-theme='light'] .resolution-card__art.has-site-image {
     background-color: #f3f6fb;
 }
 
@@ -291,6 +371,17 @@ html[data-theme='light'] .product-gallery__thumb-preview.has-site-image {
         background-size: contain;
         min-height: 292px !important;
         aspect-ratio: 4 / 5;
+    }
+
+    .services-card__media {
+        inset: auto 20px 94px auto;
+        width: min(180px, 36%);
+    }
+
+    .accessories-card__art.has-site-image {
+        right: 12px;
+        bottom: 12px;
+        width: min(180px, 38%);
     }
 
     .site-image-edit-badge {

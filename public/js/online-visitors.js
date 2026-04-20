@@ -24,10 +24,10 @@
         });
 
         displays.forEach((display) => {
-            const template = display.dataset.onlineVisitorsLabelTemplate || 'Онлайн: :count';
+            const template = display.dataset.onlineVisitorsLabelTemplate || 'людей онлайн';
             const label = template.replace(':count', String(safeCount));
 
-            display.setAttribute('aria-label', label);
+            display.setAttribute('aria-label', `Онлайн: ${safeCount}`);
 
             const labelNode = display.querySelector('[data-online-visitors-label]');
 
@@ -65,7 +65,7 @@
                 render(payload.count);
             })
             .catch(() => {
-                // Ignore heartbeat issues and keep the last visible count.
+                // Keep the last visible count if heartbeat request fails.
             })
             .finally(() => {
                 inFlight = false;
