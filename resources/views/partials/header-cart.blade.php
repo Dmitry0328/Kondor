@@ -76,3 +76,12 @@
         </div>
     </div>
 </div>
+
+<a class="mobile-cart-fab" href="{{ route('cart') }}" aria-label="{{ $cartLabel }}" data-mobile-cart-fab hidden>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="9" cy="19" r="1.6" fill="currentColor"/>
+        <circle cx="17" cy="19" r="1.6" fill="currentColor"/>
+        <path d="M3 5H5L7.4 15H18.2L20.4 8H8.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="mobile-cart-fab__count" data-cart-count-plus hidden>+0</span>
+</a>

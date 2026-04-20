@@ -134,6 +134,15 @@
             element.hidden = count < 1;
         });
 
+        document.querySelectorAll('[data-cart-count-plus]').forEach((element) => {
+            element.textContent = `+${count}`;
+            element.hidden = count < 1;
+        });
+
+        document.querySelectorAll('[data-mobile-cart-fab]').forEach((element) => {
+            element.hidden = count < 1;
+        });
+
         document.querySelectorAll('.header-cart').forEach((element) => {
             const cartLabel = '\u041A\u043E\u0448\u0438\u043A';
             const singleItemLabel = '\u0442\u043E\u0432\u0430\u0440';
