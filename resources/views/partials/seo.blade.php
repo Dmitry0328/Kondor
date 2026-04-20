@@ -1,7 +1,7 @@
 @php
     $siteName = 'KondorPC';
     $defaultTitle = $siteName . ' - ігрові ПК та збірки під замовлення';
-    $defaultDescription = 'KondorPC - готові ігрові ПК, збірки під замовлення, консультація та доставка по Україні.';
+    $defaultDescription = 'KondorPC - готові ігрові ПК, збірки під замовлення, аксесуари, консультація та доставка по Україні.';
 
     $seoTitle = trim((string) ($title ?? $defaultTitle));
     $seoDescription = preg_replace('/\s+/u', ' ', trim((string) ($description ?? $defaultDescription))) ?: $defaultDescription;
