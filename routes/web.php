@@ -1,95 +1,22 @@
 <?php
 
-use App\Models\Accessory;
-use App\Models\Build;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OnlineVisitorsController;
 use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SiteAdminNotificationController;
 use App\Http\Controllers\SiteImageController;
 use App\Http\Controllers\TradeInController;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/sitemap.xml', function () {
-    $now = now()->toAtomString();
-    $urls = [
-        [
-            'loc' => route('home'),
-            'lastmod' => $now,
-            'changefreq' => 'daily',
-            'priority' => '1.0',
-        ],
-        [
-            'loc' => route('catalog'),
-            'lastmod' => $now,
-            'changefreq' => 'daily',
-            'priority' => '0.9',
-        ],
-        [
-            'loc' => route('accessories.index'),
-            'lastmod' => $now,
-            'changefreq' => 'daily',
-            'priority' => '0.8',
-        ],
-        [
-            'loc' => route('trade-in'),
-            'lastmod' => $now,
-            'changefreq' => 'weekly',
-            'priority' => '0.7',
-        ],
-    ];
-
-    if (Schema::hasTable('builds')) {
-        foreach (Build::query()->where('is_active', true)->orderBy('sort_order')->orderBy('id')->get() as $build) {
-            $slug = trim((string) $build->slug);
-
-            if ($slug === '') {
-                continue;
-            }
-
-            $urls[] = [
-                'loc' => route('product.show', ['slug' => $slug]),
-                'lastmod' => optional($build->updated_at)->toAtomString() ?? $now,
-                'changefreq' => 'weekly',
-                'priority' => '0.8',
-            ];
-        }
-    }
-
-    if (Schema::hasTable('accessories')) {
-        foreach (Accessory::query()->where('is_active', true)->orderBy('type')->orderBy('sort_order')->orderBy('id')->get() as $accessory) {
-            $slug = trim((string) $accessory->slug);
-
-            if ($slug === '') {
-                continue;
-            }
-
-            $urls[] = [
-                'loc' => route('accessories.show', ['slug' => $slug]),
-                'lastmod' => optional($accessory->updated_at)->toAtomString() ?? $now,
-                'changefreq' => 'weekly',
-                'priority' => '0.7',
-            ];
-        }
-    }
-
-    $urls = collect($urls)
-        ->unique('loc')
-        ->values()
-        ->all();
-
-    return response()
-        ->view('sitemap', ['urls' => $urls])
-        ->header('Content-Type', 'application/xml; charset=UTF-8');
-})->name('sitemap');
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 Route::get('/robots.txt', function () {
     $content = implode("\n", [
