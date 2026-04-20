@@ -49,11 +49,14 @@ class ExportStorefrontSnapshot extends Command
     {
         return [
             'users' => $this->usersPayload(),
+            'site_settings' => $this->tablePayload('site_settings', ['id', 'key', 'value', 'created_at', 'updated_at']),
             'fps_games' => $this->tablePayload('fps_games', ['id', 'key', 'name', 'badge', 'accent', 'scene_from', 'scene_to', 'sort_order', 'is_active', 'is_default', 'created_at', 'updated_at']),
             'fps_displays' => $this->tablePayload('fps_displays', ['id', 'key', 'name', 'mobile_name', 'sort_order', 'is_active', 'is_default', 'created_at', 'updated_at']),
             'fps_presets' => $this->tablePayload('fps_presets', ['id', 'key', 'name', 'sort_order', 'is_active', 'is_default', 'created_at', 'updated_at']),
+            'resolution_cards' => $this->resolutionCardsPayload(),
             'builds' => $this->buildsPayload(),
             'components' => $this->componentsPayload(),
+            'accessories' => $this->accessoriesPayload(),
             'site_images' => $this->siteImagesPayload(),
         ];
     }
@@ -92,6 +95,7 @@ class ExportStorefrontSnapshot extends Command
             'slug',
             'tone',
             'name',
+            'product_code',
             'gpu',
             'cpu',
             'ram',
@@ -101,6 +105,8 @@ class ExportStorefrontSnapshot extends Command
             'fps_profiles',
             'product_specs',
             'about',
+            'youtube_enabled',
+            'youtube_url',
             'sort_order',
             'is_active',
             'created_at',
@@ -113,6 +119,14 @@ class ExportStorefrontSnapshot extends Command
 
         if (Schema::hasColumn('builds', 'configurator_groups')) {
             $columns[] = 'configurator_groups';
+        }
+
+        if (Schema::hasColumn('builds', 'resolution_tags')) {
+            $columns[] = 'resolution_tags';
+        }
+
+        if (Schema::hasColumn('builds', 'case_variants')) {
+            $columns[] = 'case_variants';
         }
 
         return Build::query()
@@ -135,6 +149,69 @@ class ExportStorefrontSnapshot extends Command
             ->orderBy('id')
             ->get()
             ->map(fn (Component $component): array => $component->toArray())
+            ->all();
+    }
+
+    protected function accessoriesPayload(): array
+    {
+        if (! Schema::hasTable('accessories')) {
+            return [];
+        }
+
+        return DB::table('accessories')
+            ->orderBy('type')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get([
+                'id',
+                'type',
+                'name',
+                'slug',
+                'import_source',
+                'external_id',
+                'source_url',
+                'vendor',
+                'sku',
+                'price',
+                'summary',
+                'gallery_paths',
+                'remote_image_urls',
+                'specs',
+                'package_items',
+                'sort_order',
+                'is_active',
+                'last_synced_at',
+                'created_at',
+                'updated_at',
+            ])
+            ->map(fn ($row): array => (array) $row)
+            ->all();
+    }
+
+    protected function resolutionCardsPayload(): array
+    {
+        if (! Schema::hasTable('resolution_cards')) {
+            return [];
+        }
+
+        return DB::table('resolution_cards')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get([
+                'id',
+                'key',
+                'label',
+                'eyebrow',
+                'description',
+                'accent_color',
+                'image_path',
+                'button_label',
+                'sort_order',
+                'is_active',
+                'created_at',
+                'updated_at',
+            ])
+            ->map(fn ($row): array => (array) $row)
             ->all();
     }
 
@@ -164,8 +241,13 @@ class ExportStorefrontSnapshot extends Command
             return [];
         }
 
-        return DB::table($table)
-            ->orderBy('sort_order')
+        $query = DB::table($table);
+
+        if (Schema::hasColumn($table, 'sort_order')) {
+            $query->orderBy('sort_order');
+        }
+
+        return $query
             ->orderBy('id')
             ->get($columns)
             ->map(fn ($row): array => (array) $row)
